@@ -1,16 +1,22 @@
 <div align="center">
-  <img src="img/himalayafeed.png" alt="HimalayaFeed Banner" width="400">
+  <img src="img/himalayafeed.png" alt="HimalayaFeed Banner" width="250" style="border-radius: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.2); margin-bottom: 20px;">
+  
+  <h1>HimalayaFeed</h1>
+  
+  <p>
+    <a href="https://github.com/sujallamichhane18/himalayafeed/actions/workflows/update-feed.yml">
+      <img src="https://github.com/sujallamichhane18/himalayafeed/actions/workflows/update-feed.yml/badge.svg" alt="Update Feed">
+    </a>
+    <img src="https://img.shields.io/badge/python-3.11%2B-blue" alt="Python 3.11+">
+    <img src="https://img.shields.io/badge/license-MIT-green" alt="License">
+    <img src="https://img.shields.io/badge/API%20keys-none-brightgreen" alt="No API Keys">
+    <img src="https://img.shields.io/badge/infrastructure-zero-brightgreen" alt="No VPS">
+  </p>
+  
+  <h3>A fully-automated, simple malicious IP intelligence feed.</h3>
 </div>
 
-# HimalayaFeed
-
-[![Update Feed](https://github.com/sujallamichhane18/himalayafeed/actions/workflows/update-feed.yml/badge.svg)](https://github.com/sujallamichhane18/himalayafeed/actions/workflows/update-feed.yml)
-![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
-![No API Keys](https://img.shields.io/badge/API%20keys-none-brightgreen)
-![No VPS](https://img.shields.io/badge/infrastructure-zero-brightgreen)
-
-A **fully-automated, simple malicious IP intelligence feed**. 
+<br/>
 
 HimalayaFeed is designed for pure simplicity and effectiveness. It aggregates known malicious IPv4 addresses from reputable open-source intelligence (OSINT) feeds without any complex infrastructure requirements.
 
