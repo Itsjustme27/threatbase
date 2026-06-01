@@ -49,6 +49,9 @@ https://raw.githubusercontent.com/kalidada18/himalayafeed/main/malicious_ips.txt
 https://raw.githubusercontent.com/kalidada18/himalayafeed/main/malicious_ips.csv
 ```
 
+### 3. Historical Archives (Best for Research)
+A zip archive of the feed is automatically published every day at midnight UTC to the **[Releases](https://github.com/kalidada18/himalayafeed/releases)** page. These daily snapshots allow you to historically analyze which IPs were malicious on any given day.
+
 
 
 ## 🚀 How to Run Your Own Instance
