@@ -721,7 +721,7 @@
     </div>
     <h1>Threat Intelligence<br><span class="accent">Made Simple.</span></h1>
     <p class="hero-sub">
-      HimalayaFeed aggregates malicious IPv4 addresses from 13+ reputable OSINT sources.
+      HimalayaFeed aggregates malicious IPv4 addresses from 14+ reputable OSINT sources.
       Fully automated. Updated every hour. Zero infrastructure.
     </p>
     <div class="hero-actions">
@@ -1091,13 +1091,15 @@ function renderTable(d) {
   const failed = new Set(d.failed_feeds || []);
   const total  = d.total_unique_ips || 1;
   const sorted = Object.entries(src).sort((a, b) => b[1] - a[1]);
-  const all    = [...sorted, ...(d.failed_feeds || []).map(n => [n, 0])];
+  // Add failed feeds that aren't already in ips_per_source
+  const failedOnly = (d.failed_feeds || []).filter(n => !(n in src)).map(n => [n, 0]);
+  const all    = [...sorted, ...failedOnly];
 
   document.getElementById('src-chip').textContent = d.total_feeds_processed + ' active';
 
   tbody.innerHTML = all.map(([name, count]) => {
     const pct = ((count / total) * 100).toFixed(1);
-    const isFail = failed.has(name) || count === 0;
+    const isFail = failed.has(name);
     return `<tr>
       <td class="td-name">${name}</td>
       <td style="font-family:var(--mono);font-weight:600">${fmt(count)}</td>

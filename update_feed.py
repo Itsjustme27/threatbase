@@ -10,6 +10,7 @@ Runs entirely on GitHub Actions — no VPS, API keys, or paid services required.
 Requirements: Python 3.11+, requests, pandas
 """
 
+import ipaddress
 import json
 import logging
 import re
@@ -41,23 +42,11 @@ FEEDS: Dict[str, str] = {
     "feodo_tracker": (
         "https://feodotracker.abuse.ch/downloads/ipblocklist.txt"
     ),
-    # SSL Blacklist — IPs with known-malicious SSL certificates used by C2s
-    "ssl_blacklist": (
-        "https://sslbl.abuse.ch/blacklist/sslipblacklist.txt"
-    ),
-    # ThreatFox — malware C2 IOCs (IP:port format — port is stripped)
-    "threatfox": (
-        "https://threatfox.abuse.ch/export/txt/ip-port/"
-    ),
 
     # ── stamparm (GitHub) ─────────────────────────────────────────────────────
     # ipsum — aggregated threat score feed; first column = IP, second = score
     "ipsum": (
         "https://raw.githubusercontent.com/stamparm/ipsum/master/ipsum.txt"
-    ),
-    # blackbook — active C&C / botnet server IPs
-    "stamparm_blackbook": (
-        "https://raw.githubusercontent.com/stamparm/blackbook/master/blackbook.txt"
     ),
 
     # ── FireHOL (GitHub) ──────────────────────────────────────────────────────
@@ -70,6 +59,11 @@ FEEDS: Dict[str, str] = {
     "firehol_level2": (
         "https://raw.githubusercontent.com/firehol/blocklist-ipsets/"
         "master/firehol_level2.netset"
+    ),
+    # FireHOL Level 3 — tracks attacks, spyware, viruses from last 30 days
+    "firehol_level3": (
+        "https://raw.githubusercontent.com/firehol/blocklist-ipsets/"
+        "master/firehol_level3.netset"
     ),
 
     # ── CINS Score ───────────────────────────────────────────────────────────
@@ -91,9 +85,9 @@ FEEDS: Dict[str, str] = {
     ),
 
     # ── Binary Defense ───────────────────────────────────────────────────────
-    # Binary Defense Systems threat intelligence feed
+    # Binary Defense Systems Artillery Threat Intelligence Feed
     "binary_defense": (
-        "https://www.binarydefense.com/banlist.txt"
+        "https://binarydefense.com/banlist.txt"
     ),
 
     # ── GreenSnow ────────────────────────────────────────────────────────────
@@ -102,10 +96,11 @@ FEEDS: Dict[str, str] = {
         "https://blocklist.greensnow.co/greensnow.txt"
     ),
 
-    # ── Spamhaus (EDROP) ─────────────────────────────────────────────────────
-    # Extended DROP — hijacked netblocks used for spam/malware (host IPs only)
-    "spamhaus_edrop": (
-        "https://www.spamhaus.org/drop/edrop.txt"
+    # ── Spamhaus (DROP) ──────────────────────────────────────────────────────
+    # DROP — "Don't Route Or Peer" — hijacked netblocks used for spam/malware
+    # (EDROP was merged into this list)
+    "spamhaus_drop": (
+        "https://www.spamhaus.org/drop/drop.txt"
     ),
 
     # ── Charles Haley (GitHub) ───────────────────────────────────────────────
@@ -114,12 +109,26 @@ FEEDS: Dict[str, str] = {
         "https://raw.githubusercontent.com/Ultimate-Hosts-Blacklist/"
         "Ultimate.Hosts.Blacklist/master/ips/ips0.list"
     ),
+
+    # ── CriticalPathSecurity (GitHub) ────────────────────────────────────────
+    # Public intelligence feed — compromised IPs
+    "criticalpath_security": (
+        "https://raw.githubusercontent.com/CriticalPathSecurity/"
+        "Public-Intelligence-Feeds/master/compromised-ips.txt"
+    ),
+
+    # ── AlienVault ───────────────────────────────────────────────────────────
+    # AlienVault IP reputation data — known malicious hosts
+    "alienvault_reputation": (
+        "http://reputation.alienvault.com/reputation.data"
+    ),
 }
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Tuning constants
 # ─────────────────────────────────────────────────────────────────────────────
 REQUEST_TIMEOUT: int = 30   # seconds before abandoning a request
+CIDR_MAX_PREFIX: int = 24   # only expand CIDR blocks with prefix >= this (i.e. /24–/32)
 MAX_RETRIES: int = 3        # retry attempts per feed before giving up
 RETRY_DELAY: int = 5        # seconds to wait between retry attempts
 MAX_WORKERS: int = 8        # maximum concurrent download threads
@@ -187,10 +196,12 @@ def extract_ips(raw_text: str) -> Set[str]:
     Handles the following feed formats transparently:
       - Plain IP list                        — one IP per line
       - Comment lines ('#', ';', '//')       — skipped
-      - IP:PORT format (ThreatFox)           — port stripped
+      - IP:PORT format                       — port stripped
+      - IP#score#data (AlienVault)            — first '#'-delimited field taken
       - IP<TAB>score  (ipsum)                — first token taken
       - IP  # inline comment                 — first token taken
-      - CIDR notation (1.2.3.0/24)          — skipped (host IPs only)
+      - CIDR notation (1.2.3.0/24)          — expanded for small blocks (≥/24)
+      - Large CIDR blocks (< /24)           — skipped (too many IPs)
       - Windows CRLF line endings           — normalised by splitlines()
     """
     ips: Set[str] = set()
@@ -208,12 +219,25 @@ def extract_ips(raw_text: str) -> Set[str]:
         # This handles "IP  # comment", "IP\tscore", "IP  SBL-code" etc.
         token = line.split()[0]
 
+        # Handle '#'-delimited format (AlienVault: "IP#score#...")
+        if "#" in token:
+            token = token.split("#")[0]
+
         # Strip port if the token contains a colon (IP:PORT)
         if ":" in token:
             token = token.rsplit(":", 1)[0]
 
-        # Skip CIDR entries — we emit individual host IPs only
+        # Handle CIDR entries — expand small blocks into individual IPs
         if "/" in token:
+            try:
+                network = ipaddress.IPv4Network(token, strict=False)
+                if network.prefixlen >= CIDR_MAX_PREFIX:
+                    for host in network.hosts():
+                        host_str = str(host)
+                        if is_valid_public_ipv4(host_str):
+                            ips.add(host_str)
+            except (ipaddress.AddressValueError, ipaddress.NetmaskValueError, ValueError):
+                pass  # skip malformed CIDR entries
             continue
 
         if is_valid_public_ipv4(token):
