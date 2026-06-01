@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated output files (committed by GitHub Actions, not locally)
+# Uncomment below if you don't want these tracked locally:
+# malicious_ips.txt
+# malicious_ips.csv
+# threat_feed.json
+# stats.json

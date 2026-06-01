@@ -1,0 +1,103 @@
+name: HimalayaFeed — Update Threat Intelligence Feed
+
+on:
+  # ── Automatic: every hour at :00 UTC ──────────────────────────────────────
+  schedule:
+    - cron: '0 * * * *'
+
+  # ── Manual: trigger from the Actions tab any time ─────────────────────────
+  workflow_dispatch:
+
+# Prevent concurrent runs from racing on the same git push.
+# A new run queued while one is already active will wait, not cancel.
+concurrency:
+  group: update-feed
+  cancel-in-progress: false
+
+jobs:
+  update-feed:
+    name: Fetch, Aggregate & Publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 15  # Hard kill-switch — never hang indefinitely
+
+    # Required so the built-in GITHUB_TOKEN can push commits back to the repo.
+    # No PAT or extra secrets are needed.
+    permissions:
+      contents: write
+
+    steps:
+      # ── 1. Checkout ─────────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Ensure we have the full history for accurate diff detection
+          fetch-depth: 1
+
+      # ── 2. Python setup ──────────────────────────────────────────────────────
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'   # Cache pip packages between runs to speed up install
+
+      # ── 3. Install dependencies ──────────────────────────────────────────────
+      - name: Install Python dependencies
+        run: pip install --quiet --no-cache-dir -r requirements.txt
+
+      # ── 4. Run the aggregator ────────────────────────────────────────────────
+      - name: Run feed aggregator
+        run: python update_feed.py
+
+      # ── 5. Show a quick summary in the Actions log ───────────────────────────
+      - name: Display feed statistics
+        if: success()
+        run: |
+          echo "════════════════════════════════════════"
+          echo "  Feed statistics"
+          echo "════════════════════════════════════════"
+          python - <<'EOF'
+          import json
+          with open("stats.json") as f:
+              s = json.load(f)
+          print(f"  Last updated  : {s['last_updated']}")
+          print(f"  Unique IPs    : {s['total_unique_ips']:,}")
+          print(f"  Feeds OK      : {s['total_feeds_processed']}")
+          print(f"  Feeds failed  : {s['total_feeds_failed']}")
+          if s['failed_feeds']:
+              print(f"  Failed names  : {', '.join(s['failed_feeds'])}")
+          print(f"  Multi-source  : {s['multi_source_ips']:,} IPs seen in 2+ feeds")
+          print()
+          print("  IPs per source:")
+          for src, count in sorted(s['ips_per_source'].items(), key=lambda x: -x[1]):
+              print(f"    {src:<30} {count:>8,}")
+          EOF
+          echo "════════════════════════════════════════"
+
+      # ── 6. Commit and push only when something changed ───────────────────────
+      #
+      # Uses the official github-actions[bot] identity so commit history is clean.
+      # The GITHUB_TOKEN has contents:write permission granted above.
+      # GitHub itself prevents this push from re-triggering the same workflow,
+      # so there is no risk of an infinite loop.
+      - name: Commit and push updated feed files
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Stage only the four generated output files
+          git add malicious_ips.txt malicious_ips.csv threat_feed.json stats.json
+
+          # Check whether any staged file actually changed
+          if git diff --staged --quiet; then
+            echo "✓ No changes detected — feed is already up-to-date. Skipping commit."
+          else
+            # Count non-comment IP lines for a meaningful commit message
+            IP_COUNT=$(grep -cE '^[0-9]' malicious_ips.txt 2>/dev/null || echo "0")
+            TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
+            git commit -m "chore: update threat feed — ${TIMESTAMP} — ${IP_COUNT} IPs"
+
+            # Pull-rebase before push to handle the rare case of a concurrent run
+            git pull --rebase --quiet origin "${GITHUB_REF_NAME:-main}" || true
+            git push origin "${GITHUB_REF_NAME:-main}"
+            echo "✓ Feed pushed successfully (${IP_COUNT} IPs)."
+          fi
