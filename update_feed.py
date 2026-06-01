@@ -417,6 +417,13 @@ def write_csv(
     log.info("malicious_ips.csv written (%d rows)", len(df))
 
 
+def write_stats(stats: dict) -> None:
+    """Write stats.json — aggregate statistics consumed by the live dashboard."""
+    with open("stats.json", "w", encoding="utf-8") as fh:
+        json.dump(stats, fh, indent=2)
+    log.info("stats.json written")
+
+
 
 
 
@@ -424,12 +431,13 @@ def write_all_outputs(
     ip_map: Dict[str, List[str]],
     stats: dict,
 ) -> None:
-    """Orchestrate writing of all four output artefacts."""
+    """Orchestrate writing of all output artefacts."""
     # Numerically sorted IPs for deterministic, human-readable diffs
     sorted_ips = sorted(ip_map.keys(), key=numerical_ip_key)
 
     write_txt(sorted_ips, stats)
     write_csv(sorted_ips, ip_map)
+    write_stats(stats)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

@@ -60,8 +60,8 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Stage only the two generated output files
-          git add malicious_ips.txt malicious_ips.csv
+          # Stage all generated output files (including dashboard data)
+          git add malicious_ips.txt malicious_ips.csv stats.json
 
           # Check whether any staged file actually changed
           if git diff --staged --quiet; then
