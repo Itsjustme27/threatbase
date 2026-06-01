@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-06-01T16:34:03Z",
-  "total_unique_ips": 1063643,
+  "last_updated": "2026-06-01T20:52:31Z",
+  "total_unique_ips": 1061778,
   "total_feeds_processed": 14,
   "total_feeds_failed": 1,
   "failed_feeds": [
@@ -9,20 +9,20 @@
   "ips_per_source": {
     "alienvault_reputation": 609,
     "binary_defense": 967,
-    "blocklist_de": 23923,
+    "blocklist_de": 24206,
     "charles_haley_malware_ips": 614617,
-    "cins_army": 15000,
+    "cins_army": 0,
     "criticalpath_security": 540,
     "emerging_threats": 540,
     "feodo_tracker": 5,
     "firehol_level1": 547683,
     "firehol_level2": 27786,
     "firehol_level3": 32085,
-    "greensnow": 5168,
+    "greensnow": 5171,
     "ipsum": 118140,
-    "spamhaus_drop": 183642
+    "spamhaus_drop": 181102
   },
-  "multi_source_ips": 389458,
+  "multi_source_ips": 383783,
   "top_reported_sources": [
     [
       "charles_haley_malware_ips",
@@ -34,7 +34,7 @@
     ],
     [
       "spamhaus_drop",
-      183642
+      181102
     ],
     [
       "ipsum",
