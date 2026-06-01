@@ -1,8 +1,8 @@
 <div align="center">
-  <img src="img/himalayafeed.png" alt="HimalayaFeed Banner" width="100%">
+  <img src="img/himalayafeed.png" alt="HimalayaFeed Banner" width="400">
 </div>
 
-# 🏔️ HimalayaFeed
+# HimalayaFeed
 
 [![Update Feed](https://github.com/sujallamichhane18/himalayafeed/actions/workflows/update-feed.yml/badge.svg)](https://github.com/sujallamichhane18/himalayafeed/actions/workflows/update-feed.yml)
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)
