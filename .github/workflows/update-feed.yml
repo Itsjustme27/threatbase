@@ -5,6 +5,13 @@ on:
   schedule:
     - cron: '0 * * * *'
 
+  # ── Re-enable schedule whenever code is pushed to main ────────────────────
+  push:
+    branches: [main]
+    paths:
+      - 'update_feed.py'
+      - '.github/workflows/update-feed.yml'
+
   # ── Manual: trigger from the Actions tab any time ─────────────────────────
   workflow_dispatch:
 
@@ -47,9 +54,7 @@ jobs:
       - name: Run feed aggregator
         run: python update_feed.py
 
-
-
-      # ── 6. Commit and push only when something changed ───────────────────────
+      # ── 5. Commit and push ───────────────────────────────────────────────────
       #
       # Uses the official github-actions[bot] identity so commit history is clean.
       # The GITHUB_TOKEN has contents:write permission granted above.
