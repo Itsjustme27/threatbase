@@ -1,7 +1,13 @@
 {
+<<<<<<< HEAD
   "last_updated": "2026-06-01T13:15:54Z",
   "total_unique_ips": 1063149,
   "total_feeds_processed": 15,
+=======
+  "last_updated": "2026-06-01T13:20:27Z",
+  "total_unique_ips": 1062945,
+  "total_feeds_processed": 14,
+>>>>>>> 9777bf6 (chore: update malicious IP list and statistics for the Greensnow feed)
   "total_feeds_failed": 0,
   "failed_feeds": [],
   "ips_per_source": {
@@ -21,7 +27,11 @@
     "ipsum": 118140,
     "spamhaus_drop": 183642
   },
+<<<<<<< HEAD
   "multi_source_ips": 390792,
+=======
+  "multi_source_ips": 389225,
+>>>>>>> 9777bf6 (chore: update malicious IP list and statistics for the Greensnow feed)
   "top_reported_sources": [
     [
       "charles_haley_malware_ips",
