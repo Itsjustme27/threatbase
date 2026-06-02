@@ -76,7 +76,7 @@ FEED_CATEGORIES: Dict[str, str] = {
 }
 
 DOMAIN_FEEDS: Dict[str, str] = {
-    "openphish": "https://openphish.com/feed.txt",
+    "openphish": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
     "urlhaus": "https://urlhaus.abuse.ch/downloads/text_online/",
     "romainmarcoux": "https://raw.githubusercontent.com/romainmarcoux/malicious-domains/refs/heads/main/full-domains-aa.txt",
 }
@@ -88,9 +88,9 @@ HASH_FEEDS: Dict[str, str] = {
 }
 
 URL_FEEDS: Dict[str, str] = {
-    "urlhaus_online": "https://urlhaus.abuse.ch/downloads/csv_online/",
+    "urlhaus_online": "https://urlhaus.abuse.ch/downloads/text_online/",
     "urlhaus_recent": "https://urlhaus.abuse.ch/downloads/csv_recent/",
-    "openphish_urls": "https://openphish.com/feed.txt",
+    "openphish_urls": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
 }
 
 THREATFOX_FEEDS: Dict[str, str] = {
