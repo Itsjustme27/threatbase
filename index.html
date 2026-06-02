@@ -918,14 +918,14 @@
   <div class="hero-inner">
     <h1>Threat Intelligence<br><span class="accent">Made Simple.</span></h1>
     <p class="hero-sub">
-      Search any IP address to scan against the HimalayaFeed threat database and VirusTotal.
+      Search any IP address or Domain to scan against the HimalayaFeed threat database and VirusTotal.
       Updated every hour. Fully automated. Zero infrastructure.
     </p>
 
     <div class="hero-search" id="lookup">
       <div class="hero-search-row">
         <input type="text" class="hero-search-input" id="ip-input"
-               placeholder="Search IP address — e.g. 185.220.101.45"
+               placeholder="Search IP or Domain — e.g. 185.220.101.45 or evil.com"
                autocomplete="off" spellcheck="false">
         <button class="hero-search-btn" onclick="scanIP()" id="scan-btn">
           <i data-lucide="scan"></i> Scan
@@ -1356,8 +1356,20 @@ async function renderHistoryChart() {
   }
 }
 
-/* ── IP Scan + Report ──────────────────── */
-let csvText = null, csvLoading = null, statsData = null, bloomData = null;
+/* ── Threat Scan + Report ──────────────────── */
+let csvText = null, csvLoading = null, statsData = null, bloomData = null, domainData = null;
+
+async function loadDomains() {
+  if (domainData) return domainData;
+  try {
+    const r = await fetch(RAW + 'malicious_domains.txt?_=' + Date.now());
+    if (r.ok) {
+      const txt = await r.text();
+      domainData = new Set(txt.split('\n').map(d => d.trim()).filter(Boolean));
+    }
+  } catch(e) {}
+  return domainData;
+}
 
 async function loadBloom() {
   if (bloomData) return bloomData;
@@ -1403,12 +1415,15 @@ function getThreatLevel(reputation) {
 async function scanIP() {
   const input = document.getElementById('ip-input');
   const btn   = document.getElementById('scan-btn');
-  const ip    = input.value.trim();
+  const ip    = input.value.trim().toLowerCase();
 
   if (!ip) { input.focus(); return; }
 
-  if (!/^(\d{1,3}\.){3}\d{1,3}$/.test(ip)) {
-    showReport('warn', ip, null, null, null);
+  const isIP = /^(\d{1,3}\.){3}\d{1,3}$/.test(ip);
+  const isDomain = /^[a-z0-9.-]+\.[a-z]{2,}$/i.test(ip);
+
+  if (!isIP && !isDomain) {
+    showReport('warn', ip, null, null);
     return;
   }
 
@@ -1439,27 +1454,38 @@ async function scanIP() {
   let stats = null;
   try {
     stats = await loadStats();
-    const bloom = await loadBloom();
-    const prefix = ip.split('.').slice(0, 2).join('.');
-    
-    // Instant Bloom Filter Check (avoids downloading 90MB CSV if definitely safe)
-    let mightBeMalicious = true;
-    if (bloom && bloom.size > 0 && !bloom.has(prefix)) mightBeMalicious = false;
+    if (isIP) {
+      const bloom = await loadBloom();
+      const prefix = ip.split('.').slice(0, 2).join('.');
+      
+      // Instant Bloom Filter Check (avoids downloading 90MB CSV if definitely safe)
+      let mightBeMalicious = true;
+      if (bloom && bloom.size > 0 && !bloom.has(prefix)) mightBeMalicious = false;
 
-    if (mightBeMalicious) {
-      const txt = await loadCSV();
-      let idx = txt.indexOf('\n' + ip + ',');
-      if (idx === -1 && txt.startsWith('ip,sources,source_count\n' + ip + ',')) {
-        idx = 'ip,sources,source_count'.length;
+      if (mightBeMalicious) {
+        const txt = await loadCSV();
+        let idx = txt.indexOf('\n' + ip + ',');
+        if (idx === -1 && txt.startsWith('ip,sources,source_count\n' + ip + ',')) {
+          idx = 'ip,sources,source_count'.length;
+        }
+        if (idx !== -1) {
+          const lineEnd = txt.indexOf('\n', idx + 1);
+          const line = txt.substring(idx + 1, lineEnd !== -1 ? lineEnd : undefined);
+          const parts = line.split(',');
+          feedMatch = {
+            sourceCount: parseInt(parts[2]) || 1,
+            reputation: parseInt(parts[3]) || (parseInt(parts[2]) * 20) || 0,
+            sourceList: parts[1] ? parts[1].split('|') : ['unknown']
+          };
+        }
       }
-      if (idx !== -1) {
-        const lineEnd = txt.indexOf('\n', idx + 1);
-        const line = txt.substring(idx + 1, lineEnd !== -1 ? lineEnd : undefined);
-        const parts = line.split(',');
+    } else if (isDomain) {
+      const domains = await loadDomains();
+      if (domains && domains.has(ip)) {
         feedMatch = {
-          sourceCount: parseInt(parts[2]) || 1,
-          reputation: parseInt(parts[3]) || (parseInt(parts[2]) * 20) || 0,
-          sourceList: parts[1] ? parts[1].split('|') : ['unknown']
+          sourceCount: 1,
+          reputation: 100,
+          sourceList: ['malicious_domains.txt']
         };
       }
     }
@@ -1493,10 +1519,20 @@ function showReport(type, ip, feedMatch, stats) {
   const totalIPs   = stats ? stats.total_unique_ips : 0;
   const lastUpdated = stats ? stats.last_updated : '—';
 
+  const isIP = /^(\d{1,3}\.){3}\d{1,3}$/.test(ip);
+
   // External links
-  document.getElementById('ext-vt').href = 'https://www.virustotal.com/gui/ip-address/' + ip;
-  document.getElementById('ext-abuse').href = 'https://www.abuseipdb.com/check/' + ip;
-  document.getElementById('ext-shodan').href = 'https://www.shodan.io/host/' + ip;
+  if (isIP) {
+    document.getElementById('ext-vt').href = 'https://www.virustotal.com/gui/ip-address/' + ip;
+    document.getElementById('ext-abuse').href = 'https://www.abuseipdb.com/check/' + ip;
+    document.getElementById('ext-abuse').style.display = 'flex';
+    document.getElementById('ext-shodan').href = 'https://www.shodan.io/host/' + ip;
+    document.getElementById('ext-shodan').style.display = 'flex';
+  } else {
+    document.getElementById('ext-vt').href = 'https://www.virustotal.com/gui/domain/' + ip;
+    document.getElementById('ext-abuse').style.display = 'none';
+    document.getElementById('ext-shodan').style.display = 'none';
+  }
 
   // Header
   document.getElementById('rc-ip').textContent = ip;
@@ -1540,7 +1576,7 @@ function showReport(type, ip, feedMatch, stats) {
       <span class="rc-row-value">${sourceCount > 0 ? Math.min(Math.round((sourceCount/totalFeeds)*100), 99) : 0}%</span>
     </div>
     <div class="rc-row">
-      <span class="rc-row-label">In malicious_ips.txt</span>
+      <span class="rc-row-label">In Blocklist</span>
       <span class="rc-row-value text" style="color:${feedMatch ? 'var(--red)' : 'var(--green)'}">${feedMatch ? '✓ Yes' : '✗ No'}</span>
     </div>
     <div class="rc-row">
@@ -1556,7 +1592,7 @@ function showReport(type, ip, feedMatch, stats) {
   // Assessment
   const assess = document.getElementById('rc-assessment');
   if (type === 'warn') {
-    assess.innerHTML = '<strong>Error:</strong> Invalid IPv4 format or feed data could not be loaded. Enter a valid IPv4 address (e.g. <code>185.220.101.45</code>) and try again.';
+    assess.innerHTML = '<strong>Error:</strong> Invalid format. Enter a valid IPv4 address or Domain (e.g. <code>185.220.101.45</code> or <code>evil.com</code>) and try again.';
   } else {
     if (feedMatch) {
       assess.innerHTML =
@@ -1565,10 +1601,10 @@ function showReport(type, ip, feedMatch, stats) {
          threat.level === 'high' ? 'This is a <strong style="color:#ea580c">high threat</strong> — highly confident malicious activity. Blocking is strongly recommended.' :
          threat.level === 'medium' ? 'This is a <strong style="color:var(--amber)">medium threat</strong> — confirmed malicious activity. Consider blocking or monitoring.' :
          'This is a <strong>low threat</strong> — identified with low confidence. Consider monitoring for further activity.') +
-        ' This IP is currently active in our <strong>malicious_ips.txt</strong> blocklist and is ready for immediate ingestion into firewalls, SIEM, or IDS/IPS systems.';
+        ` This ${isIP ? 'IP' : 'Domain'} is currently active in our blocklist and is ready for immediate ingestion into firewalls, SIEM, or IDS/IPS systems.`;
     } else {
       assess.innerHTML =
-        `<strong>Assessment:</strong> <code>${ip}</code> was <strong>not found</strong> in the HimalayaFeed database of <strong>${totalIPs ? fmt(totalIPs) : '—'}</strong> active malicious IPs. ` +
+        `<strong>Assessment:</strong> <code>${ip}</code> was <strong>not found</strong> in the HimalayaFeed database. ` +
         'Absence from our database does <strong>not</strong> guarantee safety — only that it is not currently exhibiting malicious activity across our sensor network.';
     }
   }
