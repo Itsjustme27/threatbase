@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800;900&display=swap"
     rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -47,6 +47,7 @@
       --blue-light: #eff6ff;
 
       --font: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-heading: 'Outfit', system-ui, sans-serif;
       --mono: 'JetBrains Mono', 'Fira Code', monospace;
       --radius: 10px;
       --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03);
@@ -90,6 +91,10 @@
       color: var(--ink);
       -webkit-font-smoothing: antialiased;
       line-height: 1.6;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-heading);
     }
 
     ::selection {
@@ -229,34 +234,35 @@
 
     /* ── Hero + Search ─────────────────────────────────── */
     .hero {
-      background-color: #081121;
-      padding: 6rem 2rem 6rem; /* Increased padding to show more of the image */
+      background-color: #020617;
+      padding: 7rem 2rem 7rem;
       text-align: center;
       position: relative;
       overflow: hidden;
     }
 
-    .hero-bg {
+    #hero-canvas {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: url('./img/hero_mountain.png') no-repeat center center;
-      background-size: cover;
+      width: 100%; height: 100%;
       z-index: 0;
     }
 
     .hero-overlay {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(180deg, rgba(8, 17, 33, 0.1) 0%, rgba(8, 17, 33, 0.75) 100%);
+      background: radial-gradient(circle at center, rgba(2,6,23,0.1) 0%, rgba(2,6,23,0.95) 100%);
       z-index: 1;
+      pointer-events: none;
     }
 
     .hero-inner { position: relative; max-width: 720px; margin: 0 auto; z-index: 2; }
 
     .hero h1 {
-      font-size: clamp(1.8rem, 4.5vw, 2.8rem);
-      font-weight: 900; letter-spacing: -0.04em;
-      line-height: 1.15; color: #fff;
+      font-family: var(--font-heading);
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 800; letter-spacing: -0.02em;
+      line-height: 1.1; color: #fff;
       margin-bottom: 0.8rem;
       text-shadow: 0 4px 16px rgba(0,0,0,0.8);
     }
@@ -282,10 +288,10 @@
 
     .hero-search-row {
       display: flex; gap: 0;
-      background: rgba(0,0,0,0.4);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 14px;
       overflow: hidden;
       transition: border-color 0.25s, box-shadow 0.25s;
@@ -587,6 +593,7 @@
     }
 
     .stat-value {
+      font-family: var(--font-heading);
       font-size: 2rem;
       font-weight: 900;
       letter-spacing: -0.04em;
@@ -1664,7 +1671,7 @@
 
   <!-- ═══════════════ HERO + SEARCH ════════ -->
   <header class="hero" id="dashboard">
-    <div class="hero-bg"></div>
+    <canvas id="hero-canvas"></canvas>
     <div class="hero-overlay"></div>
     <div class="hero-inner">
       <h1>Threat Intelligence<br><span class="accent">From the land of himalayas.</span></h1>
@@ -2717,6 +2724,65 @@
         return String.fromCodePoint(...[...code].map(c => 0x1F1E6 + c.charCodeAt(0) - 65));
       } catch (e) { return '🌐'; }
     }
+
+    /* ── Canvas Data Peaks Animation ── */
+    function initDataPeaks() {
+      const canvas = document.getElementById('hero-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w = canvas.width = window.innerWidth;
+      let h = canvas.height = canvas.parentElement.offsetHeight;
+      window.addEventListener('resize', () => {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = canvas.parentElement.offsetHeight;
+      });
+
+      const points = [];
+      const numPoints = 80;
+      for (let i = 0; i < numPoints; i++) {
+        points.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          size: Math.random() * 2 + 1
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        for (let i = 0; i < numPoints; i++) {
+          const p = points[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0 || p.x > w) p.vx *= -1;
+          if (p.y < 0 || p.y > h) p.vy *= -1;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(56, 189, 248, 0.6)';
+          ctx.fill();
+
+          for (let j = i + 1; j < numPoints; j++) {
+            const p2 = points[j];
+            const dx = p.x - p2.x;
+            const dy = p.y - p2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 120) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = `rgba(56, 189, 248, ${0.8 - (dist / 150)})`;
+              ctx.lineWidth = 1;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+    initDataPeaks();
 
     boot();
   </script>
