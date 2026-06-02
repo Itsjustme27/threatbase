@@ -246,7 +246,7 @@
     .hero-overlay {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(5,8,16,0.95) 100%);
+      background: linear-gradient(180deg, rgba(8, 17, 33, 0.1) 0%, rgba(8, 17, 33, 0.75) 100%);
       z-index: 1;
     }
 
@@ -1855,9 +1855,8 @@
     async function boot() {
       try {
         // Check dark mode preference
-        const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark' || (!savedTheme && sysDark)) {
+        if (savedTheme === 'dark') {
           document.documentElement.classList.add('dark');
           document.getElementById('theme-icon')?.setAttribute('data-lucide', 'sun');
         }

@@ -3,7 +3,7 @@ name: HimalayaFeed — Update Threat Intelligence Feed
 on:
   # ── Automatic: every day at 00:00 UTC ─────────────────────────────────────
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 * * * *'
 
   # ── Re-enable schedule whenever code is pushed to main ────────────────────
   push:
@@ -71,14 +71,15 @@ jobs:
           if git diff --staged --quiet; then
             echo "✓ No changes detected — feed is already up-to-date. Skipping commit."
           else
-            # Count non-comment IP lines for a meaningful commit message
+            # Count non-comment IP and domain lines for a meaningful commit message
             IP_COUNT=$(grep -cE '^[0-9]' malicious_ips.txt 2>/dev/null || echo "0")
+            DOMAIN_COUNT=$(grep -cvE '^$|^#' malicious_domains.txt 2>/dev/null || echo "0")
             TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
-            git commit -m "chore: update threat feed — ${TIMESTAMP} — ${IP_COUNT} IPs"
+            git commit -m "Update: ${TIMESTAMP} — ${IP_COUNT} IPs and ${DOMAIN_COUNT} domains added"
 
             git pull --rebase --quiet origin "${GITHUB_REF_NAME:-main}" || true
             git push origin "${GITHUB_REF_NAME:-main}"
-            echo "✓ Feed pushed successfully (${IP_COUNT} IPs)."
+            echo "✓ Feed pushed successfully (${IP_COUNT} IPs, ${DOMAIN_COUNT} Domains)."
           fi
 
       # ── 6. Create Daily Archive Release ───────────────────────────────────────
