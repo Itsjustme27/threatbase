@@ -6,7 +6,25 @@
   },
   {
     "date": "2026-06-02",
-    "total_unique_ips": 1076467,
-    "active_feeds": 14
+    "total_unique_ips": 708069,
+    "total_unique_domains": 131162,
+    "total_unique_hashes": 695,
+    "total_unique_urls": 28779,
+    "active_feeds": 13,
+    "category_counts": {
+      "C2": 7607,
+      "Mixed": 670895,
+      "Malware": 8842,
+      "Spam": 182118,
+      "Brute-Force": 26240,
+      "Compromised": 531
+    },
+    "top_sources": {
+      "firehol_level1": 547683,
+      "spamhaus_drop": 182118,
+      "ipsum": 115309,
+      "firehol_level3": 32503,
+      "firehol_level2": 29814
+    }
   }
 ]

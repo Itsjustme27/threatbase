@@ -16,6 +16,24 @@ env/
 .vscode/
 .idea/
 *.swp
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
 *.swo
 
 # OS
@@ -26,8 +44,14 @@ Thumbs.db
 # Uncomment below if you don't want these tracked locally:
 # malicious_ips.txt
 # malicious_ips.csv
-# threat_feed.json
+# malicious_domains.txt
+# malicious_hashes.txt
+# malicious_hashes.csv
+# malicious_urls.txt
 # stats.json
-stix2_feed.json  
- 
+# history.json
+# ip_prefixes.json
+# top_100.json
+# top_100_hashes.json
+# stix2_feed.json
 ip2asn-v4.tsv.gz

@@ -48,9 +48,9 @@ FEEDS: Dict[str, str] = {
     "binary_defense": "https://binarydefense.com/banlist.txt",
     "greensnow": "https://blocklist.greensnow.co/greensnow.txt",
     "spamhaus_drop": "https://www.spamhaus.org/drop/drop.txt",
-    "charles_haley_malware_ips": "https://raw.githubusercontent.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist/master/ips/ips0.list",
+    "dshield_blocklist": "https://feeds.dshield.org/block.txt",
     "criticalpath_security": "https://raw.githubusercontent.com/CriticalPathSecurity/Public-Intelligence-Feeds/master/compromised-ips.txt",
-    "alienvault_reputation": "http://reputation.alienvault.com/reputation.data",
+    "alienvault_reputation": "https://reputation.alienvault.com/reputation.data",
 }
 
 FEED_CATEGORIES: Dict[str, str] = {
@@ -67,7 +67,7 @@ FEED_CATEGORIES: Dict[str, str] = {
     "binary_defense": "Mixed",
     "greensnow": "Brute-Force",
     "spamhaus_drop": "Spam",
-    "charles_haley_malware_ips": "Malware",
+    "dshield_blocklist": "Malware",
     "criticalpath_security": "Compromised",
     "alienvault_reputation": "Mixed",
     "abuseipdb": "Malicious",
@@ -77,6 +77,23 @@ DOMAIN_FEEDS: Dict[str, str] = {
     "openphish": "https://openphish.com/feed.txt",
     "urlhaus": "https://urlhaus.abuse.ch/downloads/text_online/",
     "romainmarcoux": "https://raw.githubusercontent.com/romainmarcoux/malicious-domains/refs/heads/main/full-domains-aa.txt",
+}
+
+HASH_FEEDS: Dict[str, str] = {
+    # MalwareBazaar — free, no API key needed for recent samples
+    "malwarebazaar_recent": "https://bazaar.abuse.ch/export/txt/sha256/recent/",
+    # "malwarebazaar_full": "https://bazaar.abuse.ch/export/txt/sha256/full/",  # large ~daily
+}
+
+URL_FEEDS: Dict[str, str] = {
+    "urlhaus_online": "https://urlhaus.abuse.ch/downloads/csv_online/",
+    "urlhaus_recent": "https://urlhaus.abuse.ch/downloads/csv_recent/",
+    "openphish_urls": "https://openphish.com/feed.txt",
+}
+
+THREATFOX_FEEDS: Dict[str, str] = {
+    # ThreatFox — all IOC types in one place (IPs, URLs, domains, hashes)
+    "threatfox_recent": "https://threatfox.abuse.ch/export/json/recent/",
 }
 
 ABUSEIPDB_API_KEY: Optional[str] = os.environ.get("ABUSEIPDB_API_KEY")
@@ -107,6 +124,10 @@ _PRIVATE_PATTERN = re.compile(
     r"255\.255\.255\.255"
     r")"
 )
+
+_SHA256_PATTERN = re.compile(r'^[a-fA-F0-9]{64}$')
+_MD5_PATTERN = re.compile(r'^[a-fA-F0-9]{32}$')
+_URL_PATTERN = re.compile(r'^https?://.+')
 
 # ─────────────────────────────────────────────────────────────────────────────
 # GeoIP Engine
@@ -253,19 +274,132 @@ def fetch_domain_feed(name: str, url: str) -> Set[str]:
                 time.sleep(RETRY_DELAY)
     return set()
 
-def build_stats(ip_map, ip_sources, failed, ts, domains):
+def fetch_hash_feed(name: str, url: str) -> Set[str]:
+    """Fetch SHA256 hashes from feeds."""
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            r = requests.get(url, timeout=REQUEST_TIMEOUT, stream=True,
+                           headers={"User-Agent": "HimalayaFeed-Aggregator/3.0"})
+            r.raise_for_status()
+            if r.encoding is None:
+                r.encoding = 'utf-8'
+            hashes = set()
+            for line in r.iter_lines(decode_unicode=True):
+                if not line: continue
+                line = line.strip()
+                if not line or line.startswith(('#', '//', '"')): continue
+                token = line.split()[0].split(',')[0].strip('"\';\r\n')
+                if _SHA256_PATTERN.match(token):
+                    hashes.add(token.lower())
+            return hashes
+        except Exception as e:
+            if attempt == MAX_RETRIES:
+                log.error(f"Hash feed {name} failed: {e}")
+            else:
+                time.sleep(RETRY_DELAY)
+    return set()
+
+def fetch_url_feed(name: str, url: str) -> Set[str]:
+    """Fetch malicious URLs from feeds."""
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            r = requests.get(url, timeout=REQUEST_TIMEOUT, stream=True,
+                           headers={"User-Agent": "HimalayaFeed-Aggregator/3.0"})
+            r.raise_for_status()
+            if r.encoding is None:
+                r.encoding = 'utf-8'
+            urls = set()
+            for line in r.iter_lines(decode_unicode=True):
+                if not line: continue
+                line = line.strip()
+                if not line or line.startswith(('#', '//')): continue
+                # URLhaus CSV: extract URL from quoted fields
+                if line.startswith('"'):
+                    parts = line.split('","')
+                    if len(parts) > 2:
+                        candidate = parts[2].strip('"')
+                        if _URL_PATTERN.match(candidate):
+                            urls.add(candidate)
+                elif _URL_PATTERN.match(line):
+                    urls.add(line)
+            return urls
+        except Exception as e:
+            if attempt == MAX_RETRIES:
+                log.error(f"URL feed {name} failed: {e}")
+            else:
+                time.sleep(RETRY_DELAY)
+    return set()
+
+def fetch_threatfox(name: str, url: str) -> dict:
+    """
+    Fetch from ThreatFox — returns dict with keys: ips, domains, hashes, urls.
+    ThreatFox JSON gives ioc_type field — split on that.
+    """
+    result = {"ips": set(), "domains": set(), "hashes": set(), "urls": set()}
+    try:
+        r = requests.get(url, timeout=60,
+                        headers={"User-Agent": "HimalayaFeed-Aggregator/3.0"})
+        r.raise_for_status()
+        data = r.json()
+        entries = data.get("data", [])
+        if isinstance(entries, dict):
+            entries = list(entries.values())
+        if isinstance(entries, list):
+            # Could be list of lists or list of dicts
+            flat = []
+            for item in entries:
+                if isinstance(item, list):
+                    flat.extend(item)
+                elif isinstance(item, dict):
+                    flat.append(item)
+            entries = flat
+        for entry in entries:
+            if not isinstance(entry, dict): continue
+            ioc = entry.get("ioc_value", "").strip()
+            ioc_type = entry.get("ioc_type", "").lower()
+            if not ioc: continue
+            if "ip" in ioc_type:
+                ip_part = ioc.split(":")[0]
+                if is_public_ipv4(ip_part):
+                    result["ips"].add(ip_part)
+            elif "domain" in ioc_type:
+                d = extract_domain(ioc)
+                if d: result["domains"].add(d)
+            elif "sha256" in ioc_type and _SHA256_PATTERN.match(ioc):
+                result["hashes"].add(ioc.lower())
+            elif "url" in ioc_type and _URL_PATTERN.match(ioc):
+                result["urls"].add(ioc)
+        log.info(f"ThreatFox {name}: {len(result['ips'])} IPs, {len(result['domains'])} domains, {len(result['hashes'])} hashes, {len(result['urls'])} URLs")
+    except Exception as e:
+        log.error(f"ThreatFox {name} failed: {e}")
+    return result
+
+def build_stats(ip_map, ip_sources, failed, ts, domains, hashes=None, urls=None):
+    hashes = hashes or set()
+    urls = urls or set()
     ips_per_source = {src: sum(1 for src_list in ip_map.values() if src in src_list) for src in ip_sources}
     multi_source = sum(1 for src_list in ip_map.values() if len(src_list) > 1)
-    
+
+    # Per-category breakdown
+    category_counts = {}
+    for src_list in ip_map.values():
+        cats = set(FEED_CATEGORIES.get(s, "Mixed") for s in src_list)
+        for cat in cats:
+            category_counts[cat] = category_counts.get(cat, 0) + 1
+
     return {
         "last_updated": ts,
         "total_unique_ips": len(ip_map),
         "total_unique_domains": len(domains),
+        "total_unique_hashes": len(hashes),
+        "total_unique_urls": len(urls),
+        "total_ioc_count": len(ip_map) + len(domains) + len(hashes) + len(urls),
         "total_feeds_processed": len(ip_sources),
         "total_feeds_failed": len(failed),
         "multi_source_ips": multi_source,
         "failed_feeds": failed,
         "ips_per_source": ips_per_source,
+        "category_counts": category_counts,
     }
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -279,16 +413,16 @@ def write_csv(sorted_ips: List[str], ip_map: Dict[str, List[str]], geoip: GeoIPE
     
     with open("malicious_ips.csv", "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["ip", "sources", "source_count", "reputation", "categories", "country", "asn"])
+        writer.writerow(["ip", "sources", "source_count", "reputation", "categories", "country", "asn", "isp"])
         
         for ip in sorted_ips:
-            sources = ip_map[ip]
+            sources = sorted(ip_map[ip]) if isinstance(ip_map[ip], set) else ip_map[ip]
             source_count = len(sources)
             reputation = min(100, source_count * 20)
-            categories = list(set([FEED_CATEGORIES.get(s, "Mixed") for s in sources]))
+            categories = sorted(set(FEED_CATEGORIES.get(s, "Mixed") for s in sources))
             country, asn, isp = geoip.lookup(ip)
             
-            row = [ip, "|".join(sources), source_count, reputation, "|".join(categories), country, asn]
+            row = [ip, "|".join(sources), source_count, reputation, "|".join(categories), country, asn, isp]
             writer.writerow(row)
             
             heap_key = (reputation, source_count, ip)
@@ -299,7 +433,8 @@ def write_csv(sorted_ips: List[str], ip_map: Dict[str, List[str]], geoip: GeoIPE
                 "reputation": reputation,
                 "categories": row[4],
                 "country": country,
-                "asn": asn
+                "asn": asn,
+                "isp": isp
             }
             if len(top_100) < 100:
                 heapq.heappush(top_100, (heap_key, row_dict))
@@ -314,8 +449,24 @@ def write_csv(sorted_ips: List[str], ip_map: Dict[str, List[str]], geoip: GeoIPE
         
     log.info("Wrote malicious_ips.csv and top_100.json")
 
-def write_stix(sorted_ips: List[str], ip_map: Dict[str, List[str]]):
-    # Only export critical confidence (reputation >= 80) to keep file size well under 100MB limit
+# STIX namespace for deterministic UUIDs — same IOC always gets the same UUID
+_STIX_NS = uuid.UUID("a06e3c8f-7b2d-4f5a-9c1e-0d8f6b3a2e7c")
+
+def write_stix(sorted_ips: List[str], ip_map: Dict[str, List[str]],
+               domains: set = None, hashes: set = None, urls: set = None):
+    """
+    Export STIX 2.1 bundle.
+    - IPs: only reputation >= 80 (i.e. source_count >= 4). This threshold is
+      chosen because reputation = min(100, source_count * 20), so >= 80 means
+      the IP was independently confirmed by 4+ feeds.
+    - Domains/Hashes/URLs: all included (already curated by source feeds).
+    - Uses uuid5 for deterministic indicator IDs so downstream consumers
+      can deduplicate across hourly runs.
+    """
+    domains = domains or set()
+    hashes = hashes or set()
+    urls = urls or set()
+
     high_conf = [ip for ip in sorted_ips if min(100, len(ip_map[ip]) * 20) >= 80]
     
     objects = []
@@ -325,7 +476,7 @@ def write_stix(sorted_ips: List[str], ip_map: Dict[str, List[str]]):
         objects.append({
             "type": "indicator",
             "spec_version": "2.1",
-            "id": f"indicator--{uuid.uuid4()}",
+            "id": f"indicator--{uuid.uuid5(_STIX_NS, f'ipv4:{ip}')}",
             "created": ts,
             "modified": ts,
             "name": f"Malicious IP {ip}",
@@ -333,32 +484,125 @@ def write_stix(sorted_ips: List[str], ip_map: Dict[str, List[str]]):
             "pattern_type": "stix",
             "valid_from": ts
         })
-        
+
+    for domain in sorted(domains)[:5000]:  # cap to keep file size reasonable
+        objects.append({
+            "type": "indicator",
+            "spec_version": "2.1",
+            "id": f"indicator--{uuid.uuid5(_STIX_NS, f'domain:{domain}')}",
+            "created": ts,
+            "modified": ts,
+            "name": f"Malicious Domain {domain}",
+            "pattern": f"[domain-name:value = '{domain}']",
+            "pattern_type": "stix",
+            "valid_from": ts
+        })
+
+    for h in sorted(hashes)[:5000]:
+        objects.append({
+            "type": "indicator",
+            "spec_version": "2.1",
+            "id": f"indicator--{uuid.uuid5(_STIX_NS, f'sha256:{h}')}",
+            "created": ts,
+            "modified": ts,
+            "name": f"Malicious File {h[:16]}...",
+            "pattern": f"[file:hashes.'SHA-256' = '{h}']",
+            "pattern_type": "stix",
+            "valid_from": ts
+        })
+
+    for u in sorted(urls)[:2000]:
+        safe_url = u.replace("'", "\\'")
+        objects.append({
+            "type": "indicator",
+            "spec_version": "2.1",
+            "id": f"indicator--{uuid.uuid5(_STIX_NS, f'url:{u}')}",
+            "created": ts,
+            "modified": ts,
+            "name": f"Malicious URL {u[:60]}...",
+            "pattern": f"[url:value = '{safe_url}']",
+            "pattern_type": "stix",
+            "valid_from": ts
+        })
+
     bundle = {
         "type": "bundle",
-        "id": f"bundle--{uuid.uuid4()}",
+        "id": f"bundle--{uuid.uuid5(_STIX_NS, f'bundle:{ts[:10]}')}",
         "objects": objects
     }
     
     with open("stix2_feed.json", "w") as f:
         json.dump(bundle, f)
-    log.info(f"Wrote stix2_feed.json with {len(high_conf)} indicators")
+    total = len(objects)
+    log.info(f"Wrote stix2_feed.json with {total} indicators ({len(high_conf)} IPs, {min(len(domains),5000)} domains, {min(len(hashes),5000)} hashes, {min(len(urls),2000)} URLs)")
 
-def write_bloom(sorted_ips: List[str]):
-    # Simple hash-based bloom filter substitute for frontend
-    # Since we use JS, we just hash the IPs and store in a bit array encoded as hex
-    # For a few hundred thousand IPs, a flat JSON array of prefixes is very small
-    # Actually, the simplest high-performance frontend filter is to build a compressed trie or just a prefix dict.
-    # Let's write the first two octets of all IPs as keys.
+def write_ip_prefixes(sorted_ips: List[str]):
+    """Write 3-octet IP prefix map for fast client-side pre-filtering.
+    
+    Replaces the old bloom.json which only stored 2-octet prefixes (X.Y)
+    and was too broad to meaningfully reduce false positives.
+    The 3-octet map (X.Y.Z -> count) allows the frontend to skip the
+    full CSV download when the queried IP's /24 has zero known threats.
+    """
     prefixes = {}
     for ip in sorted_ips:
         parts = ip.split('.')
-        prefix = f"{parts[0]}.{parts[1]}"
-        prefixes[prefix] = 1
+        prefix = f"{parts[0]}.{parts[1]}.{parts[2]}"
+        prefixes[prefix] = prefixes.get(prefix, 0) + 1
         
-    with open("bloom.json", "w") as f:
-        json.dump(list(prefixes.keys()), f)
-    log.info("Wrote bloom.json filter")
+    with open("ip_prefixes.json", "w") as f:
+        json.dump(prefixes, f)
+    log.info(f"Wrote ip_prefixes.json with {len(prefixes)} /24 prefixes")
+
+def write_hashes(hash_map: Dict[str, Set[str]]) -> None:
+    """Write hash output files: malicious_hashes.txt, malicious_hashes.csv, top_100_hashes.json."""
+    all_hashes = set()
+    hash_sources = {}  # hash -> set of source names
+    for src, hashes in hash_map.items():
+        for h in hashes:
+            all_hashes.add(h)
+            if h not in hash_sources: hash_sources[h] = set()
+            hash_sources[h].add(src)
+    
+    sorted_hashes = sorted(all_hashes)
+    
+    with open("malicious_hashes.txt", "w", encoding="utf-8") as f:
+        f.write("\n".join(sorted_hashes) + "\n")
+    
+    # CSV with source tracking
+    top_100 = []
+    with open("malicious_hashes.csv", "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["hash", "type", "sources", "source_count"])
+        for h in sorted_hashes:
+            sources = sorted(hash_sources.get(h, set()))
+            source_count = len(sources)
+            writer.writerow([h, "SHA-256", "|".join(sources), source_count])
+            entry = {"hash": h, "type": "SHA-256", "sources": "|".join(sources), "source_count": source_count}
+            if len(top_100) < 100:
+                heapq.heappush(top_100, (source_count, h, entry))
+            else:
+                heapq.heappushpop(top_100, (source_count, h, entry))
+    
+    top_100.sort(key=lambda x: x[0], reverse=True)
+    with open("top_100_hashes.json", "w", encoding="utf-8") as f:
+        json.dump([item[2] for item in top_100], f, indent=2)
+    
+    log.info(f"Wrote malicious_hashes.txt ({len(all_hashes)} hashes), malicious_hashes.csv, top_100_hashes.json")
+    return all_hashes
+
+def write_urls(url_map: Dict[str, Set[str]]) -> None:
+    """Write malicious_urls.txt."""
+    all_urls = set()
+    for src, urls in url_map.items():
+        all_urls.update(urls)
+    
+    sorted_urls = sorted(all_urls)
+    with open("malicious_urls.txt", "w", encoding="utf-8") as f:
+        f.write("\n".join(sorted_urls) + "\n")
+    
+    log.info(f"Wrote malicious_urls.txt ({len(all_urls)} URLs)")
+    return all_urls
 
 def write_history(stats: dict) -> None:
     history_file = "history.json"
@@ -371,11 +615,20 @@ def write_history(stats: dict) -> None:
             log.error(f"Failed to load history.json: {e}")
             
     current_date = stats["last_updated"].split("T")[0]
+
+    # Per-source top 5 for compact history
+    ips_per_source = stats.get("ips_per_source", {})
+    top_sources = dict(sorted(ips_per_source.items(), key=lambda x: x[1], reverse=True)[:5])
     
     entry = {
         "date": current_date,
         "total_unique_ips": stats["total_unique_ips"],
-        "active_feeds": stats["total_feeds_processed"]
+        "total_unique_domains": stats.get("total_unique_domains", 0),
+        "total_unique_hashes": stats.get("total_unique_hashes", 0),
+        "total_unique_urls": stats.get("total_unique_urls", 0),
+        "active_feeds": stats["total_feeds_processed"],
+        "category_counts": stats.get("category_counts", {}),
+        "top_sources": top_sources,
     }
     
     # Deduplicate by date, keeping the latest run for each day
@@ -396,7 +649,7 @@ def write_history(stats: dict) -> None:
 # ─────────────────────────────────────────────────────────────────────────────
 def main():
     log.info("═" * 55)
-    log.info("  HimalayaFeed v2 — Advanced Threat Aggregator")
+    log.info("  HimalayaFeed v3 — Advanced Threat Aggregator")
     log.info("═" * 55)
 
     geoip = GeoIPEngine()
@@ -417,12 +670,12 @@ def main():
             else:
                 failed.append(name)
 
-    # ── Merge IPs
+    # ── Merge IPs (use sets to prevent duplicate source names from CIDR+direct overlap)
     ip_map = {}
     for src, ips in ip_sources.items():
         for ip in ips:
-            if ip not in ip_map: ip_map[ip] = []
-            ip_map[ip].append(src)
+            if ip not in ip_map: ip_map[ip] = set()
+            ip_map[ip].add(src)
             
     sorted_ips = sorted(ip_map.keys(), key=numerical_ip_key)
 
@@ -432,8 +685,59 @@ def main():
         domains = fetch_domain_feed(name, url)
         domain_map.update(domains)
 
+    # ── Fetch Hashes
+    hash_sources = {}
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = {executor.submit(fetch_hash_feed, name, url): name for name, url in HASH_FEEDS.items()}
+        for future in as_completed(futures):
+            name = futures[future]
+            hashes = future.result()
+            if hashes:
+                hash_sources[name] = hashes
+                log.info(f"Hash feed {name}: {len(hashes)} hashes")
+            else:
+                failed.append(name)
+
+    # ── Fetch URLs
+    url_sources = {}
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = {executor.submit(fetch_url_feed, name, url): name for name, url in URL_FEEDS.items()}
+        for future in as_completed(futures):
+            name = futures[future]
+            fetched_urls = future.result()
+            if fetched_urls:
+                url_sources[name] = fetched_urls
+                log.info(f"URL feed {name}: {len(fetched_urls)} URLs")
+            else:
+                failed.append(name)
+
+    # ── Fetch ThreatFox (multi-IOC: IPs + domains + hashes + URLs)
+    for name, url in THREATFOX_FEEDS.items():
+        tf = fetch_threatfox(name, url)
+        # Merge ThreatFox IPs into ip_sources
+        if tf["ips"]:
+            ip_sources[name] = tf["ips"]
+            for ip in tf["ips"]:
+                if ip not in ip_map: ip_map[ip] = set()
+                ip_map[ip].add(name)
+        # Merge ThreatFox domains
+        domain_map.update(tf["domains"])
+        # Merge ThreatFox hashes
+        if tf["hashes"]:
+            hash_sources[name] = tf["hashes"]
+        # Merge ThreatFox URLs
+        if tf["urls"]:
+            url_sources[name] = tf["urls"]
+
+    # Re-sort IPs after ThreatFox merge
+    sorted_ips = sorted(ip_map.keys(), key=numerical_ip_key)
+
+    # ── Write hash and URL outputs
+    all_hashes = write_hashes(hash_sources)
+    all_urls = write_urls(url_sources)
+
     # ── Outputs
-    stats = build_stats(ip_map, ip_sources, failed, ts, domain_map)
+    stats = build_stats(ip_map, ip_sources, failed, ts, domain_map, all_hashes, all_urls)
     with open("stats.json", "w") as f: json.dump(stats, f, indent=2)
     
     with open("malicious_ips.txt", "w") as f:
@@ -443,11 +747,11 @@ def main():
         f.write("\n".join(sorted(list(domain_map))) + "\n")
         
     write_csv(sorted_ips, ip_map, geoip)
-    write_stix(sorted_ips, ip_map)
-    write_bloom(sorted_ips)
+    write_stix(sorted_ips, ip_map, domain_map, all_hashes, all_urls)
+    write_ip_prefixes(sorted_ips)
     write_history(stats)
     
-    log.info("Done.")
+    log.info(f"Done. Total IOC: {stats['total_ioc_count']} ({len(ip_map)} IPs, {len(domain_map)} domains, {len(all_hashes)} hashes, {len(all_urls)} URLs)")
 
 if __name__ == "__main__":
     main()

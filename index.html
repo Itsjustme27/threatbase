@@ -69,6 +69,7 @@
       --green-light: rgba(22, 163, 74, 0.15);
       --amber-light: rgba(217, 119, 6, 0.15);
       --blue-light: rgba(0, 56, 147, 0.15);
+      --nav-bg: rgba(10, 15, 29, 0.92);
     }
 
     *,
@@ -114,7 +115,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(255, 255, 255, 0.92);
+      background: var(--nav-bg, rgba(255, 255, 255, 0.92));
       backdrop-filter: blur(20px) saturate(180%);
       border-bottom: 1px solid var(--ash);
       height: 64px;
@@ -1443,6 +1444,153 @@
         justify-content: center;
       }
     }
+
+    @media (max-width: 480px) {
+      .nav-status {
+        display: none;
+      }
+      .metrics {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.8rem 1rem;
+      }
+    }
+
+    /* ── IOC Tabs ──────────────────────────────────────── */
+    .ioc-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .ioc-tab {
+      padding: 0.55rem 1.2rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border: 1px solid var(--ash);
+      background: var(--white);
+      color: var(--iron);
+      cursor: pointer;
+      transition: all 0.18s;
+      font-family: var(--font);
+    }
+
+    .ioc-tab:hover {
+      border-color: var(--silver);
+      color: var(--ink);
+    }
+
+    .ioc-tab.active {
+      background: var(--red);
+      color: white;
+      border-color: var(--red);
+    }
+
+    .ioc-content {
+      display: none;
+    }
+
+    .ioc-content.active {
+      display: block;
+      animation: reportSlide 0.3s ease;
+    }
+
+    /* ── World Map ─────────────────────────────────────── */
+    .map-container {
+      background: var(--white);
+      border: 1px solid var(--ash);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+    }
+
+    .map-container svg {
+      width: 100%;
+      height: auto;
+    }
+
+    .map-container svg path {
+      fill: var(--smoke);
+      stroke: var(--ash);
+      stroke-width: 0.5;
+      transition: fill 0.2s, opacity 0.2s;
+      cursor: pointer;
+    }
+
+    .map-container svg path:hover {
+      opacity: 0.8;
+      stroke: var(--ink);
+      stroke-width: 1;
+    }
+
+    .map-legend {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      font-size: 0.75rem;
+      color: var(--slate);
+      justify-content: center;
+    }
+
+    .map-legend-bar {
+      width: 200px;
+      height: 8px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #22c55e, #eab308, #f97316, #dc2626);
+    }
+
+    .map-tooltip {
+      position: fixed;
+      background: var(--ink);
+      color: var(--white);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      pointer-events: none;
+      z-index: 200;
+      opacity: 0;
+      transition: opacity 0.15s;
+      white-space: nowrap;
+    }
+
+    .map-tooltip.show {
+      opacity: 1;
+    }
+
+    /* ── Hamburger Animation ───────────────────────────── */
+    .hamburger-icon {
+      width: 20px;
+      height: 14px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hamburger-icon span {
+      display: block;
+      height: 2px;
+      background: var(--iron);
+      border-radius: 2px;
+      transition: all 0.25s ease;
+    }
+
+    .hamburger-icon.open span:nth-child(1) {
+      transform: rotate(45deg) translate(4px, 4px);
+    }
+
+    .hamburger-icon.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger-icon.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(4px, -4px);
+    }
   </style>
 </head>
 
@@ -1461,6 +1609,7 @@
         <ul class="nav-links" id="nav-links">
           <li><a href="#dashboard" class="active">Dashboard</a></li>
           <li><a href="#analytics">Analytics</a></li>
+          <li><a href="#ioc">IOC Database</a></li>
           <li><a href="#downloads">Downloads</a></li>
           <li><a href="https://github.com/kalidada18/himalayafeed" target="_blank" rel="noopener">GitHub</a></li>
         </ul>
@@ -1470,7 +1619,9 @@
         </button>
 
         <button id="mobile-menu-btn" class="theme-toggle" style="display: none;" aria-label="Toggle Mobile Menu">
-          <i data-lucide="menu"></i>
+          <div class="hamburger-icon" id="hamburger-icon">
+            <span></span><span></span><span></span>
+          </div>
         </button>
 
         <div class="nav-status">
@@ -1642,6 +1793,7 @@
     <div class="metric-item"><i data-lucide="clock"></i> Last Updated: <strong id="ms-time">Loading...</strong></div>
     <div class="metric-item"><i data-lucide="server"></i> Detection Nodes: <strong id="ms-src">-</strong></div>
     <div class="metric-item"><i data-lucide="target"></i> Malicious IPs: <strong id="ms-ips">-</strong></div>
+    <div class="metric-item"><i data-lucide="hash"></i> Total IOCs: <strong id="ms-ioc">-</strong></div>
     <div class="metric-item"><i data-lucide="refresh-cw"></i> Real-time DB sync <strong>every hour</strong></div>
   </div>
 
@@ -1682,6 +1834,30 @@
           </div>
           <div class="stat-value" id="n-failed">-</div>
           <div class="stat-sub">Sensors unreachable in the latest cycle</div>
+        </div>
+        <div class="stat-card sc-red" style="--sc-color: var(--red)">
+          <div class="stat-top">
+            <span class="stat-label">Malicious Domains</span>
+            <div class="stat-icon"><i data-lucide="globe"></i></div>
+          </div>
+          <div class="stat-value" id="n-domains">-</div>
+          <div class="stat-sub">Unique domains tracked from threat feeds</div>
+        </div>
+        <div class="stat-card sc-amber">
+          <div class="stat-top">
+            <span class="stat-label">File Hashes</span>
+            <div class="stat-icon"><i data-lucide="file-lock-2"></i></div>
+          </div>
+          <div class="stat-value" id="n-hashes">-</div>
+          <div class="stat-sub">SHA-256 malware sample hashes</div>
+        </div>
+        <div class="stat-card sc-slate">
+          <div class="stat-top">
+            <span class="stat-label">Malicious URLs</span>
+            <div class="stat-icon"><i data-lucide="link-2"></i></div>
+          </div>
+          <div class="stat-value" id="n-urls">-</div>
+          <div class="stat-sub">Active malicious URLs from threat intelligence</div>
         </div>
       </div>
     </section>
@@ -1730,6 +1906,119 @@
       <div class="chart-card">
         <div class="chart-title"><i data-lucide="activity"></i> 90-Day Volume Trend</div>
         <div class="chart-wrap"><canvas id="historyChart"></canvas></div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- World Threat Map -->
+    <section class="section" id="threat-map">
+      <div class="section-head">
+        <div class="section-label">Geolocation Intelligence</div>
+        <h2 class="section-title"><i data-lucide="map"></i> Global Threat Origins</h2>
+        <p class="section-desc">Geographic distribution of threat origins based on GeoIP data from our Top 100 critical threats.</p>
+      </div>
+
+      <div class="map-container" id="world-map-container">
+        <div class="chart-title"><i data-lucide="globe"></i> Threat Origin Heatmap</div>
+        <div id="world-map" style="text-align:center; padding: 2rem; color: var(--slate); font-size: 0.85rem;">
+          <span class="spinner" style="border-color:var(--ash); border-top-color:var(--red);"></span> Loading threat map...
+        </div>
+        <div class="map-legend">
+          <span>Low</span>
+          <div class="map-legend-bar"></div>
+          <span>Critical</span>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- IOC Database -->
+    <section class="section" id="ioc">
+      <div class="section-head">
+        <div class="section-label">All Indicators</div>
+        <h2 class="section-title"><i data-lucide="database"></i> IOC Database</h2>
+        <p class="section-desc">Complete inventory of tracked Indicators of Compromise across all categories.</p>
+      </div>
+
+      <div class="ioc-tabs">
+        <button class="ioc-tab active" data-tab="ioc-ips" onclick="switchIOCTab(this)">IPv4 Addresses</button>
+        <button class="ioc-tab" data-tab="ioc-domains" onclick="switchIOCTab(this)">Domains</button>
+        <button class="ioc-tab" data-tab="ioc-hashes" onclick="switchIOCTab(this)">File Hashes</button>
+        <button class="ioc-tab" data-tab="ioc-urls" onclick="switchIOCTab(this)">Malicious URLs</button>
+      </div>
+
+      <!-- IPs Tab -->
+      <div class="ioc-content active" id="ioc-ips">
+        <div class="dl-grid">
+          <div class="dl-card">
+            <div class="dl-top">
+              <div class="dl-icon dl-icon-red"><i data-lucide="shield-alert"></i></div>
+              <span class="dl-name">Malicious IPv4 Addresses</span>
+            </div>
+            <p class="dl-desc">Complete list of <strong id="ioc-ip-count">-</strong> unique malicious IPv4 addresses. One IP per line, sorted numerically.</p>
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+              <a href="./malicious_ips.txt" class="btn btn-outline" target="_blank" rel="noopener"><i data-lucide="file-text"></i> Plain Text</a>
+              <a href="./malicious_ips.csv" class="btn btn-outline" target="_blank" rel="noopener"><i data-lucide="file-spreadsheet"></i> CSV + GeoIP</a>
+              <a href="./stix2_feed.json" class="btn btn-outline" target="_blank" rel="noopener"><i data-lucide="shield"></i> STIX 2.1</a>
+            </div>
+          </div>
+          <div class="dl-card">
+            <div class="dl-top">
+              <div class="dl-icon dl-icon-amb"><i data-lucide="trophy"></i></div>
+              <span class="dl-name">Top 100 Critical IPs</span>
+            </div>
+            <p class="dl-desc">The most globally active malicious IPs ranked by multi-source confirmation and reputation score.</p>
+            <a href="./top_100.json" class="btn btn-outline" target="_blank" rel="noopener"><i data-lucide="file-json"></i> JSON Feed</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Domains Tab -->
+      <div class="ioc-content" id="ioc-domains">
+        <div class="dl-grid">
+          <div class="dl-card">
+            <div class="dl-top">
+              <div class="dl-icon dl-icon-red"><i data-lucide="globe"></i></div>
+              <span class="dl-name">Malicious Domains</span>
+            </div>
+            <p class="dl-desc"><strong id="ioc-domain-count">-</strong> unique malicious domains aggregated from phishing, malware, and C2 feeds.</p>
+            <a href="./malicious_domains.txt" class="btn btn-outline" target="_blank" rel="noopener"><i data-lucide="file-text"></i> Plain Text</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hashes Tab -->
+      <div class="ioc-content" id="ioc-hashes">
+        <div class="dl-grid">
+          <div class="dl-card">
+            <div class="dl-top">
+              <div class="dl-icon dl-icon-amb"><i data-lucide="file-lock-2"></i></div>
+              <span class="dl-name">Malware File Hashes</span>
+            </div>
+            <p class="dl-desc"><strong id="ioc-hash-count">-</strong> unique SHA-256 hashes from MalwareBazaar and ThreatFox.</p>
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+              <a href="./malicious_hashes.txt" class="btn btn-outline" target="_blank" rel="noopener"><i data-lucide="file-text"></i> Plain Text</a>
+              <a href="./malicious_hashes.csv" class="btn btn-outline" target="_blank" rel="noopener"><i data-lucide="file-spreadsheet"></i> CSV</a>
+              <a href="./top_100_hashes.json" class="btn btn-outline" target="_blank" rel="noopener"><i data-lucide="file-json"></i> Top 100 JSON</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- URLs Tab -->
+      <div class="ioc-content" id="ioc-urls">
+        <div class="dl-grid">
+          <div class="dl-card">
+            <div class="dl-top">
+              <div class="dl-icon dl-icon-red"><i data-lucide="link-2"></i></div>
+              <span class="dl-name">Malicious URLs</span>
+            </div>
+            <p class="dl-desc"><strong id="ioc-url-count">-</strong> unique malicious URLs from URLhaus, OpenPhish, and ThreatFox.</p>
+            <a href="./malicious_urls.txt" class="btn btn-outline" target="_blank" rel="noopener"><i data-lucide="file-text"></i> Plain Text</a>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -1874,7 +2163,17 @@
         const mobileBtn = document.getElementById('mobile-menu-btn');
         if (mobileBtn) {
           mobileBtn.addEventListener('click', () => {
-            document.getElementById('nav-links')?.classList.toggle('show');
+            const navLinks = document.getElementById('nav-links');
+            const icon = document.getElementById('hamburger-icon');
+            navLinks?.classList.toggle('show');
+            icon?.classList.toggle('open');
+          });
+          // Close mobile menu when a link is clicked
+          document.querySelectorAll('.nav-links a').forEach(a => {
+            a.addEventListener('click', () => {
+              document.getElementById('nav-links')?.classList.remove('show');
+              document.getElementById('hamburger-icon')?.classList.remove('open');
+            });
           });
         }
 
@@ -1885,11 +2184,21 @@
         document.getElementById('ms-time').textContent = relTime(d.last_updated);
         document.getElementById('ms-src').textContent = d.total_feeds_processed || 15;
         document.getElementById('ms-ips').textContent = fmt(d.total_unique_ips);
+        document.getElementById('ms-ioc').textContent = fmt(d.total_ioc_count || d.total_unique_ips);
 
         animateValue(document.getElementById('n-total'), d.total_unique_ips);
         animateValue(document.getElementById('n-multi'), d.multi_source_ips);
         animateValue(document.getElementById('n-feeds'), d.total_feeds_processed || 15);
         animateValue(document.getElementById('n-failed'), d.total_feeds_failed || 0);
+        animateValue(document.getElementById('n-domains'), d.total_unique_domains || 0);
+        animateValue(document.getElementById('n-hashes'), d.total_unique_hashes || 0);
+        animateValue(document.getElementById('n-urls'), d.total_unique_urls || 0);
+
+        // Populate IOC Database counts
+        document.getElementById('ioc-ip-count').textContent = fmt(d.total_unique_ips);
+        document.getElementById('ioc-domain-count').textContent = fmt(d.total_unique_domains || 0);
+        document.getElementById('ioc-hash-count').textContent = fmt(d.total_unique_hashes || 0);
+        document.getElementById('ioc-url-count').textContent = fmt(d.total_unique_urls || 0);
 
       } catch (err) {
         console.warn('stats.json unavailable:', err.message);
@@ -1899,6 +2208,7 @@
       // Load these independently so they don't break if stats fails
       renderHistoryChart();
       renderTop100();
+      renderWorldMap();
     }
 
     async function renderTop100() {
@@ -1916,11 +2226,13 @@
         top100.forEach(item => {
           const tr = document.createElement('tr');
           const cats = (item.categories || 'Mixed').split('|').map(c => `<span class="cat-tag">${c}</span>`).join('');
+          const ispText = item.isp && item.isp !== 'Unknown' ? `<div style="font-size:0.7rem; color:var(--slate); margin-top:1px;">${item.isp}</div>` : '';
           tr.innerHTML = `
         <td style="font-family:var(--mono); font-weight:600; color:var(--red)">${item.ip}</td>
         <td>
           <div style="font-weight:600; color:var(--midnight)">${item.country || 'Unknown'}</div>
           <div style="font-size:0.75rem; color:var(--slate)">ASN ${item.asn || '0'}</div>
+          ${ispText}
         </td>
         <td>
           <div style="font-weight:800; color:var(--red)">${item.reputation}/100</div>
@@ -2006,13 +2318,12 @@
       return domainData;
     }
 
-    async function loadBloom() {
+    async function loadPrefixes() {
       if (bloomData) return bloomData;
       try {
-        const r = await fetch(RAW + 'bloom.json?_=' + Date.now());
+        const r = await fetch(RAW + 'ip_prefixes.json?_=' + Date.now());
         if (r.ok) {
-          const arr = await r.json();
-          bloomData = new Set(arr);
+          bloomData = await r.json();
         }
       } catch (e) { }
       return bloomData;
@@ -2090,12 +2401,12 @@
       try {
         stats = await loadStats();
         if (isIP) {
-          const bloom = await loadBloom();
-          const prefix = ip.split('.').slice(0, 2).join('.');
+          const prefixes = await loadPrefixes();
+          const prefix = ip.split('.').slice(0, 3).join('.');
 
-          // Instant Bloom Filter Check (avoids downloading 90MB CSV if definitely safe)
+          // Instant prefix check (avoids downloading 90MB CSV if /24 has zero threats)
           let mightBeMalicious = true;
-          if (bloom && bloom.size > 0 && !bloom.has(prefix)) mightBeMalicious = false;
+          if (prefixes && typeof prefixes === 'object' && !(prefix in prefixes)) mightBeMalicious = false;
 
           if (mightBeMalicious) {
             const txt = await loadCSV();
@@ -2113,11 +2424,15 @@
               const lineEnd = txt.indexOf('\n', lineStart);
               const line = txt.substring(lineStart, lineEnd !== -1 ? lineEnd : undefined);
               const parts = line.split(',');
+              // CSV columns: ip, sources, source_count, reputation, categories, country, asn, isp
               if (parts.length >= 4) {
                 feedMatch = {
                   sourceCount: parseInt(parts[2]) || 1,
                   reputation: parseInt(parts[3]) || (parseInt(parts[2]) * 20) || 0,
-                  sourceList: parts[1] ? parts[1].split('|') : ['unknown']
+                  sourceList: parts[1] ? parts[1].split('|') : ['unknown'],
+                  country: parts[5] || 'Unknown',
+                  asn: parts[6] || '0',
+                  isp: parts[7] || 'Unknown'
                 };
               }
             }
@@ -2207,8 +2522,10 @@
       document.getElementById('tb-level').className = 'tb-level tb-' + threat.level;
       setTimeout(() => { document.getElementById('tb-fill').style.width = threat.pct + '%'; }, 100);
 
-      // Feed Panel
+      // Feed Panel (now includes ISP when available)
       const feedPanel = document.getElementById('feed-panel-body');
+      const ispName = feedMatch && feedMatch.isp && feedMatch.isp !== 'Unknown' ? feedMatch.isp : null;
+      const countryName = feedMatch && feedMatch.country && feedMatch.country !== 'Unknown' ? feedMatch.country : null;
       feedPanel.innerHTML = `
     <div class="rc-row">
       <span class="rc-row-label">Threat Reputation Score</span>
@@ -2222,6 +2539,14 @@
       <span class="rc-row-label">In Blocklist</span>
       <span class="rc-row-value text" style="color:${feedMatch ? 'var(--red)' : 'var(--green)'}">${feedMatch ? '✓ Yes' : '✗ No'}</span>
     </div>
+    ${countryName ? `<div class="rc-row">
+      <span class="rc-row-label">Country</span>
+      <span class="rc-row-value text">${countryName}</span>
+    </div>` : ''}
+    ${ispName ? `<div class="rc-row">
+      <span class="rc-row-label">ISP / Organization</span>
+      <span class="rc-row-value text" style="font-size:0.78rem">${ispName}</span>
+    </div>` : ''}
     <div class="rc-row">
       <span class="rc-row-label">Database Total</span>
       <span class="rc-row-value">${totalIPs ? fmt(totalIPs) : '—'}</span>
@@ -2259,6 +2584,101 @@
     document.getElementById('ip-input').addEventListener('keydown', e => {
       if (e.key === 'Enter') scanIP();
     });
+
+    /* ── IOC Tab Switching ──────────────────── */
+    function switchIOCTab(btn) {
+      document.querySelectorAll('.ioc-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.ioc-content').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      const targetId = btn.getAttribute('data-tab');
+      document.getElementById(targetId)?.classList.add('active');
+    }
+
+    /* ── World Threat Map ───────────────────── */
+    async function renderWorldMap() {
+      try {
+        const r = await fetch(RAW + 'top_100.json?_=' + Date.now());
+        if (!r.ok) return;
+        const top100 = await r.json();
+        if (!top100 || top100.length === 0) return;
+
+        // Aggregate country counts
+        const countryCounts = {};
+        top100.forEach(item => {
+          const c = (item.country || 'Unknown').toUpperCase().trim();
+          if (c && c !== 'UNKNOWN' && c.length === 2) {
+            countryCounts[c] = (countryCounts[c] || 0) + 1;
+          }
+        });
+
+        const maxCount = Math.max(...Object.values(countryCounts), 1);
+        const mapEl = document.getElementById('world-map');
+
+        // Build a simple bar chart representation of countries since inline SVG world map
+        // paths would be too large. This is a compact, data-driven visualization.
+        const sortedCountries = Object.entries(countryCounts)
+          .sort((a, b) => b[1] - a[1]);
+
+        if (sortedCountries.length === 0) {
+          mapEl.innerHTML = '<div style="padding:2rem; color:var(--slate)">No geographic data available yet.</div>';
+          return;
+        }
+
+        // Country name lookup
+        const countryNames = {
+          US:'United States',CN:'China',RU:'Russia',DE:'Germany',NL:'Netherlands',
+          GB:'United Kingdom',FR:'France',IN:'India',BR:'Brazil',KR:'South Korea',
+          JP:'Japan',UA:'Ukraine',VN:'Vietnam',SG:'Singapore',ID:'Indonesia',
+          HK:'Hong Kong',TW:'Taiwan',CA:'Canada',AU:'Australia',IT:'Italy',
+          TH:'Thailand',PL:'Poland',IR:'Iran',RO:'Romania',BG:'Bulgaria',
+          AR:'Argentina',ZA:'South Africa',TR:'Turkey',MX:'Mexico',CZ:'Czech Republic',
+          SE:'Sweden',CH:'Switzerland',ES:'Spain',NO:'Norway',FI:'Finland',
+          AT:'Austria',BE:'Belgium',DK:'Denmark',PT:'Portugal',IE:'Ireland',
+          MY:'Malaysia',PH:'Philippines',PK:'Pakistan',BD:'Bangladesh',EG:'Egypt',
+          NG:'Nigeria',KE:'Kenya',CO:'Colombia',CL:'Chile',PE:'Peru',
+          SC:'Seychelles',PA:'Panama',LT:'Lithuania',LV:'Latvia',EE:'Estonia',
+          MD:'Moldova',BY:'Belarus',KZ:'Kazakhstan',UZ:'Uzbekistan'
+        };
+
+        let html = '<div style="display:grid; gap:0.6rem; max-width:800px; margin:0 auto;">';
+        sortedCountries.forEach(([code, count]) => {
+          const pct = Math.round((count / maxCount) * 100);
+          const name = countryNames[code] || code;
+          // Color gradient: green -> yellow -> orange -> red
+          const ratio = count / maxCount;
+          let color;
+          if (ratio < 0.25) color = '#22c55e';
+          else if (ratio < 0.5) color = '#eab308';
+          else if (ratio < 0.75) color = '#f97316';
+          else color = '#dc2626';
+
+          html += `
+            <div style="display:grid; grid-template-columns:120px 1fr 50px; align-items:center; gap:0.8rem;">
+              <div style="font-size:0.8rem; font-weight:600; color:var(--ink); text-align:right;">
+                <span style="font-size:1.1rem; margin-right:4px;">${getFlagEmoji(code)}</span>${name}
+              </div>
+              <div style="background:var(--smoke); border-radius:4px; height:22px; overflow:hidden;">
+                <div style="width:${pct}%; height:100%; background:${color}; border-radius:4px; transition:width 0.8s ease;"></div>
+              </div>
+              <div style="font-size:0.78rem; font-weight:700; color:var(--midnight); font-variant-numeric:tabular-nums;">${count}</div>
+            </div>`;
+        });
+        html += '</div>';
+        mapEl.innerHTML = html;
+
+      } catch (e) {
+        console.warn('World map data unavailable', e);
+        const mapEl = document.getElementById('world-map');
+        if (mapEl) mapEl.innerHTML = '<div style="padding:2rem; color:var(--slate)">Geographic data will appear after the first feed run.</div>';
+      }
+    }
+
+    function getFlagEmoji(countryCode) {
+      try {
+        const code = countryCode.toUpperCase();
+        return String.fromCodePoint(...[...code].map(c => 0x1F1E6 + c.charCodeAt(0) - 65));
+      } catch (e) { return '🌐'; }
+    }
 
     boot();
   </script>

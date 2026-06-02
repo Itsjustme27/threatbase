@@ -1,7 +1,7 @@
 name: HimalayaFeed — Update Threat Intelligence Feed
 
 on:
-  # ── Automatic: every day at 00:00 UTC ─────────────────────────────────────
+  # ── Automatic: every hour at minute 0 ─────────────────────────────────────
   schedule:
     - cron: '0 * * * *'
 
@@ -65,7 +65,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           # Stage all generated output files (including dashboard data)
-          git add malicious_ips.txt malicious_ips.csv stats.json history.json malicious_domains.txt bloom.json top_100.json
+          git add malicious_ips.txt malicious_ips.csv stats.json history.json malicious_domains.txt ip_prefixes.json top_100.json malicious_hashes.txt malicious_hashes.csv malicious_urls.txt top_100_hashes.json stix2_feed.json
 
           # Check whether any staged file actually changed
           if git diff --staged --quiet; then
@@ -74,12 +74,14 @@ jobs:
             # Count non-comment IP and domain lines for a meaningful commit message
             IP_COUNT=$(grep -cE '^[0-9]' malicious_ips.txt 2>/dev/null || echo "0")
             DOMAIN_COUNT=$(grep -cvE '^$|^#' malicious_domains.txt 2>/dev/null || echo "0")
+            HASH_COUNT=$(wc -l < malicious_hashes.txt 2>/dev/null || echo "0")
+            URL_COUNT=$(wc -l < malicious_urls.txt 2>/dev/null || echo "0")
             TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
-            git commit -m "Update: ${TIMESTAMP} — ${IP_COUNT} IPs and ${DOMAIN_COUNT} domains added"
+            git commit -m "Update: ${TIMESTAMP} — ${IP_COUNT} IPs, ${DOMAIN_COUNT} domains, ${HASH_COUNT} hashes, ${URL_COUNT} URLs"
 
             git pull --rebase --quiet origin "${GITHUB_REF_NAME:-main}" || true
             git push origin "${GITHUB_REF_NAME:-main}"
-            echo "✓ Feed pushed successfully (${IP_COUNT} IPs, ${DOMAIN_COUNT} Domains)."
+            echo "✓ Feed pushed successfully (${IP_COUNT} IPs, ${DOMAIN_COUNT} Domains, ${HASH_COUNT} Hashes, ${URL_COUNT} URLs)."
           fi
 
       # ── 6. Create Daily Archive Release ───────────────────────────────────────
@@ -88,14 +90,14 @@ jobs:
           DATE_DASH=$(date -u +'%Y-%m-%d')
           DATE_DOT=$(date -u +'%Y.%m.%d')
           echo "ARCHIVE_DATE=${DATE_DASH}" >> $GITHUB_ENV
-          zip himalayafeed-archive-${DATE_DOT}.zip malicious_ips.txt malicious_ips.csv
+          zip himalayafeed-archive-${DATE_DOT}.zip malicious_ips.txt malicious_ips.csv malicious_domains.txt malicious_hashes.txt malicious_hashes.csv malicious_urls.txt
 
       - name: Create Daily Archive Release
         uses: ncipollo/release-action@v1
         with:
           tag: archive-${{ env.ARCHIVE_DATE }}
           name: Daily Feed Archive - ${{ env.ARCHIVE_DATE }}
-          artifacts: "malicious_ips.txt,malicious_ips.csv,malicious_domains.txt,stats.json,stix2_feed.json,himalayafeed-archive-*.zip"
+          artifacts: "malicious_ips.txt,malicious_ips.csv,malicious_domains.txt,malicious_hashes.txt,malicious_hashes.csv,malicious_urls.txt,stats.json,stix2_feed.json,top_100_hashes.json,himalayafeed-archive-*.zip"
           allowUpdates: true
           replacesArtifacts: true
           body: "Automated daily archive of the HimalayaFeed threat intelligence database."
