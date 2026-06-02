@@ -35,6 +35,7 @@ alarmline.com.br
 alineeleuterio.com.br
 allegrolokalnie.98459347385433.sbs
 allendostmen.com
+alternativas.ru
 amex-doc-collection.idmission.com
 amex-doc.short.gy
 api.baimless.com
@@ -105,6 +106,7 @@ cfs9.blog.daum.net
 cfu.twr.mybluehost.me
 chat-server.maverickpreviews.com
 checkfivem.com
+checkinetverifk.com
 chinaapper.com
 chiptune.com
 chungminhtaichinhsaigon.net
@@ -113,7 +115,6 @@ class1004.dothome.co.kr
 cliftycreek.anondns.net
 cloud55file.cc
 clubdetiroelpicarcho.com
-cn.unionlever.com
 co-emas.com
 codeload.github.com
 compuserviceonline.com.br
@@ -235,6 +236,7 @@ hnjgdl.geps.glodon.com
 hobobot.net
 horion-static.pages.dev
 host-195-103-203-106.business.telecomitalia.it
+host-95-255-114-11.business.telecomitalia.it
 hotelembuguacu.blob.core.windows.net
 hseda.com
 hzxcaq-github-io.pages.dev
@@ -330,6 +332,7 @@ pay.aqiu6.com
 pcupd.com
 petitesalope.com
 pfatrivandrum.org
+pid.fly160.com
 pinaview.com
 pittaa.mooo.com
 pjsn.hi2.ro
@@ -381,7 +384,6 @@ server.toeicswt.co.kr
 sg123.net
 shaderm.com
 shadowbot-dih.pages.dev
-shahamanatme.com
 shop.mediasova.ru
 shqdown.ggzuhao.com
 sites.google.com
@@ -639,7 +641,6 @@ theoremaoliveoil.com
 thtp2.volamngayxua.net
 tiacreation.club
 tiwanlinm.duckdns.org
-tobecation.github.io
 top8onlinegame.com
 trtmyanmar.com
 u20c.top
@@ -727,7 +728,6 @@ www.roblox.com.bn
 www.saf-oil.ru
 www.salonmarketing.ca
 www.sendspace.com
-www.sgeseducation.com
 www.shopeebig67.blogspot.com
 www.shrturls.sbs
 www.silver-hubdachwohnwagen.de
