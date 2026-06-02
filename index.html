@@ -1206,7 +1206,7 @@
 <script>
 lucide.createIcons();
 
-const RAW = 'https://raw.githubusercontent.com/kalidada18/himalayafeed/main/';
+const RAW = './';
 const fmt = n => new Intl.NumberFormat('en-US').format(n);
 
 function relTime(iso) {
@@ -1253,12 +1253,14 @@ async function boot() {
     animateValue(document.getElementById('n-feeds'),  d.total_feeds_processed || 15);
     animateValue(document.getElementById('n-failed'), d.total_feeds_failed || 0);
 
-    renderHistoryChart();
-    renderTop100();
   } catch (err) {
     console.warn('stats.json unavailable:', err.message);
     document.getElementById('ms-time').textContent = 'Pending first run';
   }
+
+  // Load these independently so they don't break if stats fails
+  renderHistoryChart();
+  renderTop100();
 }
 
 async function renderTop100() {
