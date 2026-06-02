@@ -228,73 +228,48 @@
 
     /* ── Hero + Search ─────────────────────────────────── */
     .hero {
-      background: linear-gradient(180deg, var(--midnight) 0%, #081121 100%);
-      padding: 4rem 2rem 3.5rem;
+      background-color: #081121;
+      padding: 6rem 2rem 6rem; /* Increased padding to show more of the image */
       text-align: center;
       position: relative;
       overflow: hidden;
     }
 
-    .hero-mountains {
+    .hero-bg {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 250px;
-      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 100 L0 70 L15 45 L30 80 L45 35 L60 75 L80 20 L100 65 L100 100 Z" fill="rgba(255,255,255,0.04)"/><path d="M0 100 L0 85 L20 60 L40 90 L65 50 L85 80 L100 55 L100 100 Z" fill="rgba(255,255,255,0.06)"/></svg>') no-repeat bottom center;
-      background-size: 100% 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -300px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 1000px;
-      height: 1000px;
-      background: radial-gradient(circle, rgba(220, 20, 60, 0.15) 0%, transparent 60%);
-      pointer-events: none;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('./img/mountain.png') no-repeat center center;
+      background-size: cover;
       z-index: 0;
     }
 
-    .hero::after {
-      content: '';
+    .hero-overlay {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.4), transparent);
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(5,8,16,0.95) 100%);
+      z-index: 1;
     }
 
-    .hero-inner {
-      position: relative;
-      max-width: 720px;
-      margin: 0 auto;
-    }
+    .hero-inner { position: relative; max-width: 720px; margin: 0 auto; z-index: 2; }
 
     .hero h1 {
       font-size: clamp(1.8rem, 4.5vw, 2.8rem);
-      font-weight: 900;
-      letter-spacing: -0.04em;
-      line-height: 1.15;
-      color: #fff;
+      font-weight: 900; letter-spacing: -0.04em;
+      line-height: 1.15; color: #fff;
       margin-bottom: 0.8rem;
+      text-shadow: 0 4px 16px rgba(0,0,0,0.8);
     }
 
-    .hero h1 .accent {
-      color: var(--red);
+    .hero h1 .accent { 
+      color: var(--red); 
+      text-shadow: 0 4px 16px rgba(0,0,0,0.6);
     }
 
     .hero-sub {
-      max-width: 520px;
-      margin: 0 auto 2rem;
-      font-size: 0.92rem;
-      color: rgba(255, 255, 255, 0.5);
+      max-width: 520px; margin: 0 auto 2rem;
+      font-size: 0.95rem; color: rgba(255,255,255,0.85);
       line-height: 1.7;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.8);
     }
 
     /* Search Bar */
@@ -305,10 +280,11 @@
     }
 
     .hero-search-row {
-      display: flex;
-      gap: 0;
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex; gap: 0;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
       border-radius: 14px;
       overflow: hidden;
       transition: border-color 0.25s, box-shadow 0.25s;
@@ -1556,7 +1532,8 @@
 
   <!-- ═══════════════ HERO + SEARCH ════════ -->
   <header class="hero" id="dashboard">
-    <div class="hero-mountains"></div>
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
     <div class="hero-inner">
       <h1>Threat Intelligence<br><span class="accent">From the land of himalayas.</span></h1>
 
