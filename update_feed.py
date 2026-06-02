@@ -51,6 +51,7 @@ FEEDS: Dict[str, str] = {
     "dshield_blocklist": "https://feeds.dshield.org/block.txt",
     "criticalpath_security": "https://raw.githubusercontent.com/CriticalPathSecurity/Public-Intelligence-Feeds/master/compromised-ips.txt",
     "alienvault_reputation": "https://reputation.alienvault.com/reputation.data",
+    "bruteforceblocker": "https://danger.rulez.sk/projects/bruteforceblocker/blist.php",
 }
 
 FEED_CATEGORIES: Dict[str, str] = {
@@ -71,6 +72,7 @@ FEED_CATEGORIES: Dict[str, str] = {
     "criticalpath_security": "Compromised",
     "alienvault_reputation": "Mixed",
     "abuseipdb": "Malicious",
+    "bruteforceblocker": "Brute-Force",
 }
 
 DOMAIN_FEEDS: Dict[str, str] = {
@@ -657,6 +659,61 @@ def main():
 
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     
+    # ── Load Historical Data (Stateful merge) ──
+    historical_ip_map = {}
+    if os.path.exists("malicious_ips.csv"):
+        try:
+            with open("malicious_ips.csv", "r", encoding="utf-8") as f:
+                reader = csv.reader(f)
+                next(reader, None)  # skip header
+                for row in reader:
+                    if len(row) >= 2:
+                        ip = row[0]
+                        sources = set(row[1].split("|"))
+                        historical_ip_map[ip] = sources
+            log.info(f"Loaded {len(historical_ip_map)} historical IPs from malicious_ips.csv")
+        except Exception as e:
+            log.error(f"Failed to load malicious_ips.csv: {e}")
+
+    historical_domain_map = set()
+    if os.path.exists("malicious_domains.txt"):
+        try:
+            with open("malicious_domains.txt", "r", encoding="utf-8") as f:
+                for line in f:
+                    d = line.strip()
+                    if d and not d.startswith("#"):
+                        historical_domain_map.add(d)
+            log.info(f"Loaded {len(historical_domain_map)} historical domains")
+        except Exception as e:
+            log.error(f"Failed to load malicious_domains.txt: {e}")
+
+    historical_hash_map = {}
+    if os.path.exists("malicious_hashes.csv"):
+        try:
+            with open("malicious_hashes.csv", "r", encoding="utf-8") as f:
+                reader = csv.reader(f)
+                next(reader, None)  # skip header
+                for row in reader:
+                    if len(row) >= 3:
+                        h = row[0]
+                        sources = set(row[2].split("|"))
+                        historical_hash_map[h] = sources
+            log.info(f"Loaded {len(historical_hash_map)} historical hashes")
+        except Exception as e:
+            log.error(f"Failed to load malicious_hashes.csv: {e}")
+
+    historical_url_map = set()
+    if os.path.exists("malicious_urls.txt"):
+        try:
+            with open("malicious_urls.txt", "r", encoding="utf-8") as f:
+                for line in f:
+                    u = line.strip()
+                    if u and not u.startswith("#"):
+                        historical_url_map.add(u)
+            log.info(f"Loaded {len(historical_url_map)} historical URLs")
+        except Exception as e:
+            log.error(f"Failed to load malicious_urls.txt: {e}")
+
     # ── Fetch IPs
     ip_sources = {}
     failed = []
@@ -671,7 +728,7 @@ def main():
                 failed.append(name)
 
     # ── Merge IPs (use sets to prevent duplicate source names from CIDR+direct overlap)
-    ip_map = {}
+    ip_map = historical_ip_map.copy()
     for src, ips in ip_sources.items():
         for ip in ips:
             if ip not in ip_map: ip_map[ip] = set()
@@ -680,13 +737,19 @@ def main():
     sorted_ips = sorted(ip_map.keys(), key=numerical_ip_key)
 
     # ── Fetch Domains
-    domain_map = set()
+    domain_map = historical_domain_map.copy()
     for name, url in DOMAIN_FEEDS.items():
         domains = fetch_domain_feed(name, url)
         domain_map.update(domains)
 
     # ── Fetch Hashes
     hash_sources = {}
+    # Load historical hashes into hash_sources
+    for h, sources in historical_hash_map.items():
+        for src in sources:
+            if src not in hash_sources: hash_sources[src] = set()
+            hash_sources[src].add(h)
+
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = {executor.submit(fetch_hash_feed, name, url): name for name, url in HASH_FEEDS.items()}
         for future in as_completed(futures):
@@ -700,6 +763,9 @@ def main():
 
     # ── Fetch URLs
     url_sources = {}
+    if historical_url_map:
+        url_sources["historical"] = historical_url_map.copy()
+        
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = {executor.submit(fetch_url_feed, name, url): name for name, url in URL_FEEDS.items()}
         for future in as_completed(futures):
