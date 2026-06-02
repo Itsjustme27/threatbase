@@ -239,7 +239,7 @@
     .hero-bg {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: url('./img/mountain.png') no-repeat center center;
+      background: url('./img/hero_mountain.png') no-repeat center center;
       background-size: cover;
       z-index: 0;
     }
@@ -1507,25 +1507,6 @@
       position: relative;
     }
 
-    .map-container svg {
-      width: 100%;
-      height: auto;
-    }
-
-    .map-container svg path {
-      fill: var(--smoke);
-      stroke: var(--ash);
-      stroke-width: 0.5;
-      transition: fill 0.2s, opacity 0.2s;
-      cursor: pointer;
-    }
-
-    .map-container svg path:hover {
-      opacity: 0.8;
-      stroke: var(--ink);
-      stroke-width: 1;
-    }
-
     .map-legend {
       display: flex;
       align-items: center;
@@ -1691,7 +1672,7 @@
       <div class="hero-search" id="lookup">
         <div class="hero-search-row">
           <input type="text" class="hero-search-input" id="ip-input"
-            placeholder="Search IP or Domain — e.g. 185.220.101.45 or evil.com" autocomplete="off" spellcheck="false">
+            placeholder="Search IP, Domain, Hash, or URL..." autocomplete="off" spellcheck="false">
           <button class="hero-search-btn" onclick="scanIP()" id="scan-btn">
             <i data-lucide="scan"></i> Scan
           </button>
@@ -2029,7 +2010,7 @@
       <div class="section-head">
         <div class="section-label">Automated Ingestion</div>
         <h2 class="section-title"><i data-lucide="download-cloud"></i> Database Access</h2>
-        <p class="section-desc">Pull our threat intelligence directly into your firewall, SIEM, or custom pipeline.</p>
+        <p class="section-desc">Pull our threat intelligence directly into your firewall, IDS/IPS, or custom defense pipeline.</p>
       </div>
 
       <div class="dl-grid">
@@ -2304,7 +2285,7 @@
     }
 
     /* ── Threat Scan + Report ──────────────────── */
-    let csvText = null, csvLoading = null, statsData = null, bloomData = null, domainData = null;
+    let csvText = null, csvLoading = null, statsData = null, bloomData = null, domainData = null, hashData = null, urlData = null;
 
     async function loadDomains() {
       if (domainData) return domainData;
@@ -2312,10 +2293,34 @@
         const r = await fetch(RAW + 'malicious_domains.txt?_=' + Date.now());
         if (r.ok) {
           const txt = await r.text();
-          domainData = new Set(txt.split('\n').map(d => d.trim()).filter(Boolean));
+          domainData = new Set(txt.split('\n').map(d => d.trim().toLowerCase()).filter(Boolean));
         }
       } catch (e) { }
       return domainData;
+    }
+
+    async function loadHashes() {
+      if (hashData) return hashData;
+      try {
+        const r = await fetch(RAW + 'malicious_hashes.txt?_=' + Date.now());
+        if (r.ok) {
+          const txt = await r.text();
+          hashData = new Set(txt.split('\n').map(d => d.trim().toLowerCase()).filter(Boolean));
+        }
+      } catch (e) { }
+      return hashData;
+    }
+
+    async function loadUrls() {
+      if (urlData) return urlData;
+      try {
+        const r = await fetch(RAW + 'malicious_urls.txt?_=' + Date.now());
+        if (r.ok) {
+          const txt = await r.text();
+          urlData = new Set(txt.split('\n').map(d => d.trim()).filter(Boolean));
+        }
+      } catch (e) { }
+      return urlData;
     }
 
     async function loadPrefixes() {
@@ -2361,14 +2366,19 @@
     async function scanIP() {
       const input = document.getElementById('ip-input');
       const btn = document.getElementById('scan-btn');
-      const ip = input.value.trim().toLowerCase();
+      
+      let rawIp = input.value.trim();
+      const isURL = /^https?:\/\/.+/.test(rawIp);
+      const isHash = /^[a-fA-F0-9]{32}(?:[a-fA-F0-9]{8})?(?:[a-fA-F0-9]{24})?$/.test(rawIp);
+      
+      const ip = (isURL && !isHash) ? rawIp : rawIp.toLowerCase();
 
       if (!ip) { input.focus(); return; }
 
       const isIP = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip);
-      const isDomain = /^(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.(?!-)[A-Za-z0-9-]{1,63}(?<!-))*\.[A-Za-z]{2,}$/.test(ip);
+      const isDomain = !isIP && !isURL && !isHash && /^(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.(?!-)[A-Za-z0-9-]{1,63}(?<!-))*\.[A-Za-z]{2,}$/.test(ip);
 
-      if (!isIP && !isDomain) {
+      if (!isIP && !isDomain && !isHash && !isURL) {
         showReport('warn', ip, null, null);
         return;
       }
@@ -2446,6 +2456,24 @@
               sourceList: ['malicious_domains.txt']
             };
           }
+        } else if (isHash) {
+          const hashes = await loadHashes();
+          if (hashes && hashes.has(ip)) {
+            feedMatch = {
+              sourceCount: 1,
+              reputation: 100,
+              sourceList: ['malicious_hashes.txt']
+            };
+          }
+        } else if (isURL) {
+          const urls = await loadUrls();
+          if (urls && urls.has(ip)) {
+            feedMatch = {
+              sourceCount: 1,
+              reputation: 100,
+              sourceList: ['malicious_urls.txt']
+            };
+          }
         }
       } catch (e) { console.error(e); }
 
@@ -2478,6 +2506,8 @@
       const lastUpdated = stats ? stats.last_updated : '—';
 
       const isIP = /^(\d{1,3}\.){3}\d{1,3}$/.test(ip);
+      const isHash = /^[a-f0-9]{32}(?:[a-f0-9]{8})?(?:[a-f0-9]{24})?$/i.test(ip);
+      const isURL = /^https?:\/\/.+/.test(ip);
 
       // External links
       if (isIP) {
@@ -2486,6 +2516,14 @@
         document.getElementById('ext-abuse').style.display = 'flex';
         document.getElementById('ext-shodan').href = 'https://www.shodan.io/host/' + ip;
         document.getElementById('ext-shodan').style.display = 'flex';
+      } else if (isHash) {
+        document.getElementById('ext-vt').href = 'https://www.virustotal.com/gui/file/' + ip;
+        document.getElementById('ext-abuse').style.display = 'none';
+        document.getElementById('ext-shodan').style.display = 'none';
+      } else if (isURL) {
+        document.getElementById('ext-vt').href = 'https://www.virustotal.com/gui/search/' + encodeURIComponent(ip);
+        document.getElementById('ext-abuse').style.display = 'none';
+        document.getElementById('ext-shodan').style.display = 'none';
       } else {
         document.getElementById('ext-vt').href = 'https://www.virustotal.com/gui/domain/' + ip;
         document.getElementById('ext-abuse').style.display = 'none';
@@ -2560,7 +2598,7 @@
       // Assessment
       const assess = document.getElementById('rc-assessment');
       if (type === 'warn') {
-        assess.innerHTML = '<strong>Error:</strong> Invalid format. Enter a valid IPv4 address or Domain (e.g. <code>185.220.101.45</code> or <code>evil.com</code>) and try again.';
+        assess.innerHTML = '<strong>Error:</strong> Invalid format. Enter a valid IPv4 address, Domain, Hash, or URL (e.g. <code>evil.com</code> or <code>185.220.101.45</code>) and try again.';
       } else {
         if (feedMatch) {
           assess.innerHTML =
@@ -2569,7 +2607,7 @@
               threat.level === 'high' ? 'This is a <strong style="color:#ea580c">high threat</strong> — highly confident malicious activity. Blocking is strongly recommended.' :
                 threat.level === 'medium' ? 'This is a <strong style="color:var(--amber)">medium threat</strong> — confirmed malicious activity. Consider blocking or monitoring.' :
                   'This is a <strong>low threat</strong> — identified with low confidence. Consider monitoring for further activity.') +
-            ` This ${isIP ? 'IP' : 'Domain'} is currently active in our blocklist and is ready for immediate ingestion into firewalls, SIEM, or IDS/IPS systems.`;
+            ` This indicator is currently active in our global blocklist and should be actively blocked in your network infrastructure.`;
         } else {
           assess.innerHTML =
             `<strong>Assessment:</strong> <code>${ip}</code> was <strong>not found</strong> in the HimalayaFeed database. ` +
@@ -2653,8 +2691,8 @@
           else color = '#dc2626';
 
           html += `
-            <div style="display:grid; grid-template-columns:120px 1fr 50px; align-items:center; gap:0.8rem;">
-              <div style="font-size:0.8rem; font-weight:600; color:var(--ink); text-align:right;">
+            <div style="display:grid; grid-template-columns:160px 1fr 50px; align-items:center; gap:0.8rem;">
+              <div style="font-size:0.8rem; font-weight:600; color:var(--ink); text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${name}">
                 <span style="font-size:1.1rem; margin-right:4px;">${getFlagEmoji(code)}</span>${name}
               </div>
               <div style="background:var(--smoke); border-radius:4px; height:22px; overflow:hidden;">
