@@ -1,13 +1,9 @@
 #!/usr/bin/env python3
 """
-HimalayaFeed — Threat Intelligence Feed Aggregator
+HimalayaFeed — Threat Intelligence Feed Aggregator (v2)
 =====================================================
-Collects malicious IPv4 addresses from free public threat-intelligence feeds,
-deduplicates them, tracks provenance, and writes four output artefacts.
-
-Runs entirely on GitHub Actions — no VPS, API keys, or paid services required.
-
-Requirements: Python 3.11+, requests, pandas
+Collects malicious IPv4 addresses and Domains, enriches them with GeoIP,
+and outputs standard CSV, JSON, and STIX 2.1 formats.
 """
 
 import ipaddress
@@ -16,6 +12,10 @@ import logging
 import os
 import re
 import time
+import uuid
+import gzip
+import bisect
+import urllib.parse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from typing import Dict, List, Optional, Set, Tuple
@@ -23,9 +23,6 @@ from typing import Dict, List, Optional, Set, Tuple
 import pandas as pd
 import requests
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Logging
-# ─────────────────────────────────────────────────────────────────────────────
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -35,531 +32,391 @@ log = logging.getLogger(__name__)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Feed definitions
-# All feeds are free, public, and require zero authentication.
 # ─────────────────────────────────────────────────────────────────────────────
 FEEDS: Dict[str, str] = {
-    # ── abuse.ch ──────────────────────────────────────────────────────────────
-    # Feodo Tracker — active C2 infrastructure for Dridex/Emotet/TrickBot/etc.
-    "feodo_tracker": (
-        "https://feodotracker.abuse.ch/downloads/ipblocklist.txt"
-    ),
-    # Feodo Tracker (aggressive) — broader C2 coverage incl. older/unconfirmed
-    "feodo_tracker_aggressive": (
-        "https://feodotracker.abuse.ch/downloads/ipblocklist_aggressive.txt"
-    ),
+    "feodo_tracker": "https://feodotracker.abuse.ch/downloads/ipblocklist.txt",
+    "feodo_tracker_aggressive": "https://feodotracker.abuse.ch/downloads/ipblocklist_aggressive.txt",
+    "bbcan177_ms1": "https://gist.githubusercontent.com/BBcan177/bf29d47ea04391cb3eb0/raw/",
+    "ipsum": "https://raw.githubusercontent.com/stamparm/ipsum/master/ipsum.txt",
+    "firehol_level1": "https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level1.netset",
+    "firehol_level2": "https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level2.netset",
+    "firehol_level3": "https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level3.netset",
+    "cins_army": "https://cinsscore.com/list/ci-badguys.txt",
+    "emerging_threats": "https://rules.emergingthreats.net/blockrules/compromised-ips.txt",
+    "blocklist_de": "https://lists.blocklist.de/lists/all.txt",
+    "binary_defense": "https://binarydefense.com/banlist.txt",
+    "greensnow": "https://blocklist.greensnow.co/greensnow.txt",
+    "spamhaus_drop": "https://www.spamhaus.org/drop/drop.txt",
+    "charles_haley_malware_ips": "https://raw.githubusercontent.com/Ultimate-Hosts-Blacklist/Ultimate.Hosts.Blacklist/master/ips/ips0.list",
+    "criticalpath_security": "https://raw.githubusercontent.com/CriticalPathSecurity/Public-Intelligence-Feeds/master/compromised-ips.txt",
+    "alienvault_reputation": "http://reputation.alienvault.com/reputation.data",
+}
 
-    # ── BBcan177 (GitHub Gist) ───────────────────────────────────────────────
-    # MS-1 curated malware IP list — Dridex, Zeus, Emotet, Regin, Cridex, etc.
-    "bbcan177_ms1": (
-        "https://gist.githubusercontent.com/BBcan177/"
-        "bf29d47ea04391cb3eb0/raw/"
-    ),
+FEED_CATEGORIES: Dict[str, str] = {
+    "feodo_tracker": "C2",
+    "feodo_tracker_aggressive": "C2",
+    "bbcan177_ms1": "Malware",
+    "ipsum": "Mixed",
+    "firehol_level1": "Mixed",
+    "firehol_level2": "Mixed",
+    "firehol_level3": "Mixed",
+    "cins_army": "Compromised",
+    "emerging_threats": "Compromised",
+    "blocklist_de": "Brute-Force",
+    "binary_defense": "Mixed",
+    "greensnow": "Brute-Force",
+    "spamhaus_drop": "Spam",
+    "charles_haley_malware_ips": "Malware",
+    "criticalpath_security": "Compromised",
+    "alienvault_reputation": "Mixed",
+    "abuseipdb": "Malicious",
+}
 
-    # ── stamparm (GitHub) ─────────────────────────────────────────────────────
-    # ipsum — aggregated threat score feed; first column = IP, second = score
-    "ipsum": (
-        "https://raw.githubusercontent.com/stamparm/ipsum/master/ipsum.txt"
-    ),
-
-    # ── FireHOL (GitHub) ──────────────────────────────────────────────────────
-    # FireHOL Level 1 — most reputable blocklists, very low false-positive rate
-    "firehol_level1": (
-        "https://raw.githubusercontent.com/firehol/blocklist-ipsets/"
-        "master/firehol_level1.netset"
-    ),
-    # FireHOL Level 2 — broader coverage, still conservative
-    "firehol_level2": (
-        "https://raw.githubusercontent.com/firehol/blocklist-ipsets/"
-        "master/firehol_level2.netset"
-    ),
-    # FireHOL Level 3 — tracks attacks, spyware, viruses from last 30 days
-    "firehol_level3": (
-        "https://raw.githubusercontent.com/firehol/blocklist-ipsets/"
-        "master/firehol_level3.netset"
-    ),
-
-    # ── CINS Score ───────────────────────────────────────────────────────────
-    # Collective Intelligence Networks Security — active attack sources
-    "cins_army": (
-        "https://cinsscore.com/list/ci-badguys.txt"
-    ),
-
-    # ── Emerging Threats ─────────────────────────────────────────────────────
-    # Known compromised / attacker IPs compiled from Snort/Suricata rule sets
-    "emerging_threats": (
-        "https://rules.emergingthreats.net/blockrules/compromised-ips.txt"
-    ),
-
-    # ── blocklist.de ─────────────────────────────────────────────────────────
-    # Honeypot-reported attacker IPs (SSH, FTP, mail, HTTP brute-force, etc.)
-    "blocklist_de": (
-        "https://lists.blocklist.de/lists/all.txt"
-    ),
-
-    # ── Binary Defense ───────────────────────────────────────────────────────
-    # Binary Defense Systems Artillery Threat Intelligence Feed
-    "binary_defense": (
-        "https://binarydefense.com/banlist.txt"
-    ),
-
-    # ── GreenSnow ────────────────────────────────────────────────────────────
-    # Bad-actors list maintained by GreenSnow security research team
-    "greensnow": (
-        "https://blocklist.greensnow.co/greensnow.txt"
-    ),
-
-    # ── Spamhaus (DROP) ──────────────────────────────────────────────────────
-    # DROP — "Don't Route Or Peer" — hijacked netblocks used for spam/malware
-    # (EDROP was merged into this list)
-    "spamhaus_drop": (
-        "https://www.spamhaus.org/drop/drop.txt"
-    ),
-
-    # ── Charles Haley (GitHub) ───────────────────────────────────────────────
-    # Aggregated blocklist from multiple public threat sources
-    "charles_haley_malware_ips": (
-        "https://raw.githubusercontent.com/Ultimate-Hosts-Blacklist/"
-        "Ultimate.Hosts.Blacklist/master/ips/ips0.list"
-    ),
-
-    # ── CriticalPathSecurity (GitHub) ────────────────────────────────────────
-    # Public intelligence feed — compromised IPs
-    "criticalpath_security": (
-        "https://raw.githubusercontent.com/CriticalPathSecurity/"
-        "Public-Intelligence-Feeds/master/compromised-ips.txt"
-    ),
-
-    # ── AlienVault ───────────────────────────────────────────────────────────
-    # AlienVault IP reputation data — known malicious hosts
-    "alienvault_reputation": (
-        "http://reputation.alienvault.com/reputation.data"
-    ),
+DOMAIN_FEEDS: Dict[str, str] = {
+    "openphish": "https://openphish.com/feed.txt",
+    "urlhaus": "https://urlhaus.abuse.ch/downloads/text_online/",
 }
 
 ABUSEIPDB_API_KEY: Optional[str] = os.environ.get("ABUSEIPDB_API_KEY")
 if ABUSEIPDB_API_KEY:
     FEEDS["abuseipdb"] = "https://api.abuseipdb.com/api/v2/blacklist?confidenceMinimum=90"
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Tuning constants
-# ─────────────────────────────────────────────────────────────────────────────
-REQUEST_TIMEOUT: int = 30   # seconds before abandoning a request
-CIDR_MAX_PREFIX: int = 24   # only expand CIDR blocks with prefix >= this (i.e. /24–/32)
-MAX_RETRIES: int = 3        # retry attempts per feed before giving up
-RETRY_DELAY: int = 5        # seconds to wait between retry attempts
-MAX_WORKERS: int = 8        # maximum concurrent download threads
+REQUEST_TIMEOUT = 30
+MAX_RETRIES = 3
+RETRY_DELAY = 5
+MAX_WORKERS = 8
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Regular expressions
-# ─────────────────────────────────────────────────────────────────────────────
-# Strict IPv4: no leading zeros, all octets 0–255
 _IPV4_PATTERN = re.compile(
     r"^(?:(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]\d|\d)\.){3}"
     r"(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]\d|\d)$"
 )
 
-# Private, loopback, link-local, documentation, multicast, and reserved ranges.
-# RFC 1918, RFC 5737, RFC 3927, RFC 6598, RFC 2544, etc.
+_DOMAIN_PATTERN = re.compile(
+    r"^(?:[a-zA-Z0-9]"
+    r"(?:[a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+"
+    r"[a-zA-Z]{2,}$"
+)
+
 _PRIVATE_PATTERN = re.compile(
     r"^(?:"
-    r"0\."                              # 0.0.0.0/8      — "this" network
-    r"|10\."                            # 10.0.0.0/8     — RFC 1918 private
-    r"|100\.(?:6[4-9]|[7-9]\d|1[01]\d|12[0-7])\."  # 100.64/10 — CGNAT (RFC 6598)
-    r"|127\."                           # 127.0.0.0/8    — loopback
-    r"|169\.254\."                      # 169.254.0.0/16 — link-local
-    r"|172\.(?:1[6-9]|2\d|3[01])\."    # 172.16.0.0/12  — RFC 1918 private
-    r"|192\.0\.0\."                     # 192.0.0.0/24   — IANA special-purpose
-    r"|192\.0\.2\."                     # 192.0.2.0/24   — TEST-NET-1
-    r"|192\.168\."                      # 192.168.0.0/16 — RFC 1918 private
-    r"|198\.1[89]\."                    # 198.18.0.0/15  — benchmarking (RFC 2544)
-    r"|198\.51\.100\."                  # 198.51.100.0/24 — TEST-NET-2
-    r"|203\.0\.113\."                   # 203.0.113.0/24  — TEST-NET-3
-    r"|2(?:2[4-9]|[3-5]\d)\."          # 224.0.0.0/4    — multicast + reserved
-    r"|255\.255\.255\.255"              # 255.255.255.255 — limited broadcast
+    r"0\.|10\.|100\.(?:6[4-9]|[7-9]\d|1[01]\d|12[0-7])\.|127\.|169\.254\.|"
+    r"172\.(?:1[6-9]|2\d|3[01])\.|192\.0\.0\.|192\.0\.2\.|192\.168\.|"
+    r"198\.1[89]\.|198\.51\.100\.|203\.0\.113\.|2(?:2[4-9]|[3-5]\d)\.|"
+    r"255\.255\.255\.255"
     r")"
 )
 
+# ─────────────────────────────────────────────────────────────────────────────
+# GeoIP Engine
+# ─────────────────────────────────────────────────────────────────────────────
+class GeoIPEngine:
+    def __init__(self):
+        self.starts = []
+        self.ends = []
+        self.asns = []
+        self.countries = []
+        self.isps = []
+
+    def load(self, url="https://iptoasn.com/data/ip2asn-v4.tsv.gz"):
+        try:
+            log.info("Downloading GeoIP database...")
+            resp = requests.get(url, stream=True, timeout=60)
+            resp.raise_for_status()
+            with open("ip2asn-v4.tsv.gz", "wb") as f:
+                for chunk in resp.iter_content(chunk_size=8192):
+                    f.write(chunk)
+            
+            log.info("Parsing GeoIP database...")
+            with gzip.open("ip2asn-v4.tsv.gz", 'rt', encoding='utf-8') as f:
+                for line in f:
+                    parts = line.strip().split('\t')
+                    if len(parts) >= 5:
+                        self.starts.append(int(ipaddress.IPv4Address(parts[0])))
+                        self.ends.append(int(ipaddress.IPv4Address(parts[1])))
+                        self.asns.append(parts[2])
+                        self.countries.append(parts[3])
+                        self.isps.append(parts[4])
+            log.info(f"Loaded {len(self.starts)} GeoIP ranges.")
+        except Exception as e:
+            log.error(f"Failed to load GeoIP: {e}")
+
+    def lookup(self, ip_str: str) -> tuple:
+        if not self.starts: return "Unknown", "0", "Unknown"
+        try:
+            ip_int = int(ipaddress.IPv4Address(ip_str))
+            idx = bisect.bisect_right(self.starts, ip_int) - 1
+            if idx >= 0 and self.starts[idx] <= ip_int <= self.ends[idx]:
+                return self.countries[idx], self.asns[idx], self.isps[idx]
+        except Exception:
+            pass
+        return "Unknown", "0", "Unknown"
 
 # ─────────────────────────────────────────────────────────────────────────────
-# IP validation
+# Core Logic
 # ─────────────────────────────────────────────────────────────────────────────
-
-def is_valid_public_ipv4(ip: str) -> bool:
-    """
-    Return True if *ip* is a syntactically valid, publicly-routable IPv4 address.
-
-    Rejects:
-      - Malformed / non-IPv4 strings
-      - Private RFC 1918 addresses (10/8, 172.16/12, 192.168/16)
-      - Loopback (127/8)
-      - Link-local (169.254/16)
-      - CGNAT (100.64/10)
-      - Documentation ranges (192.0.2/24, 198.51.100/24, 203.0.113/24)
-      - Multicast (224/4) and reserved (240/4)
-      - Broadcast (255.255.255.255)
-    """
+def is_public_ipv4(ip: str) -> bool:
     return bool(_IPV4_PATTERN.match(ip)) and not bool(_PRIVATE_PATTERN.match(ip))
 
+def extract_domain(text: str) -> Optional[str]:
+    text = text.strip()
+    if text.startswith("http://") or text.startswith("https://"):
+        try:
+            parsed = urllib.parse.urlparse(text)
+            text = parsed.hostname or ""
+        except: pass
+    text = text.lower()
+    if _DOMAIN_PATTERN.match(text):
+        return text
+    return None
 
-# ─────────────────────────────────────────────────────────────────────────────
-# Feed parsing
-# ─────────────────────────────────────────────────────────────────────────────
-
-def extract_ips(raw_text: str) -> Set[str]:
-    """
-    Parse raw feed text and return a set of valid public IPv4 addresses.
-
-    Handles the following feed formats transparently:
-      - Plain IP list                        — one IP per line
-      - Comment lines ('#', ';', '//')       — skipped
-      - IP:PORT format                       — port stripped
-      - IP#score#data (AlienVault)            — first '#'-delimited field taken
-      - IP<TAB>score  (ipsum)                — first token taken
-      - IP  # inline comment                 — first token taken
-      - CIDR notation (1.2.3.0/24)          — expanded for small blocks (≥/24)
-      - Large CIDR blocks (< /24)           — skipped (too many IPs)
-      - Windows CRLF line endings           — normalised by splitlines()
-    """
-    ips: Set[str] = set()
-
-    for raw_line in raw_text.splitlines():
-        line = raw_line.strip()
-
-        # Skip blank lines and comment lines
-        if not line:
-            continue
-        if line[0] in ("#", ";") or line.startswith("//"):
-            continue
-
-        # Take only the first whitespace-delimited token.
-        # This handles "IP  # comment", "IP\tscore", "IP  SBL-code" etc.
-        token = line.split()[0]
-
-        # Handle '#'-delimited format (AlienVault: "IP#score#...")
-        if "#" in token:
-            token = token.split("#")[0]
-
-        # Strip port if the token contains a colon (IP:PORT)
-        if ":" in token:
-            token = token.rsplit(":", 1)[0]
-
-        # Handle CIDR entries — expand small blocks into individual IPs
-        if "/" in token:
-            try:
-                network = ipaddress.IPv4Network(token, strict=False)
-                if network.prefixlen >= CIDR_MAX_PREFIX:
-                    for host in network.hosts():
-                        host_str = str(host)
-                        if is_valid_public_ipv4(host_str):
-                            ips.add(host_str)
-            except (ipaddress.AddressValueError, ipaddress.NetmaskValueError, ValueError):
-                pass  # skip malformed CIDR entries
-            continue
-
-        if is_valid_public_ipv4(token):
-            ips.add(token)
-
-    return ips
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Feed downloading
-# ─────────────────────────────────────────────────────────────────────────────
-
-def fetch_feed(name: str, url: str) -> Tuple[str, Set[str], Optional[str]]:
-    """
-    Download a single feed URL with configurable retry logic.
-
-    Returns
-    -------
-    Tuple[str, Set[str], Optional[str]]
-        (feed_name, set_of_ips, error_message_or_None)
-        On success *error* is None. On total failure *ips* is an empty set.
-    """
-    last_error: Optional[str] = None
+def fetch_feed(name: str, url: str) -> Set[str]:
+    headers = {"User-Agent": "HimalayaFeed-Aggregator/2.0"}
+    if name == "abuseipdb" and ABUSEIPDB_API_KEY:
+        headers["Key"] = ABUSEIPDB_API_KEY
 
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            log.info("[%s] downloading (attempt %d/%d) …", name, attempt, MAX_RETRIES)
+            r = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
+            r.raise_for_status()
             
-            headers = {
-                "User-Agent": (
-                    "HimalayaFeed/1.0 "
-                    "(github.com/kalidada18/himalayafeed; automated threat-intel collector)"
-                )
-            }
-            if name == "abuseipdb" and ABUSEIPDB_API_KEY:
-                headers["Key"] = ABUSEIPDB_API_KEY
-                headers["Accept"] = "text/plain"
-
-            response = requests.get(
-                url,
-                timeout=REQUEST_TIMEOUT,
-                headers=headers,
-                allow_redirects=True,
-            )
-            response.raise_for_status()
-            ips = extract_ips(response.text)
-            log.info("[%s] success — %d valid IPs extracted", name, len(ips))
-            return name, ips, None
-
-        except requests.exceptions.Timeout:
-            last_error = f"timed out after {REQUEST_TIMEOUT}s"
-        except requests.exceptions.HTTPError as exc:
-            last_error = f"HTTP {exc.response.status_code}"
-        except requests.exceptions.ConnectionError as exc:
-            last_error = f"connection error: {exc}"
-        except Exception as exc:  # noqa: BLE001 — intentional broad catch
-            last_error = str(exc)
-
-        log.warning("[%s] attempt %d/%d failed: %s", name, attempt, MAX_RETRIES, last_error)
-        if attempt < MAX_RETRIES:
-            time.sleep(RETRY_DELAY)
-
-    log.error("[%s] all %d attempts failed — feed skipped", name, MAX_RETRIES)
-    return name, set(), last_error
-
-
-def download_all_feeds(
-    feeds: Dict[str, str],
-) -> Tuple[Dict[str, Set[str]], List[str]]:
-    """
-    Download every feed concurrently using a thread pool.
-
-    Returns
-    -------
-    Tuple[Dict[str, Set[str]], List[str]]
-        (ip_sources, failed_feed_names)
-        *ip_sources* maps each successful feed name to its set of IPs.
-        *failed_feed_names* lists every feed that could not be downloaded.
-    """
-    ip_sources: Dict[str, Set[str]] = {}
-    failed: List[str] = []
-
-    log.info("Starting concurrent download of %d feeds …", len(feeds))
-
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
-        futures = {
-            pool.submit(fetch_feed, name, url): name
-            for name, url in feeds.items()
-        }
-        for future in as_completed(futures):
-            name, ips, error = future.result()
-            if error is None:
-                ip_sources[name] = ips
+            if name == "abuseipdb":
+                data = r.json()
+                return {d["ipAddress"] for d in data.get("data", []) if is_public_ipv4(d["ipAddress"])}
+            
+            ips = set()
+            for line in r.text.splitlines():
+                line = line.strip()
+                if not line or line.startswith(("#", "//", "!", "/*")): continue
+                token = line.split()[0].split(",")[0].strip('"\';')
+                
+                if "/" in token:
+                    try:
+                        network = ipaddress.ip_network(token, strict=False)
+                        if network.prefixlen >= 24:
+                            for ip in network.hosts():
+                                ip_str = str(ip)
+                                if is_public_ipv4(ip_str): ips.add(ip_str)
+                    except ValueError: pass
+                elif is_public_ipv4(token):
+                    ips.add(token)
+            
+            return ips
+        except Exception as e:
+            if attempt == MAX_RETRIES:
+                log.error(f"Feed {name} failed: {e}")
             else:
-                failed.append(name)
+                time.sleep(RETRY_DELAY)
+    return set()
 
-    log.info(
-        "Downloads complete: %d succeeded, %d failed",
-        len(ip_sources),
-        len(failed),
-    )
-    return ip_sources, failed
+def fetch_domain_feed(name: str, url: str) -> Set[str]:
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            r = requests.get(url, timeout=REQUEST_TIMEOUT)
+            r.raise_for_status()
+            domains = set()
+            for line in r.text.splitlines():
+                line = line.strip()
+                if not line or line.startswith(("#", "//")): continue
+                # For URLhaus, CSV style
+                if line.startswith('"'):
+                    parts = line.split('","')
+                    if len(parts) > 2:
+                        domain = extract_domain(parts[2])
+                        if domain: domains.add(domain)
+                else:
+                    domain = extract_domain(line)
+                    if domain: domains.add(domain)
+            return domains
+        except Exception as e:
+            if attempt == MAX_RETRIES:
+                log.error(f"Domain Feed {name} failed: {e}")
+            else:
+                time.sleep(RETRY_DELAY)
+    return set()
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Data processing
-# ─────────────────────────────────────────────────────────────────────────────
-
-def build_ip_source_map(
-    ip_sources: Dict[str, Set[str]],
-) -> Dict[str, List[str]]:
-    """
-    Invert the ip_sources mapping to build: IP → sorted list of source names.
-
-    Deduplication is implicit: each IP key is unique in the returned dict.
-    IPs appearing in multiple feeds get all their source names listed.
-    """
-    ip_map: Dict[str, List[str]] = {}
-
-    for source_name, ip_set in ip_sources.items():
-        for ip in ip_set:
-            ip_map.setdefault(ip, []).append(source_name)
-
-    # Sort source lists for deterministic, diff-friendly output
-    for ip in ip_map:
-        ip_map[ip].sort()
-
-    return ip_map
-
-
-def numerical_ip_key(ip: str) -> Tuple[int, ...]:
-    """Return a tuple of ints for numerically correct IPv4 sorting."""
-    return tuple(int(octet) for octet in ip.split("."))
-
-
-def build_stats(
-    ip_map: Dict[str, List[str]],
-    ip_sources: Dict[str, Set[str]],
-    failed: List[str],
-    timestamp: str,
-) -> dict:
-    """Assemble the complete stats.json payload."""
+def build_stats(ip_map, ip_sources, failed, ts, domains):
+    ips_per_source = {src: sum(1 for src_list in ip_map.values() if src in src_list) for src in ip_sources}
+    multi_source = sum(1 for src_list in ip_map.values() if len(src_list) > 1)
+    
     return {
-        "last_updated":          timestamp,
-        "total_unique_ips":      len(ip_map),
+        "last_updated": ts,
+        "total_unique_ips": len(ip_map),
+        "total_unique_domains": len(domains),
         "total_feeds_processed": len(ip_sources),
-        "total_feeds_failed":    len(failed),
-        "failed_feeds":          sorted(failed),
-        "ips_per_source": {
-            src: len(ips)
-            for src, ips in sorted(ip_sources.items())
-        },
-        "multi_source_ips": sum(
-            1 for sources in ip_map.values() if len(sources) > 1
-        ),
-        "top_reported_sources": [
-            [src, len(ips)]
-            for src, ips in sorted(
-                ip_sources.items(),
-                key=lambda kv: len(kv[1]),
-                reverse=True,
-            )[:5]
-        ] if ip_sources else [],
+        "total_feeds_failed": len(failed),
+        "multi_source_ips": multi_source,
+        "failed_feeds": failed,
+        "ips_per_source": ips_per_source,
     }
 
-
 # ─────────────────────────────────────────────────────────────────────────────
-# Output writing
+# Exporters
 # ─────────────────────────────────────────────────────────────────────────────
+def numerical_ip_key(ip: str) -> tuple:
+    return tuple(int(octet) for octet in ip.split("."))
 
-def write_txt(
-    sorted_ips: List[str],
-    stats: dict,
-) -> None:
-    """Write malicious_ips.txt — one IPv4 per line, with a comment header."""
-    ts = stats["last_updated"]
-    header_lines = [
-        f"# HimalayaFeed — Threat Intelligence Feed — updated {ts}",
-        f"# Total unique IPs : {len(sorted_ips)}",
-        f"# Sources used     : {stats['total_feeds_processed']}",
-        "# Format           : one IPv4 address per line",
-        "# Project          : https://github.com/kalidada18/himalayafeed",
-        "",  # blank separator before data
-    ]
-    with open("malicious_ips.txt", "w", encoding="utf-8") as fh:
-        fh.write("\n".join(header_lines))
-        fh.write("\n".join(sorted_ips))
-        fh.write("\n")
-    log.info("malicious_ips.txt written (%d IPs)", len(sorted_ips))
-
-
-def write_csv(
-    sorted_ips: List[str],
-    ip_map: Dict[str, List[str]],
-) -> None:
-    """Write malicious_ips.csv — ip, sources, source_count, reputation."""
+def write_csv(sorted_ips: List[str], ip_map: Dict[str, List[str]], geoip: GeoIPEngine) -> None:
     rows = []
     for ip in sorted_ips:
-        source_count = len(ip_map[ip])
-        # Calculate a proprietary reputation score (0-100) based on node detections
+        sources = ip_map[ip]
+        source_count = len(sources)
         reputation = min(100, source_count * 20)
+        categories = list(set([FEED_CATEGORIES.get(s, "Mixed") for s in sources]))
+        country, asn, isp = geoip.lookup(ip)
         
         rows.append({
-            "ip":           ip,
-            "sources":      "|".join(ip_map[ip]),
+            "ip": ip,
+            "sources": "|".join(sources),
             "source_count": source_count,
-            "reputation":   reputation,
+            "reputation": reputation,
+            "categories": "|".join(categories),
+            "country": country,
+            "asn": asn
         })
         
-    df = pd.DataFrame(rows, columns=["ip", "sources", "source_count", "reputation"])
+    df = pd.DataFrame(rows)
     df.to_csv("malicious_ips.csv", index=False)
-    log.info("malicious_ips.csv written (%d rows)", len(df))
+    
+    # Extract Top 100
+    top_df = df.sort_values(by=["reputation", "source_count"], ascending=[False, False]).head(100)
+    top_df.to_json("top_100.json", orient="records", indent=2)
+    
+    log.info("Wrote malicious_ips.csv and top_100.json")
 
+def write_stix(sorted_ips: List[str], ip_map: Dict[str, List[str]]):
+    # Only export critical confidence (reputation >= 80) to keep file size well under 100MB limit
+    high_conf = [ip for ip in sorted_ips if min(100, len(ip_map[ip]) * 20) >= 80]
+    
+    objects = []
+    ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    
+    for ip in high_conf:
+        objects.append({
+            "type": "indicator",
+            "spec_version": "2.1",
+            "id": f"indicator--{uuid.uuid4()}",
+            "created": ts,
+            "modified": ts,
+            "name": f"Malicious IP {ip}",
+            "pattern": f"[ipv4-addr:value = '{ip}']",
+            "pattern_type": "stix",
+            "valid_from": ts
+        })
+        
+    bundle = {
+        "type": "bundle",
+        "id": f"bundle--{uuid.uuid4()}",
+        "objects": objects
+    }
+    
+    with open("stix2_feed.json", "w") as f:
+        json.dump(bundle, f)
+    log.info(f"Wrote stix2_feed.json with {len(high_conf)} indicators")
 
-def write_stats(stats: dict) -> None:
-    """Write stats.json — aggregate statistics consumed by the live dashboard."""
-    with open("stats.json", "w", encoding="utf-8") as fh:
-        json.dump(stats, fh, indent=2)
-    log.info("stats.json written")
-
+def write_bloom(sorted_ips: List[str]):
+    # Simple hash-based bloom filter substitute for frontend
+    # Since we use JS, we just hash the IPs and store in a bit array encoded as hex
+    # For a few hundred thousand IPs, a flat JSON array of prefixes is very small
+    # Actually, the simplest high-performance frontend filter is to build a compressed trie or just a prefix dict.
+    # Let's write the first two octets of all IPs as keys.
+    prefixes = {}
+    for ip in sorted_ips:
+        parts = ip.split('.')
+        prefix = f"{parts[0]}.{parts[1]}"
+        prefixes[prefix] = 1
+        
+    with open("bloom.json", "w") as f:
+        json.dump(list(prefixes.keys()), f)
+    log.info("Wrote bloom.json filter")
 
 def write_history(stats: dict) -> None:
-    """Maintain a rolling 90-day history of feed metrics."""
     history_file = "history.json"
     history = []
     if os.path.exists(history_file):
         try:
             with open(history_file, "r", encoding="utf-8") as f:
                 history = json.load(f)
-        except Exception:
-            pass
+        except Exception as e:
+            log.error(f"Failed to load history.json: {e}")
             
-    history.append({
-        "date": stats["last_updated"].split("T")[0],
+    current_date = stats["last_updated"].split("T")[0]
+    
+    entry = {
+        "date": current_date,
         "total_unique_ips": stats["total_unique_ips"],
         "active_feeds": stats["total_feeds_processed"]
-    })
+    }
     
     # Deduplicate by date, keeping the latest run for each day
-    deduped = {entry["date"]: entry for entry in history}
-    history = list(deduped.values())
+    deduped = {h["date"]: h for h in history if "date" in h}
+    deduped[current_date] = entry
     
-    # Keep last 90 days
-    history = sorted(history, key=lambda x: x["date"])[-90:]
+    history = sorted(deduped.values(), key=lambda x: x["date"])[-90:]
     
-    with open(history_file, "w", encoding="utf-8") as f:
-        json.dump(history, f, indent=2)
-    log.info("history.json written (%d records)", len(history))
-def write_all_outputs(
-    ip_map: Dict[str, List[str]],
-    stats: dict,
-) -> None:
-    """Orchestrate writing of all output artefacts."""
-    # Numerically sorted IPs for deterministic, human-readable diffs
+    try:
+        with open(history_file, "w", encoding="utf-8") as f:
+            json.dump(history, f, indent=2)
+        log.info(f"Wrote history.json with {len(history)} records")
+    except Exception as e:
+        log.error(f"Failed to write history.json: {e}")
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Main
+# ─────────────────────────────────────────────────────────────────────────────
+def main():
+    log.info("═" * 55)
+    log.info("  HimalayaFeed v2 — Advanced Threat Aggregator")
+    log.info("═" * 55)
+
+    geoip = GeoIPEngine()
+    geoip.load()
+
+    ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    
+    # ── Fetch IPs
+    ip_sources = {}
+    failed = []
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = {executor.submit(fetch_feed, name, url): name for name, url in FEEDS.items()}
+        for future in as_completed(futures):
+            name = futures[future]
+            ips = future.result()
+            if ips:
+                ip_sources[name] = ips
+            else:
+                failed.append(name)
+
+    # ── Merge IPs
+    ip_map = {}
+    for src, ips in ip_sources.items():
+        for ip in ips:
+            if ip not in ip_map: ip_map[ip] = []
+            ip_map[ip].append(src)
+            
     sorted_ips = sorted(ip_map.keys(), key=numerical_ip_key)
 
-    write_txt(sorted_ips, stats)
-    write_csv(sorted_ips, ip_map)
-    write_stats(stats)
+    # ── Fetch Domains
+    domain_map = set()
+    for name, url in DOMAIN_FEEDS.items():
+        domains = fetch_domain_feed(name, url)
+        domain_map.update(domains)
+
+    # ── Outputs
+    stats = build_stats(ip_map, ip_sources, failed, ts, domain_map)
+    with open("stats.json", "w") as f: json.dump(stats, f, indent=2)
+    
+    with open("malicious_ips.txt", "w") as f:
+        f.write("\n".join(sorted_ips) + "\n")
+        
+    with open("malicious_domains.txt", "w") as f:
+        f.write("\n".join(sorted(list(domain_map))) + "\n")
+        
+    write_csv(sorted_ips, ip_map, geoip)
+    write_stix(sorted_ips, ip_map)
+    write_bloom(sorted_ips)
     write_history(stats)
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Entry point
-# ─────────────────────────────────────────────────────────────────────────────
-
-def main() -> None:
-    log.info("═" * 55)
-    log.info("  HimalayaFeed — Threat Intelligence Feed Aggregator")
-    log.info("═" * 55)
-
-    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-
-    # ── Step 1: Download all feeds concurrently ──────────────────────────────
-    ip_sources, failed = download_all_feeds(FEEDS)
-
-    # Abort only if every single feed failed — partial failures are tolerated
-    if not ip_sources:
-        log.critical(
-            "All %d feeds failed. Cannot produce output. Exiting with error.",
-            len(FEEDS),
-        )
-        raise SystemExit(1)
-
-    # ── Step 2: Build unified IP → sources mapping ───────────────────────────
-    ip_map = build_ip_source_map(ip_sources)
-    log.info(
-        "Merged %d sources → %d unique public IPv4 addresses",
-        len(ip_sources),
-        len(ip_map),
-    )
-
-    # ── Step 3: Build statistics payload ─────────────────────────────────────
-    stats = build_stats(ip_map, ip_sources, failed, timestamp)
-    log.info("Stats snapshot:\n%s", json.dumps(
-        {k: v for k, v in stats.items() if k != "top_reported_sources"},
-        indent=2,
-    ))
-
-    # ── Step 4: Write all output files ───────────────────────────────────────
-    write_all_outputs(ip_map, stats)
-
-    log.info("═" * 55)
-    log.info("  Done — feed updated at %s", timestamp)
-    log.info("═" * 55)
-
+    
+    log.info("Done.")
 
 if __name__ == "__main__":
     main()

@@ -28,3 +28,5 @@ Thumbs.db
 # malicious_ips.csv
 # threat_feed.json
 # stats.json
+stix2_feed.json  
+ 

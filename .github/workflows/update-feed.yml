@@ -1,9 +1,9 @@
 name: HimalayaFeed — Update Threat Intelligence Feed
 
 on:
-  # ── Automatic: every hour at :00 UTC ──────────────────────────────────────
+  # ── Automatic: every day at 00:00 UTC ─────────────────────────────────────
   schedule:
-    - cron: '0 * * * *'
+    - cron: '0 0 * * *'
 
   # ── Re-enable schedule whenever code is pushed to main ────────────────────
   push:
@@ -65,7 +65,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           # Stage all generated output files (including dashboard data)
-          git add malicious_ips.txt malicious_ips.csv stats.json history.json
+          git add malicious_ips.txt malicious_ips.csv stats.json history.json malicious_domains.txt bloom.json top_100.json
 
           # Check whether any staged file actually changed
           if git diff --staged --quiet; then
@@ -82,15 +82,19 @@ jobs:
           fi
 
       # ── 6. Create Daily Archive Release ───────────────────────────────────────
-      - name: Set Archive Date
-        run: echo "ARCHIVE_DATE=$(date -u +'%Y-%m-%d')" >> $GITHUB_ENV
+      - name: Set Archive Date & Prepare Zip
+        run: |
+          DATE_DASH=$(date -u +'%Y-%m-%d')
+          DATE_DOT=$(date -u +'%Y.%m.%d')
+          echo "ARCHIVE_DATE=${DATE_DASH}" >> $GITHUB_ENV
+          zip himalayafeed-archive-${DATE_DOT}.zip malicious_ips.txt malicious_ips.csv
 
       - name: Create Daily Archive Release
         uses: ncipollo/release-action@v1
         with:
           tag: archive-${{ env.ARCHIVE_DATE }}
           name: Daily Feed Archive - ${{ env.ARCHIVE_DATE }}
-          artifacts: "malicious_ips.txt,malicious_ips.csv,stats.json"
+          artifacts: "malicious_ips.txt,malicious_ips.csv,stats.json,stix2_feed.json,himalayafeed-archive-*.zip"
           allowUpdates: true
           replacesArtifacts: true
           body: "Automated daily archive of the HimalayaFeed threat intelligence database."

@@ -1,50 +1,28 @@
 {
-  "last_updated": "2026-06-02T05:43:19Z",
-  "total_unique_ips": 1076128,
-  "total_feeds_processed": 16,
-  "total_feeds_failed": 1,
+  "last_updated": "2026-06-02T05:31:44Z",
+  "total_unique_ips": 1076117,
+  "total_unique_domains": 761,
+  "total_feeds_processed": 14,
+  "total_feeds_failed": 2,
+  "multi_source_ips": 385252,
   "failed_feeds": [
-    "abuseipdb"
+    "cins_army",
+    "alienvault_reputation"
   ],
   "ips_per_source": {
-    "alienvault_reputation": 609,
-    "bbcan177_ms1": 8842,
-    "binary_defense": 1359,
-    "blocklist_de": 24089,
-    "charles_haley_malware_ips": 614601,
-    "cins_army": 0,
-    "criticalpath_security": 531,
-    "emerging_threats": 531,
     "feodo_tracker": 5,
+    "firehol_level3": 32085,
     "feodo_tracker_aggressive": 7607,
+    "bbcan177_ms1": 8842,
     "firehol_level1": 547683,
     "firehol_level2": 27786,
-    "firehol_level3": 32085,
-    "greensnow": 6025,
+    "blocklist_de": 24142,
     "ipsum": 115309,
-    "spamhaus_drop": 183642
-  },
-  "multi_source_ips": 385864,
-  "top_reported_sources": [
-    [
-      "charles_haley_malware_ips",
-      614601
-    ],
-    [
-      "firehol_level1",
-      547683
-    ],
-    [
-      "spamhaus_drop",
-      183642
-    ],
-    [
-      "ipsum",
-      115309
-    ],
-    [
-      "firehol_level3",
-      32085
-    ]
-  ]
+    "binary_defense": 1359,
+    "emerging_threats": 531,
+    "criticalpath_security": 531,
+    "spamhaus_drop": 183642,
+    "greensnow": 6029,
+    "charles_haley_malware_ips": 614601
+  }
 }
