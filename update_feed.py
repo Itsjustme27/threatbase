@@ -76,6 +76,7 @@ FEED_CATEGORIES: Dict[str, str] = {
 DOMAIN_FEEDS: Dict[str, str] = {
     "openphish": "https://openphish.com/feed.txt",
     "urlhaus": "https://urlhaus.abuse.ch/downloads/text_online/",
+    "romainmarcoux": "https://raw.githubusercontent.com/romainmarcoux/malicious-domains/refs/heads/main/full-domains-aa.txt",
 }
 
 ABUSEIPDB_API_KEY: Optional[str] = os.environ.get("ABUSEIPDB_API_KEY")
