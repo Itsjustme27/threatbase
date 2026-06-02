@@ -55,20 +55,20 @@
     }
 
     :root.dark {
-      --white: #111827;
-      --snow: #0f111a;
-      --smoke: #1f2937;
-      --ash: #374151;
-      --silver: #4b5563;
-      --slate: #9ca3af;
-      --iron: #d1d5db;
-      --ink: #f3f4f6;
-      --midnight: #000000;
+      --white: #0a0f1d;
+      --snow: #050810;
+      --smoke: #111a30;
+      --ash: #1e293b;
+      --silver: #334155;
+      --slate: #94a3b8;
+      --iron: #cbd5e1;
+      --ink: #f8fafc;
+      --midnight: #001233; /* Very Deep Himalayan Night */
       --black: #ffffff;
-      --red-light: rgba(220, 38, 38, 0.15);
+      --red-light: rgba(220, 20, 60, 0.15);
       --green-light: rgba(22, 163, 74, 0.15);
       --amber-light: rgba(217, 119, 6, 0.15);
-      --blue-light: rgba(37, 99, 235, 0.15);
+      --blue-light: rgba(0, 56, 147, 0.15);
     }
 
     *,
@@ -1558,11 +1558,7 @@
   <header class="hero" id="dashboard">
     <div class="hero-mountains"></div>
     <div class="hero-inner">
-      <h1>Threat Intelligence<br><span class="accent">Land of the Himalayas.</span></h1>
-      <p class="hero-sub">
-        Search any IP address or Domain to scan against the HimalayaFeed threat database and VirusTotal.
-        Updated every hour. Fully automated. Zero infrastructure.
-      </p>
+      <h1>Threat Intelligence<br><span class="accent">From the land of himalayas.</span></h1>
 
       <div class="hero-search" id="lookup">
         <div class="hero-search-row">
@@ -1882,7 +1878,9 @@
     async function boot() {
       try {
         // Check dark mode preference
-        if (localStorage.getItem('theme') === 'dark') {
+        const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && sysDark)) {
           document.documentElement.classList.add('dark');
           document.getElementById('theme-icon')?.setAttribute('data-lucide', 'sun');
         }
