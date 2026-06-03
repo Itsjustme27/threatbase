@@ -180,6 +180,7 @@ http://103.20.213.34:8080/Uploads/Uploads/Aryacorp%20Delhi/Anshul/anshul%20archi
 http://103.20.213.34:8080/Uploads/Uploads/Aryacorp%20Delhi/Anshul/anshul%20archieve/10.6.2013/jain%20sir%20data%20desktop/10-6-13/My%20Documents/My%20Received%20Files/vinod982038189896/info.zip
 http://103.20.213.34:8080/Uploads/Uploads/Aryacorp%20Delhi/Anshul/anshul%20archieve/10.6.2013/jain%20sir%20data%20desktop/10-6-13/My%20Documents/My%20Scans/info.zip
 http://103.20.213.34:8080/Uploads/Uploads/Aryacorp%20Delhi/Anshul/anshul%20archieve/10.6.2013/jain%20sir%20data%20desktop/10-6-13/My%20Documents/Wallpaper/info.zip
+http://103.20.213.34:8080/Uploads/Uploads/Aryacorp%20Delhi/Anshul/anshul%20archieve/10.6.2013/jain%20sir%20data%20desktop/10-6-13/My%20Documents/charter%20party/info.zip
 http://103.20.213.34:8080/Uploads/Uploads/Aryacorp%20Delhi/Anshul/anshul%20archieve/10.6.2013/jain%20sir%20data%20desktop/10-6-13/My%20Documents/info.zip
 http://103.20.213.34:8080/Uploads/Uploads/Aryacorp%20Delhi/Anshul/anshul%20archieve/10.6.2013/jain%20sir%20data%20desktop/10-6-13/My%20Documents/raj%20sir/info.zip
 http://103.20.213.34:8080/Uploads/Uploads/Aryacorp%20Delhi/Anshul/anshul%20archieve/10.6.2013/jain%20sir%20data%20desktop/10-6-13/info.zip
@@ -336,6 +337,7 @@ http://103.83.87.122/ppc64
 http://103.83.87.122/x86
 http://103.84.57.217:48089/Mozi.a
 http://103.90.205.117:18963/i
+http://103.90.207.13:25925/Mozi.m
 http://103.90.207.13:25925/i
 http://103.90.207.234:55903/.i
 http://103.90.207.234:55903/Mozi.m
@@ -408,6 +410,7 @@ http://106.38.32.194:22/QDSC/chendesheng/info.zip
 http://106.38.32.194:22/QDSC/info.zip
 http://106.38.32.194:22/QDSC/liubin/info.zip
 http://106.38.32.194:22/QDSC/maanbang/info.zip
+http://106.38.32.194:22/QDSC/null/info.zip
 http://106.38.32.194:22/QDSC/testAPPIcon/info.zip
 http://106.38.32.194:22/Template/info.zip
 http://106.38.32.194:22/ToUpdateAPK/info.zip
@@ -1630,6 +1633,7 @@ http://110.39.255.247:37361/bin.sh
 http://110.39.255.247:37361/i
 http://110.39.255.247:40974/bin.sh
 http://110.39.255.247:40974/i
+http://110.4.13.252:25937/
 http://110.4.13.252:25937/.i
 http://110.4.13.252:25937/i
 http://110.4.2.146:18208/bin.sh
@@ -1640,6 +1644,7 @@ http://110.85.108.220:41787/bin.sh
 http://110.85.108.220:41787/i
 http://110.85.110.170:41787/bin.sh
 http://110.85.110.170:41787/i
+http://110.85.110.38:41787/bin.sh
 http://110.85.88.173:53906/bin.sh
 http://110.85.88.173:53906/i
 http://110.85.98.200:38787/i
@@ -1678,6 +1683,7 @@ http://111.59.254.165:8084/19000101/Photo.lnk
 http://111.59.254.165:8084/19000101/Photo.scr
 http://111.59.254.165:8084/19000101/Video.lnk
 http://111.59.254.165:8084/19000101/Video.scr
+http://111.59.254.165:8084/20140730/AV.lnk
 http://111.59.254.165:8084/20140730/AV.scr
 http://111.59.254.165:8084/20140730/Photo.lnk
 http://111.59.254.165:8084/20140730/Photo.scr
@@ -1718,6 +1724,7 @@ http://111.59.254.165:8084/20221020/Video.lnk
 http://111.59.254.165:8084/20221020/Video.scr
 http://111.59.254.165:8084/20230507/AV.lnk
 http://111.59.254.165:8084/20230507/AV.scr
+http://111.59.254.165:8084/20230507/Photo.lnk
 http://111.59.254.165:8084/20230507/Photo.scr
 http://111.59.254.165:8084/20230507/Video.lnk
 http://111.59.254.165:8084/20230507/Video.scr
@@ -1752,6 +1759,7 @@ http://111.59.254.165:8084/20250302/Video.scr
 http://111.59.254.165:8084/20250309/AV.lnk
 http://111.59.254.165:8084/20250309/AV.scr
 http://111.59.254.165:8084/20250309/Photo.lnk
+http://111.59.254.165:8084/20250309/Photo.scr
 http://111.59.254.165:8084/20250309/Video.lnk
 http://111.59.254.165:8084/20250309/Video.scr
 http://111.59.254.165:8084/20250408/AV.lnk
@@ -1799,6 +1807,7 @@ http://111.59.254.165:8084/20250721/Photo.lnk
 http://111.59.254.165:8084/20250721/Photo.scr
 http://111.59.254.165:8084/20250721/Video.lnk
 http://111.59.254.165:8084/20250721/Video.scr
+http://111.59.254.165:8084/20250722/AV.lnk
 http://111.59.254.165:8084/20250722/AV.scr
 http://111.59.254.165:8084/20250722/Photo.lnk
 http://111.59.254.165:8084/20250722/Photo.scr
@@ -2357,6 +2366,8 @@ http://115.49.208.50:60662/i
 http://115.49.210.45:55762/bin.sh
 http://115.49.210.45:55762/i
 http://115.49.210.59:47946/i
+http://115.49.218.72:44335/bin.sh
+http://115.49.218.72:44335/i
 http://115.49.219.28:53359/bin.sh
 http://115.49.219.28:53359/i
 http://115.49.225.50:48662/bin.sh
@@ -2490,6 +2501,8 @@ http://115.51.102.223:35227/bin.sh
 http://115.51.102.223:35227/i
 http://115.51.103.7:32975/bin.sh
 http://115.51.103.7:32975/i
+http://115.51.106.148:54137/bin.sh
+http://115.51.106.148:54137/i
 http://115.51.106.218:54137/bin.sh
 http://115.51.106.218:54137/i
 http://115.51.126.100:54137/bin.sh
@@ -2766,6 +2779,8 @@ http://115.56.112.222:36094/i
 http://115.56.113.31:50711/i
 http://115.56.125.10:47615/bin.sh
 http://115.56.125.10:47615/i
+http://115.56.125.229:40808/bin.sh
+http://115.56.125.229:40808/i
 http://115.56.144.234:36876/bin.sh
 http://115.56.144.234:36876/i
 http://115.56.144.234:47202/bin.sh
@@ -3268,6 +3283,7 @@ http://116.171.106.3:3435/tomcat8/webapps/bfxt/WEB-INF/classes/com/vkl/ckts/wss/
 http://116.171.106.3:3435/tomcat8/webapps/bfxt/WEB-INF/classes/com/vkl/ckts/wss/util/info.zip
 http://116.171.106.3:3435/tomcat8/webapps/bfxt/WEB-INF/classes/com/vkl/ckts/wss/util/nvr/info.zip
 http://116.171.106.3:3435/tomcat8/webapps/bfxt/WEB-INF/classes/com/vkl/info.zip
+http://116.171.106.3:3435/tomcat8/webapps/bfxt/WEB-INF/classes/info.zip
 http://116.171.106.3:3435/tomcat8/webapps/bfxt/WEB-INF/classes/mapping/com/info.zip
 http://116.171.106.3:3435/tomcat8/webapps/bfxt/WEB-INF/classes/mapping/com/vkl/ckts/info.zip
 http://116.171.106.3:3435/tomcat8/webapps/bfxt/WEB-INF/classes/mapping/com/vkl/ckts/module/cksy/base/info.zip
@@ -3340,6 +3356,7 @@ http://116.171.106.3:3435/tomcat8/webapps/bfxt_pcwss/WEB-INF/classes/com/vkl/pcw
 http://116.171.106.3:3435/tomcat8/webapps/bfxt_pcwss/WEB-INF/classes/com/vkl/pcwss/module/ckwss/datawrite/info.zip
 http://116.171.106.3:3435/tomcat8/webapps/bfxt_pcwss/WEB-INF/classes/com/vkl/pcwss/module/ckwss/datawrite/mgr/info.zip
 http://116.171.106.3:3435/tomcat8/webapps/bfxt_pcwss/WEB-INF/classes/com/vkl/pcwss/module/ckwss/gbrwrite/action/info.zip
+http://116.171.106.3:3435/tomcat8/webapps/bfxt_pcwss/WEB-INF/classes/com/vkl/pcwss/module/ckwss/gbrwrite/dao/info.zip
 http://116.171.106.3:3435/tomcat8/webapps/bfxt_pcwss/WEB-INF/classes/com/vkl/pcwss/module/ckwss/gbrwrite/dto/info.zip
 http://116.171.106.3:3435/tomcat8/webapps/bfxt_pcwss/WEB-INF/classes/com/vkl/pcwss/module/ckwss/gbrwrite/info.zip
 http://116.171.106.3:3435/tomcat8/webapps/bfxt_pcwss/WEB-INF/classes/com/vkl/pcwss/module/ckwss/info.zip
@@ -3350,6 +3367,7 @@ http://116.171.106.3:3435/tomcat8/webapps/bfxt_pcwss/WEB-INF/classes/com/vkl/pcw
 http://116.171.106.3:3435/tomcat8/webapps/bfxt_pcwss/WEB-INF/classes/com/vkl/pcwss/module/gbrwss/dao/info.zip
 http://116.171.106.3:3435/tomcat8/webapps/bfxt_pcwss/WEB-INF/classes/com/vkl/pcwss/module/gbrwss/dto/info.zip
 http://116.171.106.3:3435/tomcat8/webapps/bfxt_pcwss/WEB-INF/classes/com/vkl/pcwss/module/gbrwss/info.zip
+http://116.171.106.3:3435/tomcat8/webapps/bfxt_pcwss/WEB-INF/classes/com/vkl/pcwss/module/info.zip
 http://116.171.106.3:3435/tomcat8/webapps/bfxt_pcwss/WEB-INF/classes/com/vkl/pcwss/module/pdawss/action/info.zip
 http://116.171.106.3:3435/tomcat8/webapps/bfxt_pcwss/WEB-INF/classes/com/vkl/pcwss/module/pdawss/dao/info.zip
 http://116.171.106.3:3435/tomcat8/webapps/bfxt_pcwss/WEB-INF/classes/com/vkl/pcwss/module/pdawss/dto/info.zip
@@ -3572,6 +3590,7 @@ http://118.163.99.134:1457/bin.sh
 http://118.163.99.134:1457/i
 http://118.175.205.150:57991/bin.sh
 http://118.175.205.150:57991/i
+http://118.178.133.241:65500/help.scr
 http://118.179.121.235:1123/
 http://118.179.121.235:1123/.i
 http://118.179.121.235:1123/Mozi.m
@@ -3879,6 +3898,7 @@ http://120.84.212.14:40003/bin.sh
 http://120.84.212.14:40003/i
 http://120.84.212.59:58744/i
 http://120.84.215.238:41074/i
+http://120.84.215.239:48456/i
 http://120.84.215.245:34093/i
 http://120.84.215.246:53751/i
 http://120.84.215.250:43031/i
@@ -3900,6 +3920,7 @@ http://121.202.208.193/sshd
 http://121.202.208.237/sshd
 http://121.202.209.31/sshd
 http://121.202.209.46/sshd
+http://121.202.210.5/sshd
 http://121.202.211.217/sshd
 http://121.202.215.196:22599/bin.sh
 http://121.23.132.87:9612/bin.sh
@@ -3930,6 +3951,7 @@ http://122.170.110.131:9105/cryptography_module_windows.exe
 http://122.170.8.40/AV.lnk
 http://122.170.8.40/AV.scr
 http://122.170.8.40/Photo.lnk
+http://122.170.8.40/Photo.scr
 http://122.170.8.40/Video.lnk
 http://122.170.8.40/Video.scr
 http://122.170.8.40/info.zip
@@ -5004,6 +5026,7 @@ http://132.255.192.122:9001/sshd
 http://132.red-81-42-249.staticip.rima-tde.net:5000/AV.lnk
 http://132.red-81-42-249.staticip.rima-tde.net:5000/Photo.lnk
 http://132.red-81-42-249.staticip.rima-tde.net:5000/Photo.scr
+http://132.red-81-42-249.staticip.rima-tde.net:5000/R-02-RADIOLE/AV.scr
 http://132.red-81-42-249.staticip.rima-tde.net:5000/R-02-RADIOLE/Photo.scr
 http://132.red-81-42-249.staticip.rima-tde.net:5000/Video.lnk
 http://132.red-81-42-249.staticip.rima-tde.net:5000/Video.scr
@@ -5049,6 +5072,7 @@ http://138.36.2.110:79/Photo.lnk
 http://138.36.2.110:79/Photo.scr
 http://138.36.2.110:79/Video.lnk
 http://138.36.2.110:79/Video.scr
+http://138.36.2.110:79/info.zip
 http://138.68.76.70:8080/check_bots.sh
 http://138.68.76.70:8080/kaf.64
 http://138.68.76.70:8080/kaf.arm5
@@ -6091,6 +6115,7 @@ http://175.173.115.65:56819/i
 http://175.173.117.241:45758/i
 http://175.173.118.18:53938/bin.sh
 http://175.173.118.18:53938/i
+http://175.173.159.67:46603/i
 http://175.173.190.97:60014/bin.sh
 http://175.173.190.97:60014/i
 http://175.173.191.206:59847/bin.sh
@@ -7524,6 +7549,7 @@ http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2019-10-04/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2019-10-10/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2019-10-14/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2019-10-18/info.zip
+http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2019-10-24/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2019-10-25/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2019-11-01/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2019-11-07/info.zip
@@ -7616,6 +7642,7 @@ http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2021-03-04/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2021-03-05/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2021-03-09/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2021-03-17/info.zip
+http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2021-04-06/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2021-04-07/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2021-04-08/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2021-04-09/info.zip
@@ -7767,6 +7794,7 @@ http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2023-10-20/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2023-10-31/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2023-11-09/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2023-12-04/info.zip
+http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2023-12-14/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2024-01-03/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2024-01-04/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2024-02-05/info.zip
@@ -7774,9 +7802,11 @@ http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2024-02-06/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2024-03-06/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2024-03-12/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2024-04-01/info.zip
+http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2024-04-02/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2024-04-05/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2024-04-22/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2024-05-02/info.zip
+http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2024-05-06/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2024-05-15/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2024-06-06/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2024-06-07/info.zip
@@ -7816,6 +7846,7 @@ http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2025-06-04/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2025-06-05/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2019-07-01/info.zip
+http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2019-07-12/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2019-07-30/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2019-10-16/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2019-10-24/info.zip
@@ -7917,12 +7948,14 @@ http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2022-11-23/
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2022-11-30/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2022-12-13/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2022-12-23/info.zip
+http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2022-12-27/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2023-01-31/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2023-02-14/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2023-03-06/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2023-03-17/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2023-04-19/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2023-04-26/info.zip
+http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2023-05-11/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2023-06-05/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2023-06-22/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2023-07-07/info.zip
@@ -7937,6 +7970,7 @@ http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2023-09-27/
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2023-10-16/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2023-11-06/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2023-11-08/info.zip
+http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2023-11-27/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2023-12-12/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2024-01-03/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2024-01-08/info.zip
@@ -7960,6 +7994,7 @@ http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2024-10-09/
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2024-11-12/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2024-11-13/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2024-11-21/info.zip
+http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2024-12-11/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2025-01-06/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2025-01-07/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2025-01-21/info.zip
@@ -7997,6 +8032,7 @@ http://177.70.102.228:8070/TmpFTP/01/Consulta/2020-01-09/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Consulta/2020-01-10/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Consulta/2020-03-02/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Consulta/2020-05-07/info.zip
+http://177.70.102.228:8070/TmpFTP/01/Consulta/2020-08-19/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Consulta/2020-09-30/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Consulta/2020-10-19/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Consulta/2020-11-05/info.zip
@@ -8060,6 +8096,7 @@ http://177.70.102.228:8070/TmpFTP/01/Consulta/2024-06-06/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Consulta/2024-06-14/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Consulta/2024-06-17/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Consulta/2024-08-05/info.zip
+http://177.70.102.228:8070/TmpFTP/01/Consulta/2024-08-06/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Consulta/2024-08-07/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Consulta/2024-08-08/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Consulta/2024-08-12/info.zip
@@ -8077,6 +8114,7 @@ http://177.70.102.228:8070/TmpFTP/01/Consulta/2024-12-19/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Consulta/2025-01-02/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Consulta/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Inutiliza%C3%A7%C3%A3o/2019-10-10/info.zip
+http://177.70.102.228:8070/TmpFTP/01/Inutiliza%C3%A7%C3%A3o/2019-10-22/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Inutiliza%C3%A7%C3%A3o/2019-11-14/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Inutiliza%C3%A7%C3%A3o/2019-12-09/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Inutiliza%C3%A7%C3%A3o/2019-12-11/info.zip
@@ -8126,6 +8164,7 @@ http://177.70.102.228:8070/TmpFTP/01/Inutiliza%C3%A7%C3%A3o/2022-04-05/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Inutiliza%C3%A7%C3%A3o/2022-09-09/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Inutiliza%C3%A7%C3%A3o/2023-06-22/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Inutiliza%C3%A7%C3%A3o/2023-11-09/info.zip
+http://177.70.102.228:8070/TmpFTP/01/Inutiliza%C3%A7%C3%A3o/2023-11-23/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Inutiliza%C3%A7%C3%A3o/2023-11-27/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Recep%C3%A7%C3%A3o/2019-03-13/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Recep%C3%A7%C3%A3o/2019-03-14/info.zip
@@ -8226,6 +8265,7 @@ http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Con
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-01-28/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-01-29/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-01-30/info.zip
+http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-01-31/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-02-01/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-02-03/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-02-04/info.zip
@@ -8250,6 +8290,7 @@ http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Con
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-02-25/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-02-26/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-02-27/info.zip
+http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-02-28/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-03-02/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-03-03/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-03-04/info.zip
@@ -8260,6 +8301,7 @@ http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Con
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-03-09/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-03-10/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-03-11/info.zip
+http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-03-12/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-03-13/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-03-14/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000162/Consulta%20Geral/2025-03-15/info.zip
@@ -8400,6 +8442,7 @@ http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000324/Con
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000324/Consulta%20Geral/2025-04-13/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000324/Consulta%20Geral/2025-04-14/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000324/Consulta%20Geral/2025-04-15/info.zip
+http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000324/Consulta%20Geral/2025-04-16/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000324/Consulta%20Geral/2025-04-17/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000324/Consulta%20Geral/2025-04-19/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000324/Consulta%20Geral/2025-04-20/info.zip
@@ -8492,6 +8535,7 @@ http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000405/Con
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000405/Consulta%20Geral/2025-03-10/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000405/Consulta%20Geral/2025-03-11/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000405/Consulta%20Geral/2025-03-12/info.zip
+http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000405/Consulta%20Geral/2025-03-13/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000405/Consulta%20Geral/2025-03-14/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000405/Consulta%20Geral/2025-03-15/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000405/Consulta%20Geral/2025-03-16/info.zip
@@ -8567,8 +8611,10 @@ http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000405/Con
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000405/Consulta%20Geral/2025-05-27/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000405/Consulta%20Geral/2025-05-28/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000405/Consulta%20Geral/2025-05-29/info.zip
+http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000405/Consulta%20Geral/2025-05-30/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000405/Consulta%20Geral/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000405/info.zip
+http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-01-15/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-01-16/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-01-17/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-01-18/info.zip
@@ -8593,6 +8639,7 @@ http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Con
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-02-07/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-02-08/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-02-09/info.zip
+http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-02-10/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-02-11/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-02-12/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-02-13/info.zip
@@ -8625,6 +8672,7 @@ http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Con
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-03-13/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-03-14/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-03-15/info.zip
+http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-03-16/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-03-17/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-03-18/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-03-19/info.zip
@@ -8632,6 +8680,7 @@ http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Con
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-03-21/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-03-22/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-03-23/info.zip
+http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-03-24/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-03-25/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-03-26/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000596/Consulta%20Geral/2025-03-27/info.zip
@@ -8731,6 +8780,7 @@ http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000677/Con
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000677/Consulta%20Geral/2025-02-15/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000677/Consulta%20Geral/2025-02-17/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000677/Consulta%20Geral/2025-02-18/info.zip
+http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000677/Consulta%20Geral/2025-02-19/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000677/Consulta%20Geral/2025-02-20/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000677/Consulta%20Geral/2025-02-21/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000677/Consulta%20Geral/2025-02-22/info.zip
@@ -8758,6 +8808,7 @@ http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000677/Con
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000677/Consulta%20Geral/2025-03-16/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000677/Consulta%20Geral/2025-03-17/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000677/Consulta%20Geral/2025-03-18/info.zip
+http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000677/Consulta%20Geral/2025-03-19/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000677/Consulta%20Geral/2025-03-20/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000677/Consulta%20Geral/2025-03-21/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000677/Consulta%20Geral/2025-03-22/info.zip
@@ -9049,6 +9100,7 @@ http://177.70.102.228:8070/TmpFTP/Manifesta%C3%A7%C3%A3o/Consulta/18296147000306
 http://177.70.102.228:8070/TmpFTP/Manifesta%C3%A7%C3%A3o/Consulta/18296147000306/2021-08-19/info.zip
 http://177.70.102.228:8070/TmpFTP/Manifesta%C3%A7%C3%A3o/Consulta/18296147000306/2021-11-14/info.zip
 http://177.70.102.228:8070/TmpFTP/Manifesta%C3%A7%C3%A3o/Consulta/18296147000306/2022-02-16/info.zip
+http://177.70.102.228:8070/TmpFTP/Manifesta%C3%A7%C3%A3o/Consulta/18296147000306/2024-06-03/info.zip
 http://177.70.102.228:8070/TmpFTP/Manifesta%C3%A7%C3%A3o/Consulta/18296147000306/2024-08-07/info.zip
 http://177.70.102.228:8070/TmpFTP/Manifesta%C3%A7%C3%A3o/Consulta/18296147000306/2024-10-23/info.zip
 http://177.70.102.228:8070/TmpFTP/Manifesta%C3%A7%C3%A3o/Consulta/18296147000640/2022-04-14/info.zip
@@ -9057,6 +9109,7 @@ http://177.70.102.228:8070/TmpFTP/Manifesta%C3%A7%C3%A3o/Consulta/18296147000721
 http://177.70.102.228:8070/TmpFTP/Manifesta%C3%A7%C3%A3o/Consulta/18296147000721/2019-11-12/info.zip
 http://177.70.102.228:8070/TmpFTP/Manifesta%C3%A7%C3%A3o/Consulta/18296147000721/2019-12-28/info.zip
 http://177.70.102.228:8070/TmpFTP/Manifesta%C3%A7%C3%A3o/Consulta/18296147000721/2020-09-25/info.zip
+http://177.70.102.228:8070/TmpFTP/Manifesta%C3%A7%C3%A3o/Consulta/18296147000721/2020-12-19/info.zip
 http://177.70.102.228:8070/TmpFTP/Manifesta%C3%A7%C3%A3o/Consulta/18296147000721/2021-07-23/info.zip
 http://177.70.102.228:8070/TmpFTP/Manifesta%C3%A7%C3%A3o/Consulta/18296147000721/2021-10-21/info.zip
 http://177.70.102.228:8070/TmpFTP/Manifesta%C3%A7%C3%A3o/Eventos%20Autom%C3%A1ticos/2022-03-02/info.zip
@@ -9318,6 +9371,7 @@ http://177.70.102.228:8070/TmpFTP/TD00000000000000171476/info.zip
 http://177.70.102.228:8070/TmpFTP/TD00000000000000171478/info.zip
 http://177.70.102.228:8070/TmpFTP/TD00000000000000171556/info.zip
 http://177.70.102.228:8070/TmpFTP/TD00000000000000171640/info.zip
+http://177.70.102.228:8070/TmpFTP/TD00000000000000171702/info.zip
 http://177.70.102.228:8070/TmpFTP/TD00000000000000171726/info.zip
 http://177.70.102.228:8070/TmpFTP/TD00000000000000171742/info.zip
 http://177.70.102.228:8070/TmpFTP/TD00000000000000171854/info.zip
@@ -9419,6 +9473,8 @@ http://177.70.102.228:8070/TmpFTP/TD00000000000000566430/info.zip
 http://177.70.102.228:8070/TmpFTP/TD00000000000000566431/info.zip
 http://177.70.102.228:8070/TmpFTP/TD00000000000000567141/info.zip
 http://177.70.102.228:8070/TmpFTP/TD00000000000000567145/info.zip
+http://177.70.102.228:8070/TmpFTP/TD00000000000000567162/info.zip
+http://177.70.102.228:8070/TmpFTP/TD00000000000000567163/info.zip
 http://177.70.102.228:8070/TmpFTP/TD00000000000000567164/info.zip
 http://177.70.102.228:8070/TmpFTP/TD00000000000000567165/info.zip
 http://177.70.102.228:8070/TmpFTP/TD00000000000000567166/info.zip
@@ -9606,6 +9662,7 @@ http://178.174.153.10:501/i
 http://178.174.153.10:502/i
 http://178.174.153.10:503/i
 http://178.176.204.240:84//sshd
+http://178.176.204.240:84/sshd
 http://178.176.204.250:83/sshd
 http://178.176.204.250:84//sshd
 http://178.176.204.250:84/sshd
@@ -9666,11 +9723,13 @@ http://178.220.234.5:53133/.i
 http://178.220.234.5:53133/i
 http://178.248.3.202.ll.sta.mana.pf/sshd
 http://178.34.177.42:41638/.i
+http://178.34.177.42:41638/i
 http://178.61.160.6:5001/AV.lnk
 http://178.61.160.6:5001/AV.scr
 http://178.61.160.6:5001/Photo.lnk
 http://178.61.160.6:5001/Photo.scr
 http://178.61.160.6:5001/Video.lnk
+http://178.61.160.6:5001/Video.scr
 http://178.61.160.6:5001/info.zip
 http://178.77.228.166:37077/
 http://178.77.228.166:37077/Mozi.m
@@ -9753,6 +9812,7 @@ http://180.191.230.61:34057/i
 http://180.191.230.61:45150/bin.sh
 http://180.191.230.61:45150/i
 http://180.250.160.26:37143/.i
+http://180.250.160.26:37143/Mozi.m
 http://180.250.160.26:37143/i
 http://180.252.135.94:44282/bin.sh
 http://180.252.135.94:44282/i
@@ -10479,6 +10539,7 @@ http://182.148.7.171:57923/bin.sh
 http://182.148.7.171:57923/i
 http://182.160.102.188:16079/
 http://182.160.102.188:16079/Mozi.m
+http://182.160.102.188:16079/i
 http://182.160.109.98:29602/i
 http://182.163.114.232/Test/info.zip
 http://182.163.114.232/info.zip
@@ -10612,7 +10673,9 @@ http://185.152.219.150:8182/tftp
 http://185.166.91.145:10004/sshd
 http://185.168.227.130:39163/i
 http://185.172.128.16/bo
+http://185.172.128.16/cn
 http://185.172.128.16/n
+http://185.172.128.16/smc.sh
 http://185.177.239.181/1lc.exe
 http://185.177.239.181/SteamSetup_5449084542286.exe
 http://185.177.239.181/cheaker.exe
@@ -11632,6 +11695,7 @@ http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8029/29062024115106/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8029/29062024131718/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8029/29072024104316/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8029/29072024182036/info.zip
+http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8029/29082024110733/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8029/29082024170717/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8029/30062024113348/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8029/30072024114118/info.zip
@@ -11679,8 +11743,10 @@ http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8050/13092024153227/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8050/14062024123830/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8050/15072024121001/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8050/15072024124718/info.zip
+http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8050/15072024151521/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8050/16082024104510/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8050/16092024115114/info.zip
+http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8050/17062024123023/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8050/17062024124213/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8050/18062024121810/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8050/18072024120409/info.zip
@@ -11756,6 +11822,7 @@ http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8051/13092024065731/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8051/14062024072833/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8051/14062024074014/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8051/14082024065337/info.zip
+http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8051/15072024080017/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8051/15072024084956/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8051/16082024070308/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8051/16092024071437/info.zip
@@ -11827,6 +11894,7 @@ http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8059/09092024080429/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8059/10092024080037/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8059/11072024080039/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8059/11092024075310/info.zip
+http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8059/12072024075828/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8059/12082024075637/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8059/12092024065636/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8059/13072024070443/info.zip
@@ -11839,6 +11907,7 @@ http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8059/16082024071234/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8059/17062024075813/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8059/17072024080628/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8059/17082024070657/info.zip
+http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8059/18062024074945/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8059/18072024080738/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8059/19062024070824/info.zip
 http://200.14.250.72/TmpFTP/DELCACHEPRODUTOSEG/1/8059/19072024081323/info.zip
@@ -12081,6 +12150,7 @@ http://208.84.100.209/arm5
 http://208.84.100.209/arm7
 http://208.84.100.209/bee
 http://208.84.100.209/bins/amd64
+http://208.84.100.209/bins/arm
 http://208.84.100.209/bins/arm5
 http://208.84.100.209/bins/arm7
 http://208.84.100.209/bins/c.sh
@@ -12936,6 +13006,7 @@ http://222.138.148.135:55141/i
 http://222.138.148.189:48041/bin.sh
 http://222.138.148.189:48041/i
 http://222.138.150.90:41233/i
+http://222.138.151.220:36233/i
 http://222.138.176.226:35376/bin.sh
 http://222.138.176.226:35376/i
 http://222.138.178.99:37522/i
@@ -13109,6 +13180,7 @@ http://222.239.87.50:8020/Big/Html/info.zip
 http://222.239.87.50:8020/Big/IMG001.exe
 http://222.239.87.50:8020/Big/Microsoft.SQL.Server.2012.Enterprise.Edition.with.Service.Pack.1-KOPiE/info.zip
 http://222.239.87.50:8020/Big/SQL%20server%202014/info.zip
+http://222.239.87.50:8020/Big/info.zip
 http://222.239.87.50:8020/INCIS/info.zip
 http://222.239.87.50:8020/INCIS/key/INIpayTest/info.zip
 http://222.239.87.50:8020/INCIS/key/info.zip
@@ -13330,6 +13402,8 @@ http://27.215.177.122:48109/bin.sh
 http://27.215.177.122:48109/i
 http://27.215.178.100:35564/bin.sh
 http://27.215.178.100:35564/i
+http://27.215.178.128:53896/bin.sh
+http://27.215.178.128:53896/i
 http://27.215.179.137:58537/bin.sh
 http://27.215.179.137:58537/i
 http://27.215.180.93:55322/bin.sh
@@ -13513,6 +13587,7 @@ http://27.72.159.162:1000/AV.lnk
 http://27.72.159.162:1000/AV.scr
 http://27.72.159.162:1000/Photo.lnk
 http://27.72.159.162:1000/Photo.scr
+http://27.72.159.162:1000/Video.lnk
 http://27.72.159.162:1000/Video.scr
 http://27.72.159.162:1000/info.zip
 http://27.8.107.22:35440/bin.sh
@@ -13745,6 +13820,7 @@ http://36.33.110.30:46205/bin.sh
 http://36.33.110.30:46205/i
 http://36.48.114.232:55244/bin.sh
 http://36.48.114.232:55244/i
+http://36.64.14.250:38834/i
 http://36.64.210.218:25588/.i
 http://36.64.210.218:25588/Mozi.m
 http://36.64.210.218:25588/i
@@ -13798,6 +13874,7 @@ http://37.157.212.138:58474/
 http://37.157.212.138:58474/.i
 http://37.157.212.138:58474/i
 http://37.202.49.118:56648/Mozi.m
+http://37.202.49.118:56648/i
 http://37.220.123.125:45497/.i
 http://37.220.123.125:45497/i
 http://37.233.63.185:33423/Mozi.m
@@ -16141,6 +16218,7 @@ http://46.16.150.139:57092/i
 http://46.175.139.20:11074/i
 http://46.210.109.1:802/sshd
 http://46.218.75.240:27473/.i
+http://46.218.75.240:27473/i
 http://46.224.18.6:8888/Installer.msi
 http://46.23.108.236/gov.armv4l
 http://46.23.108.236/gov.armv5l
@@ -16157,6 +16235,8 @@ http://46.236.172.14:52490/i
 http://46.236.65.136:52468/bin.sh
 http://46.236.65.136:52468/i
 http://46.236.65.145:47053/bin.sh
+http://46.236.65.74:39313/bin.sh
+http://46.236.65.74:39313/i
 http://46.236.65.74:57702/bin.sh
 http://46.236.65.74:57702/i
 http://46.250.54.75:83//sshd
@@ -16226,6 +16306,7 @@ http://47.111.109.74:8890/i
 http://47.111.109.74:8891/i
 http://47.111.109.74:8892/i
 http://47.120.20.86:8888/02.08.2022.exe
+http://47.120.32.72:8075/02.08.2022.exe
 http://47.121.137.8/02.08.2022.exe
 http://47.123.4.165:8880/i
 http://47.123.4.165:8883/i
@@ -16464,6 +16545,7 @@ http://5.42.58.234:54648/i
 http://5.77.24.7:52490/bin.sh
 http://5.77.24.7:52490/i
 http://5.79.147.245:47869/bin.sh
+http://5.79.147.245:47869/i
 http://5.89.102.77/AV.lnk
 http://5.89.102.77/AV.scr
 http://5.89.102.77/Photo.lnk
@@ -16590,6 +16672,7 @@ http://59.42.91.70:56735/bin.sh
 http://59.42.91.70:56735/i
 http://59.56.110.227:99/buding/dbghelp.dll
 http://59.60.77.139:52740/i
+http://59.7.114.186:25051/.i
 http://59.7.114.186:25051/i
 http://59.7.131.145:23251/.i
 http://59.7.131.145:23251/i
@@ -17948,6 +18031,7 @@ http://80.11.25.16:41800/AV.scr
 http://80.11.25.16:41800/Photo.lnk
 http://80.11.25.16:41800/Photo.scr
 http://80.11.25.16:41800/Video.lnk
+http://80.11.25.16:41800/Video.scr
 http://80.11.25.16:41800/info.zip
 http://80.11.36.4:10014/sshd
 http://80.11.36.4:10018/sshd
@@ -17979,6 +18063,7 @@ http://80.76.101.102:22010/i
 http://81.133.96.61:8080/AV.lnk
 http://81.133.96.61:8080/Photo.lnk
 http://81.133.96.61:8080/Video.lnk
+http://81.151.191.4:60003/sshd
 http://81.151.191.4:60009/sshd
 http://81.151.191.4:60011/sshd
 http://81.151.191.4:60019/sshd
@@ -17987,6 +18072,7 @@ http://81.151.191.4:60030/sshd
 http://81.152.253.99:81/sshd
 http://81.152.253.99:82/sshd
 http://81.16.242.236:28115/.i
+http://81.16.242.236:28115/Mozi.m
 http://81.16.242.236:28115/i
 http://81.16.247.81:17403/.i
 http://81.16.247.81:17403/Mozi.m
@@ -18088,6 +18174,7 @@ http://81.42.249.132:5000/Video.lnk
 http://81.42.249.132:5000/Video.scr
 http://81.45.183.125:10062/sshd
 http://81.45.183.125:10072/sshd
+http://81.68.89.216:8088/02.08.2022.exe
 http://81.69.185.184:8888/WxWorkApis.dll
 http://81.69.185.184:8888/WxWorkMultiOpen.exe
 http://81.95.231.60:41984/i
@@ -18192,6 +18279,7 @@ http://83.217.209.80/loader.sh
 http://83.217.209.80/payload.sh
 http://83.218.189.21:5195/
 http://83.218.189.21:5195/Mozi.m
+http://83.218.189.21:5195/i
 http://83.218.189.41:60645/.i
 http://83.218.189.41:60645/i
 http://83.219.1.198:41147/bin.sh
@@ -18896,6 +18984,7 @@ http://91.92.242.236/files-129312398/files/file_fd84166d2046cf3a.exe
 http://91.92.242.236/files-129312398/files/file_fd896ea145f39dc0.dll:::Start
 http://91.92.242.236/files-129312398/files/file_fdd177b589499a08.exe
 http://91.92.242.236/files/file_f62e597c9e278a4b.exe
+http://91.92.242.236/oPvjr94jfe/Plugins/cred.dll
 http://91.92.242.236/oPvjr94jfe/Plugins/cred64.dll
 http://91.92.242.236/oPvjr94jfe/Plugins/vnc.exe
 http://91.92.242.236/opvjr94jfe/index.php
@@ -19119,6 +19208,7 @@ http://94.226.135.252/AV.scr
 http://94.226.135.252/Photo.lnk
 http://94.226.135.252/Photo.scr
 http://94.226.135.252/Video.scr
+http://94.226.135.252/info.zip
 http://94.230.141.123:34737/bin.sh
 http://94.230.141.123:34737/i
 http://94.230.141.123:39064/bin.sh
@@ -19272,6 +19362,7 @@ http://99.71.130.109:8040//sshd
 http://99.71.130.109:8040/sshd
 http://99.71.130.109:8041//sshd
 http://99.71.130.109:8041/sshd
+http://99.71.130.109:8042//sshd
 http://99.71.130.109:8042/sshd
 http://99.71.130.109:8048//sshd
 http://99.71.130.109:8048/sshd
@@ -19527,6 +19618,7 @@ http://cdn-10049480.file.myqcloud.com/jd/jd144.exe
 http://cdn-10049480.file.myqcloud.com/jd/jd145.exe
 http://cdn-10049480.file.myqcloud.com/jd/jd156.exe
 http://cdn-10049480.file.myqcloud.com/qcoin/qcoin128.exe
+http://cdn-10049480.file.myqcloud.com/qcoin/qcoin130.exe
 http://cdn-10049480.file.myqcloud.com/qcoin/qcoin133.exe
 http://cdn-10049480.file.myqcloud.com/qcoin/qcoin139.exe
 http://cdn-10049480.file.myqcloud.com/qcoin/qcoin140.exe
@@ -19866,6 +19958,7 @@ http://digital-node-cloud-ops-manual.wiki/e990fc18-0966-4b52-a667-cd31e6b885ce/g
 http://digital-node-cloud-ops-manual.wiki/eb15536a-beb1-4cdc-8e0b-dcae28ed1549/google.ct
 http://digobkp.store/MSI_095637.png
 http://dilmurodbabadjanov9-boop.github.io/login-page/
+http://disk.accord1key.cn/txdown_disk/%E8%BD%AF%E4%BB%B6%E4%BD%BF%E7%94%A8/%E7%BC%BA%E5%A4%B1%E4%B8%8B%E8%BD%BD/plugin.dll
 http://dl.1003b.56a.com/pub/1003b/Patch/Patch_Data/Patch_0.3300/1003b.exe
 http://dl.360safe.com/offlinepackv4.exe
 http://dl.dzqzd.com/wj1bsetup.exe
@@ -19939,6 +20032,7 @@ http://dweixin.cn/gttu/xOfSL/
 http://dynmarka.swimsuit-unable.lat/shednndce-looge-hronospp-up83sds35-onboard/wverif.camp
 http://dynmarkos6.fira6dox.lat/57oe-aget-358671-chess-345msdn01/take.dll
 http://e-bigprint.ro/
+http://electri.billregulator.com/aTu.lim
 http://elisans.novayonetim.com/Products/4001/Updates/eFatura/EFatura.exe
 http://elpolacodelsur1.duckdns.org/31agosto.vbs
 http://elpolacodelsur2.duckdns.org/31agosto.vbs
@@ -20119,6 +20213,7 @@ http://github.com/ericsribas/linux-studies/releases/download/v2.0/software.zip
 http://github.com/farizalsalman21/keon/releases/download/v2.0/Release_x64.zip
 http://github.com/fengjixuchui/CVE-2022-26810/raw/refs/heads/main/shellcode.bin
 http://github.com/fericarr/newky/raw/refs/heads/main/prueba.exe
+http://github.com/ff245185/payload/raw/refs/heads/main/Fast%20Download.exe
 http://github.com/fsabxh/sfdawsdawdaw/raw/refs/heads/main/Serials_Checker.exe
 http://github.com/ggusercool/PancakeSwapBnbPrediction/releases/download/v2.0/Software.zip
 http://github.com/giiyu12/Codex-Roblox/releases/download/v2.0/Software.zip
@@ -20128,6 +20223,7 @@ http://github.com/kasonsh2450/bananan-shooter-hack-interna-/releases/download/v2
 http://github.com/keygroup777-Ransomware/DOWNLOADER/raw/refs/heads/main/black.exe
 http://github.com/lbormann/darts-gif/releases/download/v1.1.0/darts-gif.exe
 http://github.com/lbormann/darts-pixelit/releases/download/v1.2.2/darts-pixelit.exe
+http://github.com/lbormann/darts-wled/releases/download/v1.8.1/darts-wled.exe
 http://github.com/mae-luadev/mae-tests/raw/main/System.exe
 http://github.com/mehedihasanfarabi10/githubtutorial/releases/download/v2.0/Software.zip
 http://github.com/mikf/gallery-dl/releases/download/v1.15.0/gallery-dl.exe
@@ -20176,6 +20272,7 @@ http://go.cmplistsonline.com/bins.sh
 http://go.cmplistsonline.com/lightcloudEN.mips
 http://go.cmplistsonline.com/lightcloudEN.mpsl
 http://go.cmplistsonline.com/lightcloudEN.x86
+http://gobiotechpestcontrol.com/powerpc.nn
 http://goto.stnts.com/eypipe/pipefile/adpopup/adpopup_1382523956.exe
 http://grandtheftauto6.cc/8USDaF.arm5
 http://grandtheftauto6.cc/8USDaF.arm6
@@ -21030,6 +21127,7 @@ http://veryboys.com/game/download/zip/waigua/mu/2003/07/20030721.exe
 http://veryboys.com/game/download/zip/waigua/shiqi/2003/06/20030620.exe
 http://vgd.vg/7MN5ZO8D/
 http://vgd.vg/Document/En/Need-to-send-the-attachment
+http://videomeetgoogle.com/
 http://videosparrow.cloudmesh.lat/0shl86c5-49ae-4854-a5b9-368f88ad4245/auth.check
 http://vincentdemiero.com/documeynt9897.zip
 http://vincentdemiero.com/fta.exe
@@ -21217,6 +21315,7 @@ http://wittenhorst.eu/tmp/imgs.exe
 http://woodenships-wholesale.com/urr/1i/wn/WXqsoTcW.zip
 http://www.15387.xyz/
 http://www.365safeoffice.com/AccountSelection/c/
+http://www.ardguisser.com/IUIA-qgkdtq2rfbXD7Z_LjIAENgVq-4CY/
 http://www.chenwangqiao.com/wordpress/3waa9-ke38h-15/
 http://www.chenwangqiao.com/wordpress/FILE/
 http://www.chenwangqiao.com/wordpress/wp-lm9-32/
@@ -22677,6 +22776,8 @@ https://cwpjb6yk.arch-vivarium.lat/draw-msft-cl0ud-acc-trust7934/gettwo.dll
 https://cwu211x.taro5lin.lat/57oe-aget-358671-chess-345msdn01/take.dll
 https://cwzbp.wlwyb.com/c5c29ee6-a48f-42ec-a6cd-aa86153ae5be
 https://cxaxqwe.sm188login.cfd/c28ad606-0cfc-4e1a-be32-a18cceb68a28
+https://cxexxbb.apk.bet/40307153-9aef-4dbc-b1a7-edd1377e528f
+https://cxfvahh.404bet.casino/dc47a586-fc06-4f6d-81c3-275864896218
 https://cy75lpfn.xano4mel.lat/57oe-aget-358671-chess-345msdn01/take.dll
 https://cyber-defensepro.christmas/61fd8544-b2a4-4acd-b26f-e33cd488d250/g.ch
 https://cyber-prosthetic.fit/eee2f6c7-ef09-4838-8901-8e33fb759171/zone.id
@@ -23221,6 +23322,7 @@ https://e31txu7.eight-education.lat/kl0n-green-excel-yy3775-get65/gett3.verifica
 https://e75usda.lena3qit.lat/57oe-aget-358671-chess-345msdn01/take.dll
 https://eaglefungustourismscreen.wiki/71bfad22-f3da-400d-90f7-609a9872c642/google.ct
 https://eaglefungustourismscreen.wiki/ac459173-32bf-40ba-86e9-9530cedddeda/google.ct
+https://easybrand.vn/wp-content/uploads/2021/01/spell.php
 https://easybrand.vn/wp-content/uploads/2021/01/stored.php
 https://ebzwaki.bakhtbetyek.com/9708a2cf-caf8-4e10-b4ad-102be7310d44
 https://echo-sync.sorix7en.surf/kiss-m0dem-defndr-myrai-sdf934/kwtor.dll
@@ -23245,6 +23347,7 @@ https://edge-processing-network.courses/ce857951-9f2c-42b8-8a25-428b16935851/goo
 https://edge-processing-network.wiki/c850bf60-243d-4cbb-b6ab-80f4def598ab/google.ct
 https://edge.cloudproxyserv.pics/c2cb43a1-3db9-486a-a707-ee88bcdb4813/google.ocx
 https://edge.metadrive.surf/9fd51fb7-b3ad-4c8f-bf05-b5423d14e06c/user_6747.google
+https://effgtty.ar888starz.bet/da58a8ec-dc07-4f47-a5c4-e32aff401e7b
 https://efk47wb3.skewedencro2ch.lat/kl0re-best34kjfeen-fmmexcel-wr3775-on75/on3.verification
 https://eg125q1i.dvfb-vn.com/?ublib=2426627f-a310-444c-b05e-d8d4ebcd3078
 https://eh-masled.courses/f933ae6c-0b5c-4098-81ea-fceefcbdbf2a/google.ct
@@ -23326,6 +23429,7 @@ https://everycarebd.com/imagecopy0956.png
 https://everycarebd.com/imagecopy777.png
 https://everycarebd.com/imagefile001.png
 https://everycarebd.com/imagefre9003.png
+https://everycarebd.com/imagefresk090.png
 https://everycarebd.com/imagefryito6789.png
 https://everycarebd.com/imagehola21.png
 https://everycarebd.com/imageiuyre99.png
@@ -23512,6 +23616,7 @@ https://frost.oceanblue.surf/57oe-aget-358671-chess-345msdn01/take.dll
 https://frost.winterpeak.surf/9fd51fb7-b3ad-4c8f-bf05-b5423d14e06c/user_6747.google
 https://frozi.cc/Stb/Retev.php?bl=3HbukcRuJG1pozF7WsPRE002.txt
 https://frozi.cc/Stb/Retev.php?bl=SlJURzJSSLqCMDTxDoLCW013.txt
+https://frozi.cc/Stb/Retev.php?bl=SqUBYKf3Ta5KBKp13hPRE008.txt
 https://frozi.cc/Stb/Retev.php?bl=snCpakG7g9FWRE65PsLCW016.txt
 https://frygzjyhtiunvhvnacif.supabase.co/storage/v1/object/public/nano_duso/image.jpg
 https://frygzjyhtiunvhvnacif.supabase.co/storage/v1/object/public/nano_duso/image.jpg?12711343
@@ -23729,6 +23834,7 @@ https://github.com/Benkku25/assets/raw/41f4f8f16b76af39e1bc3f8024b66010dd2617c7/
 https://github.com/Berstarhunter/deepseek-start/releases/download/v1.0/Software.zip
 https://github.com/Berstarhunter/deepseek-start/releases/download/v2.0/Software.zip
 https://github.com/BinniZenobioCordovaLeandro/apachimuhkayqui-server/releases/download/v2.0/Software.zip
+https://github.com/BoOoDy123/manual-brick-breaker/releases/download/v2.0/Software.zip
 https://github.com/BoomerXD69/Amog-OS-LTS/releases/download/v2.0/Software.zip
 https://github.com/BoomerXD69/Fixing-Error-0xc00000ba/releases/download/v2.0/Software.zip
 https://github.com/BradOraHacker001/Flash-Md/raw/refs/heads/main/bdd/Md-Flash-v3.6.zip
@@ -23803,6 +23909,7 @@ https://github.com/Emacute/maize_disease_detection_system/raw/refs/heads/main/sy
 https://github.com/EricSRibas/linux-studies/releases/download/v2.0/Software.zip
 https://github.com/Espressivep/Nextjs-Tailwind-PostgreSQL-Project-Template/raw/refs/heads/main/app/Project-Nextjs-Template-Tailwind-Postgre-SQ-v1.9.zip
 https://github.com/Espressivep/espressivep.github.io/raw/refs/heads/main/infelicitousness/io-espressivep-github-2.5.zip
+https://github.com/Ewoba/ewoba.github.io/raw/refs/heads/main/lampoon/io_github_ewoba_v3.4.zip
 https://github.com/Ewoba/kick-tg-rewards/raw/refs/heads/main/backend-python/rem/Lib/site-packages/pip/_vendor/packaging/tg-kick-rewards-v2.9.zip
 https://github.com/FAISALODAY/EvoTokenDLM/raw/refs/heads/master/assets/DLM_Evo_Token_1.0.zip
 https://github.com/FAISALODAY/faisaloday.github.io/raw/refs/heads/main/vesiculigerous/github_faisaloday_io_2.8.zip
@@ -23936,6 +24043,7 @@ https://github.com/Luffy1402/CrackFtp-la/raw/refs/heads/main/gimped/Ftp-la-Crack
 https://github.com/MAH-22/Room-Occupancy-Prediction-using-Environmental-Sensor-Data/releases/download/v1.0/Application.zip
 https://github.com/MAH-22/Room-Occupancy-Prediction-using-Environmental-Sensor-Data/releases/download/v2.0/Software.zip
 https://github.com/MRX-slayer/ai-resume-parser/releases/download/v1.0/Application.zip
+https://github.com/MRX-slayer/ai-resume-parser/releases/download/v1.0/Program.zip
 https://github.com/MRX-slayer/ai-resume-parser/releases/download/v2.0/Software.zip
 https://github.com/MTELEJ/mtelej.github.io/raw/refs/heads/main/outdream/io-github-mtelej-2.2.zip
 https://github.com/MTELEJ/solana-dev-skill/raw/refs/heads/main/skill/solana-dev-skill-3.6.zip
@@ -24049,6 +24157,7 @@ https://github.com/RICARDOCRC735/NavicatPwn/releases/download/3.2.3/NavicatPwn-3
 https://github.com/RILA111/content2map/releases/download/v1.0/Software.zip
 https://github.com/Rafael1679/assets/raw/refs/heads/master/Launcher.zip
 https://github.com/Rag7720/coretech-solutions-custom-odoo-module/releases/download/v1.0/Software.zip
+https://github.com/Rag7720/coretech-solutions-custom-odoo-module/releases/download/v2.0/Software.zip
 https://github.com/Rahul110110/rocket-telemetry-logger-using-raspberry-pi-pico/releases/download/v1.0/Software.zip
 https://github.com/Rahul110110/rocket-telemetry-logger-using-raspberry-pi-pico/releases/download/v2.0/Software.zip
 https://github.com/Rahulpa045/CphishTermux/releases/download/v1.0/Software.zip
@@ -24137,6 +24246,7 @@ https://github.com/Tatooo29/project-hub/releases/download/v1.0/Application.zip
 https://github.com/Tatooo29/project-hub/releases/download/v2.0/Software.zip
 https://github.com/Thandoman/SeedTool/releases/download/v1.0/Application.zip
 https://github.com/Thandoman/SeedTool/releases/download/v2.0/Software.zip
+https://github.com/ThejanGS2/zigantic/raw/refs/heads/main/docs/.vitepress/Software_v3.4.zip
 https://github.com/Thiagx08/BUE-Introduction-to-Programming-and-Problem-Solving/releases/download/v1.0/Release_x64.zip
 https://github.com/Thiagx08/BUE-Introduction-to-Programming-and-Problem-Solving/releases/download/v2.0/Software.zip
 https://github.com/Thurynw/uOffice_LIBrary_UOT/releases/download/v1.0/Software.zip
@@ -24218,6 +24328,7 @@ https://github.com/alfa786-creator/pic-squeeze/releases/download/v1.0/Software.z
 https://github.com/algobytesolutions/Best-Crypto-Telegram-Channels/raw/refs/heads/main/analyzer/migrations/Channels_Crypto_Telegram_Best_v2.7.zip
 https://github.com/algobytesolutions/algobytesolutions.github.io/raw/refs/heads/main/das/algobytesolutions-github-io-1.8.zip
 https://github.com/algobytesolutions/algobytesolutions.github.io/raw/refs/heads/main/das/io-github-algobytesolutions-v1.7-beta.4.zip
+https://github.com/alinaitweshalifu28-netizen/2/raw/refs/heads/main/1/3.log
 https://github.com/alinaitweshalifu28-netizen/2/raw/refs/heads/main/1/4.log
 https://github.com/amandwivedi0/device_xiaomi_santoni/releases/download/v1.0/Application.zip
 https://github.com/amandwivedi0/device_xiaomi_santoni/releases/download/v2.0/Software.zip
@@ -24738,6 +24849,7 @@ https://github.com/shellyACM/imgx/releases/download/v2.0/Software.zip
 https://github.com/shirfor/autoforjob/releases/download/v1.0/Software.zip
 https://github.com/shirfor/autoforjob/releases/download/v2.0/Software.zip
 https://github.com/sid2983/-1aa-Valoranta/releases/download/d0wn10ad/ValCheat.zip
+https://github.com/silenthashik/winring/raw/main/WinRing0x64.sys
 https://github.com/simplefastfunnels254/tg-cybersec/releases/download/v2.7.1/tg-cybersec-v2.7.1.zip
 https://github.com/skata123a/Roblox-Fisch-Script/raw/refs/heads/main/overchief/Script_Fisch_Roblox_v3.3.zip
 https://github.com/ske1et2/Telegrams-Best-Scrapper/raw/refs/heads/main/slouchy/Telegrams-Best-Scrapper.zip
@@ -25266,6 +25378,7 @@ https://igyom.technologiaiviz.hu/f99ab23b-06a2-4854-a391-7671809bbcc1
 https://ihmmkvkaiwnilneauhfn.supabase.co/storage/v1/object/public/hold/image.jpg
 https://ihmmkvkaiwnilneauhfn.supabase.co/storage/v1/object/public/hold/image.jpg?12711343
 https://ihmmkvkaiwnilneauhfn.supabase.co/storage/v1/object/public/hold/image.jpg?12711343h
+https://ihmqfsm.arabicbet.casino/4c2862f8-a934-4a49-b515-ae5e8eccf83a
 https://ihtfqktk.holiday-matrix.christmas/96b7aba8-3295-4cfa-ba52-95f2dcc75e6a
 https://iiamtrbo.liketudong.biz/?ublib=ac6d6fe8-fc98-4e87-b4e6-70bb8e134741
 https://iigbclf.1dorelax.surf/kiss-m0dem-defndr-myrai-sdf934/kwtor.dll
@@ -25357,6 +25470,7 @@ https://img1.wsimg.com/blobby/go/22a15b49-22b8-4edf-a855-4e76194b4aaf/downloads/
 https://img1.wsimg.com/blobby/go/23c146af-6c5b-426f-944d-9bf55106e4d8/downloads/de_quien_es_hija_elisa_salinas.pdf
 https://img1.wsimg.com/blobby/go/23ec0b56-0ae7-4e41-8565-08e517b0b386/downloads/gatamalepuberik.pdf
 https://img1.wsimg.com/blobby/go/2470d53e-fef7-4646-9c8b-919894e66d18/downloads/72646482584.pdf
+https://img1.wsimg.com/blobby/go/24a9af23-a9c8-45b6-80f8-335651f17510/downloads/96094090900.pdf
 https://img1.wsimg.com/blobby/go/262ea410-a887-458b-b5ec-65748ef01e57/downloads/75258476975.pdf
 https://img1.wsimg.com/blobby/go/26bbb7e6-2f83-462e-b1a0-c9b7b5a50d38/downloads/training_needs_assessment_questionnaire_for_sales.pdf
 https://img1.wsimg.com/blobby/go/27f26436-44ad-4647-8929-a76a4ea0ea67/downloads/sample_query_letter_for_negligence_of_duty.pdf
@@ -25427,6 +25541,7 @@ https://img1.wsimg.com/blobby/go/397fbc33-145f-44ec-a774-e1fa1b866d82/downloads/
 https://img1.wsimg.com/blobby/go/3a657e0c-a872-4028-94b8-811aea249c49/downloads/shl_general_ability_test_answers_reddit.pdf
 https://img1.wsimg.com/blobby/go/3a90d4c9-f215-49ec-8178-8e50febf5250/downloads/tedutogonisijetinikiw.pdf
 https://img1.wsimg.com/blobby/go/3abea8f6-1776-4586-b4e6-47b414d29e30/downloads/mozosadoboligemuwisuwet.pdf
+https://img1.wsimg.com/blobby/go/3c8f7a45-f68c-4369-8f63-be6429599400/downloads/butulanimirovubeve.pdf
 https://img1.wsimg.com/blobby/go/3ccd9234-721c-480b-91a1-84bae34c2069/downloads/votudomafuze.pdf
 https://img1.wsimg.com/blobby/go/3d0a6e54-c95b-4e67-871e-882f39f9c203/downloads/38102271043.pdf
 https://img1.wsimg.com/blobby/go/3d0a6e54-c95b-4e67-871e-882f39f9c203/downloads/77235011630.pdf
@@ -25455,6 +25570,7 @@ https://img1.wsimg.com/blobby/go/4365da4a-8d29-4708-8e67-b3b566794d83/downloads/
 https://img1.wsimg.com/blobby/go/437a989b-0a84-4105-b8c7-1870eb56af29/downloads/sbi_disbursement_request_form.pdf
 https://img1.wsimg.com/blobby/go/4402180a-d4b9-4c2e-b606-353fcb7d5a18/downloads/3730146334.pdf
 https://img1.wsimg.com/blobby/go/4402180a-d4b9-4c2e-b606-353fcb7d5a18/downloads/39834772333.pdf
+https://img1.wsimg.com/blobby/go/4402180a-d4b9-4c2e-b606-353fcb7d5a18/downloads/4959938645.pdf
 https://img1.wsimg.com/blobby/go/4402180a-d4b9-4c2e-b606-353fcb7d5a18/downloads/doxuwiponubagexotabos.pdf
 https://img1.wsimg.com/blobby/go/4402180a-d4b9-4c2e-b606-353fcb7d5a18/downloads/how_to_get_gst_invoice_for_amazon_purchase.pdf
 https://img1.wsimg.com/blobby/go/4402180a-d4b9-4c2e-b606-353fcb7d5a18/downloads/jakirezimukixinirivuvizuw.pdf
@@ -25622,6 +25738,7 @@ https://img1.wsimg.com/blobby/go/671d8571-de15-47bb-8cd8-b624751dbe0e/downloads/
 https://img1.wsimg.com/blobby/go/671d8571-de15-47bb-8cd8-b624751dbe0e/downloads/antibiotic_sensitivity_chart_sanford_guide.pdf
 https://img1.wsimg.com/blobby/go/671d8571-de15-47bb-8cd8-b624751dbe0e/downloads/bevakabopodo.pdf
 https://img1.wsimg.com/blobby/go/671d8571-de15-47bb-8cd8-b624751dbe0e/downloads/compassionate_leave_letter_examples.pdf
+https://img1.wsimg.com/blobby/go/671d8571-de15-47bb-8cd8-b624751dbe0e/downloads/country_of_origin_letter_template.pdf
 https://img1.wsimg.com/blobby/go/671d8571-de15-47bb-8cd8-b624751dbe0e/downloads/dasuxugolod.pdf
 https://img1.wsimg.com/blobby/go/671d8571-de15-47bb-8cd8-b624751dbe0e/downloads/dungeon_crawl_classics.pdf
 https://img1.wsimg.com/blobby/go/671d8571-de15-47bb-8cd8-b624751dbe0e/downloads/dupibutemuxubezukexe.pdf
@@ -25731,6 +25848,7 @@ https://img1.wsimg.com/blobby/go/7c4463e3-109c-48af-b9be-98e22cdf2116/downloads/
 https://img1.wsimg.com/blobby/go/7c4463e3-109c-48af-b9be-98e22cdf2116/downloads/36054141231.pdf
 https://img1.wsimg.com/blobby/go/7c4463e3-109c-48af-b9be-98e22cdf2116/downloads/36770579775.pdf
 https://img1.wsimg.com/blobby/go/7c4463e3-109c-48af-b9be-98e22cdf2116/downloads/41138401642.pdf
+https://img1.wsimg.com/blobby/go/7c4463e3-109c-48af-b9be-98e22cdf2116/downloads/44443741873.pdf
 https://img1.wsimg.com/blobby/go/7c4463e3-109c-48af-b9be-98e22cdf2116/downloads/45659404876.pdf
 https://img1.wsimg.com/blobby/go/7c4463e3-109c-48af-b9be-98e22cdf2116/downloads/54016191818.pdf
 https://img1.wsimg.com/blobby/go/7c4463e3-109c-48af-b9be-98e22cdf2116/downloads/5528845131.pdf
@@ -25907,6 +26025,7 @@ https://img1.wsimg.com/blobby/go/88933df5-ca10-43b5-b140-6aa02868b89c/downloads/
 https://img1.wsimg.com/blobby/go/88933df5-ca10-43b5-b140-6aa02868b89c/downloads/bisebinalujivefiwugagabu.pdf
 https://img1.wsimg.com/blobby/go/88933df5-ca10-43b5-b140-6aa02868b89c/downloads/fiselarodinolapin.pdf
 https://img1.wsimg.com/blobby/go/88933df5-ca10-43b5-b140-6aa02868b89c/downloads/kitab_shams_al_maarif.pdf
+https://img1.wsimg.com/blobby/go/88933df5-ca10-43b5-b140-6aa02868b89c/downloads/wapurexep.pdf
 https://img1.wsimg.com/blobby/go/88933df5-ca10-43b5-b140-6aa02868b89c/downloads/woleb.pdf
 https://img1.wsimg.com/blobby/go/8aa13dbf-c0c5-4fe7-ae15-62e5c33a20e4/downloads/hewlett-packard_18e7_motherboard_specs.pdf
 https://img1.wsimg.com/blobby/go/8c16f145-4fc0-4af7-a4db-de4acd818fe4/downloads/14431999044.pdf
@@ -26000,6 +26119,7 @@ https://img1.wsimg.com/blobby/go/a3d7189d-efc6-47e1-bbe5-dc5eeaf610a0/downloads/
 https://img1.wsimg.com/blobby/go/a435afa7-bc93-481f-8a35-ce503cc8a972/downloads/sri_rudram_namakam_chamakam_tamil.pdf
 https://img1.wsimg.com/blobby/go/a4c519f1-5301-485e-9e9c-56d1397df289/downloads/79371210580.pdf
 https://img1.wsimg.com/blobby/go/a56a106f-21b9-46c2-b5bc-12461919334c/downloads/vurarufa.pdf
+https://img1.wsimg.com/blobby/go/a580c741-29a0-435a-a011-6aa538a5edae/downloads/25870917787.pdf
 https://img1.wsimg.com/blobby/go/a5a93100-d349-4291-8bce-18547efeb268/downloads/14773335318.pdf
 https://img1.wsimg.com/blobby/go/a5d43283-67be-4a3b-9041-1427b691166f/downloads/dotadaxokokimidupoz.pdf
 https://img1.wsimg.com/blobby/go/a618ca0f-2608-47c2-ab22-bbc2ca127bb7/downloads/saziva.pdf
@@ -26071,6 +26191,7 @@ https://img1.wsimg.com/blobby/go/bb45e14d-29c5-4287-b67f-843105f3b091/downloads/
 https://img1.wsimg.com/blobby/go/bb45e14d-29c5-4287-b67f-843105f3b091/downloads/continental_online_assessment_test_answers.pdf
 https://img1.wsimg.com/blobby/go/bb45e14d-29c5-4287-b67f-843105f3b091/downloads/wilikof.pdf
 https://img1.wsimg.com/blobby/go/bc2ad79b-5832-4a2d-a335-92537db54849/downloads/pinestars_choice.pdf
+https://img1.wsimg.com/blobby/go/bc2da57a-5cad-4b1e-b658-8efa7e30bee5/downloads/como_transferir_saldo_de_dados_unitel.pdf
 https://img1.wsimg.com/blobby/go/bd6582d9-c54a-4b0b-ad89-3fd92efb45aa/downloads/50362295282.pdf
 https://img1.wsimg.com/blobby/go/bd6582d9-c54a-4b0b-ad89-3fd92efb45aa/downloads/88847399269.pdf
 https://img1.wsimg.com/blobby/go/bd6582d9-c54a-4b0b-ad89-3fd92efb45aa/downloads/aocs_official_method_ce_1b_89.pdf
@@ -26264,6 +26385,7 @@ https://img1.wsimg.com/blobby/go/ddc49093-0792-428b-8073-6170b30113a2/downloads/
 https://img1.wsimg.com/blobby/go/ddc49093-0792-428b-8073-6170b30113a2/downloads/jiwekonuwokesarejibezan.pdf
 https://img1.wsimg.com/blobby/go/ddc49093-0792-428b-8073-6170b30113a2/downloads/ritiwuga.pdf
 https://img1.wsimg.com/blobby/go/ddc49093-0792-428b-8073-6170b30113a2/downloads/taski_procarpet_45_manual.pdf
+https://img1.wsimg.com/blobby/go/ddcbbbab-f8a6-4067-a450-a2f971a66e79/downloads/daikin_ac_remote_control_guide.pdf
 https://img1.wsimg.com/blobby/go/de43da9e-bc77-4e56-a909-0e72ba746cf9/downloads/electricity_bill_name_change_noc_format.pdf
 https://img1.wsimg.com/blobby/go/de9155fa-7173-4766-94c3-9e400d4aed58/downloads/def_stan_91-91.pdf
 https://img1.wsimg.com/blobby/go/de9d9f96-a289-4877-85d4-e6d2d4cc419c/downloads/minerva_t2000_manual.pdf
@@ -26296,6 +26418,7 @@ https://img1.wsimg.com/blobby/go/e0c7674b-f7b5-484b-aa64-84014ad9ac8c/downloads/
 https://img1.wsimg.com/blobby/go/e262bb3c-3205-4bb6-954b-f565479d59e0/downloads/50787175728.pdf
 https://img1.wsimg.com/blobby/go/e262bb3c-3205-4bb6-954b-f565479d59e0/downloads/examenes_psicometricos_pruebas_psicometricas_gratis_para_imp.pdf
 https://img1.wsimg.com/blobby/go/e297ab99-26f3-4763-8aa9-4b5ba8336826/downloads/61556440139.pdf
+https://img1.wsimg.com/blobby/go/e2ab423c-1813-4cd0-becb-6a8adbf01641/downloads/ribafimimeriledok.pdf
 https://img1.wsimg.com/blobby/go/e35dded4-68df-49bc-a9b0-aad8c63628c2/downloads/polipuzikiwelines.pdf
 https://img1.wsimg.com/blobby/go/e43067a0-6374-4a70-a00d-00ee3b01ce8d/downloads/93917384180.pdf
 https://img1.wsimg.com/blobby/go/e4335d81-d2e5-4638-9638-30640b1be91f/downloads/sofipidegib.pdf
@@ -26322,6 +26445,7 @@ https://img1.wsimg.com/blobby/go/f264223f-22e7-47f1-947d-9e365a75e217/downloads/
 https://img1.wsimg.com/blobby/go/f2d42ffe-779b-4107-ac42-7f36375aab37/downloads/fojik.pdf
 https://img1.wsimg.com/blobby/go/f2d42ffe-779b-4107-ac42-7f36375aab37/downloads/zeneliginuboripiriza.pdf
 https://img1.wsimg.com/blobby/go/f36019eb-f077-446f-b5b6-39b8eacedf97/downloads/22914289512.pdf
+https://img1.wsimg.com/blobby/go/f36019eb-f077-446f-b5b6-39b8eacedf97/downloads/23513409250.pdf
 https://img1.wsimg.com/blobby/go/f36019eb-f077-446f-b5b6-39b8eacedf97/downloads/69187265192.pdf
 https://img1.wsimg.com/blobby/go/f36019eb-f077-446f-b5b6-39b8eacedf97/downloads/98482064700.pdf
 https://img1.wsimg.com/blobby/go/f4482b02-adbc-4511-a01d-8f5a32444a75/downloads/31982364803.pdf
@@ -26578,6 +26702,7 @@ https://jyothishmathi.in/pinout.php
 https://jyothishmathi.in/ruleless.php
 https://jyothishmathi.in/steeplechases.php
 https://jyothishmathi.in/toothy.php
+https://jyothishmathi.in/unpunished.php
 https://jzufjrnq.floraanalyticshub.garden/bbd819d8-cb31-41b8-8ca8-1d09a2cf3d98/google.cl
 https://k2bs9h2k.proxy-horizon.digital/?ublib=ffde8c91-ceed-427f-bcb0-fd476fb905ef
 https://k5k1f5zd.cloudzone.tr/?ublib=42efb428-9eb4-4b0e-bcdc-d8386c8bb3ff
@@ -27014,6 +27139,7 @@ https://microsmeet.xyz/api/mn/6676097740/update
 https://miixn.wilhelmglobal.com/2351f3ab-b686-481a-8851-3581f1c0e4ae
 https://milan-hasbik.file-online.lat/download
 https://miner.pages.dev/bin/linux/linux.tar.gz
+https://miner.pages.dev/bin/win/miner.zip
 https://miqhc.bmiroda.hu/09016948-1d50-4614-a072-c44cd5771ae4
 https://mistcin.priesthood-in.lat/shednndce-looge-hronospp-up83sds35-onboard/wverif.camp
 https://mistmar.years-very.lat/kl0n-green-excel-yy3775-get65/gett3.verification
@@ -27516,6 +27642,7 @@ https://pastebin.com/raw/FHXeHwzr
 https://pastebin.com/raw/Fu3D5tVi
 https://pastebin.com/raw/Gz3WxtaR
 https://pastebin.com/raw/HeRRLdGM
+https://pastebin.com/raw/J5FxVRF3
 https://pastebin.com/raw/J5NyVLbZ
 https://pastebin.com/raw/JC80YcAE
 https://pastebin.com/raw/JNLjBGHz
@@ -27661,6 +27788,7 @@ https://plasteredplayn.com/sunwukongs.exe
 https://plgb.koyeb.app/dl/6a11f03a2f229e4f44685cb9/WinRAR.exe
 https://pljiquv.destek1.com.tr/207a1bd8-f319-4c75-9e21-526dbb0b1972
 https://plskl.pavlore9.surf/kiss-m0dem-defndr-myrai-sdf934/kwtor.dll
+https://pmieubk.arabs.promo/0ab89340-ef43-4c4e-9f48-0b4cb954e3d4
 https://pnniuwu.popi999.net/01efab7f-a5cf-463a-98be-cb3e24dc251a
 https://pns.org.pk/crt/xe
 https://podcamoss.colonist-proph.lat/kl0re-best34kjfeen-fmmexcel-wr3775-on75/on3.verification
@@ -27930,6 +28058,7 @@ https://raw.githubusercontent.com/C5Hackr/Phantom/main/Phantom/Resources/donut.e
 https://raw.githubusercontent.com/C5Hackr/Phantom/main/Phantom/bin/x64/Release/Phantom.exe
 https://raw.githubusercontent.com/CHAMARA1989/prismos-ai/main/docs/screenshots/prismos_ai_2.6.zip
 https://raw.githubusercontent.com/CaidonW/CaidonW/refs/heads/main/thermojunction/W-Caidon-v3.4.zip
+https://raw.githubusercontent.com/CaidonW/Electrum-Wallet-Multi-Crypto-Secure-Gui-Multi-Coin-Storage-Web-Browser/refs/heads/main/Electrum-Wallet/Properties/lib/Secure-Browser-Storage-Coin-Wallet-Web-Gui-Electrum-Crypto-Multi-1.7.zip
 https://raw.githubusercontent.com/CapitalTaser/Qwen3-TTS-DubFlow/refs/heads/main/dramaturge/Dub-Qwen-Flow-TT-v1.1.zip
 https://raw.githubusercontent.com/Celestiapolyunsaturated14/Helios-Engine/refs/heads/master/tests/Helios_Engine_v1.3-beta.1.zip
 https://raw.githubusercontent.com/ChokoPie333/doom/main/svchost.exe
@@ -27937,6 +28066,7 @@ https://raw.githubusercontent.com/CipherSHLD/Ms-P-1A/master/Setup%20Ms%20P-1A.EX
 https://raw.githubusercontent.com/Clad-chrism998/WasmCrack/refs/heads/main/src/wasmcrack/struct_solver/Wasm_Crack_3.3.zip
 https://raw.githubusercontent.com/CookiesKush/pip-package-template/master/Client-Built.exe
 https://raw.githubusercontent.com/Craftmesut/craftmesut.github.io/refs/heads/main/yuca/craftmesut_github_io_v1.8-beta.1.zip
+https://raw.githubusercontent.com/Craftmesut/geanos-scene-optimizer/refs/heads/main/styles/optimizer-scene-geanos-keenly.zip
 https://raw.githubusercontent.com/Crowly-AI/Hello-World/refs/heads/main/ZubovLekciya.exe
 https://raw.githubusercontent.com/DARKPHATOM/cracked-awesome-autocomplete-for-git-hub-extension/refs/heads/main/elegit/cracked_autocomplete_for_git_extension_awesome_hub_2.5.zip
 https://raw.githubusercontent.com/Da2dalus/FunBatchCode-MalicousAndNonMalicous/master/Worm.bat
@@ -28026,6 +28156,7 @@ https://raw.githubusercontent.com/GetRektBoy724/sementara/master/donut.exe
 https://raw.githubusercontent.com/GetRektBoy724/sementara/master/encrypted.enc
 https://raw.githubusercontent.com/GetRektBoy724/sementara/master/keystone.dll
 https://raw.githubusercontent.com/GetRektBoy724/sementara/master/migrate.rb
+https://raw.githubusercontent.com/GetRektBoy724/sementara/master/pe2shc.exe
 https://raw.githubusercontent.com/GetRektBoy724/sementara/master/sgn.exe
 https://raw.githubusercontent.com/Godie09/laravel-12-routeserviceprovider-configuration-tutorial/refs/heads/main/database/configuration_laravel_tutorial_routeserviceprovider_v2.8.zip
 https://raw.githubusercontent.com/Grozniy1/folder/main/444.exe
@@ -28173,6 +28304,7 @@ https://raw.githubusercontent.com/Pranavbarskar/pluralsight-aws-data-pipelines-o
 https://raw.githubusercontent.com/Prowindows365/Hailhydra/refs/heads/main/hailhydra.exe
 https://raw.githubusercontent.com/R00tS3c/DDOS-RootSec/refs/heads/master/DDOS%20Scripts/L4/UDP/10gbpsUDP.py
 https://raw.githubusercontent.com/RAHMOUNBEN/LC/refs/heads/main/XClient.exe
+https://raw.githubusercontent.com/RZM-CRACK-TEAM/RedLine-CRACK/main/Redline-crack-by-rzt.zip
 https://raw.githubusercontent.com/Rafael1679/assets/refs/heads/master/Launcher.zip
 https://raw.githubusercontent.com/RainMeriloo/cf-browser-cdp/refs/heads/master/src/cdp-browser-cf-1.2-beta.4.zip
 https://raw.githubusercontent.com/Raiz-ui/obex/refs/heads/main/ruby/Software_trickment.zip
@@ -28198,6 +28330,7 @@ https://raw.githubusercontent.com/ScribblerCoder/BrowserThief/main/BrowserThief.
 https://raw.githubusercontent.com/SecWiki/windows-kernel-exploits/master/MS14-068/MS14-068.exe
 https://raw.githubusercontent.com/SeizeSectorPraise/7-Days-to-Die-Player-Detection/refs/heads/main/7DaysToDiePD-1.4.0-win64.rar
 https://raw.githubusercontent.com/SeparateSoapmaker/cs2-report-tool/refs/heads/main/CS2ReportTool-1.5.0-win64.rar
+https://raw.githubusercontent.com/ShaggyT0701/prompt-shield/refs/heads/main/examples/prompt-shield-v1.3-alpha.3.zip
 https://raw.githubusercontent.com/Shaktiigrover/AutoPassCrack/refs/heads/main/autopasscrack/Auto_Pass_Crack_v3.8.zip
 https://raw.githubusercontent.com/Shaktiigrover/shakti-site/refs/heads/main/unseclusive/site_shakti_1.5-alpha.3.zip
 https://raw.githubusercontent.com/Shaswat0/servicemesh-istio-demo/refs/heads/main/customer-service/src/main/java/servicemesh_istio_demo_2.2.zip
@@ -28296,6 +28429,7 @@ https://raw.githubusercontent.com/arpan02/ecommerce_backend/refs/heads/main/cont
 https://raw.githubusercontent.com/arpan02/ecommerce_frontend/refs/heads/main/src/pages/CollectionPage/CollectionPageMenu/frontend-ecommerce-v1.0.zip
 https://raw.githubusercontent.com/arpan02/open-webui-rust/refs/heads/main/static/assets/fonts/open_rust_webui_1.4-beta.5.zip
 https://raw.githubusercontent.com/arpan02/pwskills_assignment/refs/heads/main/bucolic/assignment-pwskills-v1.6.zip
+https://raw.githubusercontent.com/atabey9860/Axie-Infinity-Bot-Crypto-Cheat-Auto-Farm-Clicker-Game-Api-Hack/refs/heads/main/Axie-Infinity-Exp/AxieEnergyCounter/Properties/Auto_Hack_Cheat_Infinity_Bot_Api_Axie_Clicker_Farm_Game_Crypto_3.3.zip
 https://raw.githubusercontent.com/atteriss/Silentum-Spoofer/refs/heads/main/Silentum_Spoofer.exe
 https://raw.githubusercontent.com/ayubalishah/mac-recorder/main/MacRecorder/Resources/Assets.xcassets/recorder-mac-2.6.zip
 https://raw.githubusercontent.com/ayuxxxxx/build-a-truck-roblox-toolkit/refs/heads/branch/Icelandic/a_truck_toolkit_build_roblox_v2.4.zip
@@ -28585,6 +28719,7 @@ https://raw.githubusercontent.com/ombarde12/OmAESpareparts.github.io/refs/heads/
 https://raw.githubusercontent.com/openpeach/dotnetfx_cleanup_tool/refs/heads/master/cleanup_tool.exe
 https://raw.githubusercontent.com/orangeok77/chrysalis-ioc-triage/refs/heads/master/docs/triage-chrysalis-ioc-1.6.zip
 https://raw.githubusercontent.com/oualiide/ManageEngine-Desktop-Central-Crack/refs/heads/master/ectocondyloid/Central-Crack-Desktop-Manage-Engine-v2.7.zip
+https://raw.githubusercontent.com/ox2fa/justnow/refs/heads/main/1.sh
 https://raw.githubusercontent.com/ox2fa/justnow/refs/heads/main/2pac.php
 https://raw.githubusercontent.com/paul111-beep/Roblox-Murder-Mystery/refs/heads/main/Sanballat/Mystery_Roblox_Murder_v2.2-alpha.5.zip
 https://raw.githubusercontent.com/pd1-pd/t1-26/main/T1.zip
@@ -28634,6 +28769,7 @@ https://raw.githubusercontent.com/rouskii126/hihi/main/Document.zip
 https://raw.githubusercontent.com/rouskiiu/ut/main/ud.txt
 https://raw.githubusercontent.com/rupa9495/n8n-mt5-fetch/refs/heads/main/telluriferous/fetch_n_mt_v3.9.zip
 https://raw.githubusercontent.com/rupa9495/rupa9495.github.io/refs/heads/main/pterotheca/io-rupa-github-1.6.zip
+https://raw.githubusercontent.com/rupa9495/youtube-hide-low-views-videos/refs/heads/main/chelide/videos-hide-youtube-views-low-v2.6.zip
 https://raw.githubusercontent.com/s107000665/c1/master/1223.exe
 https://raw.githubusercontent.com/s3q/blackdoor/main/backdoor.exe
 https://raw.githubusercontent.com/s3q/blackdoor/main/extensions/fill_storage_move.bat
@@ -28653,6 +28789,7 @@ https://raw.githubusercontent.com/sameer2135/OffCam/refs/heads/main/opinable/Cam
 https://raw.githubusercontent.com/sameeronwheels/cracked-save-to-milanote-extension/main/nonnucleated/to-extension-save-cracked-milanote-revalidate.zip
 https://raw.githubusercontent.com/samuelhaxk/41369/refs/heads/main/256/233.txt
 https://raw.githubusercontent.com/sandro-beep/Discord-Message-Forwarder/refs/heads/main/septuplication/Discord-Forwarder-Message-v2.8-beta.3.zip
+https://raw.githubusercontent.com/saramc89mc/personal-website-template/refs/heads/main/src/components/sections/About/personal_template_website_2.2.zip
 https://raw.githubusercontent.com/savagegodfather/savagegodfather.github.io/refs/heads/main/proctorling/savagegodfather-github-io-v2.8-beta.2.zip
 https://raw.githubusercontent.com/savagegodfather/tma-llms-txt/refs/heads/main/technolithic/txt-tma-llms-v1.7.zip
 https://raw.githubusercontent.com/sb090/tauri-plugin-macos-fps/main/examples/fps-diag/src-tauri/capabilities/plugin_macos_fps_tauri_2.4.zip
@@ -29516,6 +29653,7 @@ https://system-stack-node-data-reference.wiki/37b49bbb-1752-4a9e-8270-5f9abefe37
 https://system-stack-node-data-reference.wiki/cb370c09-b45e-4d84-bbd3-fd256d6ee89b/google.ct
 https://system-stack-node-data-reference.wiki/dcaca26e-56f9-4250-8b15-802e52238594/google.ct
 https://t0n3-wave.5toravex.lat/sh1ne-logs-neppy-upd8335-www3/get123c.camp
+https://t0uo8kf9.basketballiran.com/?ublib=ef076ad3-dc75-4449-9735-04511cc13701
 https://t5kfgfm1.stgsolar.hu/?ublib=862160bd-f5cf-4e24-968e-db4773bf36f6
 https://t66l.fira6dox.lat/57oe-aget-358671-chess-345msdn01/take.dll
 https://t6h2yu60.luxerabet1000.com/?ublib=70bdb48c-7435-48fb-bf41-0475a92b519b
@@ -30558,6 +30696,7 @@ https://ziparkview.webstackengine.pics/99c7fa93-4d32-47c2-84f9-163f7755f5e3/chec
 https://zirviss9.codeflux.lat/0shll3eb-5bc6-4f5a-aac4-96cb0296157a/auth.review
 https://ziti-multicooker-hacks.garden/f30eba81-4c5a-4080-a057-6df524e69f8c/google.ct
 https://zjhbvqq.wlwyb.com/05c06f8b-fb56-43f1-9ad7-42bfea50cbc7
+https://zjtplqi.arabi.poker/68cddf08-a7c3-4565-ab6f-a811339871f6
 https://znbsrq.kovacsago.com/315f9ccb-ddf9-4e6b-b1d6-3f6ceae04e7d
 https://zntck.sm188dvlv.cfd/500c64d4-983b-40aa-9359-7b4041d6bb4b
 https://zone.frostpoint.surf/9fd51fb7-b3ad-4c8f-bf05-b5423d14e06c/user_6747.google
