@@ -25,6 +25,8 @@
       })(t0);
     }
 
+    let feedVersion = Date.now();
+
     /* ── Boot ──────────────────────────────── */
     async function boot() {
       try {
@@ -65,6 +67,7 @@
         const r = await fetch(RAW + 'stats.json?_=' + Date.now());
         if (!r.ok) throw new Error('HTTP ' + r.status);
         const d = await r.json();
+        feedVersion = d.last_updated || Date.now();
 
         document.getElementById('ms-time').textContent = relTime(d.last_updated);
         document.getElementById('ms-src').textContent = d.total_feeds_processed || 15;
@@ -88,6 +91,7 @@
       } catch (err) {
         console.warn('stats.json unavailable:', err.message);
         document.getElementById('ms-time').textContent = 'Pending first run';
+        feedVersion = Date.now();
       }
 
       // Load these independently so they don't break if stats fails
@@ -99,7 +103,7 @@
 
     async function renderTop100() {
       try {
-        const r = await fetch(RAW + 'top_100.json?_=' + Date.now());
+        const r = await fetch(RAW + 'top_100.json?v=' + feedVersion);
         if (!r.ok) return;
         const top100 = await r.json();
         const tbody = document.getElementById('top100-body');
@@ -135,7 +139,7 @@
 
     async function renderHistoryChart() {
       try {
-        const r = await fetch(RAW + 'history.json?_=' + Date.now());
+        const r = await fetch(RAW + 'history.json?v=' + feedVersion);
         if (!r.ok) return;
         const history = await r.json();
 
@@ -195,10 +199,9 @@
     async function loadDomains() {
       if (domainData) return domainData;
       try {
-        const r = await fetch(RAW + 'malicious_domains.txt?_=' + Date.now());
+        const r = await fetch(RAW + 'malicious_domains.txt?v=' + feedVersion);
         if (r.ok) {
-          const txt = await r.text();
-          domainData = new Set(txt.split('\n').map(d => d.trim().toLowerCase()).filter(Boolean));
+          domainData = '\n' + (await r.text()).toLowerCase() + '\n';
         }
       } catch (e) { }
       return domainData;
@@ -207,10 +210,9 @@
     async function loadHashes() {
       if (hashData) return hashData;
       try {
-        const r = await fetch(RAW + 'malicious_hashes.txt?_=' + Date.now());
+        const r = await fetch(RAW + 'malicious_hashes.txt?v=' + feedVersion);
         if (r.ok) {
-          const txt = await r.text();
-          hashData = new Set(txt.split('\n').map(d => d.trim().toLowerCase()).filter(Boolean));
+          hashData = '\n' + await r.text() + '\n';
         }
       } catch (e) { }
       return hashData;
@@ -219,10 +221,9 @@
     async function loadUrls() {
       if (urlData) return urlData;
       try {
-        const r = await fetch(RAW + 'malicious_urls.txt?_=' + Date.now());
+        const r = await fetch(RAW + 'malicious_urls.txt?v=' + feedVersion);
         if (r.ok) {
-          const txt = await r.text();
-          urlData = new Set(txt.split('\n').map(d => d.trim()).filter(Boolean));
+          urlData = '\n' + (await r.text()) + '\n';
         }
       } catch (e) { }
       return urlData;
@@ -231,7 +232,7 @@
     async function loadPrefixes() {
       if (bloomData) return bloomData;
       try {
-        const r = await fetch(RAW + 'ip_prefixes.json?_=' + Date.now());
+        const r = await fetch(RAW + 'ip_prefixes.json?v=' + feedVersion);
         if (r.ok) {
           bloomData = await r.json();
         }
@@ -242,7 +243,7 @@
     async function loadCSV() {
       if (csvText) return csvText;
       if (!csvLoading) {
-        csvLoading = fetch(RAW + 'malicious_ips.csv?_=' + Date.now())
+        csvLoading = fetch(RAW + 'malicious_ips.csv?v=' + feedVersion)
           .then(r => r.text())
           .then(txt => { csvText = txt; return csvText; });
       }
@@ -252,7 +253,7 @@
     async function loadStats() {
       if (statsData) return statsData;
       try {
-        const r = await fetch(RAW + 'stats.json?_=' + Date.now());
+        const r = await fetch(RAW + 'stats.json?v=' + feedVersion);
         if (r.ok) statsData = await r.json();
       } catch (e) { }
       return statsData;
@@ -300,6 +301,15 @@
       overlay.classList.add('active');
       card.classList.remove('show');
       document.getElementById('scan-ip').textContent = ip;
+
+      let scanType = 'Indicator';
+      if (isIP) scanType = 'IP Address';
+      else if (isHash) scanType = 'File Hash';
+      else if (isURL) scanType = 'URL';
+      else if (isDomain) scanType = 'Domain';
+      
+      const titleText = document.getElementById('scan-title-text');
+      if (titleText) titleText.textContent = 'Scanning ' + scanType;
 
       // Reset steps
       ['step-feed', 'step-report'].forEach(id => {
@@ -354,7 +364,7 @@
           }
         } else if (isDomain) {
           const domains = await loadDomains();
-          if (domains && domains.has(ip)) {
+          if (domains && domains.indexOf('\n' + ip + '\n') !== -1) {
             feedMatch = {
               sourceCount: 1,
               reputation: 100,
@@ -363,7 +373,7 @@
           }
         } else if (isHash) {
           const hashes = await loadHashes();
-          if (hashes && hashes.has(ip)) {
+          if (hashes && hashes.indexOf('\n' + ip + '\n') !== -1) {
             feedMatch = {
               sourceCount: 1,
               reputation: 100,
@@ -372,7 +382,7 @@
           }
         } else if (isURL) {
           const urls = await loadUrls();
-          if (urls && urls.has(ip)) {
+          if (urls && urls.indexOf('\n' + ip + '\n') !== -1) {
             feedMatch = {
               sourceCount: 1,
               reputation: 100,
@@ -574,24 +584,18 @@
 
     async function renderHashTable() {
       try {
-        const r = await fetch(RAW + 'malicious_hashes.txt?_=' + Date.now());
+        const r = await fetch(RAW + 'top_100_hashes.json?v=' + feedVersion);
         if (!r.ok) return;
-        const txt = await r.text();
-        allHashes = txt.split('\n').map(h => h.trim()).filter(h => /^[a-fA-F0-9]{64}$/.test(h));
+        const top100 = await r.json();
+        allHashes = top100.map(item => item.hash);
         filteredHashes = allHashes;
         hashDisplayCount = 0;
         renderHashRows();
 
-        // Update hash count in IOC tab
-        const countEl = document.getElementById('ioc-hash-count');
-        if (countEl) countEl.textContent = fmt(allHashes.length);
-
-        // Update stat card count
-        const statEl = document.getElementById('n-hashes');
-        if (statEl) animateValue(statEl, allHashes.length);
+        // Note: Hash count is already set by boot() using stats.json
 
       } catch (e) {
-        console.warn('hashes.txt unavailable', e);
+        console.warn('top_100_hashes.json unavailable', e);
         document.getElementById('hash-table-body').innerHTML = '<tr><td colspan="3" style="text-align:center; padding:2rem; color:var(--slate)">Hash data will appear after the first feed run.</td></tr>';
       }
     }
@@ -628,7 +632,7 @@
       lucide.createIcons();
 
       // Update display count
-      document.getElementById('hash-display-count').textContent = `Showing ${fmt(hashDisplayCount)} of ${fmt(filteredHashes.length)} hashes`;
+      document.getElementById('hash-display-count').textContent = `Showing ${fmt(hashDisplayCount)} of Top ${fmt(filteredHashes.length)} hashes`;
 
       // Show/hide load more button
       const loadMore = document.getElementById('hash-load-more');
@@ -668,7 +672,7 @@
     /* ── World Threat Map ───────────────────── */
     async function renderWorldMap() {
       try {
-        const r = await fetch(RAW + 'top_100.json?_=' + Date.now());
+        const r = await fetch(RAW + 'top_100.json?v=' + feedVersion);
         if (!r.ok) return;
         const top100 = await r.json();
         if (!top100 || top100.length === 0) return;
