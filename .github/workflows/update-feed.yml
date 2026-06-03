@@ -22,7 +22,7 @@ jobs:
   update-feed:
     name: Fetch, Aggregate & Publish
     runs-on: ubuntu-latest
-    timeout-minutes: 15  # Hard kill-switch — never hang indefinitely
+    timeout-minutes: 45  # Hard kill-switch — dataset has grown to ~2M+ IOCs, allow enough time
 
     # Required so the built-in GITHUB_TOKEN can push commits back to the repo.
     # No PAT or extra secrets are needed.
@@ -51,10 +51,8 @@ jobs:
       - name: Run feed aggregator
         env:
           ABUSEIPDB_API_KEY: ${{ secrets.ABUSEIPDB_API_KEY }}
-        run: |
-          for i in 1 2 3; do
-            python update_feed.py && break || sleep 10
-          done
+          PYTHONUNBUFFERED: '1'
+        run: python update_feed.py
 
       # ── 5. Commit and push ───────────────────────────────────────────────────
       #

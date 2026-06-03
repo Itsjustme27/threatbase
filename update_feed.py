@@ -456,12 +456,13 @@ def numerical_ip_key(ip: str) -> tuple:
 
 def write_csv(sorted_ips: List[str], ip_map: Dict[str, List[str]], geoip: GeoIPEngine) -> None:
     top_100 = []
+    total = len(sorted_ips)
     
     with open("malicious_ips.csv", "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(["ip", "sources", "source_count", "reputation", "categories", "country", "asn", "isp"])
         
-        for ip in sorted_ips:
+        for idx, ip in enumerate(sorted_ips, 1):
             sources = sorted(ip_map[ip]) if isinstance(ip_map[ip], set) else ip_map[ip]
             source_count = len(sources)
             reputation = min(100, source_count * 20)
@@ -486,6 +487,9 @@ def write_csv(sorted_ips: List[str], ip_map: Dict[str, List[str]], geoip: GeoIPE
                 heapq.heappush(top_100, (heap_key, row_dict))
             else:
                 heapq.heappushpop(top_100, (heap_key, row_dict))
+            
+            if idx % 200000 == 0:
+                log.info(f"  CSV progress: {idx}/{total} IPs enriched...")
                 
     top_100.sort(key=lambda x: x[0], reverse=True)
     top_100_records = [item[1] for item in top_100]
@@ -493,7 +497,7 @@ def write_csv(sorted_ips: List[str], ip_map: Dict[str, List[str]], geoip: GeoIPE
     with open("top_100.json", "w", encoding="utf-8") as f:
         json.dump(top_100_records, f, indent=2)
         
-    log.info("Wrote malicious_ips.csv and top_100.json")
+    log.info(f"Wrote malicious_ips.csv ({total} IPs) and top_100.json")
 
 # STIX namespace for deterministic UUIDs — same IOC always gets the same UUID
 _STIX_NS = uuid.UUID("a06e3c8f-7b2d-4f5a-9c1e-0d8f6b3a2e7c")
@@ -771,6 +775,8 @@ def main():
             log.error(f"Failed to load malicious_urls.txt: {e}")
 
     # ── Fetch IPs
+    log.info("Fetching IP feeds...")
+    t0 = time.time()
     ip_sources = {}
     failed = []
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
@@ -791,14 +797,20 @@ def main():
             ip_map[ip].add(src)
             
     sorted_ips = sorted(ip_map.keys(), key=numerical_ip_key)
+    log.info(f"IP feeds done in {time.time()-t0:.1f}s — {len(ip_map)} unique IPs")
 
     # ── Fetch Domains
+    log.info("Fetching domain feeds...")
+    t0 = time.time()
     domain_map = historical_domain_map.copy()
     for name, url in DOMAIN_FEEDS.items():
         domains = fetch_domain_feed(name, url)
         domain_map.update(domains)
+    log.info(f"Domain feeds done in {time.time()-t0:.1f}s — {len(domain_map)} unique domains")
 
     # ── Fetch Hashes
+    log.info("Fetching hash feeds...")
+    t0 = time.time()
     hash_sources = {}
     # Load historical hashes into hash_sources
     for h, sources in historical_hash_map.items():
@@ -817,7 +829,11 @@ def main():
             else:
                 failed.append(name)
 
+    log.info(f"Hash feeds done in {time.time()-t0:.1f}s")
+
     # ── Fetch URLs
+    log.info("Fetching URL feeds...")
+    t0 = time.time()
     url_sources = {}
     if historical_url_map:
         url_sources["historical"] = historical_url_map.copy()
@@ -833,7 +849,11 @@ def main():
             else:
                 failed.append(name)
 
+    log.info(f"URL feeds done in {time.time()-t0:.1f}s")
+
     # ── Fetch ThreatFox (multi-IOC: IPs + domains + hashes + URLs)
+    log.info("Fetching ThreatFox...")
+    t0 = time.time()
     for name, url in THREATFOX_FEEDS.items():
         tf = fetch_threatfox(name, url)
         # Merge ThreatFox IPs into ip_sources
@@ -854,7 +874,11 @@ def main():
     # Re-sort IPs after ThreatFox merge
     sorted_ips = sorted(ip_map.keys(), key=numerical_ip_key)
 
+    log.info(f"ThreatFox done in {time.time()-t0:.1f}s")
+
     # ── Write hash and URL outputs
+    log.info("Writing output files...")
+    t0 = time.time()
     all_hashes = write_hashes(hash_sources)
     all_urls = write_urls(url_sources)
 
