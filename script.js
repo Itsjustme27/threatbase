@@ -20,6 +20,39 @@ function animateValue(el, end, dur = 1600) {
 let feedVersion = Date.now();
 let statsData = null;
 
+/* ── Theme Management ── */
+function initTheme() {
+  const toggleBtn = document.getElementById('theme-toggle');
+  const themeIcon = document.getElementById('theme-icon');
+  if (!toggleBtn) return;
+  
+  const savedTheme = localStorage.getItem('himalaya-theme');
+  const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+  
+  let currentTheme = savedTheme || (prefersLight ? 'light' : 'dark');
+  
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+      themeIcon.setAttribute('data-lucide', 'sun');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      themeIcon.setAttribute('data-lucide', 'moon');
+    }
+    if (window.lucide) window.lucide.createIcons();
+  }
+  
+  applyTheme(currentTheme);
+  
+  toggleBtn.addEventListener('click', () => {
+    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('himalaya-theme', currentTheme);
+    applyTheme(currentTheme);
+  });
+}
+
+initTheme();
+
 async function boot() {
   try {
     lucide.createIcons();
