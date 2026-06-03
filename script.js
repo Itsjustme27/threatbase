@@ -1,5 +1,3 @@
-lucide.createIcons();
-
     let RAW = './';
     if (window.location.hostname === 'kalidada18.github.io') {
       RAW = 'https://kalidada18.github.io/himalayafeed/';
@@ -752,10 +750,7 @@ lucide.createIcons();
         return String.fromCodePoint(...[...code].map(c => 0x1F1E6 + c.charCodeAt(0) - 65));
       } catch (e) { return '🌐'; }
 
-    }
-
-    boot();
-  
+    document.addEventListener('DOMContentLoaded', boot);
 
 // -- Theme Toggle Logic --
 document.addEventListener('DOMContentLoaded', () => {
