@@ -278,30 +278,7 @@ def fetch_feed(name: str, url: str) -> Set[str]:
     return set()
 
 
-def process_malwarebazaar_zips() -> Set[str]:
-    extracted_hashes = set()
-    zip_files = glob.glob("*malwarebazaar*.zip", recursive=False)
-    if not zip_files:
-        return extracted_hashes
-    
-    hash_pattern = re.compile(r"\b(?:[a-fA-F0-9]{32}|[a-fA-F0-9]{40}|[a-fA-F0-9]{64})\b")
-    for zip_path in zip_files:
-        log.info(f"Found MalwareBazaar ZIP: {zip_path}, extracting...")
-        try:
-            with zipfile.ZipFile(zip_path, 'r') as zf:
-                for filename in zf.namelist():
-                    with zf.open(filename) as f:
-                        content = f.read().decode('utf-8', errors='ignore')
-                        matches = hash_pattern.findall(content)
-                        for m in matches:
-                            extracted_hashes.add(m.lower())
-            log.info(f"  ✓ Extracted {len(extracted_hashes)} hashes from {zip_path}")
-            os.remove(zip_path)
-            log.info(f"  ✓ Deleted {zip_path}")
-        except Exception as e:
-            log.error(f"Failed to process {zip_path}: {e}")
-            
-    return extracted_hashes
+
 
 
 def fetch_domain_feed(name: str, url: str) -> Set[str]:
@@ -649,11 +626,6 @@ def main():
         hash_sources["custom_iocs.txt"] = custom_iocs["hashes"]
     if custom_iocs["urls"]:
         url_sources["custom_iocs.txt"] = custom_iocs["urls"]
-
-    # ── Process Local Zips
-    mb_hashes = process_malwarebazaar_zips()
-    if mb_hashes:
-        hash_sources["malwarebazaar_local_zip"] = hash_sources.get("malwarebazaar_local_zip", set()) | mb_hashes
 
     # Sort IPs once
     sorted_ips = sorted(ip_map.keys(), key=numerical_ip_key)

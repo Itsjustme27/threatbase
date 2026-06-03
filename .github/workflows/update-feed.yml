@@ -47,7 +47,21 @@ jobs:
       - name: Install Python dependencies
         run: pip install --quiet --no-cache-dir -r requirements.txt
 
-      # ── 4. Run the aggregator ────────────────────────────────────────────────
+      # ── 4. Process MalwareBazaar ZIPs ────────────────────────────────────────
+      - name: Extract MalwareBazaar Hashes
+        run: |
+          for zip in *malwarebazaar*.zip; do
+            if [ -f "$zip" ]; then
+              echo "Extracting hashes from $zip..."
+              echo "" >> custom_iocs.txt
+              echo "[hashes]" >> custom_iocs.txt
+              echo "# Extracted from $zip on $(date -u)" >> custom_iocs.txt
+              unzip -p "$zip" | grep -oE '\b([a-fA-F0-9]{32}|[a-fA-F0-9]{40}|[a-fA-F0-9]{64})\b' | tr '[:upper:]' '[:lower:]' | sort -u >> custom_iocs.txt
+              git rm "$zip" || rm "$zip"
+            fi
+          done
+
+      # ── 5. Run the aggregator ────────────────────────────────────────────────
       - name: Run feed aggregator
         env:
           ABUSEIPDB_API_KEY: ${{ secrets.ABUSEIPDB_API_KEY }}
