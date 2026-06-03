@@ -138,98 +138,20 @@ _URL_PATTERN = re.compile(r'^https?://.+')
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# GeoIP Engine — with single-pass sweep for batch lookups
+# GeoIP Engine — Dummy (Disabled as per user request)
 # ─────────────────────────────────────────────────────────────────────────────
 class GeoIPEngine:
     def __init__(self):
-        self.starts = []
-        self.ends = []
-        self.asns = []
-        self.countries = []
-        self.isps = []
+        pass
 
-    def load(self, url="https://iptoasn.com/data/ip2asn-v4.tsv.gz"):
-        db_file = "ip2asn-v4.tsv.gz"
-        download_needed = True
-        if os.path.exists(db_file):
-            file_age = time.time() - os.path.getmtime(db_file)
-            if file_age < 86400:
-                download_needed = False
-                log.info(f"Using cached GeoIP database (age: {int(file_age/3600)}h)")
-
-        try:
-            if download_needed:
-                log.info("Downloading GeoIP database...")
-                resp = global_session.get(url, stream=True, timeout=60)
-                resp.raise_for_status()
-                with open(db_file, "wb") as f:
-                    for chunk in resp.iter_content(chunk_size=65536):
-                        f.write(chunk)
-
-            log.info("Parsing GeoIP database...")
-            starts = []
-            ends = []
-            asns = []
-            countries = []
-            isps = []
-            with gzip.open(db_file, 'rt', encoding='utf-8') as f:
-                for line in f:
-                    parts = line.strip().split('\t')
-                    if len(parts) >= 5:
-                        starts.append(int(ipaddress.IPv4Address(parts[0])))
-                        ends.append(int(ipaddress.IPv4Address(parts[1])))
-                        asns.append(parts[2])
-                        countries.append(parts[3])
-                        isps.append(parts[4])
-            self.starts = starts
-            self.ends = ends
-            self.asns = asns
-            self.countries = countries
-            self.isps = isps
-            log.info(f"Loaded {len(self.starts)} GeoIP ranges.")
-        except Exception as e:
-            log.error(f"Failed to load GeoIP: {e}")
+    def load(self, url=""):
+        log.info("GeoIP fetching disabled.")
 
     def lookup(self, ip_str: str) -> tuple:
-        """Single IP lookup (used for top-100 only)."""
-        if not self.starts:
-            return "Unknown", "0", "Unknown"
-        try:
-            ip_int = int(ipaddress.IPv4Address(ip_str))
-            idx = bisect.bisect_right(self.starts, ip_int) - 1
-            if idx >= 0 and self.starts[idx] <= ip_int <= self.ends[idx]:
-                return self.countries[idx], self.asns[idx], self.isps[idx]
-        except Exception:
-            pass
         return "Unknown", "0", "Unknown"
 
     def batch_lookup(self, ip_int_pairs: List[tuple]) -> List[tuple]:
-        """
-        Single-pass sweep: given a list of (ip_int, original_index) sorted by ip_int,
-        return (country, asn, isp) for each in original order.
-
-        O(n + m) where n = number of IPs, m = number of GeoIP ranges.
-        Much faster than n * log(m) individual bisect lookups.
-        """
-        if not self.starts:
-            return [("Unknown", "0", "Unknown")] * len(ip_int_pairs)
-
-        results = [None] * len(ip_int_pairs)
-        geo_idx = 0
-        geo_len = len(self.starts)
-        default = ("Unknown", "0", "Unknown")
-
-        for ip_int, orig_idx in ip_int_pairs:
-            # Advance geo_idx until we find a range that could contain this IP
-            while geo_idx < geo_len and self.ends[geo_idx] < ip_int:
-                geo_idx += 1
-
-            if geo_idx < geo_len and self.starts[geo_idx] <= ip_int <= self.ends[geo_idx]:
-                results[orig_idx] = (self.countries[geo_idx], self.asns[geo_idx], self.isps[geo_idx])
-            else:
-                results[orig_idx] = default
-
-        return results
+        return [("Unknown", "0", "Unknown")] * len(ip_int_pairs)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -472,20 +394,13 @@ def fetch_threatfox(name: str, url: str) -> dict:
 # ─────────────────────────────────────────────────────────────────────────────
 def write_csv(sorted_ips: List[str], ip_map: Dict[str, set], geoip: GeoIPEngine) -> None:
     """
-    Write malicious_ips.csv with GeoIP enrichment using batch sweep.
+    Write malicious_ips.csv.
     Also produces top_100.json.
     """
     total = len(sorted_ips)
-    log.info(f"  Enriching {total} IPs with GeoIP (batch sweep)...")
+    log.info(f"  Writing {total} IPs to CSV...")
 
-    # sorted_ips is already in numerical order, so ip_to_int preserves that order
-    # No need to re-sort — just build the pairs directly
-    ip_int_pairs = [(ip_to_int(ip), idx) for idx, ip in enumerate(sorted_ips)]
-
-    # Single-pass GeoIP sweep — O(n+m) instead of O(n*log(m))
-    geo_results = geoip.batch_lookup(ip_int_pairs)
-
-    # Write CSV with pre-computed GeoIP data
+    # Write CSV
     top_100 = []
     with open("malicious_ips.csv", "w", newline="", encoding="utf-8", buffering=1 << 16) as f:
         writer = csv.writer(f)
@@ -497,7 +412,7 @@ def write_csv(sorted_ips: List[str], ip_map: Dict[str, set], geoip: GeoIPEngine)
             reputation = min(100, source_count * 20)
             sources_str = "|".join(sorted(src_set))
             categories_str = "|".join(sorted({FEED_CATEGORIES.get(s, "Mixed") for s in src_set}))
-            country, asn, isp = geo_results[idx]
+            country, asn, isp = "Unknown", "0", "Unknown"
 
             writer.writerow([ip, sources_str, source_count, reputation, categories_str, country, asn, isp])
 
@@ -848,37 +763,6 @@ def main():
         hash_sources["custom_iocs.txt"] = custom_iocs["hashes"]
     if custom_iocs["urls"]:
         url_sources["custom_iocs.txt"] = custom_iocs["urls"]
-
-    # ── Load historical hashes & URLs (feeds only give recent samples) ───────
-    # IP/domain feeds provide full current datasets (700K+), no history needed.
-    # But hash feeds give only ~450 recent samples per run — accumulation is key.
-    if os.path.exists("malicious_hashes.txt"):
-        try:
-            historical_hashes = set()
-            with open("malicious_hashes.txt", "r", encoding="utf-8") as f:
-                for line in f:
-                    h = line.strip()
-                    if h and _SHA256_PATTERN.match(h):
-                        historical_hashes.add(h)
-            if historical_hashes:
-                hash_sources["historical"] = historical_hashes
-                log.info(f"  Loaded {len(historical_hashes)} historical hashes")
-        except Exception as e:
-            log.error(f"Failed to load malicious_hashes.txt: {e}")
-
-    if os.path.exists("malicious_urls.txt"):
-        try:
-            historical_urls = set()
-            with open("malicious_urls.txt", "r", encoding="utf-8") as f:
-                for line in f:
-                    u = line.strip()
-                    if u and _URL_PATTERN.match(u):
-                        historical_urls.add(u)
-            if historical_urls:
-                url_sources["historical"] = historical_urls
-                log.info(f"  Loaded {len(historical_urls)} historical URLs")
-        except Exception as e:
-            log.error(f"Failed to load malicious_urls.txt: {e}")
 
     # Sort IPs once
     sorted_ips = sorted(ip_map.keys(), key=numerical_ip_key)
