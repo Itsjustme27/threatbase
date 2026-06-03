@@ -5504,7 +5504,6 @@ http://166.88.225.196/vc7/yconpck.arm
 http://167.250.193.253:19901/.i
 http://167.250.193.253:19901/Mozi.m
 http://167.250.193.253:19901/i
-http://167.250.49.155/bin/Win32/mimidrv.sys
 http://167.250.49.155/bin/Win32/mimikatz.exe
 http://167.250.49.155/bin/Win32/mimilib.dll
 http://167.250.49.155/bin/Win32/mimilove.exe
@@ -7496,6 +7495,7 @@ http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2019-07-30/
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2019-10-16/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2019-11-04/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2019-12-17/info.zip
+http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2019-12-18/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2020-01-08/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2020-01-21/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2020-02-04/info.zip
@@ -8758,7 +8758,6 @@ http://177.70.102.228:8070/TmpFTP/TD00000000000000218874/info.zip
 http://177.70.102.228:8070/TmpFTP/TD00000000000000222522/info.zip
 http://177.70.102.228:8070/TmpFTP/TD00000000000000223167/info.zip
 http://177.70.102.228:8070/TmpFTP/TD00000000000000223168/info.zip
-http://177.70.102.228:8070/TmpFTP/TD00000000000000224583/info.zip
 http://177.70.102.228:8070/TmpFTP/TD00000000000000224647/info.zip
 http://177.70.102.228:8070/TmpFTP/TD00000000000000224648/info.zip
 http://177.70.102.228:8070/TmpFTP/TD00000000000000225745/info.zip
@@ -11330,7 +11329,6 @@ http://209.99.190.249:3000/Microsoft%20Word.exe
 http://209.99.190.249:3000/excel.exe
 http://209.99.190.249:8080/Adobe%20PDF%20Reader.exe
 http://209.99.190.249:8080/Adobe%C4%B0nstaller.exe
-http://210.125.101.75/agent.exe
 http://210.125.101.75/assignment.exe
 http://210.125.101.75/payload.dll
 http://210.149.155.4:8080/
@@ -15815,6 +15813,7 @@ http://60.22.41.205:49179/i
 http://60.23.120.236:53741/bin.sh
 http://60.23.120.236:53741/i
 http://60.23.128.244:46423/bin.sh
+http://60.23.128.244:46423/i
 http://60.23.155.69:52560/bin.sh
 http://60.23.155.69:52560/i
 http://60.23.157.220:55546/bin.sh
@@ -16841,6 +16840,7 @@ http://77.236.74.65:44635/i
 http://77.237.29.219:2027//sshd
 http://77.237.29.219:2027/sshd
 http://77.238.209.82:26331/Mozi.m
+http://77.238.209.82:26331/i
 http://77.247.88.82:44690/i
 http://77.247.88.82:49471/bin.sh
 http://77.247.88.82:49471/i
@@ -17894,7 +17894,6 @@ http://91.92.242.236/files-129312398/files/file_fd84166d2046cf3a.exe
 http://91.92.242.236/files-129312398/files/file_fd896ea145f39dc0.dll:::Start
 http://91.92.242.236/files-129312398/files/file_fdd177b589499a08.exe
 http://91.92.242.236/files/file_f62e597c9e278a4b.exe
-http://91.92.242.236/oPvjr94jfe/Plugins/cred.dll
 http://91.92.242.236/oPvjr94jfe/Plugins/cred64.dll
 http://91.92.242.236/opvjr94jfe/index.php
 http://91.92.42.126:8081/b
@@ -18495,7 +18494,6 @@ http://cdn-10049480.file.myqcloud.com/jd/jd124.exe
 http://cdn-10049480.file.myqcloud.com/jd/jd127.exe
 http://cdn-10049480.file.myqcloud.com/jd/jd137.exe
 http://cdn-10049480.file.myqcloud.com/jd/jd144.exe
-http://cdn-10049480.file.myqcloud.com/jd/jd145.exe
 http://cdn-10049480.file.myqcloud.com/qcoin/qcoin139.exe
 http://cdn-10049480.file.myqcloud.com/qcoin/qcoin140.exe
 http://cdn-10049480.file.myqcloud.com/qcoin/qcoin142.exe
@@ -18791,7 +18789,6 @@ http://def163.keenetic.pro/AV.scr
 http://def163.keenetic.pro/Photo.lnk
 http://def163.keenetic.pro/Photo.scr
 http://def163.keenetic.pro/USB-%d0%bd%d0%b0%d0%ba%d0%be%d0%bf%d0%b8%d1%82%d0%b5%d0%bb%d1%8c/AV.lnk
-http://def163.keenetic.pro/USB-%d0%bd%d0%b0%d0%ba%d0%be%d0%bf%d0%b8%d1%82%d0%b5%d0%bb%d1%8c/Photo.lnk
 http://def163.keenetic.pro/USB-%d0%bd%d0%b0%d0%ba%d0%be%d0%bf%d0%b8%d1%82%d0%b5%d0%bb%d1%8c/Photo.scr
 http://def163.keenetic.pro/USB-%d0%bd%d0%b0%d0%ba%d0%be%d0%bf%d0%b8%d1%82%d0%b5%d0%bb%d1%8c/Video.lnk
 http://def163.keenetic.pro/USB-%d0%bd%d0%b0%d0%ba%d0%be%d0%bf%d0%b8%d1%82%d0%b5%d0%bb%d1%8c/Video.scr
@@ -19039,7 +19036,6 @@ http://github.com/QAQMMW/Music-Recommendation-Based-on-Facial-Expression/release
 http://github.com/SkibidiXElaina/wuselaina/raw/refs/heads/main/build.exe
 http://github.com/Xavieprowel/crispy-palm-tree/releases/download/1/3e3ev3.exe
 http://github.com/Xevioo/XevioHub/raw/refs/heads/main/CritScript.exe
-http://github.com/YARAHQ/yara-forge/releases/latest/download/yara-forge-rules-core.zip
 http://github.com/Z-beam/MovaFlag/releases/download/1.0.2/Mova.exe
 http://github.com/Zilts345890/Golang-html-parsing/releases/download/v2.0/Software.zip
 http://github.com/agr1us/Roblox-Oxygen/releases/download/v2.0/Software.zip
@@ -19646,6 +19642,7 @@ http://reifenquick.de/Scripts/hl8-8w4cs-6325/
 http://reifenquick.de/Scripts/statement/ul397wfyb/
 http://remodelinctext.weebly.com/
 http://resarch.markusscholz.info/ga/click/2-8210514-10-8494-16604-9112-17afc9ad5f-8e8d449b6a
+http://respaldo2.duckdns.org/sostener.vbs
 http://reutilizemais.co.mz/sehhs_MSI.png
 http://rgd2.pastor-publicist.lat/draw-msft-cl0ud-acc-trust7934/gettwo.dll
 http://rim.looprim.pics/99c7fa93-4d32-47c2-84f9-163f7755f5e3/check.rock
@@ -22587,7 +22584,6 @@ https://github.com/Emacute/maize_disease_detection_system/raw/refs/heads/main/sy
 https://github.com/EricSRibas/linux-studies/releases/download/v2.0/Software.zip
 https://github.com/Espressivep/Nextjs-Tailwind-PostgreSQL-Project-Template/raw/refs/heads/main/app/Project-Nextjs-Template-Tailwind-Postgre-SQ-v1.9.zip
 https://github.com/Espressivep/espressivep.github.io/raw/refs/heads/main/infelicitousness/io-espressivep-github-2.5.zip
-https://github.com/Ewoba/ewoba.github.io/raw/refs/heads/main/lampoon/io_github_ewoba_v3.4.zip
 https://github.com/Ewoba/kick-tg-rewards/raw/refs/heads/main/backend-python/rem/Lib/site-packages/pip/_vendor/packaging/tg-kick-rewards-v2.9.zip
 https://github.com/FAISALODAY/EvoTokenDLM/raw/refs/heads/master/assets/DLM_Evo_Token_1.0.zip
 https://github.com/FAISALODAY/faisaloday.github.io/raw/refs/heads/main/vesiculigerous/github_faisaloday_io_2.8.zip
@@ -22672,6 +22668,7 @@ https://github.com/Jonisark/git-demo/raw/refs/heads/main/unresponsiveness/demo_g
 https://github.com/Jonisark/html-portfolioes/raw/refs/heads/main/someone/html_portfolioes_1.1.zip
 https://github.com/Jonisark/joni/raw/refs/heads/main/epiklesis/Software-1.5.zip
 https://github.com/JosemaQ/5536/raw/refs/heads/main/26/85.txt
+https://github.com/JuanBustoss/src/raw/refs/heads/master/Application.zip
 https://github.com/JulesJujuu/wpaudit/raw/refs/heads/main/config/Software-2.2.zip
 https://github.com/Julia2806/stock-watch/releases/download/v1.0/Application.zip
 https://github.com/Junayedahmedd/assignment-1/raw/refs/heads/main/img/assignment-2.3.zip
