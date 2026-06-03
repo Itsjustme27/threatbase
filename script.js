@@ -194,60 +194,118 @@
     }
 
     /* ── Threat Scan + Report ──────────────────── */
-    let csvText = null, csvLoading = null, statsData = null, bloomData = null, domainData = null, hashData = null, urlData = null;
-
-    async function loadDomains() {
-      if (domainData) return domainData;
-      try {
-        const r = await fetch(RAW + 'malicious_domains.txt?v=' + feedVersion);
-        if (r.ok) {
-          domainData = '\n' + (await r.text()).toLowerCase() + '\n';
-        }
-      } catch (e) { }
-      return domainData;
-    }
-
-    async function loadHashes() {
-      if (hashData) return hashData;
-      try {
-        const r = await fetch(RAW + 'malicious_hashes.txt?v=' + feedVersion);
-        if (r.ok) {
-          hashData = '\n' + await r.text() + '\n';
-        }
-      } catch (e) { }
-      return hashData;
-    }
-
-    async function loadUrls() {
-      if (urlData) return urlData;
-      try {
-        const r = await fetch(RAW + 'malicious_urls.txt?v=' + feedVersion);
-        if (r.ok) {
-          urlData = '\n' + (await r.text()) + '\n';
-        }
-      } catch (e) { }
-      return urlData;
-    }
+    let statsData = null, bloomData = null;
 
     async function loadPrefixes() {
       if (bloomData) return bloomData;
       try {
         const r = await fetch(RAW + 'ip_prefixes.json?v=' + feedVersion);
-        if (r.ok) {
-          bloomData = await r.json();
-        }
+        if (r.ok) bloomData = await r.json();
       } catch (e) { }
       return bloomData;
     }
 
-    async function loadCSV() {
-      if (csvText) return csvText;
-      if (!csvLoading) {
-        csvLoading = fetch(RAW + 'malicious_ips.csv?v=' + feedVersion)
-          .then(r => r.text())
-          .then(txt => { csvText = txt; return csvText; });
+    async function getFileSize(url) {
+      try {
+        const r = await fetch(url, { method: 'HEAD' });
+        if (!r.ok) return 0;
+        return parseInt(r.headers.get('content-length') || '0', 10);
+      } catch (e) {
+        return 0;
       }
-      return csvLoading;
+    }
+
+    async function fetchChunk(url, start, end) {
+      try {
+        const r = await fetch(url, { headers: { 'Range': `bytes=${start}-${end}` } });
+        if (!r.ok) return null;
+        return await r.text();
+      } catch (e) {
+        return null;
+      }
+    }
+
+    async function binarySearchFile(url, query, compareFn) {
+      const size = await getFileSize(url);
+      if (!size) {
+        try {
+          const r = await fetch(url);
+          const txt = await r.text();
+          const lines = txt.split('\n');
+          for (let line of lines) {
+             if (compareFn(query, line.trim()) === 0) return line.trim();
+          }
+        } catch(e) {}
+        return null;
+      }
+
+      let low = 0;
+      let high = size - 1;
+      const CHUNK_SIZE = 8192; 
+      let iterations = 0;
+
+      while (low <= high && iterations < 50) {
+        iterations++;
+        const mid = Math.floor((low + high) / 2);
+        
+        const start = Math.max(0, mid - Math.floor(CHUNK_SIZE / 2));
+        const end = Math.min(size - 1, start + CHUNK_SIZE - 1);
+        
+        const chunk = await fetchChunk(url, start, end);
+        if (!chunk) break;
+
+        const lines = chunk.split('\n');
+        
+        if (start > 0 && lines.length > 0) lines.shift(); 
+        if (end < size - 1 && lines.length > 0) lines.pop();
+        
+        if (lines.length === 0) break;
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i].trim();
+          if (!line) continue;
+          if (compareFn(query, line) === 0) return line;
+        }
+        
+        let firstLine = '';
+        for (let i = 0; i < lines.length; i++) {
+          if (lines[i].trim()) { firstLine = lines[i].trim(); break; }
+        }
+        let lastLine = '';
+        for (let i = lines.length - 1; i >= 0; i--) {
+          if (lines[i].trim()) { lastLine = lines[i].trim(); break; }
+        }
+        
+        if (!firstLine || !lastLine) break;
+
+        if (compareFn(query, firstLine) < 0) {
+          high = start - 1;
+        } else if (compareFn(query, lastLine) > 0) {
+          low = end + 1;
+        } else {
+          return null;
+        }
+      }
+      return null;
+    }
+
+    function ipCompare(query, line) {
+       const ipStr = line.split(',')[0].trim();
+       if (ipStr === 'ip') return 1;
+       const pA = query.split('.').map(Number);
+       const pB = ipStr.split('.').map(Number);
+       for(let i=0; i<4; i++) {
+          if ((pA[i]||0) < (pB[i]||0)) return -1;
+          if ((pA[i]||0) > (pB[i]||0)) return 1;
+       }
+       return 0;
+    }
+
+    function stringCompare(query, line) {
+       const str = line.split(',')[0].trim().toLowerCase();
+       if (query < str) return -1;
+       if (query > str) return 1;
+       return 0;
     }
 
     async function loadStats() {
@@ -334,22 +392,9 @@
           if (prefixes && typeof prefixes === 'object' && !(prefix in prefixes)) mightBeMalicious = false;
 
           if (mightBeMalicious) {
-            const txt = await loadCSV();
-
-            // More robust parsing: find line starting with ip, or \n + ip,
-            let idx = txt.indexOf('\n' + ip + ',');
-            if (idx === -1 && txt.startsWith(ip + ',')) {
-              idx = 0; // Handle case where it's the very first line
-            } else if (idx === -1 && txt.startsWith('ip,sources,source_count\n' + ip + ',')) {
-              idx = 'ip,sources,source_count'.length;
-            }
-
-            if (idx !== -1) {
-              const lineStart = (idx === 0) ? 0 : idx + 1;
-              const lineEnd = txt.indexOf('\n', lineStart);
-              const line = txt.substring(lineStart, lineEnd !== -1 ? lineEnd : undefined);
+            const line = await binarySearchFile(RAW + 'malicious_ips.csv?v=' + feedVersion, ip, ipCompare);
+            if (line) {
               const parts = line.split(',');
-              // CSV columns: ip, sources, source_count, reputation, categories, country, asn, isp
               if (parts.length >= 4) {
                 feedMatch = {
                   sourceCount: parseInt(parts[2]) || 1,
@@ -363,8 +408,8 @@
             }
           }
         } else if (isDomain) {
-          const domains = await loadDomains();
-          if (domains && domains.indexOf('\n' + ip + '\n') !== -1) {
+          const found = await binarySearchFile(RAW + 'malicious_domains.txt?v=' + feedVersion, ip, stringCompare);
+          if (found) {
             feedMatch = {
               sourceCount: 1,
               reputation: 100,
@@ -372,8 +417,8 @@
             };
           }
         } else if (isHash) {
-          const hashes = await loadHashes();
-          if (hashes && hashes.indexOf('\n' + ip + '\n') !== -1) {
+          const found = await binarySearchFile(RAW + 'malicious_hashes.txt?v=' + feedVersion, ip, stringCompare);
+          if (found) {
             feedMatch = {
               sourceCount: 1,
               reputation: 100,
@@ -381,8 +426,8 @@
             };
           }
         } else if (isURL) {
-          const urls = await loadUrls();
-          if (urls && urls.indexOf('\n' + ip + '\n') !== -1) {
+          const found = await binarySearchFile(RAW + 'malicious_urls.txt?v=' + feedVersion, ip, stringCompare);
+          if (found) {
             feedMatch = {
               sourceCount: 1,
               reputation: 100,
