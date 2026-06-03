@@ -1,13 +1,13 @@
 {
-  "last_updated": "2026-06-03T11:17:17Z",
-  "total_unique_ips": 713442,
-  "total_unique_domains": 726607,
+  "last_updated": "2026-06-03T11:26:46Z",
+  "total_unique_ips": 713449,
+  "total_unique_domains": 726608,
   "total_unique_hashes": 445,
-  "total_unique_urls": 28818,
-  "total_ioc_count": 1469312,
+  "total_unique_urls": 28823,
+  "total_ioc_count": 1469325,
   "total_feeds_processed": 16,
   "total_feeds_failed": 2,
-  "multi_source_ips": 208390,
+  "multi_source_ips": 208400,
   "failed_feeds": [
     "cins_army",
     "alienvault_reputation"
@@ -15,19 +15,19 @@
   "ips_per_source": {
     "feodo_tracker": 5,
     "bbcan177_ms1": 8839,
-    "ipsum": 118580,
     "feodo_tracker_aggressive": 7602,
-    "firehol_level2": 29837,
+    "binary_defense": 1767,
     "criticalpath_security": 528,
     "dshield_blocklist": 20,
-    "binary_defense": 1767,
-    "firehol_level3": 32539,
-    "blocklist_de": 24651,
     "emerging_threats": 528,
-    "botvrij": 2277,
-    "greensnow": 4755,
+    "firehol_level2": 29837,
+    "greensnow": 4762,
     "spamhaus_drop": 181356,
+    "firehol_level3": 32539,
     "firehol_level1": 547429,
+    "blocklist_de": 24652,
+    "ipsum": 118580,
+    "botvrij": 2277,
     "bruteforceblocker": 530
   },
   "category_counts": {
@@ -35,7 +35,7 @@
     "Mixed": 732429,
     "Malware": 8859,
     "Spam": 181356,
-    "Brute-Force": 29936,
+    "Brute-Force": 29944,
     "Compromised": 1056
   }
 }
