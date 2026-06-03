@@ -18,6 +18,8 @@ import os
 import re
 import time
 import uuid
+import zipfile
+import glob
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from typing import Dict, List, Optional, Set
@@ -40,7 +42,7 @@ FEEDS: Dict[str, str] = {
     "feodo_tracker": "https://feodotracker.abuse.ch/downloads/ipblocklist.txt",
     "feodo_tracker_aggressive": "https://feodotracker.abuse.ch/downloads/ipblocklist_aggressive.txt",
     "bbcan177_ms1": "https://gist.githubusercontent.com/BBcan177/bf29d47ea04391cb3eb0/raw/",
-    "ipsum": "https://raw.githubusercontent.com/stamparm/ipsum/master/ipsum.txt",
+    "ipsum": "https://raw.githubusercontent.com/stamparm/ipsum/master/levels/1.txt",
     "firehol_level1": "https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level1.netset",
     "firehol_level2": "https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level2.netset",
     "firehol_level3": "https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level3.netset",
@@ -209,8 +211,23 @@ def load_custom_iocs(filename="custom_iocs.txt") -> dict:
 # ─────────────────────────────────────────────────────────────────────────────
 def fetch_feed(name: str, url: str) -> Set[str]:
     headers = {"User-Agent": "HimalayaFeed-Aggregator/3.0"}
-    if name == "abuseipdb" and ABUSEIPDB_API_KEY:
-        headers["Key"] = ABUSEIPDB_API_KEY
+    
+    if name == "abuseipdb":
+        if ABUSEIPDB_API_KEY:
+            headers["Key"] = ABUSEIPDB_API_KEY
+        else:
+            return set()
+            
+        cache_file = ".abuseipdb_cache.txt"
+        if os.path.exists(cache_file):
+            if time.time() - os.path.getmtime(cache_file) < 86400:
+                log.info(f"  ✓ {name}: Loading from local cache (under 24h old)")
+                try:
+                    with open(cache_file, "r") as f:
+                        ips = {line.strip() for line in f if line.strip()}
+                    return ips
+                except Exception as e:
+                    log.warning(f"Failed to read abuseipdb cache: {e}")
 
     try:
         r = global_session.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
@@ -218,13 +235,23 @@ def fetch_feed(name: str, url: str) -> Set[str]:
 
         if name == "abuseipdb":
             data = r.json()
-            return {d["ipAddress"] for d in data.get("data", []) if is_public_ipv4(d["ipAddress"])}
+            ips = {d["ipAddress"] for d in data.get("data", []) if is_public_ipv4(d["ipAddress"])}
+            try:
+                with open(".abuseipdb_cache.txt", "w") as f:
+                    for ip in ips:
+                        f.write(ip + "\n")
+            except Exception as e:
+                log.warning(f"Failed to write abuseipdb cache: {e}")
+            log.info(f"  ✓ {name}: {len(ips)} IPs (Saved to cache)")
+            return ips
 
         ips = set()
+        raw_lines = 0
         for line in r.text.splitlines():
             line = line.strip()
             if not line or line.startswith(("#", "//", "!", "/*")):
                 continue
+            raw_lines += 1
             token = line.split()[0].split(",")[0].strip("\"';")
 
             if "/" in token:
@@ -240,11 +267,42 @@ def fetch_feed(name: str, url: str) -> Set[str]:
             elif is_public_ipv4(token):
                 ips.add(token)
 
-        log.info(f"  ✓ {name}: {len(ips)} IPs")
+        if name == "greensnow":
+            duplicates = raw_lines - len(ips)
+            log.info(f"  ✓ {name}: {len(ips)} IPs (Removed {duplicates} duplicate/invalid entries from source)")
+        else:
+            log.info(f"  ✓ {name}: {len(ips)} IPs")
         return ips
     except Exception as e:
         log.error(f"  ✗ Feed {name} failed: {e}")
     return set()
+
+
+def process_malwarebazaar_zips() -> Set[str]:
+    extracted_hashes = set()
+    zip_files = glob.glob("*malwarebazaar*.zip", recursive=False)
+    if not zip_files:
+        return extracted_hashes
+    
+    for zip_path in zip_files:
+        log.info(f"Found MalwareBazaar ZIP: {zip_path}, extracting...")
+        try:
+            with zipfile.ZipFile(zip_path, 'r') as zf:
+                for filename in zf.namelist():
+                    with zf.open(filename) as f:
+                        content = f.read().decode('utf-8', errors='ignore')
+                        # Aggressive SHA-256 scan
+                        for word in content.split():
+                            word = word.strip().lower()
+                            if _SHA256_PATTERN.match(word):
+                                extracted_hashes.add(word)
+            log.info(f"  ✓ Extracted {len(extracted_hashes)} hashes from {zip_path}")
+            os.remove(zip_path)
+            log.info(f"  ✓ Deleted {zip_path}")
+        except Exception as e:
+            log.error(f"Failed to process {zip_path}: {e}")
+            
+    return extracted_hashes
 
 
 def fetch_domain_feed(name: str, url: str) -> Set[str]:
@@ -594,6 +652,11 @@ def main():
         hash_sources["custom_iocs.txt"] = custom_iocs["hashes"]
     if custom_iocs["urls"]:
         url_sources["custom_iocs.txt"] = custom_iocs["urls"]
+
+    # ── Process Local Zips
+    mb_hashes = process_malwarebazaar_zips()
+    if mb_hashes:
+        hash_sources["malwarebazaar_local_zip"] = hash_sources.get("malwarebazaar_local_zip", set()) | mb_hashes
 
     # Sort IPs once
     sorted_ips = sorted(ip_map.keys(), key=numerical_ip_key)
