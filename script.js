@@ -807,21 +807,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// -- Hero Canvas Particle Animation --
-document.addEventListener('DOMContentLoaded', () => {
-  const canvas = document.getElementById('hero-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  
-  let particlesArray = [];
-  let w = canvas.width = window.innerWidth;
-  let h = canvas.height = document.querySelector('.hero').offsetHeight || 500;
-  
-  window.addEventListener('resize', () => {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = document.querySelector('.hero').offsetHeight || 500;
-    init();
-  });
+
   
   const mouse = { x: null, y: null, radius: 150 };
   
