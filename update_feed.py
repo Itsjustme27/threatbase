@@ -536,7 +536,7 @@ def write_stix(sorted_ips: List[str], ip_map: Dict[str, List[str]],
         "objects": objects
     }
     
-    with open("stix2_feed.json", "w") as f:
+    with open("stix2_feed.json", "w", encoding="utf-8") as f:
         json.dump(bundle, f)
     total = len(objects)
     log.info(f"Wrote stix2_feed.json with {total} indicators ({len(high_conf)} IPs, {min(len(domains),5000)} domains, {min(len(hashes),5000)} hashes, {min(len(urls),2000)} URLs)")
@@ -555,7 +555,7 @@ def write_ip_prefixes(sorted_ips: List[str]):
         prefix = f"{parts[0]}.{parts[1]}.{parts[2]}"
         prefixes[prefix] = prefixes.get(prefix, 0) + 1
         
-    with open("ip_prefixes.json", "w") as f:
+    with open("ip_prefixes.json", "w", encoding="utf-8") as f:
         json.dump(prefixes, f)
     log.info(f"Wrote ip_prefixes.json with {len(prefixes)} /24 prefixes")
 
@@ -807,12 +807,12 @@ def main():
 
     # ── Outputs
     stats = build_stats(ip_map, ip_sources, failed, ts, domain_map, all_hashes, all_urls)
-    with open("stats.json", "w") as f: json.dump(stats, f, indent=2)
+    with open("stats.json", "w", encoding="utf-8") as f: json.dump(stats, f, indent=2)
     
-    with open("malicious_ips.txt", "w") as f:
+    with open("malicious_ips.txt", "w", encoding="utf-8") as f:
         f.write("\n".join(sorted_ips) + "\n")
         
-    with open("malicious_domains.txt", "w") as f:
+    with open("malicious_domains.txt", "w", encoding="utf-8") as f:
         f.write("\n".join(sorted(list(domain_map))) + "\n")
         
     write_csv(sorted_ips, ip_map, geoip)
