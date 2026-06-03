@@ -207,6 +207,34 @@ def load_custom_iocs(filename="custom_iocs.txt") -> dict:
     return result
 
 
+def load_existing_iocs() -> dict:
+    """Load already identified IOCs so the feed is cumulative (never drops IPs)."""
+    result = {"ips": set(), "domains": set(), "hashes": set(), "urls": set()}
+    
+    # Map filenames to keys and validation functions
+    files_map = {
+        "malicious_ips.txt": ("ips", is_public_ipv4, lambda x: x),
+        "malicious_domains.txt": ("domains", lambda x: extract_domain(x) is not None, lambda x: extract_domain(x)),
+        "malicious_hashes.txt": ("hashes", lambda x: _HASH_PATTERN.match(x.lower()), lambda x: x.lower()),
+        "malicious_urls.txt": ("urls", lambda x: _URL_PATTERN.match(x), lambda x: x)
+    }
+    
+    for filename, (key, validator, transformer) in files_map.items():
+        if os.path.exists(filename):
+            try:
+                with open(filename, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if line and not line.startswith(('#', '//')):
+                            if validator(line):
+                                result[key].add(transformer(line))
+                log.info(f"Loaded existing {len(result[key])} {key} from {filename}")
+            except Exception as e:
+                log.error(f"Failed to load existing {filename}: {e}")
+                
+    return result
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Feed Fetchers
 # ─────────────────────────────────────────────────────────────────────────────
@@ -530,8 +558,9 @@ def main():
 
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    # ── Load Custom IOCs (once)
+    # ── Load Custom IOCs and Existing IOCs (Cumulative feature)
     custom_iocs = load_custom_iocs()
+    existing_iocs = load_existing_iocs()
 
     # ── Fetch ALL feeds in parallel ──────────────────────────────────────────
     log.info("Fetching all feeds in parallel...")
@@ -595,8 +624,13 @@ def main():
     log.info("Merging IOCs...")
     t0 = time.time()
 
-    # Start with custom IOCs
+    # Start with custom IOCs and existing historical IOCs
     ip_map: Dict[str, set] = {ip: {"custom_iocs.txt"} for ip in custom_iocs["ips"]}
+    for ip in existing_iocs["ips"]:
+        if ip not in ip_map:
+            ip_map[ip] = set()
+        ip_map[ip].add("historical")
+        
     for src, ips in ip_sources.items():
         for ip in ips:
             if ip not in ip_map:
@@ -605,6 +639,7 @@ def main():
 
     # ── Merge Domains
     domain_set: set = custom_iocs["domains"].copy()
+    domain_set.update(existing_iocs["domains"])
     for domains in domain_results.values():
         domain_set.update(domains)
 
@@ -622,11 +657,16 @@ def main():
         if tf["urls"]:
             url_sources[name] = url_sources.get(name, set()) | tf["urls"]
 
-    # Add custom hashes/URLs
+    # Add custom hashes/URLs and historical ones
     if custom_iocs["hashes"]:
         hash_sources["custom_iocs.txt"] = custom_iocs["hashes"]
+    if existing_iocs["hashes"]:
+        hash_sources["historical"] = existing_iocs["hashes"]
+        
     if custom_iocs["urls"]:
         url_sources["custom_iocs.txt"] = custom_iocs["urls"]
+    if existing_iocs["urls"]:
+        url_sources["historical"] = existing_iocs["urls"]
 
     # Sort IPs once
     sorted_ips = sorted(ip_map.keys(), key=numerical_ip_key)
