@@ -4715,6 +4715,7 @@ http://125.42.68.80:41618/bin.sh
 http://125.42.68.80:41618/i
 http://125.42.71.189:38584/i
 http://125.43.104.117:33982/bin.sh
+http://125.43.104.117:33982/i
 http://125.43.11.237:53857/bin.sh
 http://125.43.11.237:53857/i
 http://125.43.124.81:58065/i
@@ -7788,6 +7789,7 @@ http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2019-07-30/
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2019-10-16/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2019-10-24/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2019-11-04/info.zip
+http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2019-12-06/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2019-12-17/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2019-12-18/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2019-12-19/info.zip
@@ -12735,6 +12737,7 @@ http://222.133.102.211:42608/i
 http://222.133.116.29:49369/bin.sh
 http://222.133.116.29:49369/i
 http://222.134.163.121:47510/bin.sh
+http://222.134.163.121:47510/i
 http://222.134.163.26:45880/i
 http://222.134.163.51:59072/bin.sh
 http://222.134.163.51:59072/i
@@ -16185,6 +16188,7 @@ http://49.205.173.192/info.zip
 http://49.232.126.36:9000/Photo.scr
 http://49.233.172.4:8888/WxWorkApis.dll
 http://49.233.172.4:8888/WxWorkMultiOpen.exe
+http://49.234.48.162/pdd_biaoge/soft/down.exe
 http://49.71.122.104:55109/bin.sh
 http://49.71.122.104:55109/i
 http://4vxdasln.brand5calpel.lat/sh1ne-logs-neppy-upd8335-www3/get123c.camp
@@ -19594,6 +19598,7 @@ http://cqrsjc6.pixel-harbor.life/c2cb43a1-3db9-486a-a707-ee88bcdb4813/google.ocx
 http://crest-bet365.com/
 http://crimefreesoftware.com/MC_setup.exe
 http://cs.go.kg/pages/update/css/self/[UPG]CSS.exe
+http://ct3-24.ru/5805773C/PAYMENT/Personal
 http://ct3-24.ru/663752SLUDGZ/oamo/US/
 http://cuddly-lamp.vercel.app/
 http://curly-spoon-sigma.vercel.app/
@@ -23734,6 +23739,7 @@ https://github.com/Isaac1993-io/Test-Practice/raw/refs/heads/master/embrail/Test
 https://github.com/Isaac1993-io/flutter-modern-template/raw/refs/heads/master/android/app/src/main/kotlin/com/example/moderntemplate/modern_flutter_template_troptometer.zip
 https://github.com/ItzNaviYa/Hamster-Kombat-Bot/releases/download/v1.0/Software.zip
 https://github.com/ItzNaviYa/Hamster-Kombat-Bot/releases/download/v2.0/Program.zip
+https://github.com/ItzNaviYa/Hamster-Kombat-Bot/releases/download/v2.0/Software.zip
 https://github.com/ItzNaviYa/Hamster-Kombat-Bot/releases/download/v3.0/Software.zip
 https://github.com/ItzToastie/EMAIL2_ClassicEMail/releases/download/v1.0/Installer.zip
 https://github.com/ItzToastie/EMAIL2_ClassicEMail/releases/download/v2.0/Software.zip
@@ -23958,6 +23964,7 @@ https://github.com/Saked018/rivada/raw/refs/heads/main/MIS_FILE_9888123_RECEIVED
 https://github.com/Sanfin/jsoncrack.com/raw/refs/heads/main/public/assets/com-jsoncrack-3.3-beta.3.zip
 https://github.com/Saninmysore/aws-face-recognition/releases/download/v1.0/Software.zip
 https://github.com/Saninmysore/aws-face-recognition/releases/download/v1.0/Software.zip/
+https://github.com/Scriptez1/RedXFreeSteamInstaller/releases/download/v2.4.4/RedX_Setup.exe
 https://github.com/SeioLonMSK/contextindent.nvim/releases/download/v1.0/Application.zip
 https://github.com/SeioLonMSK/contextindent.nvim/releases/download/v1.0/Program.zip
 https://github.com/SeioLonMSK/contextindent.nvim/releases/download/v2.0/Software.zip

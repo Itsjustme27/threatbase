@@ -24,17 +24,17 @@
   },
   {
     "date": "2026-06-03",
-    "total_unique_ips": 716452,
+    "total_unique_ips": 716466,
     "total_unique_domains": 744469,
     "total_unique_hashes": 1091678,
-    "total_unique_urls": 30404,
+    "total_unique_urls": 30411,
     "active_feeds": 16,
     "category_counts": {
-      "Mixed": 1448692,
+      "Mixed": 1448881,
       "Spam": 183896,
-      "C2": 7607,
-      "Malware": 8859,
       "Brute-Force": 30203,
+      "Malware": 8859,
+      "C2": 7607,
       "Compromised": 1056
     },
     "top_sources": {
