@@ -1,5 +1,4 @@
-
-    lucide.createIcons();
+lucide.createIcons();
 
     let RAW = './';
     if (window.location.hostname === 'kalidada18.github.io') {
@@ -752,7 +751,7 @@
         const code = countryCode.toUpperCase();
         return String.fromCodePoint(...[...code].map(c => 0x1F1E6 + c.charCodeAt(0) - 65));
       } catch (e) { return '🌐'; }
-    }
+
     }
 
     boot();
@@ -788,96 +787,4 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('theme', theme);
     if (window.lucide) lucide.createIcons();
   });
-});
-
-
-
-  
-  const mouse = { x: null, y: null, radius: 150 };
-  
-  canvas.addEventListener('mousemove', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    mouse.x = e.x - rect.left;
-    mouse.y = e.y - rect.top;
-  });
-  
-  canvas.addEventListener('mouseout', () => {
-    mouse.x = null;
-    mouse.y = null;
-  });
-  
-  class Particle {
-    constructor() {
-      this.x = Math.random() * w;
-      this.y = Math.random() * h;
-      this.size = Math.random() * 2 + 0.5;
-      this.speedX = Math.random() * 1 - 0.5;
-      this.speedY = Math.random() * 1 - 0.5;
-      // Vibrant red / white
-      this.color = Math.random() > 0.5 ? 'rgba(255, 0, 51, 0.6)' : 'rgba(255, 255, 255, 0.4)';
-    }
-    update() {
-      this.x += this.speedX;
-      this.y += this.speedY;
-      if (this.x > w || this.x < 0) this.speedX = -this.speedX;
-      if (this.y > h || this.y < 0) this.speedY = -this.speedY;
-      
-      // Mouse collision
-      if (mouse.x != null) {
-        let dx = mouse.x - this.x;
-        let dy = mouse.y - this.y;
-        let distance = Math.sqrt(dx*dx + dy*dy);
-        if (distance < mouse.radius) {
-          const forceDirectionX = dx / distance;
-          const forceDirectionY = dy / distance;
-          const force = (mouse.radius - distance) / mouse.radius;
-          const pushX = forceDirectionX * force * 2;
-          const pushY = forceDirectionY * force * 2;
-          this.x -= pushX;
-          this.y -= pushY;
-        }
-      }
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fillStyle = this.color;
-      ctx.fill();
-    }
-  }
-  
-  function init() {
-    particlesArray = [];
-    const numberOfParticles = (w * h) / 12000;
-    for (let i = 0; i < numberOfParticles; i++) {
-      particlesArray.push(new Particle());
-    }
-  }
-  
-  function animate() {
-    ctx.clearRect(0, 0, w, h);
-    for (let i = 0; i < particlesArray.length; i++) {
-      particlesArray[i].update();
-      particlesArray[i].draw();
-      for (let j = i; j < particlesArray.length; j++) {
-        const dx = particlesArray[i].x - particlesArray[j].x;
-        const dy = particlesArray[i].y - particlesArray[j].y;
-        const distance = Math.sqrt(dx*dx + dy*dy);
-        if (distance < 100) {
-          ctx.beginPath();
-          ctx.strokeStyle = document.body.classList.contains('light-mode') 
-            ? `rgba(255, 0, 51, ${1 - distance/100})`
-            : `rgba(255, 255, 255, ${0.1 - distance/1000})`;
-          ctx.lineWidth = 0.5;
-          ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
-          ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
-          ctx.stroke();
-        }
-      }
-    }
-    requestAnimationFrame(animate);
-  }
-  
-  init();
-  animate();
 });
