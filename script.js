@@ -896,8 +896,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (distance < 100) {
           ctx.beginPath();
           ctx.strokeStyle = document.body.classList.contains('light-mode') 
-            ? \gba(255, 0, 51, \)\
-            : \gba(255, 255, 255, \)\;
+            ? `rgba(255, 0, 51, ${1 - distance/100})`
+            : `rgba(255, 255, 255, ${0.1 - distance/1000})`;
           ctx.lineWidth = 0.5;
           ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
           ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
