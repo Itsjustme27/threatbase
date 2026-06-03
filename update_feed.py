@@ -192,14 +192,21 @@ class GeoIPEngine:
 # Core Logic
 # ─────────────────────────────────────────────────────────────────────────────
 def is_public_ipv4(ip: str) -> bool:
-    return bool(_IPV4_PATTERN.match(ip)) and not bool(_PRIVATE_PATTERN.match(ip))
+    parts = ip.split('.')
+    if len(parts) != 4: return False
+    try:
+        p1, p2, p3, p4 = int(parts[0]), int(parts[1]), int(parts[2]), int(parts[3])
+        if not (0 <= p1 <= 255 and 0 <= p2 <= 255 and 0 <= p3 <= 255 and 0 <= p4 <= 255): return False
+        if p1 in (10, 127, 0, 169) or (p1 == 172 and 16 <= p2 <= 31) or (p1 == 192 and p2 == 168) or p1 >= 224: return False
+        return True
+    except: return False
 
 def extract_domain(text: str) -> Optional[str]:
     text = text.strip()
     if text.startswith("http://") or text.startswith("https://"):
         try:
-            parsed = urllib.parse.urlparse(text)
-            text = parsed.hostname or ""
+            # Much faster than urllib.parse for simple domain extraction
+            text = text.split("://", 1)[1].split("/", 1)[0].split(":", 1)[0]
         except: pass
     text = text.lower()
     if _DOMAIN_PATTERN.match(text):
@@ -213,19 +220,15 @@ def fetch_feed(name: str, url: str) -> Set[str]:
 
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            r = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT, stream=True)
+            r = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
             r.raise_for_status()
             
             if name == "abuseipdb":
                 data = r.json()
                 return {d["ipAddress"] for d in data.get("data", []) if is_public_ipv4(d["ipAddress"])}
-            
-            if r.encoding is None:
-                r.encoding = 'utf-8'
                 
             ips = set()
-            for line in r.iter_lines(decode_unicode=True):
-                if not line: continue
+            for line in r.text.splitlines():
                 line = line.strip()
                 if not line or line.startswith(("#", "//", "!", "/*")): continue
                 token = line.split()[0].split(",")[0].strip('"\';')
@@ -252,14 +255,11 @@ def fetch_feed(name: str, url: str) -> Set[str]:
 def fetch_domain_feed(name: str, url: str) -> Set[str]:
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            r = requests.get(url, timeout=REQUEST_TIMEOUT, stream=True)
+            r = requests.get(url, timeout=REQUEST_TIMEOUT)
             r.raise_for_status()
-            if r.encoding is None:
-                r.encoding = 'utf-8'
                 
             domains = set()
-            for line in r.iter_lines(decode_unicode=True):
-                if not line: continue
+            for line in r.text.splitlines():
                 line = line.strip()
                 if not line or line.startswith(("#", "//")): continue
                 # For URLhaus, CSV style
@@ -283,14 +283,11 @@ def fetch_hash_feed(name: str, url: str) -> Set[str]:
     """Fetch SHA256 hashes from feeds."""
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            r = requests.get(url, timeout=REQUEST_TIMEOUT, stream=True,
+            r = requests.get(url, timeout=REQUEST_TIMEOUT,
                            headers={"User-Agent": "HimalayaFeed-Aggregator/3.0"})
             r.raise_for_status()
-            if r.encoding is None:
-                r.encoding = 'utf-8'
             hashes = set()
-            for line in r.iter_lines(decode_unicode=True):
-                if not line: continue
+            for line in r.text.splitlines():
                 line = line.strip()
                 if not line or line.startswith(('#', '//', '"')): continue
                 token = line.split()[0].split(',')[0].strip('"\';\r\n')
