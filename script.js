@@ -751,7 +751,7 @@
       } catch (e) { return '🌐'; }
     }
 
-    document.addEventListener('DOMContentLoaded', boot);
+    boot();
 
 // -- Theme Toggle Logic --
 document.addEventListener('DOMContentLoaded', () => {
