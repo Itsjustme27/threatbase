@@ -23,6 +23,8 @@ from typing import Dict, List, Optional, Set, Tuple
 import csv
 import heapq
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 logging.basicConfig(
     level=logging.INFO,
@@ -105,6 +107,23 @@ ABUSEIPDB_API_KEY: Optional[str] = os.environ.get("ABUSEIPDB_API_KEY")
 if ABUSEIPDB_API_KEY:
     FEEDS["abuseipdb"] = "https://api.abuseipdb.com/api/v2/blacklist?confidenceMinimum=90"
 
+
+def get_session():
+    session = requests.Session()
+    retry = Retry(
+        total=MAX_RETRIES,
+        read=MAX_RETRIES,
+        connect=MAX_RETRIES,
+        backoff_factor=1,
+        status_forcelist=(429, 500, 502, 503, 504),
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount('http://', adapter)
+    session.mount('https://', adapter)
+    return session
+
+global_session = get_session()
+
 REQUEST_TIMEOUT = 30
 MAX_RETRIES = 3
 RETRY_DELAY = 5
@@ -157,7 +176,7 @@ class GeoIPEngine:
         try:
             if download_needed:
                 log.info("Downloading GeoIP database...")
-                resp = requests.get(url, stream=True, timeout=60)
+                resp = global_session.get(url, stream=True, timeout=60)
                 resp.raise_for_status()
                 with open(db_file, "wb") as f:
                     for chunk in resp.iter_content(chunk_size=8192):
@@ -191,6 +210,30 @@ class GeoIPEngine:
 # ─────────────────────────────────────────────────────────────────────────────
 # Core Logic
 # ─────────────────────────────────────────────────────────────────────────────
+
+def load_custom_iocs(filename="custom_iocs.txt") -> dict:
+    result = {"ips": set(), "domains": set(), "hashes": set(), "urls": set()}
+    if not os.path.exists(filename):
+        return result
+    try:
+        with open(filename, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith(('#', '//')): continue
+                if is_public_ipv4(line):
+                    result["ips"].add(line)
+                elif _SHA256_PATTERN.match(line.lower()):
+                    result["hashes"].add(line.lower())
+                elif _URL_PATTERN.match(line):
+                    result["urls"].add(line)
+                else:
+                    domain = extract_domain(line)
+                    if domain: result["domains"].add(domain)
+        log.info(f"Loaded custom IOCs: {len(result['ips'])} IPs, {len(result['domains'])} domains, {len(result['hashes'])} hashes, {len(result['urls'])} URLs")
+    except Exception as e:
+        log.error(f"Failed to load {filename}: {e}")
+    return result
+
 def is_public_ipv4(ip: str) -> bool:
     parts = ip.split('.')
     if len(parts) != 4: return False
@@ -220,7 +263,7 @@ def fetch_feed(name: str, url: str) -> Set[str]:
 
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            r = requests.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
+            r = global_session.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
             r.raise_for_status()
             
             if name == "abuseipdb":
@@ -255,7 +298,7 @@ def fetch_feed(name: str, url: str) -> Set[str]:
 def fetch_domain_feed(name: str, url: str) -> Set[str]:
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            r = requests.get(url, timeout=REQUEST_TIMEOUT)
+            r = global_session.get(url, timeout=REQUEST_TIMEOUT)
             r.raise_for_status()
                 
             domains = set()
@@ -283,7 +326,7 @@ def fetch_hash_feed(name: str, url: str) -> Set[str]:
     """Fetch SHA256 hashes from feeds."""
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            r = requests.get(url, timeout=REQUEST_TIMEOUT,
+            r = global_session.get(url, timeout=REQUEST_TIMEOUT,
                            headers={"User-Agent": "HimalayaFeed-Aggregator/3.0"})
             r.raise_for_status()
             hashes = set()
@@ -305,7 +348,7 @@ def fetch_url_feed(name: str, url: str) -> Set[str]:
     """Fetch malicious URLs from feeds."""
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            r = requests.get(url, timeout=REQUEST_TIMEOUT, stream=True,
+            r = global_session.get(url, timeout=REQUEST_TIMEOUT, stream=True,
                            headers={"User-Agent": "HimalayaFeed-Aggregator/3.0"})
             r.raise_for_status()
             if r.encoding is None:
@@ -339,7 +382,7 @@ def fetch_threatfox(name: str, url: str) -> dict:
     """
     result = {"ips": set(), "domains": set(), "hashes": set(), "urls": set()}
     try:
-        r = requests.get(url, timeout=60,
+        r = global_session.get(url, timeout=60,
                         headers={"User-Agent": "HimalayaFeed-Aggregator/3.0"})
         r.raise_for_status()
         data = r.json()
@@ -473,6 +516,9 @@ def write_stix(sorted_ips: List[str], ip_map: Dict[str, List[str]],
     
     objects = []
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    
+    # ── Load Custom IOCs ──
+    custom_iocs = load_custom_iocs()
     
     for ip in high_conf:
         objects.append({
@@ -659,8 +705,17 @@ def main():
 
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     
+    # ── Load Custom IOCs ──
+    custom_iocs = load_custom_iocs()
+    
     # ── Load Historical Data (Stateful merge) ──
-    historical_ip_map = {}
+    # First, preload custom IOCs as 'custom_iocs.txt' source
+    historical_ip_map = {ip: {"custom_iocs.txt"} for ip in custom_iocs["ips"]}
+    historical_domain_map = custom_iocs["domains"].copy()
+    historical_hash_map = {h: {"custom_iocs.txt"} for h in custom_iocs["hashes"]}
+    historical_url_map = custom_iocs["urls"].copy()
+
+    
     if os.path.exists("malicious_ips.csv"):
         try:
             with open("malicious_ips.csv", "r", encoding="utf-8") as f:
@@ -675,7 +730,7 @@ def main():
         except Exception as e:
             log.error(f"Failed to load malicious_ips.csv: {e}")
 
-    historical_domain_map = set()
+    
     if os.path.exists("malicious_domains.txt"):
         try:
             with open("malicious_domains.txt", "r", encoding="utf-8") as f:
@@ -687,7 +742,7 @@ def main():
         except Exception as e:
             log.error(f"Failed to load malicious_domains.txt: {e}")
 
-    historical_hash_map = {}
+    
     if os.path.exists("malicious_hashes.csv"):
         try:
             with open("malicious_hashes.csv", "r", encoding="utf-8") as f:
@@ -702,7 +757,7 @@ def main():
         except Exception as e:
             log.error(f"Failed to load malicious_hashes.csv: {e}")
 
-    historical_url_map = set()
+    
     if os.path.exists("malicious_urls.txt"):
         try:
             with open("malicious_urls.txt", "r", encoding="utf-8") as f:

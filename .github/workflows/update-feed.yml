@@ -42,6 +42,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          cache: 'pip'
 
       # ── 3. Install dependencies ──────────────────────────────────────────────
       - name: Install Python dependencies
@@ -51,7 +52,10 @@ jobs:
       - name: Run feed aggregator
         env:
           ABUSEIPDB_API_KEY: ${{ secrets.ABUSEIPDB_API_KEY }}
-        run: python update_feed.py
+        run: |
+          for i in 1 2 3; do
+            python update_feed.py && break || sleep 10
+          done
 
       # ── 5. Commit and push ───────────────────────────────────────────────────
       #
@@ -79,7 +83,7 @@ jobs:
             TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
             git commit -m "Update: ${TIMESTAMP} — ${IP_COUNT} IPs, ${DOMAIN_COUNT} domains, ${HASH_COUNT} hashes, ${URL_COUNT} URLs"
 
-            git pull --rebase --quiet origin "${GITHUB_REF_NAME:-main}" || true
+            git pull --rebase --autostash --quiet origin "${GITHUB_REF_NAME:-main}" || true
             git push origin "${GITHUB_REF_NAME:-main}"
             echo "✓ Feed pushed successfully (${IP_COUNT} IPs, ${DOMAIN_COUNT} Domains, ${HASH_COUNT} Hashes, ${URL_COUNT} URLs)."
           fi
