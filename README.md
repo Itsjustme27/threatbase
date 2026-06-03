@@ -22,6 +22,10 @@ HimalayaFeed is designed for pure simplicity and effectiveness. It aggregates kn
 
 **No VPCs. No API Keys. No Paid Services. Just Simple Threat Intelligence.**
 
+### 🎨 Visual Identity
+
+HimalayaFeed's website features a **black and red** color scheme — black for all primary text, headings, and data values, paired with **Nepali Crimson Red (#DC143C)** as the accent color. This bold contrast ensures maximum readability and a strong visual presence befitting a threat intelligence platform.
+
 ---
 
 ## ⚡ Why HimalayaFeed?
