@@ -465,7 +465,7 @@ h1, h2, h3, h4, h5, h6 {
 .scan-overlay {
   display: none;
   text-align: center;
-  padding: 4rem 0;
+  padding: 3rem 0;
   position: relative;
 }
 
@@ -473,8 +473,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .matrix-scanner {
   position: relative;
-  width: 120px; height: 120px;
-  margin: 0 auto 2rem;
+  width: 72px; height: 72px;
+  margin: 0 auto 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -491,60 +491,60 @@ h1, h2, h3, h4, h5, h6 {
   border-top-color: var(--red);
   border-left-color: var(--red);
   animation: spin 2s linear infinite;
-  box-shadow: 0 0 15px var(--red-glow);
+  box-shadow: 0 0 10px rgba(220,38,38,0.3);
 }
 
 .matrix-ring-2 {
-  inset: 15px;
+  inset: 10px;
   border-bottom-color: var(--blue);
   border-right-color: var(--blue);
   animation: spin 3s linear infinite reverse;
 }
 
 .matrix-ring-3 {
-  inset: 30px;
+  inset: 20px;
   border-top-color: var(--amber);
   animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
 }
 
 .matrix-core {
-  width: 40px; height: 40px;
-  background: var(--bg-panel);
+  width: 24px; height: 24px;
+  background: rgba(255,255,255,0.05);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   color: var(--white);
-  box-shadow: 0 0 20px rgba(255,255,255,0.1);
   z-index: 10;
 }
 
-.matrix-core i { width: 20px; height: 20px; }
+.matrix-core i { width: 14px; height: 14px; opacity: 0.8; }
 
 @keyframes spin { 100% { transform: rotate(360deg); } }
 
 .scan-title {
   font-family: var(--mono);
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  color: var(--ink);
-  letter-spacing: 0.05em;
-  margin-bottom: 0.8rem;
+  color: var(--iron);
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
   text-transform: uppercase;
 }
 
 .scan-ip {
-  font-family: var(--font);
-  font-weight: 800;
-  font-size: 1.5rem;
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 1.1rem;
   color: var(--slate);
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  word-break: break-all;
 }
 
 .scan-progress-bar {
-  max-width: 300px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.1);
+  max-width: 200px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.05);
   margin: 0 auto;
-  border-radius: 4px;
+  border-radius: 2px;
   overflow: hidden;
   position: relative;
 }
