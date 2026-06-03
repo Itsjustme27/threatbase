@@ -1680,6 +1680,10 @@
         <div class="hero-search-row">
           <input type="text" class="hero-search-input" id="ip-input"
             placeholder="Search IP, Domain, Hash, or URL..." autocomplete="off" spellcheck="false">
+          <input type="file" id="file-scan-input" style="display: none;">
+          <button class="hero-search-btn" style="background: rgba(255,255,255,0.1); border-right: 1px solid rgba(255,255,255,0.1);" onclick="document.getElementById('file-scan-input').click()" id="file-btn" title="Scan File (Calculates hash locally)">
+            <i data-lucide="file-up"></i> File
+          </button>
           <button class="hero-search-btn" onclick="scanIP()" id="scan-btn">
             <i data-lucide="scan"></i> Scan
           </button>
@@ -2666,6 +2670,35 @@
       card.classList.add('show');
       lucide.createIcons();
     }
+
+    /* ── File Scanning (Client-side SHA-256) ── */
+    document.getElementById('file-scan-input').addEventListener('change', async function(e) {
+      if (!this.files || this.files.length === 0) return;
+      const file = this.files[0];
+      
+      const btn = document.getElementById('file-btn');
+      const origHtml = btn.innerHTML;
+      btn.innerHTML = '<span class="spinner" style="width:14px;height:14px;"></span> Hash';
+      btn.disabled = true;
+
+      try {
+        const buffer = await file.arrayBuffer();
+        const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        
+        document.getElementById('ip-input').value = hashHex;
+        scanIP();
+      } catch (err) {
+        console.error('Hash calculation failed', err);
+        alert('Failed to calculate file hash.');
+      } finally {
+        btn.innerHTML = origHtml;
+        btn.disabled = false;
+        lucide.createIcons();
+        this.value = ''; // Reset input
+      }
+    });
 
     document.getElementById('ip-input').addEventListener('keydown', e => {
       if (e.key === 'Enter') scanIP();
