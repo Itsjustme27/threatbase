@@ -20,38 +20,83 @@ function animateValue(el, end, dur = 1600) {
 let feedVersion = Date.now();
 let statsData = null;
 
-/* ── Theme Management ── */
-function initTheme() {
+/* ── UI Logic ── */
+function initUI() {
+  // Theme
   const toggleBtn = document.getElementById('theme-toggle');
-  const themeIcon = document.getElementById('theme-icon');
-  if (!toggleBtn) return;
-  
-  const savedTheme = localStorage.getItem('himalaya-theme');
-  const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-  
-  let currentTheme = savedTheme || (prefersLight ? 'light' : 'dark');
-  
-  function applyTheme(theme) {
-    if (theme === 'light') {
-      document.documentElement.setAttribute('data-theme', 'light');
-      toggleBtn.innerHTML = '<i data-lucide="sun"></i>';
-    } else {
-      document.documentElement.removeAttribute('data-theme');
-      toggleBtn.innerHTML = '<i data-lucide="moon"></i>';
-    }
-    if (window.lucide) window.lucide.createIcons();
-  }
-  
-  applyTheme(currentTheme);
-  
-  toggleBtn.addEventListener('click', () => {
-    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    localStorage.setItem('himalaya-theme', currentTheme);
+  if (toggleBtn) {
+    const savedTheme = localStorage.getItem('himalaya-theme');
+    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    let currentTheme = savedTheme || (prefersLight ? 'light' : 'dark');
+    
+    const applyTheme = (theme) => {
+      if (theme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        toggleBtn.innerHTML = '<i data-lucide="sun"></i>';
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        toggleBtn.innerHTML = '<i data-lucide="moon"></i>';
+      }
+      if (window.lucide) window.lucide.createIcons();
+    };
+    
     applyTheme(currentTheme);
+    toggleBtn.addEventListener('click', () => {
+      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('himalaya-theme', currentTheme);
+      applyTheme(currentTheme);
+      renderHistoryChart(); // Re-render chart for theme changes
+    });
+  }
+
+  // Mobile Drawer
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const closeBtn = document.getElementById('mobile-close-btn');
+  const overlay = document.getElementById('mobile-overlay');
+  const mobileLinks = document.querySelectorAll('.mobile-link');
+
+  const toggleDrawer = (open) => {
+    if (!overlay) return;
+    if (open) {
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden', 'false');
+      menuBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    } else {
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+  };
+
+  if (menuBtn) menuBtn.addEventListener('click', () => toggleDrawer(true));
+  if (closeBtn) closeBtn.addEventListener('click', () => toggleDrawer(false));
+  if (overlay) overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) toggleDrawer(false);
+  });
+  
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', () => toggleDrawer(false));
   });
 }
 
-initTheme();
+function updateSyncTime(timestamp) {
+  const options = { timeZone: 'Asia/Kathmandu', hour: '2-digit', minute: '2-digit', hour12: true };
+  let ktmTime = 'Live Mode';
+  
+  if (timestamp) {
+    ktmTime = 'Synced ' + new Intl.DateTimeFormat('en-US', options).format(new Date(timestamp)) + ' (NPT)';
+  }
+  
+  const statusEl = document.getElementById('sync-status');
+  const mobileStatusEl = document.getElementById('mobile-sync-status');
+  
+  if (statusEl) statusEl.textContent = ktmTime;
+  if (mobileStatusEl) mobileStatusEl.textContent = ktmTime;
+}
+
+initUI();
 
 async function boot() {
   try {
@@ -68,15 +113,16 @@ async function boot() {
     animateValue(document.getElementById('n-hashes'), d.total_unique_hashes || 0);
     animateValue(document.getElementById('n-urls'), d.total_unique_urls || 0);
 
-    const ts = new Date(d.last_updated);
-    document.getElementById('sync-status').textContent = 'Synced ' + ts.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    updateSyncTime(d.last_updated);
   } catch (err) {
     console.warn('stats.json unavailable:', err.message);
-    document.getElementById('sync-status').textContent = 'Live Mode';
+    updateSyncTime(null);
   }
 
   renderHistoryChart();
 }
+
+let historyChartInstance = null;
 
 async function renderHistoryChart() {
   try {
@@ -88,28 +134,38 @@ async function renderHistoryChart() {
     const labels = history.map(h => h.date);
     const vals = history.map(h => h.total_unique_ips);
 
-    const ctx = document.getElementById('historyChart').getContext('2d');
+    const ctx = document.getElementById('historyChart');
+    if (!ctx) return;
     
-    // Create gradient
-    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, 'rgba(255, 0, 51, 0.4)');
-    gradient.addColorStop(1, 'rgba(255, 0, 51, 0.0)');
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    const accentColor = isLight ? '#dc2626' : '#ef4444'; // var(--accent)
+    const gridColor = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.06)';
+    const textColor = isLight ? '#71717a' : '#a1a1aa';
 
-    new Chart(ctx, {
+    const ctx2d = ctx.getContext('2d');
+    const gradient = ctx2d.createLinearGradient(0, 0, 0, 350);
+    gradient.addColorStop(0, isLight ? 'rgba(220, 38, 38, 0.15)' : 'rgba(239, 68, 68, 0.15)');
+    gradient.addColorStop(1, 'rgba(239, 68, 68, 0)');
+
+    if (historyChartInstance) {
+      historyChartInstance.destroy();
+    }
+
+    historyChartInstance = new Chart(ctx2d, {
       type: 'line',
       data: {
         labels,
         datasets: [{
           label: 'Tracked Malicious IPs',
           data: vals,
-          borderColor: '#ff0033',
+          borderColor: accentColor,
           backgroundColor: gradient,
           borderWidth: 2,
           pointRadius: 0,
-          pointHoverRadius: 6,
-          pointBackgroundColor: '#ff0033',
+          pointHoverRadius: 5,
+          pointBackgroundColor: accentColor,
           fill: true,
-          tension: 0.4 // smooth curves
+          tension: 0.3 // smoother curves
         }]
       },
       options: {
@@ -118,10 +174,10 @@ async function renderHistoryChart() {
         plugins: { 
           legend: { display: false }, 
           tooltip: { 
-            backgroundColor: 'rgba(10, 10, 10, 0.9)',
-            titleColor: '#fff',
-            bodyColor: '#ff0033',
-            borderColor: 'rgba(255, 255, 255, 0.1)',
+            backgroundColor: isLight ? 'rgba(255, 255, 255, 0.95)' : 'rgba(10, 10, 11, 0.95)',
+            titleColor: isLight ? '#0a0a0b' : '#fafafa',
+            bodyColor: accentColor,
+            borderColor: isLight ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)',
             borderWidth: 1,
             padding: 12,
             displayColors: false,
@@ -131,12 +187,12 @@ async function renderHistoryChart() {
         scales: {
           x: { 
             grid: { display: false, drawBorder: false }, 
-            ticks: { maxTicksLimit: 8, color: '#71717a' } 
+            ticks: { maxTicksLimit: 8, color: textColor } 
           },
           y: {
-            grid: { color: 'rgba(255, 255, 255, 0.05)', drawBorder: false },
+            grid: { color: gridColor, drawBorder: false },
             ticks: { 
-              color: '#71717a',
+              color: textColor,
               callback: v => v >= 1e6 ? (v / 1e6).toFixed(1) + 'M' : v >= 1e3 ? (v / 1e3).toFixed(0) + 'K' : v 
             }
           }
@@ -254,10 +310,9 @@ async function scanIndicator() {
   }, 50);
 
   const texts = [
-    'Establishing Secure Connection...',
-    `Parsing ${scanType} signature...`,
-    'Querying Global Threat Matrix...',
-    'Performing Cryptographic Verification...'
+    'Initializing scan...',
+    `Analyzing ${scanType} pattern...`,
+    'Checking blocklists...'
   ];
   
   let step = 0;
@@ -295,7 +350,7 @@ async function scanIndicator() {
   overlay.classList.remove('active');
   showReport(isMalicious ? 'danger' : 'safe', ip, isIP, isDomain, isHash, isURL);
 
-  btn.innerHTML = '<span>Scan Threat</span><i data-lucide="arrow-right"></i>';
+  btn.innerHTML = '<span>Scan</span>';
   btn.disabled = false;
   lucide.createIcons();
 }
@@ -324,8 +379,7 @@ function showReport(type, ip, isIP, isDomain, isHash, isURL) {
     
     document.getElementById('rc-assessment').innerHTML = `
       <div class="assessment-title text-red">Immediate Action Required</div>
-      <p>The indicator <code>${ip}</code> has been positively identified as malicious by the HimalayaFeed global sensor network. It is currently active in our threat intelligence blocklists.</p>
-      <p style="margin-top:0.8rem;"><strong>Recommendation:</strong> Blacklist this indicator immediately across your network perimeter (Firewalls, DNS Sinkholes, or EDR platforms).</p>`;
+      <p>The indicator <code>${ip}</code> has been positively identified as malicious by the HimalayaFeed global sensor network. It is currently active in our threat intelligence blocklists.</p>`;
   } else if (type === 'safe') {
     header.classList.add('rc-header-safe');
     glow.classList.add('rc-glow-safe');
@@ -337,8 +391,7 @@ function showReport(type, ip, isIP, isDomain, isHash, isURL) {
 
     document.getElementById('rc-assessment').innerHTML = `
       <div class="assessment-title text-green">Clean Result</div>
-      <p>The indicator <code>${ip}</code> is <strong>not currently listed</strong> in the active HimalayaFeed threat database.</p>
-      <p style="margin-top:0.8rem;"><strong>Note:</strong> This does not guarantee the indicator is completely safe; it only means it hasn't been flagged recently by our honeypots or aggregated feeds.</p>`;
+      <p>The indicator <code>${ip}</code> is <strong>not currently listed</strong> in the active HimalayaFeed threat database.</p>`;
   } else {
     header.classList.add('rc-header-warn');
     glow.classList.add('rc-glow-warn');
@@ -380,9 +433,12 @@ function showReport(type, ip, isIP, isDomain, isHash, isURL) {
   lucide.createIcons();
 }
 
-document.getElementById('ip-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') scanIndicator();
-});
+const ipInput = document.getElementById('ip-input');
+if (ipInput) {
+  ipInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') scanIndicator();
+  });
+}
 
 // Start
 document.addEventListener('DOMContentLoaded', boot);
