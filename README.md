@@ -49,23 +49,29 @@ https://raw.githubusercontent.com/kalidada18/himalayafeed/main/malicious_hashes.
 
 ## 🛡️ Integration Examples
 
-### Linux iptables / ipset
+<details>
+<summary><b>🐧 Linux &mdash; iptables / ipset</b></summary>
+<br/>
 ```bash
-wget -qO- https://raw.githubusercontent.com/kalidada18/himalayafeed/main/malicious_ips.txt | grep -E '^[0-9]' | while read IP; do
-  iptables -I INPUT -s $IP -j DROP
-done
+wget -qO- https://raw.githubusercontent.com/kalidada18/himalayafeed/main/malicious_ips.txt \
+  | grep -E '^[0-9]' | while read IP; do iptables -I INPUT -s $IP -j DROP; done
 ```
-*(Note: For high-volume blocking, using `ipset` is highly recommended over raw iptables rules).*
 
-### NGINX Blocklist
+> ⚠️ High volume? Use `ipset` instead of raw iptables rules.
+</details>
+
+<details>
+<summary><b>🌐 NGINX Blocklist</b></summary>
+<br/>
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/kalidada18/himalayafeed/main/malicious_ips.txt \
-  | grep -E '^[0-9]' | sed 's/^/deny /; s/$/ ;/' > /etc/nginx/conf.d/himalayafeed-deny.conf
-nginx -s reload
+  | grep -E '^[0-9]' | sed 's/^/deny /; s/$/ ;/' > /etc/nginx/conf.d/himalayafeed-deny.conf && nginx -s reload
 ```
+</details>
 
 ---
 
-## ⚖️ License
-
-This project is licensed under the **MIT License**. Upstream feed data is subject to each respective provider's terms of service.
+<div align="center">
+  <sub>⚖️ <a href="LICENSE">MIT License</a> &nbsp;·&nbsp; upstream feed data subject to each provider's ToS.</sub>
+</div>
