@@ -116,8 +116,8 @@ MAX_WORKERS = 12  # Increased — all feed types now share one pool
 def get_session():
     session = requests.Session()
     retry = Retry(
-        total=0, read=0, connect=0,
-        backoff_factor=0.5,
+        total=3, read=3, connect=3,
+        backoff_factor=1.0,
         status_forcelist=(429, 500, 502, 503, 504),
     )
     adapter = HTTPAdapter(max_retries=retry, pool_maxsize=MAX_WORKERS)
@@ -476,8 +476,13 @@ def fetch_otx() -> dict:
     try:
         while page <= max_pages:
             url = f"{base_url}?page={page}&limit=50"
-            r = global_session.get(url, headers=headers, timeout=(10, 30))
-            r.raise_for_status()
+            try:
+                r = global_session.get(url, headers=headers, timeout=(10, 60))
+                r.raise_for_status()
+            except requests.exceptions.RequestException as req_e:
+                log.warning(f"  ⚠ OTX page {page} failed, stopping pagination: {req_e}")
+                break
+
             data = r.json()
 
             pulses = data.get("results", [])
