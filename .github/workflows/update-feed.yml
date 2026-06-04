@@ -48,9 +48,6 @@ jobs:
         run: pip install --quiet --no-cache-dir -r requirements.txt
 
       # ── 4. Process Uploaded ZIPs (MalwareBazaar) ─────────────────────────────
-      - name: Download MalwareBazaar Full ZIP
-        run: wget -O download.zip "https://bazaar.abuse.ch/export/txt/sha256/full/"
-
       - name: Extract Hashes from ZIPs
         run: |
           for zip in *.zip; do

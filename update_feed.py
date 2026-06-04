@@ -143,15 +143,13 @@ _URL_PATTERN = re.compile(r'^https?://.+')
 # ─────────────────────────────────────────────────────────────────────────────
 # Helpers
 # ─────────────────────────────────────────────────────────────────────────────
-def is_public_ipv4(ip: str) -> bool:
+def is_valid_ipv4(ip: str) -> bool:
     parts = ip.split('.')
     if len(parts) != 4:
         return False
     try:
         p1, p2, p3, p4 = int(parts[0]), int(parts[1]), int(parts[2]), int(parts[3])
         if not (0 <= p1 <= 255 and 0 <= p2 <= 255 and 0 <= p3 <= 255 and 0 <= p4 <= 255):
-            return False
-        if p1 in (10, 127, 0, 169) or (p1 == 172 and 16 <= p2 <= 31) or (p1 == 192 and p2 == 168) or p1 >= 224:
             return False
         return True
     except Exception:
@@ -191,7 +189,7 @@ def load_custom_iocs(filename="custom_iocs.txt") -> dict:
                 line = line.strip()
                 if not line or line.startswith(('#', '//')):
                     continue
-                if is_public_ipv4(line):
+                if is_valid_ipv4(line):
                     result["ips"].add(line)
                 elif _HASH_PATTERN.match(line.lower()):
                     result["hashes"].add(line.lower())
@@ -213,7 +211,7 @@ def load_existing_iocs() -> dict:
     
     # Map filenames to keys and validation functions
     files_map = {
-        "malicious_ips.txt": ("ips", is_public_ipv4, lambda x: x),
+        "malicious_ips.txt": ("ips", is_valid_ipv4, lambda x: x),
         "malicious_domains.txt": ("domains", lambda x: extract_domain(x) is not None, lambda x: extract_domain(x)),
         "malicious_hashes.txt": ("hashes", lambda x: _HASH_PATTERN.match(x.lower()), lambda x: x.lower()),
         "malicious_urls.txt": ("urls", lambda x: _URL_PATTERN.match(x), lambda x: x)
@@ -264,7 +262,7 @@ def fetch_feed(name: str, url: str) -> Set[str]:
 
         if name == "abuseipdb":
             data = r.json()
-            ips = {d["ipAddress"] for d in data.get("data", []) if is_public_ipv4(d["ipAddress"])}
+            ips = {d["ipAddress"] for d in data.get("data", []) if is_valid_ipv4(d["ipAddress"])}
             try:
                 with open(".abuseipdb_cache.txt", "w") as f:
                     for ip in ips:
@@ -289,11 +287,11 @@ def fetch_feed(name: str, url: str) -> Set[str]:
                     if network.version == 4 and network.prefixlen >= 24:
                         for ip in network.hosts():
                             ip_str = str(ip)
-                            if is_public_ipv4(ip_str):
+                            if is_valid_ipv4(ip_str):
                                 ips.add(ip_str)
                 except ValueError:
                     pass
-            elif is_public_ipv4(token):
+            elif is_valid_ipv4(token):
                 ips.add(token)
 
         if name == "greensnow":
@@ -419,7 +417,7 @@ def fetch_threatfox(name: str, url: str) -> dict:
                 continue
             if "ip" in ioc_type:
                 ip_part = ioc.split(":")[0]
-                if is_public_ipv4(ip_part):
+                if is_valid_ipv4(ip_part):
                     result["ips"].add(ip_part)
             elif "domain" in ioc_type:
                 d = extract_domain(ioc)
