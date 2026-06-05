@@ -1,3 +1,8 @@
+# HimalayaFeed Threat Intelligence Feed - URLs
+# (https://github.com/kalidada18/himalayafeed)
+#
+# Last update: Fri, 05 Jun 2026 06:25:25 +0000
+#
 http://0000153.0000255.0000011.0000125/httpswww.tcs.comwhat-we-doindustriespublic-servicessolutiontcs-sovereignsecure-cloudness.php
 http://0022a601.pphost.net/threatsim/doc/46cad0e0ca3b2d6d9d3ce691ca2887b18abc80acf0e81799fbb290cce104c8eb.doc
 http://0022a601.pphost.net/threatsim/doc/774d0427cd607b1c09131cc277a68c9edd7cf01499d356bcb1ef4a08e6fc322a.doc
@@ -154,9 +159,12 @@ http://103.173.173.98:58982/
 http://103.173.173.98:58982/.i
 http://103.173.173.98:58982/Mozi.m
 http://103.173.173.98:58982/i
+http://103.176.16.167:60492/Mozi.a
+http://103.176.16.78:51683/Mozi.m
 http://103.179.240.227:47557/bin.sh
 http://103.179.240.227:47557/i
 http://103.180.94.55:55318/i
+http://103.181.160.22:37187/Mozi.a
 http://103.187.151.107:1500/.i
 http://103.187.151.107:1500/Mozi.m
 http://103.187.151.107:1500/i
@@ -382,6 +390,7 @@ http://105.184.236.229:39441/bin.sh
 http://105.184.236.229:39441/i
 http://105.184.50.146:36749/i
 http://105.186.112.229:39221/bin.sh
+http://105.186.143.24:59469/Mozi.m
 http://105.186.143.24:59469/bin.sh
 http://105.186.143.24:59469/i
 http://105.186.169.64:43477/bin.sh
@@ -1429,6 +1438,7 @@ http://110.38.211.139:56601/i
 http://110.38.215.152:39095/bin.sh
 http://110.38.215.152:39095/i
 http://110.38.218.198:47238/i
+http://110.38.218.245:48087/Mozi.a
 http://110.38.221.11:48092/bin.sh
 http://110.38.221.11:48092/i
 http://110.38.221.11:57815/bin.sh
@@ -1448,6 +1458,7 @@ http://110.38.223.172:59762/bin.sh
 http://110.38.223.172:59762/i
 http://110.38.223.172:60712/bin.sh
 http://110.38.223.172:60712/i
+http://110.38.254.160:50664/Mozi.m
 http://110.39.224.167:51675/bin.sh
 http://110.39.224.167:51675/i
 http://110.39.224.167:55382/bin.sh
@@ -1705,6 +1716,7 @@ http://111.235.143.155:8080/Photo.scr
 http://111.235.143.155:8080/Video.lnk
 http://111.235.143.155:8080/Video.scr
 http://111.235.143.155:8080/info.zip
+http://111.55.74.100:52721/Mozi.m
 http://111.59.254.165:8084/19000101/AV.lnk
 http://111.59.254.165:8084/19000101/AV.scr
 http://111.59.254.165:8084/19000101/Photo.lnk
@@ -1993,6 +2005,7 @@ http://112.248.186.151:43346/i
 http://112.248.186.232:46881/bin.sh
 http://112.248.186.232:46881/i
 http://112.248.187.118:60374/bin.sh
+http://112.248.187.118:60374/i
 http://112.248.187.167:34638/bin.sh
 http://112.248.187.167:34638/i
 http://112.248.187.52:47274/bin.sh
@@ -3085,6 +3098,7 @@ http://115.63.132.163:51140/bin.sh
 http://115.63.132.163:51140/i
 http://115.63.135.180:58557/i
 http://115.63.144.173:37265/bin.sh
+http://115.63.144.173:37265/i
 http://115.63.144.217:40653/bin.sh
 http://115.63.144.217:40653/i
 http://115.63.144.49:36321/bin.sh
@@ -3900,6 +3914,7 @@ http://119.189.141.238:52309/bin.sh
 http://119.189.141.238:52309/i
 http://119.189.158.75:55857/bin.sh
 http://119.189.158.75:55857/i
+http://119.189.212.129:44218/Mozi.m
 http://119.189.212.129:44218/bin.sh
 http://119.189.212.129:44218/i
 http://119.189.213.192:49908/i
@@ -4648,6 +4663,7 @@ http://124.220.6.158/02.08.2022.exe
 http://124.223.105.161:8902/files/data/drss/drbw.zip
 http://124.223.73.186:8888/WxWorkApis.dll
 http://124.223.73.186:8888/WxWorkMultiOpen.exe
+http://124.229.33.220:50854/Mozi.m
 http://124.230.216.19:8081/AV.lnk
 http://124.230.216.19:8081/AV.scr
 http://124.230.216.19:8081/Photo.lnk
@@ -4657,6 +4673,7 @@ http://124.230.216.19:8081/Video.scr
 http://124.230.216.19:8081/info.zip
 http://124.235.169.230:55244/bin.sh
 http://124.235.169.230:55244/i
+http://124.29.194.26:42356/Mozi.m
 http://124.29.214.39:41859/Mozi.m
 http://124.29.223.148:34496/bin.sh
 http://124.29.223.148:34496/i
@@ -4796,6 +4813,7 @@ http://125.41.228.8:60329/i
 http://125.41.229.8:60369/bin.sh
 http://125.41.229.8:60369/i
 http://125.41.230.155:54819/bin.sh
+http://125.41.230.155:54819/i
 http://125.41.230.157:47932/bin.sh
 http://125.41.230.157:47932/i
 http://125.41.231.11:40951/bin.sh
@@ -5504,6 +5522,8 @@ http://152.67.84.123:8080/agent.exe
 http://152.89.247.153/c
 http://153.101.9.82:33145/bin.sh
 http://153.101.9.82:33145/i
+http://153.117.32.174:49040/Mozi.m
+http://153.117.37.25:36970/Mozi.a
 http://153.136.164.199:7000/
 http://153.179.12.165:8081/
 http://153.37.77.156:8686/download/kedadecoder.zip
@@ -6641,6 +6661,8 @@ http://176.65.139.144/HideChaotic/ub8ehJSePAfc9FYqZIT6.sparc
 http://176.65.139.144/HideChaotic/ub8ehJSePAfc9FYqZIT6.spc
 http://176.65.139.144/HideChaotic/ub8ehJSePAfc9FYqZIT6.x86
 http://176.65.139.144/HideChaotic/ub8ehJSePAfc9FYqZIT6.x86_64
+http://176.65.139.144/arm
+http://176.65.139.144/arm7
 http://176.65.139.144/ohshit.sh
 http://176.65.139.146/arm7
 http://176.65.139.146/hiddenbin/boatnet.arc
@@ -10830,6 +10852,7 @@ http://182.187.137.7:56824/bin.sh
 http://182.187.137.7:56824/i
 http://182.191.69.89:40817/bin.sh
 http://182.23.87.242:48272/i
+http://182.239.78.134/sshd
 http://182.240.200.2:52939/i
 http://182.240.204.126:33480/i
 http://182.240.53.77:42822/bin.sh
@@ -10856,6 +10879,7 @@ http://182.93.58.234:82/
 http://182.93.83.124:11028/.i
 http://182.93.83.124:11028/i
 http://183.102.83.247:7070/docs/lr.sh
+http://183.109.132.168:1103/.i
 http://183.109.132.168:1103/i
 http://183.149.123.249:37916/bin.sh
 http://183.149.123.249:37916/i
@@ -10960,6 +10984,7 @@ http://185.172.128.16/nlte.sh
 http://185.172.128.16/plc
 http://185.172.128.16/sk
 http://185.172.128.16/smc.sh
+http://185.172.128.16/to
 http://185.172.128.16/usr.sh
 http://185.172.128.16/usw.sh
 http://185.177.239.181/1lc.exe
@@ -11295,6 +11320,7 @@ http://188.82.127.68/Video.lnk
 http://188.82.127.68/Video.scr
 http://188.82.127.68/info.zip
 http://188.95.148.167:9393/sshd
+http://189.174.142.184:56193/Mozi.m
 http://189.61.50.98:8080/AV.lnk
 http://189.61.50.98:8080/AV.scr
 http://189.61.50.98:8080/Photo.lnk
@@ -12399,6 +12425,7 @@ http://202.57.43.234:19001/tftp
 http://202.59.90.109:62207/i
 http://202.62.41.165:13217/.i
 http://202.62.41.165:13217/i
+http://202.70.139.56:60896/Mozi.a
 http://202.71.14.246/proto.arm5
 http://202.71.14.246/proto.arm6
 http://202.71.14.246/proto.arm7
@@ -12407,6 +12434,7 @@ http://202.71.14.246/proto.mpsl
 http://202.71.14.246/proto.x86
 http://202.88.234.44:64615/.i
 http://202.88.234.44:64615/i
+http://202.9.122.145:56390/Mozi.m
 http://202.97.184.127:34631/bin.sh
 http://202.97.184.127:34631/i
 http://203.101.181.9:57087/bin.sh
@@ -12478,6 +12506,7 @@ http://203.192.219.165:8080/OUTWARD/ExportImages_82624_MAHAL-NODE2/info.zip
 http://203.192.219.165:8080/OUTWARD/ExportImages_92825_MAHAL-NODE1/info.zip
 http://203.192.219.165:8080/OUTWARD/ExportImages_9425_MAHAL-NODE1/info.zip
 http://203.192.219.165:8080/OUTWARD/info.zip
+http://203.192.219.165:8080/PRODIMG/info.zip
 http://203.198.17.51/
 http://203.203.81.19:14961/i
 http://203.203.86.117:16670/.i
@@ -12508,6 +12537,7 @@ http://205.185.121.21/1.exe
 http://205.209.114.243/curl.sh
 http://205.209.114.243/esf
 http://205.209.114.243/nel
+http://206.135.174.164:39528/Mozi.a
 http://206.168.201.246:49048/Mozi.m
 http://206.214.35.106:20648/i
 http://206.237.30.225/1.exe
@@ -12775,6 +12805,7 @@ http://217.209.57.38:43481/bin.sh
 http://217.209.57.38:43481/i
 http://217.218.139.205:38458/.i
 http://217.218.139.205:38458/i
+http://217.60.199.225/dissarm4
 http://217.60.241.18/wo
 http://217.60.241.18/wo1
 http://217.60.241.18/y11
@@ -13650,8 +13681,10 @@ http://223.108.58.15:37780/sshd
 http://223.108.58.15:37782/sshd
 http://223.112.189.134:41561/bin.sh
 http://223.112.189.134:41561/i
+http://223.123.35.47:54367/Mozi.a
 http://223.123.38.120:33713/Mozi
 http://223.123.38.121:44038/Mozi.m
+http://223.123.42.237:53019/Mozi.m
 http://223.123.44.117:34414/Mozi.a
 http://223.123.72.212:50541/Mozi.m
 http://223.151.74.35:55914/bin.sh
@@ -13888,6 +13921,7 @@ http://27.215.183.156:50736/bin.sh
 http://27.215.183.156:50736/i
 http://27.215.209.230:44451/bin.sh
 http://27.215.209.230:44451/i
+http://27.215.210.61:54865/i
 http://27.215.210.91:46312/i
 http://27.215.211.135:37789/i
 http://27.215.214.99:33037/bin.sh
@@ -14619,6 +14653,8 @@ http://42.178.215.134:41533/i
 http://42.178.236.141:37391/bin.sh
 http://42.178.236.141:37391/i
 http://42.178.57.176:44541/i
+http://42.178.61.135:38869/bin.sh
+http://42.178.61.135:38869/i
 http://42.178.96.156:59615/bin.sh
 http://42.178.96.156:59615/i
 http://42.179.11.156:39355/bin.sh
@@ -16772,6 +16808,19 @@ http://46.23.108.236/gov.mipsrouter
 http://46.23.108.236/gov.sh4
 http://46.23.108.236/gov.sparc
 http://46.23.108.236/gov.x86
+http://46.23.108.238/armv4l
+http://46.23.108.238/armv5l
+http://46.23.108.238/armv6l
+http://46.23.108.238/armv7l
+http://46.23.108.238/i586
+http://46.23.108.238/i686
+http://46.23.108.238/m68k
+http://46.23.108.238/mips
+http://46.23.108.238/mipsel
+http://46.23.108.238/powerpc
+http://46.23.108.238/sh4
+http://46.23.108.238/sparc
+http://46.23.108.238/x86
 http://46.236.172.14:52490/i
 http://46.236.65.136:52468/bin.sh
 http://46.236.65.136:52468/i
@@ -17227,6 +17276,7 @@ http://59.103.121.32:34933/bin.sh
 http://59.103.121.32:34933/i
 http://59.103.121.32:47648/bin.sh
 http://59.110.28.230:443/02.08.2022.exe
+http://59.176.80.131:60859/Mozi.a
 http://59.180.160.78:44053/bin.sh
 http://59.184.56.114:56499/bin.sh
 http://59.184.56.114:56499/i
@@ -18388,6 +18438,8 @@ http://72.132.64.183/Video.scr
 http://72.132.64.183/info.zip
 http://72.201.150.189:8092/sshd
 http://72.255.18.128:46600/Mozi.7
+http://72.255.18.214:36405/Mozi.a
+http://72.255.19.244:41921/Mozi.a
 http://72.255.3.219:57338/Mozi.m
 http://72.255.3.73:41926/Mozi.7
 http://72.255.30.244:33647/bin.sh
@@ -20012,6 +20064,7 @@ http://95.135.208.217/ppc
 http://95.135.208.217/sh4
 http://95.135.208.217/x86
 http://95.135.208.217/x86_64
+http://95.141.135.138:14131/i
 http://95.154.194.17/
 http://95.155.243.196:38537/bin.sh
 http://95.155.243.196:38537/i
@@ -20046,6 +20099,7 @@ http://95.56.232.109:46579/i
 http://95.62.202.150:10052/sshd
 http://95.62.202.150:10071/sshd
 http://95.73.161.34:50116/i
+http://95.82.118.182:44093/Mozi.m
 http://95.9.35.137:49975/bin.sh
 http://95.9.35.137:49975/i
 http://96.126.176.23/screen/panel1.vbs
@@ -21777,6 +21831,7 @@ http://skyvpns.nodespit.surf/draw-msft-cl0ud-acc-trust7934/gettwo.dll
 http://skyvpns.srvappsite.lat/draw-msft-cl0ud-acc-trust7934/gettwo.dll
 http://slotmy-send.tech:8080/file/setup.msi
 http://slotmy-send.tech:8080/files/candidates-guide.pdf.lnk
+http://smart.abuse.st/mips
 http://smartspaceenterprise.com/buytsi
 http://soft.110route.com/PAETools.exe
 http://softbank126023203236.bbtec.net/Photo.scr
@@ -24083,6 +24138,7 @@ https://dl.2345.com/haozip/haozip_v6.5.2.11245.exe
 https://dl.dropboxusercontent.com/scl/fi/8gwqsgp3ywwsus51500y0/IMG_DE00290100_001000_26_05_2026.vbe?rlkey=bh347g667knqo2j2vu8677zft&st=97hjftn7&dl=1
 https://dl.ijinshan.com/safe/setup_smart.exe
 https://dlacbhw.nonamejustsoul.com/5032e3d7-eed4-4a97-8ddf-91e1befb53cf
+https://dlkcsdq.hotbet90app.com/82728660-32b7-415c-a77f-fc0e14afa762
 https://dns-web.mav2terol.surf/sh5hne-c8b9b4-sskjy-znq2k2of-ybay3z/usr294-verif.confirm
 https://dns-web.mav7loren.surf/sh5hne-c8b9b4-sskjy-znq2k2of-ybay3z/usr294-verif.confirm
 https://dns.globalnodeviewset.pics/c2cb43a1-3db9-486a-a707-ee88bcdb4813/google.ocx
@@ -24469,6 +24525,7 @@ https://edge-processing-network.courses/ce857951-9f2c-42b8-8a25-428b16935851/goo
 https://edge-processing-network.wiki/c850bf60-243d-4cbb-b6ab-80f4def598ab/google.ct
 https://edge.cloudproxyserv.pics/c2cb43a1-3db9-486a-a707-ee88bcdb4813/google.ocx
 https://edge.metadrive.surf/9fd51fb7-b3ad-4c8f-bf05-b5423d14e06c/user_6747.google
+https://eehjqhe.homa.bet/7463fdb1-6ddc-4820-a2ae-0a92b0e59578
 https://effgtty.ar888starz.bet/da58a8ec-dc07-4f47-a5c4-e32aff401e7b
 https://efk47wb3.skewedencro2ch.lat/kl0re-best34kjfeen-fmmexcel-wr3775-on75/on3.verification
 https://eg125q1i.dvfb-vn.com/?ublib=2426627f-a310-444c-b05e-d8d4ebcd3078
@@ -30371,6 +30428,9 @@ https://root-system-irrigation.garden/8e8886f4-b375-4200-b706-eb380ebd0c17/googl
 https://root.brightpath.surf/57oe-aget-358671-chess-345msdn01/take.dll
 https://root.greenforest.surf/9fd51fb7-b3ad-4c8f-bf05-b5423d14e06c/user_6747.google
 https://root.terraview.surf/9fd51fb7-b3ad-4c8f-bf05-b5423d14e06c/user_6747.google
+https://rosebaie.ma/wp-includes/js/jcrop/Jcropgif.exe
+https://rosebaie.ma/wp-includes/js/jcrop/Jcropmin.exe
+https://rosebaie.ma/wp-includes/js/jcrop/jqueryJcrop.php
 https://rosrcf.inoxsystem.hu/606ef002-8429-44a6-8aee-f478ba1027b4
 https://rougcurio.airport-clar.lat/kl0re-best34kjfeen-fmmexcel-wr3775-on75/on3.verification
 https://roughvocal.mav8loren.lat/sh1ne-apps-testsh-zec833-lives7z/put34b.camp
