@@ -94,26 +94,26 @@
   },
   {
     "date": "2026-06-06",
-    "total_unique_ips": 722970,
-    "total_unique_domains": 800777,
-    "total_unique_hashes": 1092774,
-    "total_unique_urls": 33544,
+    "total_unique_ips": 719642,
+    "total_unique_domains": 801031,
+    "total_unique_hashes": 1092927,
+    "total_unique_urls": 34045,
     "active_feeds": 20,
     "category_counts": {
-      "C2": 7612,
-      "Mixed": 736077,
-      "Compromised": 16050,
-      "Malicious": 9962,
+      "Malware": 8862,
+      "Mixed": 736384,
       "Spam": 184150,
-      "Brute-Force": 26876,
-      "Malware": 8862
+      "C2": 7612,
+      "Brute-Force": 28065,
+      "Compromised": 16050,
+      "Malicious": 9972
     },
     "top_sources": {
-      "firehol_level1": 549717,
+      "firehol_level1": 549209,
       "spamhaus_drop": 184150,
       "ipsum": 119449,
-      "firehol_level3": 33368,
-      "firehol_level2": 26818
+      "firehol_level3": 33336,
+      "firehol_level2": 27691
     }
   }
 ]
