@@ -31,7 +31,7 @@ All files are committed directly to this repository and updated automatically ev
 
 
 ```
-https://raw.githubusercontent.com/kalidada18/himalayafeed/main/malicious_ips.txt
+https://raw.githubusercontent.com/kalidada18/himalayafeed/main/ioc/malicious_ips.txt
 ```
 
 ### 🗄️ Historical Archives (Best for Research)
@@ -40,7 +40,7 @@ A zip archive of the feed is automatically published every day at midnight UTC t
 ### 💀 Full Malware Hashes (SHA-256)
 `malicious_hashes.txt` — Over **1,000,000+** SHA-256 malware sample hashes sourced from MalwareBazaar. One hash per line, fully visible and searchable on the website.
 ```
-https://raw.githubusercontent.com/kalidada18/himalayafeed/main/malicious_hashes.txt
+https://raw.githubusercontent.com/kalidada18/himalayafeed/main/ioc/malicious_hashes.txt
 ```
 
 ---
@@ -51,7 +51,7 @@ https://raw.githubusercontent.com/kalidada18/himalayafeed/main/malicious_hashes.
 <summary><b>🐧 Linux &mdash; iptables / ipset</b></summary>
 <br/>
 ```bash
-wget -qO- https://raw.githubusercontent.com/kalidada18/himalayafeed/main/malicious_ips.txt \
+wget -qO- https://raw.githubusercontent.com/kalidada18/himalayafeed/main/ioc/malicious_ips.txt \
   | grep -E '^[0-9]' | while read IP; do iptables -I INPUT -s $IP -j DROP; done
 ```
 
@@ -63,7 +63,7 @@ wget -qO- https://raw.githubusercontent.com/kalidada18/himalayafeed/main/malicio
 <br/>
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kalidada18/himalayafeed/main/malicious_ips.txt \
+curl -fsSL https://raw.githubusercontent.com/kalidada18/himalayafeed/main/ioc/malicious_ips.txt \
   | grep -E '^[0-9]' | sed 's/^/deny /; s/$/ ;/' > /etc/nginx/conf.d/himalayafeed-deny.conf && nginx -s reload
 ```
 </details>
