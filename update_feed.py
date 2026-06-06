@@ -98,7 +98,6 @@ URL_FEEDS: Dict[str, str] = {
     "urlhaus_online": "https://urlhaus.abuse.ch/downloads/text_online/",
     "urlhaus_recent": "https://urlhaus.abuse.ch/downloads/csv_recent/",
     "openphish_urls": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
-    "phishtank": "https://data.phishtank.com/data/online-valid.csv",
 }
 
 THREATFOX_FEEDS: Dict[str, str] = {
