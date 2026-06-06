@@ -1,8 +1,9 @@
 # HimalayaFeed Threat Intelligence Feed - IPv6
-# Last update: Sat, 06 Jun 2026 03:38:22 +0000
+# Last update: Sat, 06 Jun 2026 04:01:27 +0000
 2001:1670:1a:68e8:313a:10ea:537e:6b11
 2001:41d0:2005:100::1d11
 2001:41d0:304:200::4a7e
+2001:41d0:404:200::6e26
 2001:4453:466:de00:b9f5:4e98:e450:ce2f
 2001:470:2cc:1:8b24:2cc7:749a:8d8d
 2001:4c4e:32d6:900:e028:994:a0aa:d9e9
