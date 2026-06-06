@@ -82,13 +82,31 @@ jobs:
           if git diff --staged --quiet; then
             echo "✓ No changes detected — feed is already up-to-date. Skipping commit."
           else
-            # Count non-comment IP and domain lines for a meaningful commit message
+            # Get current counts
             IP_COUNT=$(grep -cE '^[0-9]' ioc/malicious_ips.txt 2>/dev/null || echo "0")
             DOMAIN_COUNT=$(grep -cvE '^$|^#' ioc/malicious_domains.txt 2>/dev/null || echo "0")
             HASH_COUNT=$(wc -l < ioc/malicious_hashes.txt 2>/dev/null || echo "0")
             URL_COUNT=$(wc -l < ioc/malicious_urls.txt 2>/dev/null || echo "0")
-            TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
-            git commit -m "Update: ${TIMESTAMP} — ${IP_COUNT} IPs, ${DOMAIN_COUNT} domains, ${HASH_COUNT} hashes, ${URL_COUNT} URLs"
+            
+            # Get previous counts from HEAD
+            PREV_IP=$(git show HEAD:ioc/malicious_ips.txt 2>/dev/null | grep -cE '^[0-9]' || echo "0")
+            PREV_DOMAIN=$(git show HEAD:ioc/malicious_domains.txt 2>/dev/null | grep -cvE '^$|^#' || echo "0")
+            PREV_HASH=$(git show HEAD:ioc/malicious_hashes.txt 2>/dev/null | wc -l || echo "0")
+            PREV_URL=$(git show HEAD:ioc/malicious_urls.txt 2>/dev/null | wc -l || echo "0")
+            
+            # Calculate deltas
+            fmt_diff() {
+              if [ "$1" -gt 0 ]; then echo "+$1"; else echo "$1"; fi
+            }
+            D_IP=$(fmt_diff $((IP_COUNT - PREV_IP)))
+            D_DOMAIN=$(fmt_diff $((DOMAIN_COUNT - PREV_DOMAIN)))
+            D_HASH=$(fmt_diff $((HASH_COUNT - PREV_HASH)))
+            D_URL=$(fmt_diff $((URL_COUNT - PREV_URL)))
+
+            # Format timestamp in Nepal Time (NPT/NTP)
+            TIMESTAMP=$(TZ='Asia/Kathmandu' date '+%Y-%m-%d %I:%M %p NPT')
+            
+            git commit -m "Update: ${TIMESTAMP} — Added ${D_IP} IPs, ${D_DOMAIN} Domains, ${D_HASH} Hashes, ${D_URL} URLs" -m "Total: ${IP_COUNT} IPs, ${DOMAIN_COUNT} domains, ${HASH_COUNT} hashes, ${URL_COUNT} URLs"
 
             git pull --rebase --autostash --quiet origin "${GITHUB_REF_NAME:-main}" || true
             git push origin "${GITHUB_REF_NAME:-main}"
