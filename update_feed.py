@@ -515,7 +515,7 @@ def fetch_otx() -> dict:
         "X-OTX-API-KEY": OTX_API_KEY,
         "User-Agent": "HimalayaFeed-Aggregator/3.0",
     }
-    base_url = "https://otx.alienvault.com/api/v1/pulses/subscribed"
+    base_url = "https://otx.alienvault.com/pulse/60ece5998a5b54a5ffe75cb4"
     page = 1
     max_pages = 50  # Safety cap
 
