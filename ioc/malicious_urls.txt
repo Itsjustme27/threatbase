@@ -1,7 +1,7 @@
 # HimalayaFeed Threat Intelligence Feed - URLs
 # (https://github.com/kalidada18/himalayafeed)
 #
-# Last update: Sun, 07 Jun 2026 02:17:48 +0000
+# Last update: Sun, 07 Jun 2026 02:38:44 +0000
 #
 http://0000153.0000255.0000011.0000125/httpswww.tcs.comwhat-we-doindustriespublic-servicessolutiontcs-sovereignsecure-cloudness.php
 http://0022a601.pphost.net/threatsim/doc/46cad0e0ca3b2d6d9d3ce691ca2887b18abc80acf0e81799fbb290cce104c8eb.doc
@@ -972,6 +972,7 @@ http://110.36.80.173:45864/i
 http://110.36.80.173:49601/bin.sh
 http://110.36.80.173:49601/i
 http://110.36.81.71:41436/bin.sh
+http://110.36.81.71:41436/i
 http://110.36.86.0:42361/bin.sh
 http://110.36.86.0:42361/i
 http://110.36.86.0:51568/bin.sh
@@ -2500,6 +2501,7 @@ http://115.49.126.117:48263/bin.sh
 http://115.49.126.117:48263/i
 http://115.49.127.70:33012/bin.sh
 http://115.49.127.70:33012/i
+http://115.49.138.211:34657/bin.sh
 http://115.49.138.211:34657/i
 http://115.49.149.241:51788/bin.sh
 http://115.49.2.95:44201/bin.sh
@@ -3695,6 +3697,7 @@ http://117.196.185.190:56035/bin.sh
 http://117.196.185.190:56035/i
 http://117.198.25.85:47718/i
 http://117.20.27.25:21414/.i
+http://117.20.27.25:21414/i
 http://117.205.166.231:60050/bin.sh
 http://117.206.135.153:37117/bin.sh
 http://117.206.135.153:37117/i
@@ -10841,6 +10844,7 @@ http://182.121.114.197:53547/i
 http://182.121.115.177:53007/bin.sh
 http://182.121.115.177:53007/i
 http://182.121.115.226:37413/i
+http://182.121.115.4:38631/bin.sh
 http://182.121.116.206:57822/bin.sh
 http://182.121.116.206:57822/i
 http://182.121.118.179:33325/bin.sh
@@ -12881,6 +12885,7 @@ http://202.3.248.178/sshd
 http://202.3.248.179//sshd
 http://202.3.248.179/sshd
 http://202.4.101.78:36786/
+http://202.4.101.78:36786/i
 http://202.4.124.58:12137/.i
 http://202.4.124.58:12137/Mozi.m
 http://202.4.124.58:12137/i
@@ -19748,6 +19753,7 @@ http://82.60.6.147:45715/i
 http://82.66.224.73:8080/sshd
 http://82.67.13.197/AV.lnk
 http://82.67.13.197/AV.scr
+http://82.67.13.197/Christian%20CG17042021%20Xpanel.c3prj/info.zip
 http://82.67.13.197/Photo.lnk
 http://82.67.13.197/Photo.scr
 http://82.67.13.197/Video.lnk
@@ -21369,6 +21375,7 @@ http://cfs7.blog.daum.net/upload_control/download.blog?fhandle=MEtnWE5AZnM3LmJsb
 http://cfs9.blog.daum.net/upload_control/download.blog?fhandle=MEp5eURAZnM5LmJsb2cuZGF1bS5uZXQ6L0lNQUdFLzAvNS5leGU=&filename=%EC%9D%B8%ED%84%B0%EB%84%B7_%EC%A2%85%EB%9F%89%EC%A0%9C_%ED%85%8C%EC%8A%A4%ED%8A%B8.exe
 http://chamlang.ekklesiadallas.info/ga/click/2-6946952-10-8486-16587-9100-1882da04a0-3efbbd1233
 http://chanmiraicd1.duckdns.org/bins/xnxnxnxnxnxnxnxnmipsxnxn
+http://chanmiraicd1.duckdns.org/bins/xnxnxnxnxnxnxnxnriscv64xnxn
 http://cherish-cultscreencard.wiki/56a84247-0951-410f-b61e-6978b6481cd5/google.ct
 http://chiptune.com/razor/rzr-winner_intro.zip
 http://chivopolicyreview.com/
@@ -22385,6 +22392,7 @@ http://mail.pmeimg8.com/education_redirect_second/8c5781c2-7b1e-4035-b1d7-990e26
 http://mail.pmeimg8.com/education_redirect_second?8c5781c2-7b1e-4035-b1d7-990e269e5380
 http://mail.swingologygolfschools.com/dl/facture_431977465.doc
 http://main.systemlogicops.pics/c2cb43a1-3db9-486a-a707-ee88bcdb4813/google.ocx
+http://mandalaagrifresh.com/blog/Cancellation_740878_Dec23.zip
 http://manifestvita.great-insue.pics/99c7fa93-4d32-47c2-84f9-163f7755f5e3/check.rock
 http://many-verses.xyz/c2sock
 http://maps-cloud.com/aU3VJ0FM/
@@ -23524,6 +23532,7 @@ http://www.bet6612.com/
 http://www.bet6663.cc/
 http://www.block-fi-login.blogspot.com/?m=1
 http://www.ca7033vip.com/
+http://www.chanmiraicd1.duckdns.org/bins/xnxnxnxnxnxnxnxnm68kxnxn
 http://www.chanmiraicd1.duckdns.org/bins/xnxnxnxnxnxnxnxnriscv64xnxn
 http://www.chanmiraicd1.duckdns.org/bins/xnxnxnxnxnxnxnxnx86_64xnxn
 http://www.chenwangqiao.com/wordpress/3waa9-ke38h-15/
@@ -30286,6 +30295,7 @@ https://nikhiljoseph708-cmd.github.io/Amazon-clone/
 https://nimblecoral.mav3torel.surf/kiss-m0dem-defndr-myrai-sdf934/kwtor.dll
 https://nimbleshoal.adi8hesplayer.pics/99c7fa93-4d32-47c2-84f9-163f7755f5e3/check.rock
 https://nistokieas.azurewebsites.net/
+https://njhhbmh.olabahiskayit.com/26acf26c-05d0-4436-bdfc-307add057ee8
 https://njrwmhh.cyberframe.lat/so7f5fa6-c8d5-4c28-9e4a-c9fb43ca0d86/verify.check
 https://nkqzyrf.sm188wing.cyou/ae938762-7cde-4fab-aaf5-6dc401f7fec1
 https://nljinxg.takhtebet.com/185e7150-841c-4085-9ac0-09e978d5f45d
