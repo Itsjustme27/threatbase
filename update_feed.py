@@ -58,6 +58,11 @@ FEEDS: Dict[str, str] = {
 
     "bruteforceblocker": "https://danger.rulez.sk/projects/bruteforceblocker/blist.php",
     "botvrij": "https://www.botvrij.eu/data/misp.text_ip-dst.ADMIN.txt",
+    "dan_tor": "https://www.dan.me.uk/torlist/?full",
+    "tor_bulk_exit": "https://check.torproject.org/torbulkexitlist",
+    "romainmarcoux_outgoing_40k": "https://raw.githubusercontent.com/romainmarcoux/malicious-outgoing-ip/main/full-outgoing-ip-40k.txt",
+    "romainmarcoux_outgoing_aa": "https://raw.githubusercontent.com/romainmarcoux/malicious-outgoing-ip/main/full-outgoing-ip-aa.txt",
+    "romainmarcoux_outgoing_ab": "https://raw.githubusercontent.com/romainmarcoux/malicious-outgoing-ip/main/full-outgoing-ip-ab.txt",
 }
 
 FEED_CATEGORIES: Dict[str, str] = {
@@ -81,6 +86,11 @@ FEED_CATEGORIES: Dict[str, str] = {
     "bruteforceblocker": "Brute-Force",
     "botvrij": "Mixed",
     "threatfox_recent": "Mixed",
+    "dan_tor": "Tor",
+    "tor_bulk_exit": "Tor",
+    "romainmarcoux_outgoing_40k": "Malicious",
+    "romainmarcoux_outgoing_aa": "Malicious",
+    "romainmarcoux_outgoing_ab": "Malicious",
 }
 
 DOMAIN_FEEDS: Dict[str, str] = {
@@ -88,6 +98,10 @@ DOMAIN_FEEDS: Dict[str, str] = {
     "urlhaus": "https://urlhaus.abuse.ch/downloads/text_online/",
     "romainmarcoux": "https://raw.githubusercontent.com/romainmarcoux/malicious-domains/refs/heads/main/full-domains-aa.txt",
     "hagezi_ultimate": "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/domains/ultimate.txt",
+    "blocklist_malware": "https://blocklistproject.github.io/Lists/malware.txt",
+    "blocklist_torrent": "https://blocklistproject.github.io/Lists/torrent.txt",
+    "blocklist_fraud": "https://blocklistproject.github.io/Lists/fraud.txt",
+    "blocklist_phishing": "https://blocklistproject.github.io/Lists/phishing.txt",
 }
 
 HASH_FEEDS: Dict[str, str] = {
@@ -357,7 +371,10 @@ def fetch_domain_feed(name: str, url: str) -> Set[str]:
                     if domain:
                         domains.add(domain)
             else:
-                domain = extract_domain(line)
+                candidate = line
+                if candidate.startswith("0.0.0.0 ") or candidate.startswith("127.0.0.1 "):
+                    candidate = candidate.split(maxsplit=1)[1]
+                domain = extract_domain(candidate)
                 if domain:
                     domains.add(domain)
         log.info(f"  ✓ {name}: {len(domains)} domains")
