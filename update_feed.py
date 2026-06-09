@@ -298,6 +298,7 @@ def fetch_feed(name: str, url: str) -> dict:
     if name == "abuseipdb":
         if ABUSEIPDB_API_KEY:
             headers["Key"] = ABUSEIPDB_API_KEY
+            headers["Accept"] = "application/json"
         else:
             return {'ipv4': set(), 'ipv6': set(), 'cidrs': set()}
             
