@@ -242,8 +242,32 @@ def load_custom_iocs(filename="custom_iocs.txt") -> dict:
 
 
 def load_existing_iocs() -> dict:
-    """Return empty sets instead of loading historical IOCs so the feed drops IPs that are no longer malicious."""
-    return {"ips": set(), "ipv6": set(), "cidrs": set(), "domains": set(), "hashes": set(), "urls": set()}
+    """Load historical IOCs so the feed keeps past items forever and only grows."""
+    result = {"ips": set(), "ipv6": set(), "cidrs": set(), "domains": set(), "hashes": set(), "urls": set()}
+    
+    file_map = {
+        "ioc/malicious_ips.txt": "ips",
+        "ioc/malicious_ipv6.txt": "ipv6",
+        "ioc/malicious_cidrs.txt": "cidrs",
+        "ioc/malicious_domains.txt": "domains",
+        "ioc/malicious_hashes.txt": "hashes",
+        "ioc/malicious_urls.txt": "urls"
+    }
+    
+    for filepath, key in file_map.items():
+        if os.path.exists(filepath):
+            try:
+                with open(filepath, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if not line or line.startswith(('#', '//')):
+                            continue
+                        result[key].add(line)
+            except Exception as e:
+                log.error(f"Failed to load existing IOCs from {filepath}: {e}")
+                
+    log.info(f"Loaded existing IOCs: {len(result['ips'])} IPs, {len(result['ipv6'])} IPv6, {len(result['cidrs'])} CIDRs, {len(result['domains'])} domains, {len(result['hashes'])} hashes, {len(result['urls'])} URLs")
+    return result
 
 
 # ─────────────────────────────────────────────────────────────────────────────
