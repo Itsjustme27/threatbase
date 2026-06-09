@@ -114,7 +114,8 @@ jobs:
             
             git commit -m "Update: ${TIMESTAMP} — Added ${D_IP} IPs, ${D_IPV6} IPv6, ${D_CIDR} CIDRs, ${D_DOMAIN} Domains, ${D_HASH} Hashes, ${D_URL} URLs" -m "Total: ${IP_COUNT} IPs, ${IPV6_COUNT} IPv6, ${CIDR_COUNT} CIDRs, ${DOMAIN_COUNT} domains, ${HASH_COUNT} hashes, ${URL_COUNT} URLs"
 
-            git pull --rebase --autostash --quiet origin "${GITHUB_REF_NAME:-main}" || true
+            # Pull with rebase, resolving conflicts by preferring our freshly generated files ('theirs' during rebase)
+            git pull --rebase -X theirs --autostash --quiet origin "${GITHUB_REF_NAME:-main}"
             git push origin "${GITHUB_REF_NAME:-main}"
             echo "✓ Feed pushed successfully (${IP_COUNT} IPs, ${DOMAIN_COUNT} Domains, ${HASH_COUNT} Hashes, ${URL_COUNT} URLs)."
           fi
