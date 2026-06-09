@@ -718,9 +718,11 @@ def main():
                 failed.append(name)
 
     log.info(f"All feeds fetched in {time.time()-t0:.1f}s")
+    import sys; sys.stderr.flush()
 
     # ── Merge IPs ────────────────────────────────────────────────────────────
-    log.info("Merging IOCs...")
+    log.info("Merging IOCs... (IPs)")
+    sys.stderr.flush()
     t0 = time.time()
 
     from collections import Counter
@@ -731,6 +733,8 @@ def main():
         ip_count.update(ips)
 
     # ── Merge Domains
+    log.info("Merging Domains...")
+    sys.stderr.flush()
     all_domains = set()
     all_domains.update(custom_iocs["domains"])
     all_domains.update(existing_iocs["domains"])
@@ -738,6 +742,8 @@ def main():
         all_domains.update(domains)
 
     # ── Merge IPv6 & CIDR
+    log.info("Merging IPv6 & CIDRs...")
+    sys.stderr.flush()
     all_ipv6 = set()
     all_ipv6.update(existing_iocs["ipv6"])
     for ips in ipv6_sources.values():
@@ -774,22 +780,33 @@ def main():
         url_sources["historical"] = existing_iocs["urls"]
 
     # Sort IPs once
+    log.info("Sorting IPs...")
+    import sys; sys.stderr.flush()
     sorted_ips = sorted(ip_count.keys(), key=numerical_ip_key)
     log.info(f"Merged in {time.time()-t0:.1f}s — {len(ip_count)} IPs, {len(all_domains)} domains")
+    sys.stderr.flush()
 
     # ── Write outputs ────────────────────────────────────────────────────────
-    log.info("Writing output files...")
+    log.info("Writing output files... (Hashes & URLs)")
+    sys.stderr.flush()
     t0 = time.time()
 
     all_hashes = write_hashes(hash_sources)
     all_urls = write_urls(url_sources)
 
+    log.info("Building stats...")
+    sys.stderr.flush()
     stats = build_stats(ip_count, ip_sources, failed, ts, all_domains, all_hashes, all_urls, all_ipv6, all_cidrs, custom_iocs, existing_iocs)
+    
+    log.info("Saving stats.json...")
+    sys.stderr.flush()
     os.makedirs("ioc", exist_ok=True)
     with open("ioc/stats.json", "w", encoding="utf-8") as f:
         json.dump(stats, f, indent=2)
 
     # Plain text IP list
+    log.info("Saving malicious_ips.txt...")
+    sys.stderr.flush()
     with open("ioc/malicious_ips.txt", "w", encoding="utf-8", buffering=1 << 16) as f:
         timestamp = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
         f.write("# HimalayaFeed Threat Intelligence Feed - IPs\n")
@@ -802,6 +819,8 @@ def main():
             f.write(f"{ip}\n")
 
     # Plain text domain list
+    log.info("Sorting and saving malicious_domains.txt...")
+    sys.stderr.flush()
     sorted_domains = sorted(all_domains)
     with open("ioc/malicious_domains.txt", "w", encoding="utf-8", buffering=1 << 16) as f:
         timestamp = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
@@ -815,6 +834,8 @@ def main():
             f.write('\n')
 
     # Write IPv6
+    log.info("Sorting and saving malicious_ipv6.txt...")
+    sys.stderr.flush()
     sorted_ipv6 = sorted(all_ipv6)
     with open("ioc/malicious_ipv6.txt", "w", encoding="utf-8", buffering=1 << 16) as f:
         f.write("# HimalayaFeed Threat Intelligence Feed - IPv6\n")
@@ -823,6 +844,8 @@ def main():
             f.write(ip + '\n')
             
     # Write CIDRs
+    log.info("Sorting and saving malicious_cidrs.txt...")
+    sys.stderr.flush()
     sorted_cidrs = sorted(all_cidrs)
     with open("ioc/malicious_cidrs.txt", "w", encoding="utf-8", buffering=1 << 16) as f:
         f.write("# HimalayaFeed Threat Intelligence Feed - CIDRs\n")
@@ -830,7 +853,8 @@ def main():
         for c in sorted_cidrs:
             f.write(c + '\n')
 
-            
+    log.info("Writing history.json...")
+    sys.stderr.flush()
     write_history(stats)
 
     elapsed = time.time() - t_start
