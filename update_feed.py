@@ -153,8 +153,7 @@ def get_session():
     retry = Retry(
         total=3, read=3, connect=3,
         backoff_factor=1.0,
-        status_forcelist=(429, 500, 502, 503, 504),
-        respect_retry_after=False
+        status_forcelist=(429, 500, 502, 503, 504)
     )
     adapter = HTTPAdapter(max_retries=retry, pool_maxsize=MAX_WORKERS)
     session.mount('http://', adapter)
