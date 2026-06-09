@@ -386,9 +386,8 @@ function ipCsvCompare(query, line) {
 }
 
 function stringCompare(query, line) {
-  const str = line.toLowerCase();
-  if (query < str) return -1;
-  if (query > str) return 1;
+  if (query < line) return -1;
+  if (query > line) return 1;
   return 0;
 }
 
