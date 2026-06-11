@@ -45,8 +45,14 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
     <section className="py-12" id="report-section" aria-live="polite">
       <div className="mx-auto max-w-4xl px-6 lg:px-12 relative">
         {isScanning && (
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-900/95 backdrop-blur-2xl rounded-2xl border border-white/10 p-8 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
-            <div className="relative w-32 h-32 mb-8 flex items-center justify-center">
+          <motion.div 
+            className="w-full min-h-[350px] flex flex-col items-center justify-center bg-slate-900/60 backdrop-blur-3xl rounded-2xl border border-white/10 p-8 shadow-[0_0_50px_rgba(0,0,0,0.3)] relative overflow-hidden"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+          >
+            <div className="absolute top-0 inset-x-0 h-px w-full bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+            <div className="relative w-32 h-32 mb-8 flex items-center justify-center shrink-0">
               <div className="absolute inset-0 rounded-full border border-cyan-500/30 animate-ping opacity-20 duration-1000"></div>
               <div className="absolute inset-2 rounded-full border-[3px] border-dashed border-cyan-500/40 animate-[spin_3s_linear_infinite]"></div>
               <div className="absolute inset-6 rounded-full border border-cyan-400/50 shadow-[0_0_30px_rgba(34,211,238,0.2)]"></div>
@@ -62,7 +68,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                 transition={{ duration: 1.5, ease: 'linear' }}
               />
             </div>
-          </div>
+          </motion.div>
         )}
 
         <AnimatePresence>
