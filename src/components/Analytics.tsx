@@ -27,7 +27,7 @@ export default function Analytics({ statsData, feedVersion }: any) {
             <TrendingUp className="text-red-500" size={36} /> Threat Landscape
           </h2>
           <p className="mt-5 text-slate-400 text-lg max-w-2xl font-medium leading-relaxed">
-            90-day volume trend of tracked malicious IPv4 addresses across our sensor network.
+            90-day volume trend of tracked indicators across our global sensor network.
           </p>
         </div>
 
@@ -108,31 +108,60 @@ function HistoryChart({ feedVersion }: any) {
     const d = new Date(h.date)
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
   })
-  const vals = history.map((h) => h.total_unique_ips)
 
   const data = {
     labels,
     datasets: [
       {
-        label: 'Tracked Malicious IPs',
-        data: vals,
-        borderColor: accentColor,
-        backgroundColor: (context: any) => {
-          const ctx = context.chart.ctx
-          const gradient = ctx.createLinearGradient(0, 0, 0, 350)
-          gradient.addColorStop(0, 'rgba(6, 182, 212, 0.3)') // Cyan glow
-          gradient.addColorStop(1, 'rgba(6, 182, 212, 0)')
-          return gradient
-        },
-        borderWidth: 3,
+        label: 'IPv4',
+        data: history.map((h) => h.total_unique_ips || 0),
+        borderColor: '#06b6d4', // Cyan
+        backgroundColor: 'transparent',
+        borderWidth: 2.5,
         pointRadius: 0,
         pointHoverRadius: 6,
-        pointBackgroundColor: '#ffffff',
-        pointBorderColor: accentColor,
-        pointBorderWidth: 2,
-        fill: true,
-        tension: 0.4, // Smoother curves
+        tension: 0.4,
       },
+      {
+        label: 'IPv6',
+        data: history.map((h) => h.total_unique_ipv6 || 0),
+        borderColor: '#10b981', // Emerald
+        backgroundColor: 'transparent',
+        borderWidth: 2.5,
+        pointRadius: 0,
+        pointHoverRadius: 6,
+        tension: 0.4,
+      },
+      {
+        label: 'Domains',
+        data: history.map((h) => h.total_unique_domains || 0),
+        borderColor: '#a855f7', // Purple
+        backgroundColor: 'transparent',
+        borderWidth: 2.5,
+        pointRadius: 0,
+        pointHoverRadius: 6,
+        tension: 0.4,
+      },
+      {
+        label: 'URLs',
+        data: history.map((h) => h.total_unique_urls || 0),
+        borderColor: '#f59e0b', // Amber
+        backgroundColor: 'transparent',
+        borderWidth: 2.5,
+        pointRadius: 0,
+        pointHoverRadius: 6,
+        tension: 0.4,
+      },
+      {
+        label: 'Hashes',
+        data: history.map((h) => h.total_unique_hashes || 0),
+        borderColor: '#f43f5e', // Rose
+        backgroundColor: 'transparent',
+        borderWidth: 2.5,
+        pointRadius: 0,
+        pointHoverRadius: 6,
+        tension: 0.4,
+      }
     ],
   }
 
@@ -140,7 +169,16 @@ function HistoryChart({ feedVersion }: any) {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { display: false },
+      legend: { 
+        display: true,
+        position: 'top',
+        labels: {
+          color: textColor,
+          usePointStyle: true,
+          boxWidth: 8,
+          font: { size: 12, weight: 'bold' }
+        }
+      },
       subtitle: {
         display: labels.length > 0,
         text: labels.length > 0 ? '* Feed started ' + labels[0] + ' (Baseline aggregation)' : '',
@@ -150,14 +188,16 @@ function HistoryChart({ feedVersion }: any) {
         align: 'start',
       },
       tooltip: {
-        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+        backgroundColor: 'rgba(15, 23, 42, 0.95)',
         titleColor: '#ffffff',
         bodyColor: '#e2e8f0',
         borderColor: 'rgba(255, 255, 255, 0.1)',
         borderWidth: 1,
         padding: 12,
-        displayColors: false,
-        callbacks: { label: (c: any) => fmt(c.parsed.y) + ' IPs' },
+        displayColors: true,
+        mode: 'index',
+        intersect: false,
+        callbacks: { label: (c: any) => ` ${c.dataset.label}: ${fmt(c.parsed.y)}` },
       },
     },
     scales: {
