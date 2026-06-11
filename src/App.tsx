@@ -68,14 +68,6 @@ export default function App() {
         setStatsData(d)
         setFeedVersion(d.last_updated || Date.now())
         setSyncTime(formatSyncTime(d.last_updated))
-
-        // Animate stat counters
-        animateValue(document.getElementById('n-total'), d.total_unique_ips)
-        animateValue(document.getElementById('n-domains'), d.total_unique_domains || 0)
-        animateValue(document.getElementById('n-hashes'), d.total_unique_hashes || 0)
-        animateValue(document.getElementById('n-urls'), d.total_unique_urls || 0)
-        animateValue(document.getElementById('n-ipv6'), d.total_unique_ipv6 || 0)
-        animateValue(document.getElementById('n-cidrs'), d.total_unique_cidrs || 0)
       })
       .catch((err) => {
         console.warn('stats.json unavailable:', err.message)

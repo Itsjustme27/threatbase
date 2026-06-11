@@ -1,7 +1,20 @@
+import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Radar, Network, Fingerprint, Unlink, Layers } from 'lucide-react'
+import { animateValue } from '../utils'
 
 export default function Stats({ statsData }: any) {
+  useEffect(() => {
+    if (statsData) {
+      animateValue(document.getElementById('n-total'), statsData.total_unique_ips)
+      animateValue(document.getElementById('n-domains'), statsData.total_unique_domains || 0)
+      animateValue(document.getElementById('n-hashes'), statsData.total_unique_hashes || 0)
+      animateValue(document.getElementById('n-urls'), statsData.total_unique_urls || 0)
+      animateValue(document.getElementById('n-ipv6'), statsData.total_unique_ipv6 || 0)
+      animateValue(document.getElementById('n-cidrs'), statsData.total_unique_cidrs || 0)
+    }
+  }, [statsData])
+
   return (
     <section className="py-12 md:py-20" id="stats">
       <div className="mx-auto max-w-7xl px-6 lg:px-12">
