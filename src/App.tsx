@@ -7,6 +7,7 @@ import Stats from './components/Stats'
 import Feeds from './components/Feeds'
 import Analytics from './components/Analytics'
 import ReportIP from './components/ReportIP'
+import ThanksPage from './components/ThanksPage'
 import Footer from './components/Footer'
 import ToastContainer from './components/ToastContainer'
 import Navbar from './components/Navbar'
@@ -134,7 +135,9 @@ export default function App() {
           </main>
         } />
         
+        
         <Route path="/report" element={<ReportIP addToast={addToast} />} />
+        <Route path="/thanks" element={<ThanksPage />} />
       </Routes>
 
       <ToastContainer toasts={toasts} />

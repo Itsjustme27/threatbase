@@ -8,8 +8,8 @@ import { Link } from 'react-router-dom'
 const menuItems = [
     { name: 'Dashboard', href: '/#dashboard' },
     { name: 'Threat Feeds', href: '/#feeds' },
-    { name: 'Analytics', href: '/#analytics' },
     { name: 'Report IP', href: '/report' },
+    { name: 'Intel Sources', href: '/thanks' }
 ]
 
 export default function Navbar() {
