@@ -43,8 +43,10 @@ export default function ThreatMap() {
     let dots: {x: number, y: number}[] = []
 
     const resize = () => {
-      width = window.innerWidth
-      height = window.innerHeight
+      const parent = canvas.parentElement
+      if (!parent) return
+      width = parent.clientWidth
+      height = parent.clientHeight
       canvas.width = width
       canvas.height = height
     }
@@ -60,8 +62,8 @@ export default function ThreatMap() {
         
         // Setup D3 Projection
         const projection = d3.geoEquirectangular()
-          .fitSize([width, height * 1.2], land as any) // Scale to fit screen
-          .translate([width / 2, height / 2 + 50])
+          .fitSize([width, height * 1.4], land as any) // Scale slightly larger
+          .translate([width / 2, height / 2 + 80])
 
         // Create a hidden canvas to draw the solid map
         const hiddenCanvas = document.createElement('canvas')
@@ -113,7 +115,7 @@ export default function ThreatMap() {
             source: { x: srcProj[0], y: srcProj[1] },
             target: { x: tgtProj[0], y: tgtProj[1] },
             progress: 0,
-            speed: 0.008 + Math.random() * 0.015, // Slightly faster
+            speed: 0.003 + Math.random() * 0.004, // Slower, more beautiful animation
             color: colors[Math.floor(Math.random() * colors.length)]
           })
         }
@@ -123,19 +125,20 @@ export default function ThreatMap() {
 
         const render = () => {
           // Clear with heavier trailing effect (faster fade)
-          ctx.fillStyle = 'rgba(15, 23, 42, 0.15)'
+          ctx.globalCompositeOperation = 'source-over'
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.1)' // Slower fade for longer comet tails
           ctx.fillRect(0, 0, width, height)
           
-          // Draw map dots with slightly lower opacity so attacks pop more
-          ctx.fillStyle = 'rgba(51, 65, 85, 0.6)' // slate-700
+          // Draw map dots with red tint and slightly bigger
+          ctx.fillStyle = 'rgba(220, 38, 38, 0.3)' // red-600
           dots.forEach(dot => {
             ctx.beginPath()
-            ctx.arc(dot.x, dot.y, 1, 0, Math.PI * 2)
+            ctx.arc(dot.x, dot.y, 1.5, 0, Math.PI * 2)
             ctx.fill()
           })
 
           // Spawn new attacks randomly
-          if (Math.random() < 0.04 && attacks.length < 20) {
+          if (Math.random() < 0.02 && attacks.length < 15) { // Spawn less often
             spawnAttack()
           }
 
@@ -168,19 +171,23 @@ export default function ThreatMap() {
             const currY = invT * invT * a.source.y + 2 * invT * t * cpY + t * t * a.target.y
 
             // Calculate previous frame position to draw a short segment (comet head)
-            const prevT = Math.max(0, t - a.speed)
+            const tailLength = a.speed * 4 // Longer comet head
+            const prevT = Math.max(0, t - tailLength)
             const invPrevT = 1 - prevT
             const prevX = invPrevT * invPrevT * a.source.x + 2 * invPrevT * prevT * midX + prevT * prevT * a.target.x
             const prevY = invPrevT * invPrevT * a.source.y + 2 * invPrevT * prevT * cpY + prevT * prevT * a.target.y
+
+            // Enable lighter blending for neon glow effect
+            ctx.globalCompositeOperation = 'lighter'
 
             // Draw glowing comet head
             ctx.beginPath()
             ctx.moveTo(prevX, prevY)
             ctx.lineTo(currX, currY)
             ctx.strokeStyle = a.color
-            ctx.lineWidth = 3
+            ctx.lineWidth = 2.5
             ctx.lineCap = 'round'
-            ctx.shadowBlur = 12
+            ctx.shadowBlur = 15
             ctx.shadowColor = a.color
             ctx.stroke()
             
@@ -205,7 +212,7 @@ export default function ThreatMap() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none -z-20 w-full h-full bg-slate-900"
+      className="absolute inset-0 pointer-events-none z-0 w-full h-full bg-slate-900"
     />
   )
 }

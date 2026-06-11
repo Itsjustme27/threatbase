@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { InfiniteSlider } from '@/components/ui/infinite-slider'
 import { ProgressiveBlur } from '@/components/ui/progressive-blur'
 import { cn } from '@/lib/utils'
+import ThreatMap from '../ThreatMap'
 import { Menu, X, ChevronRight, Shield, Server, Database, Lock, Network, Cloud, Activity, Globe, Search } from 'lucide-react'
 import { useScroll, motion } from 'framer-motion'
 
@@ -11,8 +12,10 @@ export function HeroSection({ scanInput, setScanInput, handleScan }: any) {
     return (
         <>
             <HeroHeader />
-            <main className="overflow-x-hidden pt-12">
-                <section className="relative">
+            <main className="relative overflow-hidden w-full min-h-[90vh] bg-slate-900 border-b border-white/10 shadow-2xl">
+                <ThreatMap />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-900/50 to-slate-900 pointer-events-none z-0" />
+                <section className="relative z-10 pt-24 md:pt-32">
                     <div className="py-24 md:pb-32 lg:pb-36 lg:pt-32 relative">
                         <div className="relative z-10 mx-auto flex max-w-7xl flex-col px-6 lg:block lg:px-12">
                             <div className="mx-auto max-w-2xl text-center lg:ml-0 lg:max-w-full lg:text-left">

@@ -8,7 +8,6 @@ import Analytics from './components/Analytics'
 import ReportIP from './components/ReportIP'
 import Footer from './components/Footer'
 import ToastContainer from './components/ToastContainer'
-import ThreatMap from './components/ThreatMap'
 import { getBaseUrl, formatSyncTime, animateValue } from './utils'
 import { scanIndicatorLogic } from './scanner'
 
@@ -97,7 +96,6 @@ export default function App() {
 
   return (
     <>
-      <ThreatMap />
       <HeroSection scanInput={scanInput} setScanInput={setScanInput} handleScan={handleScan} />
 
       <main id="main-content">
