@@ -11,7 +11,6 @@ import { useScroll, motion, useMotionValueEvent } from 'framer-motion'
 export function HeroSection({ scanInput, setScanInput, handleScan, statsData }: any) {
     return (
         <>
-            <HeroHeader />
             <main className="relative overflow-hidden w-full min-h-[90vh] bg-slate-900 border-b border-white/10 shadow-2xl">
                 <ThreatMap />
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-900/50 to-slate-900 pointer-events-none z-0" />
@@ -133,117 +132,5 @@ export function HeroSection({ scanInput, setScanInput, handleScan, statsData }: 
                 </section>
             </main>
         </>
-    )
-}
-
-const menuItems = [
-    { name: 'Dashboard', href: '#dashboard' },
-    { name: 'Threat Feeds', href: '#feeds' },
-    { name: 'Analytics', href: '#analytics' },
-    { name: 'Report IP', href: '#report-ip' },
-]
-
-const HeroHeader = () => {
-    const [menuState, setMenuState] = React.useState(false)
-    const [scrolled, setScrolled] = React.useState(false)
-    const [hidden, setHidden] = React.useState(false)
-    const { scrollY } = useScroll()
-
-    useMotionValueEvent(scrollY, "change", (latest) => {
-        const previous = scrollY.getPrevious()
-        
-        // Style changes when scrolled past top
-        setScrolled(latest > 50)
-        
-        // Smart hide/reveal logic
-        if (latest > previous && latest > 150) {
-            setHidden(true)
-        } else {
-            setHidden(false)
-        }
-    })
-
-    return (
-        <header>
-            <motion.nav
-                variants={{
-                    visible: { y: 0 },
-                    hidden: { y: "-100%" }
-                }}
-                animate={hidden ? "hidden" : "visible"}
-                transition={{ duration: 0.4, ease: "easeInOut" }}
-                data-state={menuState && 'active'}
-                className={cn(
-                    "group fixed inset-x-0 top-0 z-50 transition-all duration-500 border-b",
-                    scrolled 
-                        ? "bg-slate-950/60 backdrop-blur-2xl border-white/5 shadow-2xl py-3" 
-                        : "bg-transparent border-transparent py-6"
-                )}
-            >
-                <div className="mx-auto max-w-7xl px-6 lg:px-12">
-                    <div className="relative flex items-center justify-between">
-                        <div className="flex w-full items-center justify-between gap-10 lg:w-auto">
-                            <a
-                                href="/"
-                                aria-label="home"
-                                className="flex items-center font-bold text-2xl text-white tracking-tighter drop-shadow-md">
-                                Himalaya<span className="text-red-500">Feed</span>
-                            </a>
-
-                            <button
-                                onClick={() => setMenuState(!menuState)}
-                                aria-label={menuState == true ? 'Close Menu' : 'Open Menu'}
-                                className="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden text-foreground">
-                                <Menu className="group-data-[state=active]:rotate-180 group-data-[state=active]:scale-0 group-data-[state=active]:opacity-0 m-auto size-6 duration-200" />
-                                <X className="group-data-[state=active]:rotate-0 group-data-[state=active]:scale-100 group-data-[state=active]:opacity-100 absolute inset-0 m-auto size-6 -rotate-180 scale-0 opacity-0 duration-200" />
-                            </button>
-
-                            <div className="hidden lg:block">
-                                <ul className="flex gap-8 text-sm font-medium">
-                                    {menuItems.map((item, index) => (
-                                        <li key={index}>
-                                            <a
-                                                href={item.href}
-                                                className="text-slate-300 hover:text-white transition-all duration-300 tracking-wide hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]">
-                                                {item.name}
-                                            </a>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div className="bg-slate-900/95 backdrop-blur-xl border border-white/10 group-data-[state=active]:block lg:group-data-[state=active]:flex mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-3xl p-6 shadow-2xl md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none">
-                            <div className="lg:hidden">
-                                <ul className="space-y-6 text-base font-medium">
-                                    {menuItems.map((item, index) => (
-                                        <li key={index}>
-                                            <a
-                                                href={item.href}
-                                                onClick={() => setMenuState(false)}
-                                                className="text-slate-400 hover:text-white block transition-colors duration-150">
-                                                {item.name}
-                                            </a>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                                <Button
-                                    asChild
-                                    variant="outline"
-                                    className="border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20 hover:text-white rounded-full px-6 h-10 transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] gap-2"
-                                    size="sm">
-                                    <a href="https://github.com/kalidada18/himalayafeed" target="_blank" rel="noopener noreferrer">
-                                        <Github size={16} />
-                                        GitHub
-                                    </a>
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </motion.nav>
-        </header>
     )
 }

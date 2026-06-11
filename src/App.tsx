@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { HeroSection } from './components/blocks/hero-section-5'
 import ReportScanner from './components/ReportScanner'
@@ -8,6 +9,7 @@ import Analytics from './components/Analytics'
 import ReportIP from './components/ReportIP'
 import Footer from './components/Footer'
 import ToastContainer from './components/ToastContainer'
+import Navbar from './components/Navbar'
 import { getBaseUrl, formatSyncTime, animateValue } from './utils'
 import { scanIndicatorLogic } from './scanner'
 
@@ -94,33 +96,54 @@ export default function App() {
     }
   }, [])
 
+  // Scroll to hash on page load or navigation
+  const location = useLocation()
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.getElementById(location.hash.substring(1))
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' })
+        }, 100)
+      }
+    } else {
+      window.scrollTo(0, 0)
+    }
+  }, [location])
+
   return (
     <>
-      <HeroSection scanInput={scanInput} setScanInput={setScanInput} handleScan={handleScan} statsData={statsData} />
+      <Navbar />
 
-      <main id="main-content">
+      <Routes>
+        <Route path="/" element={
+          <main id="main-content">
+            <HeroSection scanInput={scanInput} setScanInput={setScanInput} handleScan={handleScan} statsData={statsData} />
 
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2, duration: 0.5 }}>
-          <ReportScanner
-            scanResult={scanResult}
-            isScanning={isScanning}
-            showReport={showReport}
-            scanInput={scanInput}
-          />
-        </motion.div>
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2, duration: 0.5 }}>
+              <ReportScanner
+                scanResult={scanResult}
+                isScanning={isScanning}
+                showReport={showReport}
+                scanInput={scanInput}
+              />
+            </motion.div>
 
-        <motion.div 
-          className="flex flex-col gap-8 md:gap-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6, staggerChildren: 0.2 }}
-        >
-          <Stats statsData={statsData} />
-          <Feeds />
-          <Analytics statsData={statsData} feedVersion={feedVersion} />
-          <ReportIP addToast={addToast} />
-        </motion.div>
-      </main>
+            <motion.div 
+              className="flex flex-col gap-8 md:gap-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.6, staggerChildren: 0.2 }}
+            >
+              <Stats statsData={statsData} />
+              <Feeds />
+              <Analytics statsData={statsData} feedVersion={feedVersion} />
+            </motion.div>
+          </main>
+        } />
+        
+        <Route path="/report" element={<ReportIP addToast={addToast} />} />
+      </Routes>
 
       <ToastContainer toasts={toasts} />
       <Footer />
