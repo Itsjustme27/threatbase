@@ -24,8 +24,21 @@ const intelSources = [
 
 export default function ThanksPage() {
   return (
-    <main className="min-h-screen pt-28 pb-24 relative bg-[#0B0F19] overflow-hidden font-sans">
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay"></div>
+    <main className="min-h-screen pt-32 pb-32 relative bg-[#0B0F19] overflow-hidden font-sans">
+      {/* Immersive Abstract Background */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <motion.div 
+          animate={{ scale: [1, 1.2, 1], opacity: [0.03, 0.08, 0.03], rotate: [0, 90, 0] }} 
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] rounded-full bg-gradient-to-br from-cyan-500/20 via-blue-900/10 to-transparent blur-[120px]"
+        />
+        <motion.div 
+          animate={{ scale: [1, 1.15, 1], opacity: [0.03, 0.06, 0.03], rotate: [0, -90, 0] }} 
+          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute top-[20%] -right-[20%] w-[60vw] h-[60vw] rounded-full bg-gradient-to-tl from-amber-500/20 via-orange-900/10 to-transparent blur-[140px]"
+        />
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay"></div>
+      </div>
 
       <div className="mx-auto max-w-7xl px-6 lg:px-12 relative z-10">
         
@@ -33,24 +46,25 @@ export default function ThanksPage() {
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-20 text-center relative flex flex-col items-center"
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="mb-24 text-center relative flex flex-col items-center"
         >
-          {/* Glowing Background Behind Handshake */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-cyan-500/20 rounded-full blur-[100px] pointer-events-none"></div>
+          {/* Golden Glowing Background Behind Handshake */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-72 h-72 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none"></div>
 
           {/* Shaking Handshake Animation */}
           <motion.div
-            animate={{ rotate: [0, -15, 15, -15, 15, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 3, ease: "easeInOut" }}
-            className="mb-6 relative z-10"
+            animate={{ rotate: [0, -12, 12, -12, 12, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 4, ease: "easeInOut" }}
+            className="mb-8 relative z-10"
           >
-            <div className="bg-gradient-to-b from-white/10 to-transparent p-4 rounded-full border border-white/10 shadow-[0_0_30px_rgba(34,211,238,0.2)]">
-              <HeartHandshake size={56} className="text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.6)]" />
+            <div className="bg-gradient-to-b from-white/10 to-white/5 p-5 rounded-full border border-white/10 shadow-[0_0_40px_rgba(245,158,11,0.15)] backdrop-blur-md relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/20 to-transparent opacity-50"></div>
+              <HeartHandshake size={64} className="text-amber-400 drop-shadow-[0_0_15px_rgba(245,158,11,0.5)] relative z-10" />
             </div>
           </motion.div>
 
-          <h1 className="text-4xl md:text-6xl font-black flex flex-col items-center justify-center gap-2 text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 tracking-tight drop-shadow-sm pb-2">
+          <h1 className="text-5xl md:text-7xl font-black flex flex-col items-center justify-center gap-3 text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-slate-400 tracking-tight drop-shadow-sm pb-2">
             Intel Sources
           </h1>
           <p className="mt-4 text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed drop-shadow">
@@ -65,23 +79,29 @@ export default function ThanksPage() {
               target="_blank"
               rel="noopener noreferrer"
               key={source.name}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="group rounded-xl border border-white/5 bg-[#10141D] p-6 hover:bg-[#171C28] hover:border-white/10 transition-all duration-300 relative overflow-hidden flex flex-col h-full shadow-lg hover:shadow-2xl hover:-translate-y-1"
+              transition={{ duration: 0.5, delay: index * 0.05, ease: "easeOut" }}
+              className="group rounded-2xl border border-white/5 bg-white/[0.01] p-8 hover:bg-white/[0.03] hover:border-white/10 transition-all duration-500 relative overflow-hidden flex flex-col h-full shadow-2xl backdrop-blur-xl hover:-translate-y-2"
             >
-              <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity">
-                <ExternalLink size={18} className="text-cyan-400" />
+              {/* Subtle top border glow on hover */}
+              <div className="absolute top-0 inset-x-0 h-[1px] w-full bg-gradient-to-r from-transparent via-cyan-400/0 to-transparent group-hover:via-cyan-400/50 transition-all duration-500"></div>
+              
+              {/* Background ambient glow inside card */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+              <div className="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform group-hover:translate-x-0 translate-x-2">
+                <ExternalLink size={20} className="text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]" />
               </div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-black/50 border border-white/5 flex items-center justify-center group-hover:border-cyan-500/30 transition-colors">
-                  <ShieldCheck size={20} className="text-slate-400 group-hover:text-cyan-400 transition-colors" />
+              <div className="flex items-center gap-4 mb-5 relative z-10">
+                <div className="w-12 h-12 rounded-xl bg-black/40 border border-white/5 flex items-center justify-center group-hover:border-cyan-500/40 group-hover:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all duration-500">
+                  <ShieldCheck size={24} className="text-slate-500 group-hover:text-cyan-400 transition-colors duration-500" />
                 </div>
-                <h3 className="font-bold text-lg text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-slate-400 transition-all">
+                <h3 className="font-extrabold text-xl tracking-tight text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-cyan-200 transition-all duration-500">
                   {source.name}
                 </h3>
               </div>
-              <p className="text-slate-400 text-sm leading-relaxed flex-grow">
+              <p className="text-slate-400 text-[15px] leading-relaxed flex-grow relative z-10 group-hover:text-slate-300 transition-colors duration-500">
                 {source.desc}
               </p>
             </motion.a>
