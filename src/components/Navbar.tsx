@@ -71,11 +71,11 @@ export default function Navbar() {
                                 <ul className="flex gap-8 text-sm font-medium">
                                     {menuItems.map((item, index) => (
                                         <li key={index}>
-                                            <a
-                                                href={item.href}
+                                            <Link
+                                                to={item.href}
                                                 className="text-slate-300 hover:text-white transition-all duration-300 tracking-wide hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)]">
                                                 {item.name}
-                                            </a>
+                                            </Link>
                                         </li>
                                     ))}
                                 </ul>
@@ -87,12 +87,12 @@ export default function Navbar() {
                                 <ul className="space-y-6 text-base font-medium">
                                     {menuItems.map((item, index) => (
                                         <li key={index}>
-                                            <a
-                                                href={item.href}
+                                            <Link
+                                                to={item.href}
                                                 onClick={() => setMenuState(false)}
                                                 className="text-slate-400 hover:text-white block transition-colors duration-150">
                                                 {item.name}
-                                            </a>
+                                            </Link>
                                         </li>
                                     ))}
                                 </ul>
