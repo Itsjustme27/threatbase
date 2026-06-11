@@ -55,13 +55,12 @@ export default function Navbar() {
                             <Link
                                 to="/"
                                 aria-label="home"
-                                className="flex items-center group relative z-10">
-                                <span className="font-extrabold text-2xl tracking-wide text-white transition-colors group-hover:text-slate-200">
-                                    हिमालय
-                                </span>
-                                <span className="font-bold text-2xl tracking-wide text-red-500 transition-colors group-hover:text-red-400 ml-1.5">
-                                    फिड
-                                </span>
+                                className="flex items-center group relative z-10 transition-transform duration-300 hover:scale-[1.05]">
+                                <img 
+                                    src="/img/himalayafeed.png" 
+                                    alt="HimalayaFeed" 
+                                    className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover border-2 border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] group-hover:border-white/20 group-hover:shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all duration-300"
+                                />
                             </Link>
 
                             <button
