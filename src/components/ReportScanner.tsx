@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, ShieldAlert, ShieldCheck, AlertTriangle, AlertOctagon, ChevronRight } from 'lucide-react'
+import { Radar, Bug, ShieldCheck, AlertTriangle, AlertOctagon, ChevronRight } from 'lucide-react'
 
 export default function ReportScanner({ scanResult, isScanning, showReport, scanInput }: any) {
   if (!showReport) return null
@@ -39,24 +39,21 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
     }
   }
 
-  const StatusIcon = type === 'danger' ? ShieldAlert : type === 'safe' ? ShieldCheck : AlertTriangle
+  const StatusIcon = type === 'danger' ? Bug : type === 'safe' ? ShieldCheck : AlertTriangle
 
   return (
     <section className="py-12" id="report-section" aria-live="polite">
       <div className="mx-auto max-w-4xl px-6 lg:px-12 relative">
         {isScanning && (
-          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-900/90 backdrop-blur-xl rounded-2xl border border-white/10 p-8 shadow-2xl">
-            <div className="relative w-28 h-28 mb-8">
-              <div className="absolute inset-0 rounded-full border-2 border-cyan-500/10 shadow-[0_0_30px_rgba(6,182,212,0.1)]"></div>
-              <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-cyan-400 animate-spin"></div>
-              <div className="absolute inset-3 rounded-full border-2 border-cyan-500/10"></div>
-              <div className="absolute inset-3 rounded-full border-2 border-transparent border-b-cyan-300 animate-[spin_1.5s_linear_infinite_reverse]"></div>
-              <div className="absolute inset-0 flex items-center justify-center text-cyan-400">
-                <Search size={32} className="animate-pulse shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
-              </div>
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-slate-900/95 backdrop-blur-2xl rounded-2xl border border-white/10 p-8 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+            <div className="relative w-32 h-32 mb-8 flex items-center justify-center">
+              <div className="absolute inset-0 rounded-full border border-cyan-500/30 animate-ping opacity-20 duration-1000"></div>
+              <div className="absolute inset-2 rounded-full border-[3px] border-dashed border-cyan-500/40 animate-[spin_3s_linear_infinite]"></div>
+              <div className="absolute inset-6 rounded-full border border-cyan-400/50 shadow-[0_0_30px_rgba(34,211,238,0.2)]"></div>
+              <Radar size={48} className="text-cyan-400 animate-pulse drop-shadow-[0_0_15px_rgba(34,211,238,0.8)]" />
             </div>
-            <div className="text-xl font-bold mb-2 tracking-wide text-white">Analyzing Intelligence Feeds</div>
-            <div className="text-cyan-400 font-mono mb-8 tracking-widest text-sm uppercase opacity-80">{ip}</div>
+            <div className="text-2xl font-black mb-3 tracking-widest text-white uppercase drop-shadow-md">Scanning Target</div>
+            <div className="text-cyan-400 font-mono mb-8 tracking-widest text-lg bg-cyan-950/50 px-4 py-1.5 rounded-md border border-cyan-500/20">{ip}</div>
             <div className="w-full max-w-sm h-1.5 bg-slate-800 rounded-full overflow-hidden shadow-inner relative">
               <motion.div 
                 className="absolute top-0 left-0 h-full bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,1)]" 
@@ -77,16 +74,16 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.4 }}
             >
-              <div className="p-8 flex items-start justify-between border-b border-white/5 bg-white/[0.02]">
+              <div className="p-8 flex items-start justify-between border-b border-white/5 bg-gradient-to-b from-white/[0.05] to-transparent">
                 <div className="flex items-center gap-6">
-                  <div className={`p-4 rounded-2xl ${type === 'danger' ? 'bg-red-500/10 text-red-500 border border-red-500/20 shadow-[inset_0_0_20px_rgba(239,68,68,0.2)]' : type === 'safe' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-[inset_0_0_20px_rgba(16,185,129,0.2)]' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20 shadow-[inset_0_0_20px_rgba(245,158,11,0.2)]'}`}>
-                    <StatusIcon size={28} />
+                  <div className={`${type === 'danger' ? 'text-red-500 drop-shadow-[0_0_25px_rgba(239,68,68,0.8)]' : type === 'safe' ? 'text-emerald-400 drop-shadow-[0_0_25px_rgba(16,185,129,0.8)]' : 'text-amber-400 drop-shadow-[0_0_25px_rgba(245,158,11,0.8)]'}`}>
+                    <StatusIcon size={64} strokeWidth={1.5} />
                   </div>
                   <div>
-                    <h3 className={`font-black text-xl tracking-wider uppercase ${type === 'danger' ? 'text-red-500' : type === 'safe' ? 'text-emerald-400' : 'text-amber-400'}`}>
-                      {type === 'danger' ? 'Malicious Indicator Confirmed' : type === 'safe' ? 'Not found in active blocklists' : 'Invalid format'}
+                    <h3 className={`font-black text-2xl tracking-widest uppercase ${type === 'danger' ? 'text-red-500' : type === 'safe' ? 'text-emerald-400' : 'text-amber-400'}`}>
+                      {type === 'danger' ? 'Malicious Indicator' : type === 'safe' ? 'Clean / Not Listed' : 'Invalid format'}
                     </h3>
-                    <div className="text-xl font-mono mt-2 text-white">{ip}</div>
+                    <div className="text-2xl font-mono mt-2 text-white/90">{ip}</div>
                   </div>
                 </div>
                 <div className={`px-5 py-2 rounded-lg text-xs font-black uppercase tracking-widest ${type === 'danger' ? 'bg-red-500 text-white shadow-[0_0_20px_rgba(239,68,68,0.5)]' : type === 'safe' ? 'bg-emerald-500 text-emerald-50 shadow-[0_0_20px_rgba(16,185,129,0.5)]' : 'bg-amber-500 text-amber-50 shadow-[0_0_20px_rgba(245,158,11,0.5)]'}`}>
