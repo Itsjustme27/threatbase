@@ -47,7 +47,7 @@ const getRankInfo = (count: number) => {
 
 export default function Profile({ addToast }: any) {
   const navigate = useNavigate()
-  const { user, profile, loading: authLoading, refreshProfile } = useAuth()
+  const { user, profile, loading: authLoading, refreshProfile, signOut } = useAuth()
 
   // Profile Edit fields
   const [username, setUsername] = useState('')
@@ -61,6 +61,11 @@ export default function Profile({ addToast }: any) {
   const [reportsCount, setReportsCount] = useState(0)
   const [loadingReports, setLoadingReports] = useState(true)
   const [copiedIp, setCopiedIp] = useState<string | null>(null)
+
+  // Account Deletion state
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [deleteInput, setDeleteInput] = useState('')
+  const [deleting, setDeleting] = useState(false)
 
   // Block anonymous access
   useEffect(() => {
@@ -156,6 +161,26 @@ export default function Profile({ addToast }: any) {
     setCopiedIp(ip)
     addToast(`Copied ${ip} to clipboard!`, 'success')
     setTimeout(() => setCopiedIp(null), 1500)
+  }
+
+  const handleDeleteAccount = async () => {
+    if (deleteInput !== 'delete my account' || !supabaseClient || !user) return
+    setDeleting(true)
+    try {
+      const { error } = await supabaseClient.rpc('delete_user')
+      if (error) throw error
+
+      addToast('Your account and profile have been permanently deleted.', 'success')
+      await signOut()
+      navigate('/')
+    } catch (err: any) {
+      console.error('Failed to delete account:', err)
+      addToast('Failed to delete account: ' + (err.message || 'Unknown error'), 'error')
+    } finally {
+      setDeleting(false)
+      setShowDeleteConfirm(false)
+      setDeleteInput('')
+    }
   }
 
   if (authLoading) {
@@ -465,7 +490,123 @@ export default function Profile({ addToast }: any) {
             )}
           </div>
         </motion.div>
+
+        {/* Danger Zone */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-2xl border border-red-500/10 bg-red-950/5 backdrop-blur-xl p-6 md:p-8 shadow-2xl relative overflow-hidden"
+        >
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500/30 via-rose-500/40 to-red-500/30" />
+          
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div className="space-y-2">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-red-400 flex items-center gap-2">
+                <ShieldAlert size={16} /> Danger Zone
+              </h3>
+              <p className="text-xs font-semibold text-slate-300">
+                Permanently delete your account
+              </p>
+              <p className="text-[11px] text-slate-400 max-w-md leading-relaxed">
+                This action is irreversible. It will delete your profile data, avatar references, and remove your username alias from all reported telemetry logs.
+              </p>
+            </div>
+            
+            <Button
+              onClick={() => setShowDeleteConfirm(true)}
+              className="bg-red-950/40 hover:bg-red-900/40 border border-red-500/20 hover:border-red-500/40 text-red-200 hover:text-white rounded-xl px-5 h-10 text-xs font-bold transition-all duration-300 active:scale-95 cursor-pointer"
+            >
+              <Trash2 size={13} className="mr-1.5" /> Delete Account
+            </Button>
+          </div>
+        </motion.div>
+
       </div>
+
+      {/* Delete Account Confirmation Modal */}
+      <AnimatePresence>
+        {showDeleteConfirm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowDeleteConfirm(false)}
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            />
+            
+            {/* Modal Content */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-md rounded-2xl border border-red-500/20 bg-slate-900/90 p-6 md:p-8 shadow-2xl backdrop-blur-xl space-y-6"
+            >
+              <div className="flex items-center gap-3 border-b border-white/5 pb-4">
+                <div className="bg-red-500/10 text-red-400 p-2 rounded-xl border border-red-500/20">
+                  <Trash2 size={20} />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-white">Confirm Account Deletion</h4>
+                  <p className="text-[10px] text-slate-500 font-semibold font-mono">THIS ACTION IS PERMANENT</p>
+                </div>
+              </div>
+              
+              <div className="space-y-3">
+                <p className="text-xs text-slate-300 leading-relaxed font-medium">
+                  Are you absolutely sure you want to delete your defender account? 
+                  Any reports and statistics associated with <span className="font-bold text-red-400 font-mono">@{profile?.username || username}</span> will be permanently detached.
+                </p>
+                <div className="p-3.5 rounded-xl border border-red-500/10 bg-red-950/10 text-[11px] text-red-300 leading-relaxed font-semibold">
+                  To confirm, type <span className="font-bold font-mono text-white underline select-all">delete my account</span> in the box below.
+                </div>
+              </div>
+              
+              <div className="space-y-1.5">
+                <input
+                  type="text"
+                  value={deleteInput}
+                  onChange={(e) => setDeleteInput(e.target.value)}
+                  placeholder="delete my account"
+                  className="w-full h-10 rounded-xl border border-red-500/10 focus:border-red-500/30 bg-slate-950/60 px-4 text-xs font-semibold text-slate-200 placeholder:text-slate-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-500/20 transition-all font-mono"
+                />
+              </div>
+              
+              <div className="flex gap-3 pt-2">
+                <Button 
+                  onClick={handleDeleteAccount}
+                  className="h-10 flex-1 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed border border-red-500/15 cursor-pointer"
+                  disabled={deleteInput !== 'delete my account' || deleting}
+                >
+                  {deleting ? (
+                    <>
+                      <Loader2 className="animate-spin" size={12} />
+                      <span>Deleting...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 size={12} />
+                      <span>Permanently Delete</span>
+                    </>
+                  )}
+                </Button>
+                <Button 
+                  onClick={() => {
+                    setShowDeleteConfirm(false)
+                    setDeleteInput('')
+                  }}
+                  className="h-10 px-5 rounded-xl bg-slate-800 hover:bg-slate-750 text-slate-400 hover:text-slate-200 text-xs font-bold uppercase tracking-wider active:scale-95 border border-white/5 cursor-pointer"
+                  disabled={deleting}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </main>
   )
 }
