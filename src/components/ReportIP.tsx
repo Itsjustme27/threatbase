@@ -161,10 +161,10 @@ export default function ReportIP({ addToast }: any) {
             </span>
             Active Threat Database
           </div>
-          <h1 className="text-4xl md:text-6xl font-black flex flex-col items-center justify-center gap-2 text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 tracking-tight drop-shadow-sm pb-2">
+          <h1 className="text-4xl md:text-5xl font-semibold flex flex-col items-center justify-center gap-2 text-white tracking-tight pb-2">
             Community Intel
           </h1>
-          <p className="mt-4 text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed drop-shadow">
+          <p className="mt-4 text-slate-400/80 text-lg max-w-2xl mx-auto leading-relaxed">
             Help protect the global community. Report malicious IPs to our live feed and empower defenders worldwide.
           </p>
         </motion.div>
@@ -178,8 +178,7 @@ export default function ReportIP({ addToast }: any) {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="xl:col-span-4"
           >
-            <div className="rounded-xl border border-white/5 bg-[#10141D] shadow-2xl relative overflow-hidden group">
-              <div className="absolute top-0 inset-x-0 h-[1px] w-full bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
+            <div className="rounded-xl border border-white/5 bg-white/[0.01] backdrop-blur-xl relative overflow-hidden group">
               
               <div className="p-6 relative z-10 min-h-[500px] flex flex-col">
                 <AnimatePresence mode="wait">
@@ -196,7 +195,7 @@ export default function ReportIP({ addToast }: any) {
                         <h2 className="text-2xl font-bold text-white flex items-center gap-3">
                           <Flag className="text-red-500" size={24} /> File a Report
                         </h2>
-                        <p className="text-slate-400 text-sm mt-2">All submissions are verified against global honeypots.</p>
+                        <p className="text-slate-400/80 text-sm mt-2">Reported IPs are sent to the cloud and later merged into the global intel feed.</p>
                       </div>
 
                       <div className="space-y-2">
@@ -289,7 +288,7 @@ export default function ReportIP({ addToast }: any) {
                       </div>
 
                       <Button
-                        className="w-full h-11 rounded-lg bg-[#1D2433] hover:bg-[#2A344A] text-white font-bold text-sm shadow-md transition-all duration-300 mt-4 border border-white/5"
+                        className="w-full h-11 rounded-lg bg-white/5 hover:bg-white/10 text-slate-200 font-semibold text-sm transition-colors duration-200 mt-4 border border-white/5 backdrop-blur-sm"
                         onClick={handleSubmit}
                         disabled={submitting}
                       >
@@ -346,10 +345,10 @@ export default function ReportIP({ addToast }: any) {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="xl:col-span-8 flex flex-col"
           >
-            <div className="rounded-xl border border-white/5 bg-[#10141D] shadow-2xl flex flex-col overflow-hidden relative h-full group">
+            <div className="rounded-xl border border-white/5 bg-white/[0.01] backdrop-blur-xl flex flex-col overflow-hidden relative h-full group">
               
               {/* Table / Leaderboard Header Section */}
-              <div className="p-4 md:px-6 flex items-center justify-between border-b border-white/5 bg-[#171C28] relative z-10">
+              <div className="p-4 md:px-6 flex items-center justify-between border-b border-white/5 bg-white/[0.01] relative z-10">
                 <div className="flex gap-6">
                   <button 
                     onClick={() => setActiveTab('feed')}
@@ -398,7 +397,7 @@ export default function ReportIP({ addToast }: any) {
                       </div>
                     ) : (
                       <table className="w-full text-sm text-left">
-                        <thead className="text-[10px] uppercase bg-black/40 text-slate-400 font-extrabold border-b border-white/5">
+                        <thead className="text-[10px] uppercase bg-white/[0.02] text-slate-500 font-semibold border-b border-white/5">
                           <tr>
                             <th className="px-8 py-5 tracking-[0.2em] whitespace-nowrap">IP Address</th>
                             <th className="px-6 py-5 tracking-[0.2em] whitespace-nowrap">Category</th>
@@ -429,7 +428,7 @@ export default function ReportIP({ addToast }: any) {
                                   </div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                  <span className={`inline-flex items-center px-3 py-1.5 rounded-lg text-[11px] font-extrabold tracking-wider uppercase border ${getCategoryColor(row.category)} transition-all`}>
+                                  <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-medium tracking-wide text-slate-300 bg-white/5 border border-white/5">
                                     {row.category}
                                   </span>
                                 </td>
@@ -456,11 +455,11 @@ export default function ReportIP({ addToast }: any) {
 
                   {/* Pagination */}
                   {totalPages > 1 && !loading && !isEmpty && (
-                    <div className="p-4 md:px-8 border-t border-white/5 flex items-center justify-between bg-black/20">
+                    <div className="p-4 md:px-8 border-t border-white/5 flex items-center justify-between bg-white/[0.01]">
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-slate-400 hover:bg-white/10 hover:text-white rounded-xl transition-all font-bold"
+                        className="text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-colors font-medium"
                         onClick={() => loadReportedIPs(page - 1)}
                         disabled={page === 0}
                       >

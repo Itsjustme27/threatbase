@@ -70,7 +70,7 @@ export default function Leaderboard() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="flex items-center justify-between p-3.5 rounded-lg bg-[#171C28] border border-white/5 hover:border-white/10 transition-colors relative overflow-hidden group"
+            className="flex items-center justify-between p-3.5 rounded-lg bg-white/[0.01] border border-white/5 hover:bg-white/[0.03] transition-colors relative overflow-hidden group"
           >
             {/* Top 3 Glow effect behind the row */}
             {index < 3 && (
@@ -78,11 +78,11 @@ export default function Leaderboard() {
             )}
 
             <div className="flex items-center gap-4 relative z-10">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-black/40 border border-white/10 text-sm font-bold text-slate-400">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-white/5 text-sm font-semibold text-slate-400">
                 #{index + 1}
               </div>
               <div>
-                <h4 className="font-bold text-white tracking-wide text-lg">@{leader.reporter_alias}</h4>
+                <h4 className="font-semibold text-slate-200 text-base tracking-wide">@{leader.reporter_alias}</h4>
                 <div className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full mt-1.5 bg-gradient-to-r ${rank.color} ${rank.shadow}`}>
                   {rank.icon}
                   <span className="text-[10px] uppercase font-bold tracking-widest text-white/90 drop-shadow-sm">
@@ -93,10 +93,10 @@ export default function Leaderboard() {
             </div>
 
             <div className="text-right relative z-10">
-              <div className="text-2xl font-black text-white">
+              <div className="text-xl font-bold text-slate-200">
                 {fmt(leader.reports_count)}
               </div>
-              <div className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">
+              <div className="text-[10px] uppercase tracking-wide text-slate-500 font-medium">
                 Intel Reports
               </div>
             </div>
