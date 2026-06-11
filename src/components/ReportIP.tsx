@@ -130,11 +130,11 @@ export default function ReportIP({ addToast }: any) {
   }, [ipValue, category, comment, addToast, loadReportedIPs])
 
   const getCategoryColor = (cat: string) => {
-    if (cat.includes('Brute')) return 'bg-orange-500/10 text-orange-400 border-orange-500/30 shadow-[0_0_15px_rgba(249,115,22,0.2)]'
-    if (cat.includes('Malware')) return 'bg-red-500/10 text-red-400 border-red-500/30 shadow-[0_0_15px_rgba(239,68,68,0.2)]'
-    if (cat.includes('DDoS')) return 'bg-purple-500/10 text-purple-400 border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.2)]'
-    if (cat.includes('Phish')) return 'bg-blue-500/10 text-blue-400 border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.2)]'
-    return 'bg-slate-500/10 text-slate-300 border-slate-500/30'
+    if (cat.includes('Brute')) return 'bg-orange-500/10 text-orange-400 border-orange-500/20 shadow-[0_0_8px_rgba(249,115,22,0.1)]'
+    if (cat.includes('Malware')) return 'bg-red-500/10 text-red-400 border-red-500/20 shadow-[0_0_8px_rgba(239,68,68,0.1)]'
+    if (cat.includes('DDoS')) return 'bg-purple-500/10 text-purple-400 border-purple-500/20 shadow-[0_0_8px_rgba(168,85,247,0.1)]'
+    if (cat.includes('Phish')) return 'bg-blue-500/10 text-blue-400 border-blue-500/20 shadow-[0_0_8px_rgba(59,130,246,0.1)]'
+    return 'bg-slate-500/10 text-slate-300 border-slate-500/20'
   }
 
   return (
@@ -387,8 +387,8 @@ export default function ReportIP({ addToast }: any) {
                             className="hover:bg-white/[0.04] transition-colors group"
                           >
                             <td className="px-8 py-6 font-mono font-bold text-slate-200 whitespace-nowrap flex items-center gap-3">
-                              <div className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)] relative">
-                                <div className="absolute inset-0 rounded-full bg-red-500 animate-ping opacity-75"></div>
+                              <div className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.5)] relative">
+                                <div className="absolute inset-0 rounded-full bg-red-500 animate-ping opacity-60"></div>
                               </div>
                               {row.ip}
                             </td>
