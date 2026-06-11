@@ -138,7 +138,7 @@ export default function ReportIP({ addToast }: any) {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Submit Form */}
-          <div className="lg:col-span-4 rounded-2xl border bg-card shadow-sm p-6">
+          <div className="lg:col-span-4 rounded-2xl border border-white/40 dark:border-white/10 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-xl p-6">
             <div className="space-y-4">
               <div>
                 <label className="flex items-center gap-2 text-sm font-medium mb-2 text-foreground" htmlFor="rip-ip-input">

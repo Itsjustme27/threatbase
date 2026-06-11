@@ -42,7 +42,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
   const StatusIcon = type === 'danger' ? ShieldAlert : type === 'safe' ? ShieldCheck : AlertTriangle
 
   return (
-    <section className="py-12 md:py-20 bg-muted/30" id="report-section" aria-live="polite">
+    <section className="py-12" id="report-section" aria-live="polite">
       <div className="mx-auto max-w-4xl px-6 lg:px-12 relative">
         {isScanning && (
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm rounded-2xl border p-8 shadow-lg">
@@ -65,7 +65,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
         <AnimatePresence>
           {scanResult && !isScanning && (
             <motion.div 
-              className="overflow-hidden rounded-2xl border bg-card shadow-lg"
+              className="overflow-hidden rounded-2xl border border-white/40 dark:border-white/10 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-xl"
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95 }}

@@ -63,7 +63,7 @@ export default function Feeds() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {feeds.map((f, i) => (
             <motion.div 
-              className="group flex flex-col justify-between overflow-hidden rounded-2xl border bg-card p-6 shadow-sm transition-all hover:shadow-md" 
+              className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-white/40 dark:border-white/10 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl p-6 shadow-xl transition-all hover:shadow-2xl" 
               key={f.file} 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

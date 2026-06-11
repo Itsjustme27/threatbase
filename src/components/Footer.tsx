@@ -4,7 +4,7 @@ const BASE = import.meta.env.BASE_URL
 
 export default function Footer() {
   return (
-    <footer className="border-t bg-muted/20 py-12">
+    <footer className="border-t border-white/20 dark:border-white/10 bg-white/30 dark:bg-slate-900/40 backdrop-blur-md py-12 mt-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex flex-col items-center md:items-start text-center md:text-left">
           <div className="flex items-center gap-3 font-bold text-xl mb-2 text-black dark:text-white">

@@ -53,17 +53,9 @@ export function HeroSection({ scanInput, setScanInput, handleScan }: any) {
                                 </div>
                             </div>
                         </div>
-                        <div className="aspect-[2/3] absolute inset-1 overflow-hidden rounded-3xl border border-black/10 sm:aspect-video lg:rounded-[3rem] dark:border-white/5">
-                            <img
-                                className="size-full object-cover opacity-20 dark:opacity-40 pointer-events-none"
-                                src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2070" 
-                                alt="Server Infrastructure" 
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-background to-background/20 lg:bg-gradient-to-r lg:from-background lg:to-background/20" />
-                        </div>
                     </div>
                 </section>
-                <section className="bg-background pb-2 pt-12">
+                <section className="bg-white/30 dark:bg-slate-900/40 backdrop-blur-md border-y border-white/20 dark:border-white/10 pb-2 pt-12">
                     <div className="group relative m-auto max-w-7xl px-6">
                         <div className="flex flex-col items-center md:flex-row">
                             <div className="md:max-w-44 md:border-r md:pr-6 mb-6 md:mb-0">

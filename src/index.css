@@ -64,6 +64,12 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground min-h-screen bg-fixed bg-cover bg-center bg-no-repeat;
+    background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2070');
+  }
+  
+  body::before {
+    content: '';
+    @apply fixed inset-0 bg-slate-50/80 dark:bg-slate-950/85 pointer-events-none -z-10 backdrop-blur-[2px];
   }
 }

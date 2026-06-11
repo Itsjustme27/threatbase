@@ -19,7 +19,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, ArcEleme
 
 export default function Analytics({ statsData, feedVersion }: any) {
   return (
-    <section className="py-12 md:py-20 bg-muted/30" id="analytics">
+    <section className="py-12 md:py-20" id="analytics">
       <div className="mx-auto max-w-7xl px-6 lg:px-12">
         <div className="mb-12 text-center md:text-left">
           <div className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">Insights</div>
@@ -30,14 +30,14 @@ export default function Analytics({ statsData, feedVersion }: any) {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 rounded-2xl border bg-card p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div className="lg:col-span-2 rounded-2xl border border-white/40 dark:border-white/10 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl p-6 shadow-xl hover:shadow-2xl transition-shadow">
             <h3 className="text-lg font-semibold mb-6">Volume Trend</h3>
             <div className="h-80 w-full relative">
               <HistoryChart feedVersion={feedVersion} />
             </div>
           </div>
 
-          <div className="rounded-2xl border bg-card p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div className="rounded-2xl border border-white/40 dark:border-white/10 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl p-6 shadow-xl hover:shadow-2xl transition-shadow">
             <h3 className="text-lg font-semibold mb-6">Specialized Threat Categories</h3>
             <div className="h-80 w-full relative flex items-center justify-center">
               {statsData?.category_counts && (

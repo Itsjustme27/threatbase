@@ -63,7 +63,7 @@ export default function Stats({ statsData }: any) {
 function StatCard({ label, icon, iconClass, valueId, sub, trendId }: any) {
   return (
     <motion.div 
-      className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border bg-card p-6 shadow-sm transition-all hover:shadow-md" 
+      className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/40 dark:border-white/10 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl p-6 shadow-xl transition-all hover:shadow-2xl" 
       whileHover={{ scale: 1.02 }}
       transition={{ duration: 0.2 }}
     >
