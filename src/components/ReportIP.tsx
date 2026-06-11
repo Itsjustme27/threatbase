@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Flag, Globe, Tag, MessageSquare, Send, List, Inbox, ChevronLeft, ChevronRight, ShieldAlert, Activity, AlertTriangle, ShieldCheck, CheckCircle2 } from 'lucide-react'
+import { Flag, Globe, Tag, MessageSquare, Send, List, Inbox, ChevronLeft, ChevronRight, ShieldAlert, Activity, AlertTriangle, ShieldCheck, CheckCircle2, Trophy } from 'lucide-react'
 import supabaseClient from '../supabaseClient'
 import { fmt, timeAgo } from '../utils'
 import { Button } from '@/components/ui/button'
+import Leaderboard from './Leaderboard'
 
 const REPORT_PAGE_SIZE = 10
 const SUBMIT_COOLDOWN = 15000
@@ -12,8 +13,10 @@ export default function ReportIP({ addToast }: any) {
   const [ipValue, setIpValue] = useState('')
   const [category, setCategory] = useState('')
   const [comment, setComment] = useState('')
+  const [alias, setAlias] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [activeTab, setActiveTab] = useState<'feed' | 'leaderboard'>('feed')
   const lastSubmitRef = useRef(0)
 
   // Reported IPs table state
@@ -108,7 +111,7 @@ export default function ReportIP({ addToast }: any) {
     try {
       const { error } = await supabaseClient
         .from('reported_ips')
-        .insert([{ ip: ipValue.trim(), category, comment: comment.trim() }])
+        .insert([{ ip: ipValue.trim(), category, comment: comment.trim(), reporter_alias: alias.trim() || null }])
 
       if (error) throw error
 
@@ -120,6 +123,7 @@ export default function ReportIP({ addToast }: any) {
       setIpValue('')
       setCategory('')
       setComment('')
+      // Don't clear alias so they don't have to re-type it every time
       loadReportedIPs(0)
     } catch (err: any) {
       console.error('Submit error:', err)
@@ -258,6 +262,28 @@ export default function ReportIP({ addToast }: any) {
                       </div>
 
                       <div className="space-y-2">
+                        <label className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-1" htmlFor="rip-alias">
+                          Agent Alias (Optional)
+                        </label>
+                        <div className="relative">
+                          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <span className="text-slate-500 font-mono font-bold group-focus-within:text-cyan-400 transition-colors">@</span>
+                          </div>
+                          <input
+                            type="text"
+                            id="rip-alias"
+                            className="w-full h-14 rounded-2xl border border-white/5 bg-black/40 pl-11 pr-4 text-sm text-white placeholder:text-slate-600 focus-visible:outline-none focus-visible:border-cyan-500/50 focus-visible:ring-4 focus-visible:ring-cyan-500/10 transition-all shadow-inner"
+                            placeholder="e.g. Neo"
+                            autoComplete="off"
+                            spellCheck="false"
+                            maxLength={24}
+                            value={alias}
+                            onChange={(e) => setAlias(e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
                         <label className="text-xs font-bold uppercase tracking-wider text-slate-400 ml-1" htmlFor="rip-comment">
                           Analyst Notes
                         </label>
@@ -337,115 +363,144 @@ export default function ReportIP({ addToast }: any) {
             <div className="rounded-3xl border border-white/10 bg-slate-900/60 backdrop-blur-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] flex flex-col overflow-hidden relative h-full group">
               <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none"></div>
               
-              {/* Table Header Section */}
+              {/* Table / Leaderboard Header Section */}
               <div className="p-6 md:px-8 flex items-center justify-between border-b border-white/5 bg-slate-900/80 relative z-10">
-                <h3 className="font-bold text-xl flex items-center gap-3 text-white">
-                  <List className="text-slate-400" size={20} /> 
-                  Global Intel Feed
-                </h3>
-                <div className="hidden sm:flex text-sm text-slate-300 font-bold bg-white/5 px-4 py-2 rounded-xl border border-white/5 shadow-inner items-center gap-2">
-                  <ShieldAlert size={16} className="text-red-400"/>
-                  {reportCount > 0 ? `${fmt(reportCount)} Submissions` : 'Live'}
+                <div className="flex gap-6">
+                  <button 
+                    onClick={() => setActiveTab('feed')}
+                    className={`font-bold text-xl flex items-center gap-3 transition-colors ${activeTab === 'feed' ? 'text-white' : 'text-slate-500 hover:text-slate-300'}`}
+                  >
+                    <List size={20} /> Global Intel Feed
+                  </button>
+                  <button 
+                    onClick={() => setActiveTab('leaderboard')}
+                    className={`font-bold text-xl flex items-center gap-3 transition-colors ${activeTab === 'leaderboard' ? 'text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-amber-500' : 'text-slate-500 hover:text-slate-300'}`}
+                  >
+                    <Trophy size={20} className={activeTab === 'leaderboard' ? 'text-yellow-400' : ''} /> Top Contributors
+                  </button>
                 </div>
-              </div>
-
-              <div className="flex-1 overflow-x-auto">
-                {loading ? (
-                  <div className="h-full flex flex-col items-center justify-center text-slate-400 py-24">
-                    <div className="relative h-16 w-16 mb-6">
-                      <div className="absolute inset-0 rounded-full border-t-2 border-red-500 animate-spin"></div>
-                      <div className="absolute inset-2 rounded-full border-b-2 border-slate-500 animate-spin animation-delay-200"></div>
-                      <ShieldAlert className="absolute inset-0 m-auto text-slate-600" size={20} />
-                    </div>
-                    <p className="font-medium tracking-wide">Syncing with global database...</p>
+                {activeTab === 'feed' && (
+                  <div className="hidden sm:flex text-sm text-slate-300 font-bold bg-white/5 px-4 py-2 rounded-xl border border-white/5 shadow-inner items-center gap-2">
+                    <ShieldAlert size={16} className="text-red-400"/>
+                    {reportCount > 0 ? `${fmt(reportCount)} Submissions` : 'Live'}
                   </div>
-                ) : isEmpty ? (
-                  <div className="h-full flex flex-col items-center justify-center text-slate-500 text-center py-24 px-6">
-                    <div className="bg-white/5 p-6 rounded-full mb-6 border border-white/5 shadow-inner">
-                      <Inbox size={48} className="opacity-50" />
-                    </div>
-                    <p className="text-xl font-bold text-white mb-2">No Reports Found</p>
-                    <p className="text-sm max-w-sm">The intel feed is currently clear. Submit the first malicious IP to start the database.</p>
-                  </div>
-                ) : (
-                  <table className="w-full text-sm text-left">
-                    <thead className="text-[10px] uppercase bg-black/40 text-slate-400 font-extrabold border-b border-white/5">
-                      <tr>
-                        <th className="px-8 py-5 tracking-[0.2em] whitespace-nowrap">IP Address</th>
-                        <th className="px-6 py-5 tracking-[0.2em] whitespace-nowrap">Category</th>
-                        <th className="px-6 py-5 tracking-[0.2em]">Context</th>
-                        <th className="px-8 py-5 tracking-[0.2em] whitespace-nowrap text-right">Time</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-white/5">
-                      <AnimatePresence>
-                        {reports.map((row, idx) => (
-                          <motion.tr 
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: idx * 0.05 }}
-                            key={row.id || row.created_at} 
-                            className="hover:bg-white/[0.04] transition-colors group"
-                          >
-                            <td className="px-8 py-6 font-mono font-bold text-slate-200 whitespace-nowrap flex items-center gap-3">
-                              <div className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.5)] relative">
-                                <div className="absolute inset-0 rounded-full bg-red-500 animate-ping opacity-60"></div>
-                              </div>
-                              {row.ip}
-                            </td>
-                            <td className="px-6 py-6 whitespace-nowrap">
-                              <span className={`inline-flex items-center px-3 py-1.5 rounded-lg text-[11px] font-extrabold tracking-wider uppercase border ${getCategoryColor(row.category)} transition-all`}>
-                                {row.category}
-                              </span>
-                            </td>
-                            <td className="px-6 py-5 text-slate-400 max-w-[280px] sm:max-w-md">
-                              {row.comment ? (
-                                <span className="flex items-start gap-2.5 group-hover:text-slate-200 transition-colors">
-                                  <AlertTriangle size={14} className="text-slate-500 flex-shrink-0 mt-0.5" />
-                                  <span className="whitespace-normal leading-relaxed text-sm font-medium">{row.comment}</span>
-                                </span>
-                              ) : (
-                                <span className="text-slate-600 italic">No context provided</span>
-                              )}
-                            </td>
-                            <td className="px-8 py-6 text-slate-500 whitespace-nowrap font-medium text-right group-hover:text-slate-300 transition-colors">
-                              {timeAgo(row.created_at)}
-                            </td>
-                          </motion.tr>
-                        ))}
-                      </AnimatePresence>
-                    </tbody>
-                  </table>
                 )}
               </div>
 
-              {/* Pagination */}
-              {totalPages > 1 && !loading && !isEmpty && (
-                <div className="p-4 md:px-8 border-t border-white/5 flex items-center justify-between bg-black/20">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-slate-400 hover:bg-white/10 hover:text-white rounded-xl transition-all font-bold"
-                    onClick={() => loadReportedIPs(page - 1)}
-                    disabled={page === 0}
-                  >
-                    <ChevronLeft size={16} className="mr-1" /> Prev
-                  </Button>
-                  <div className="flex gap-2">
-                    {[...Array(Math.min(totalPages, 5))].map((_, i) => (
-                      <div key={i} className={`transition-all duration-300 rounded-full ${i === page ? 'h-2 w-6 bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)]' : 'h-2 w-2 bg-slate-700 hover:bg-slate-500 cursor-pointer'}`}></div>
-                    ))}
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-slate-400 hover:bg-white/10 hover:text-white rounded-xl transition-all font-bold"
-                    onClick={() => loadReportedIPs(page + 1)}
-                    disabled={page >= totalPages - 1}
-                  >
-                    Next <ChevronRight size={16} className="ml-1" />
-                  </Button>
+              {activeTab === 'leaderboard' ? (
+                <div className="flex-1 p-6 md:p-8 overflow-y-auto">
+                  <Leaderboard />
                 </div>
+              ) : (
+                <>
+                  <div className="flex-1 overflow-x-auto">
+                    {loading ? (
+                      <div className="h-full flex flex-col items-center justify-center text-slate-400 py-24">
+                        <div className="relative h-16 w-16 mb-6">
+                          <div className="absolute inset-0 rounded-full border-t-2 border-red-500 animate-spin"></div>
+                          <div className="absolute inset-2 rounded-full border-b-2 border-slate-500 animate-spin animation-delay-200"></div>
+                          <ShieldAlert className="absolute inset-0 m-auto text-slate-600" size={20} />
+                        </div>
+                        <p className="font-medium tracking-wide">Syncing with global database...</p>
+                      </div>
+                    ) : isEmpty ? (
+                      <div className="h-full flex flex-col items-center justify-center text-slate-500 text-center py-24 px-6">
+                        <div className="bg-white/5 p-6 rounded-full mb-6 border border-white/5 shadow-inner">
+                          <Inbox size={48} className="opacity-50" />
+                        </div>
+                        <p className="text-xl font-bold text-white mb-2">No Reports Found</p>
+                        <p className="text-sm max-w-sm">The intel feed is currently clear. Submit the first malicious IP to start the database.</p>
+                      </div>
+                    ) : (
+                      <table className="w-full text-sm text-left">
+                        <thead className="text-[10px] uppercase bg-black/40 text-slate-400 font-extrabold border-b border-white/5">
+                          <tr>
+                            <th className="px-8 py-5 tracking-[0.2em] whitespace-nowrap">IP Address</th>
+                            <th className="px-6 py-5 tracking-[0.2em] whitespace-nowrap">Category</th>
+                            <th className="px-6 py-5 tracking-[0.2em]">Context</th>
+                            <th className="px-8 py-5 tracking-[0.2em] whitespace-nowrap text-right">Time</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-white/5">
+                          <AnimatePresence>
+                            {reports.map((row, idx) => (
+                              <motion.tr 
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: idx * 0.05 }}
+                                key={row.id || row.created_at} 
+                                className="hover:bg-white/[0.04] transition-colors group"
+                              >
+                                <td className="px-8 py-6 whitespace-nowrap">
+                                  <div className="flex flex-col gap-1">
+                                    <div className="font-mono font-bold text-slate-200 flex items-center gap-3">
+                                      <div className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.5)] relative">
+                                        <div className="absolute inset-0 rounded-full bg-red-500 animate-ping opacity-60"></div>
+                                      </div>
+                                      {row.ip}
+                                    </div>
+                                    {row.reporter_alias && (
+                                      <div className="text-[10px] uppercase tracking-wider text-slate-500 font-bold ml-5">
+                                        By <span className="text-cyan-400">@{row.reporter_alias}</span>
+                                      </div>
+                                    )}
+                                  </div>
+                                </td>
+                                <td className="px-6 py-6 whitespace-nowrap">
+                                  <span className={`inline-flex items-center px-3 py-1.5 rounded-lg text-[11px] font-extrabold tracking-wider uppercase border ${getCategoryColor(row.category)} transition-all`}>
+                                    {row.category}
+                                  </span>
+                                </td>
+                                <td className="px-6 py-5 text-slate-400 max-w-[280px] sm:max-w-md">
+                                  {row.comment ? (
+                                    <span className="flex items-start gap-2.5 group-hover:text-slate-200 transition-colors">
+                                      <AlertTriangle size={14} className="text-slate-500 flex-shrink-0 mt-0.5" />
+                                      <span className="whitespace-normal leading-relaxed text-sm font-medium">{row.comment}</span>
+                                    </span>
+                                  ) : (
+                                    <span className="text-slate-600 italic">No context provided</span>
+                                  )}
+                                </td>
+                                <td className="px-8 py-6 text-slate-500 whitespace-nowrap font-medium text-right group-hover:text-slate-300 transition-colors">
+                                  {timeAgo(row.created_at)}
+                                </td>
+                              </motion.tr>
+                            ))}
+                          </AnimatePresence>
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
+
+                  {/* Pagination */}
+                  {totalPages > 1 && !loading && !isEmpty && (
+                    <div className="p-4 md:px-8 border-t border-white/5 flex items-center justify-between bg-black/20">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-slate-400 hover:bg-white/10 hover:text-white rounded-xl transition-all font-bold"
+                        onClick={() => loadReportedIPs(page - 1)}
+                        disabled={page === 0}
+                      >
+                        <ChevronLeft size={16} className="mr-1" /> Prev
+                      </Button>
+                      <div className="flex gap-2">
+                        {[...Array(Math.min(totalPages, 5))].map((_, i) => (
+                          <div key={i} className={`transition-all duration-300 rounded-full ${i === page ? 'h-2 w-6 bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)]' : 'h-2 w-2 bg-slate-700 hover:bg-slate-500 cursor-pointer'}`}></div>
+                        ))}
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-slate-400 hover:bg-white/10 hover:text-white rounded-xl transition-all font-bold"
+                        onClick={() => loadReportedIPs(page + 1)}
+                        disabled={page >= totalPages - 1}
+                      >
+                        Next <ChevronRight size={16} className="ml-1" />
+                      </Button>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </motion.div>
