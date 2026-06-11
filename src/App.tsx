@@ -96,7 +96,7 @@ export default function App() {
 
   return (
     <>
-      <HeroSection scanInput={scanInput} setScanInput={setScanInput} handleScan={handleScan} />
+      <HeroSection scanInput={scanInput} setScanInput={setScanInput} handleScan={handleScan} statsData={statsData} />
 
       <main id="main-content">
 

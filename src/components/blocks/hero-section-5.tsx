@@ -8,7 +8,7 @@ import ThreatMap from '../ThreatMap'
 import { Menu, X, ChevronRight, Shield, Server, Database, Lock, Network, Cloud, Activity, Globe, Search } from 'lucide-react'
 import { useScroll, motion } from 'framer-motion'
 
-export function HeroSection({ scanInput, setScanInput, handleScan }: any) {
+export function HeroSection({ scanInput, setScanInput, handleScan, statsData }: any) {
     return (
         <>
             <HeroHeader />
@@ -65,19 +65,30 @@ export function HeroSection({ scanInput, setScanInput, handleScan }: any) {
                                 <p className="text-center md:text-end text-sm text-slate-400 font-bold tracking-wider uppercase">Intelligence Sources</p>
                             </div>
                             <div className="relative py-6 md:w-[calc(100%-11rem)] overflow-hidden">
-                                <InfiniteSlider
-                                    speedOnHover={20}
-                                    speed={40}
-                                    gap={64}>
-                                    <div className="flex items-center gap-2 text-slate-400"><Server size={24}/> <span className="font-bold tracking-wide uppercase text-sm">Honeypots</span></div>
-                                    <div className="flex items-center gap-2 text-slate-400"><Globe size={24}/> <span className="font-bold tracking-wide uppercase text-sm">Dark Web</span></div>
-                                    <div className="flex items-center gap-2 text-slate-400"><Activity size={24}/> <span className="font-bold tracking-wide uppercase text-sm">Malware Analysis</span></div>
-                                    <div className="flex items-center gap-2 text-slate-400"><Network size={24}/> <span className="font-bold tracking-wide uppercase text-sm">Sinkholes</span></div>
-                                    <div className="flex items-center gap-2 text-slate-400"><Shield size={24}/> <span className="font-bold tracking-wide uppercase text-sm">OSINT</span></div>
-                                    <div className="flex items-center gap-2 text-slate-400"><Database size={24}/> <span className="font-bold tracking-wide uppercase text-sm">Sandboxes</span></div>
-                                    <div className="flex items-center gap-2 text-slate-400"><Cloud size={24}/> <span className="font-bold tracking-wide uppercase text-sm">Cloud Sensors</span></div>
-                                    <div className="flex items-center gap-2 text-slate-400"><Lock size={24}/> <span className="font-bold tracking-wide uppercase text-sm">Spam Traps</span></div>
-                                </InfiniteSlider>
+                                {(() => {
+                                    const rawSources = statsData?.ips_per_source ? Object.keys(statsData.ips_per_source) : []
+                                    const sources = rawSources.length > 0 
+                                        ? rawSources.slice(0, 15).map(s => s.replace(/_/g, ' ')) 
+                                        : ['Honeypots', 'Dark Web', 'Malware Analysis', 'Sinkholes', 'OSINT', 'Sandboxes', 'Cloud Sensors', 'Spam Traps']
+                                    const icons = [Shield, Server, Database, Lock, Network, Cloud, Activity, Globe]
+                                    
+                                    return (
+                                        <InfiniteSlider
+                                            speedOnHover={20}
+                                            speed={40}
+                                            gap={64}>
+                                            {sources.map((src, idx) => {
+                                                const Icon = icons[idx % icons.length]
+                                                return (
+                                                    <div key={idx} className="flex items-center gap-2 text-slate-400">
+                                                        <Icon size={24}/> 
+                                                        <span className="font-bold tracking-wide uppercase text-sm">{src}</span>
+                                                    </div>
+                                                )
+                                            })}
+                                        </InfiniteSlider>
+                                    )
+                                })()}
 
                                 <div className="bg-gradient-to-r from-slate-900 absolute inset-y-0 left-0 w-24 z-10 pointer-events-none"></div>
                                 <div className="bg-gradient-to-l from-slate-900 absolute inset-y-0 right-0 w-24 z-10 pointer-events-none"></div>
@@ -124,7 +135,7 @@ const HeroHeader = () => {
             <nav
                 data-state={menuState && 'active'}
                 className="group fixed z-50 w-full pt-2">
-                <div className={cn('mx-auto max-w-7xl rounded-full px-8 transition-all duration-500 lg:px-12 mt-6', scrolled ? 'bg-slate-900/70 backdrop-blur-2xl border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] py-3' : 'py-5 bg-transparent border border-transparent')}>
+                <div className={cn('mx-auto max-w-7xl rounded-full px-8 transition-all duration-500 lg:px-12 mt-6 border shadow-lg', scrolled ? 'bg-slate-900/80 backdrop-blur-2xl border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] py-3' : 'py-4 bg-white/5 backdrop-blur-md border-white/10')}>
                     <motion.div
                         className="relative flex flex-wrap items-center justify-between gap-6 lg:gap-0">
                         <div className="flex w-full items-center justify-between gap-12 lg:w-auto">

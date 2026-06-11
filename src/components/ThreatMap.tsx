@@ -94,7 +94,23 @@ export default function ThreatMap() {
             }
           }
         }
-        dots = newDots
+        
+        // Cache map dots to an offscreen canvas for extreme performance
+        const dotCanvas = document.createElement('canvas')
+        dotCanvas.width = width
+        dotCanvas.height = height
+        const dotCtx = dotCanvas.getContext('2d')
+        if (dotCtx) {
+          dotCtx.beginPath()
+          newDots.forEach(dot => {
+            dotCtx.moveTo(dot.x, dot.y)
+            dotCtx.arc(dot.x, dot.y, 1.5, 0, Math.PI * 2)
+          })
+          dotCtx.shadowColor = 'rgba(255, 0, 0, 0.6)'
+          dotCtx.shadowBlur = 4
+          dotCtx.fillStyle = 'rgba(255, 30, 30, 0.9)'
+          dotCtx.fill()
+        }
 
         const colors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b']
 
@@ -127,16 +143,8 @@ export default function ThreatMap() {
           // Clear the canvas completely every frame for crisp 60fps (no smudging)
           ctx.clearRect(0, 0, width, height)
           
-          // Draw map dots with red tint
-          dots.forEach(dot => {
-            ctx.beginPath()
-            ctx.arc(dot.x, dot.y, 1.5, 0, Math.PI * 2)
-            ctx.shadowColor = 'rgba(255, 0, 0, 0.6)'
-            ctx.shadowBlur = 4
-            ctx.fillStyle = 'rgba(255, 30, 30, 0.9)' // Intensely red dots
-            ctx.fill()
-            ctx.shadowBlur = 0 // Reset shadow for other draws
-          })
+          // Draw cached background map
+          ctx.drawImage(dotCanvas, 0, 0)
 
           // Spawn new attacks randomly
           if (Math.random() < 0.02 && attacks.length < 15) {
