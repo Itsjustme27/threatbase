@@ -19,11 +19,11 @@ export function HeroSection({ scanInput, setScanInput, handleScan, statsData }: 
                     <div className="py-24 md:pb-32 lg:pb-36 lg:pt-32 relative">
                         <div className="relative z-10 mx-auto flex max-w-7xl flex-col px-6 lg:block lg:px-12">
                             <div className="mx-auto max-w-2xl text-center lg:ml-0 lg:max-w-full lg:text-left">
-                                <h1 className="mt-8 max-w-3xl text-balance text-5xl md:text-6xl font-semibold tracking-tight text-white lg:mt-16 xl:text-7xl">
-                                    Open Source Intelligence
+                                <h1 className="mt-8 max-w-4xl text-balance text-5xl md:text-6xl font-semibold tracking-tight text-white lg:mt-16 xl:text-7xl">
+                                    Built for Defenders. <span className="text-cyan-400">Powered by Open Intelligence.</span>
                                 </h1>
                                 <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">
-                                    A highly customizable, real-time database of malicious IPs, domains, and signatures to secure your infrastructure against emerging global threats.
+                                    Access real-time threat data and indicators to proactively identify, investigate, and respond to cyber threats.
                                 </p>
 
                                 <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start">
