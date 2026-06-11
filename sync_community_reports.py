@@ -21,8 +21,8 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 # ── Supabase Credentials (from GitHub Secrets) ──
-SUPABASE_URL = os.environ.get("SUPABASE_URL", "")
-SUPABASE_SERVICE_KEY = os.environ.get("SUPABASE_SERVICE_KEY", "")
+SUPABASE_URL = os.environ.get("SUPABASE_URL", "").strip()
+SUPABASE_SERVICE_KEY = os.environ.get("SUPABASE_SERVICE_KEY", "").strip()
 
 if not SUPABASE_URL or not SUPABASE_SERVICE_KEY:
     log.error("Missing SUPABASE_URL or SUPABASE_SERVICE_KEY environment variables.")
