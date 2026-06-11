@@ -143,21 +143,26 @@ const HeroHeader = () => {
             <motion.nav
                 variants={{
                     visible: { y: 0 },
-                    hidden: { y: "-120%" }
+                    hidden: { y: "-100%" }
                 }}
                 animate={hidden ? "hidden" : "visible"}
                 transition={{ duration: 0.4, ease: "easeInOut" }}
                 data-state={menuState && 'active'}
-                className="group fixed z-50 w-full pt-4">
-                <div className={cn('mx-auto max-w-7xl rounded-full px-6 transition-all duration-500 lg:px-10 border shadow-lg', scrolled ? 'bg-slate-950/40 backdrop-blur-xl border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] py-2.5 mt-2' : 'py-3.5 bg-white/[0.03] backdrop-blur-sm border-white/5 mt-0')}>
-                    <motion.div
-                        className="relative flex flex-wrap items-center justify-between gap-6 lg:gap-0">
+                className={cn(
+                    "group fixed inset-x-0 top-0 z-50 transition-all duration-500 border-b",
+                    scrolled 
+                        ? "bg-slate-950/60 backdrop-blur-2xl border-white/5 shadow-2xl py-3" 
+                        : "bg-transparent border-transparent py-6"
+                )}
+            >
+                <div className="mx-auto max-w-7xl px-6 lg:px-12">
+                    <div className="relative flex items-center justify-between">
                         <div className="flex w-full items-center justify-between gap-10 lg:w-auto">
                             <a
                                 href="/"
                                 aria-label="home"
-                                className="flex items-center space-x-2 font-bold text-xl text-white">
-                                Himalaya<span className="text-red-600">Feed</span>
+                                className="flex items-center font-bold text-xl text-white tracking-tight">
+                                Himalaya<span className="text-red-500">Feed</span>
                             </a>
 
                             <button
@@ -174,8 +179,8 @@ const HeroHeader = () => {
                                         <li key={index}>
                                             <a
                                                 href={item.href}
-                                                className="text-slate-300 hover:text-white px-4 py-2 rounded-full hover:bg-white/10 block transition-all duration-300 font-semibold tracking-wide">
-                                                <span>{item.name}</span>
+                                                className="text-slate-400 hover:text-white transition-colors duration-300 tracking-wide">
+                                                {item.name}
                                             </a>
                                         </li>
                                     ))}
@@ -191,8 +196,8 @@ const HeroHeader = () => {
                                             <a
                                                 href={item.href}
                                                 onClick={() => setMenuState(false)}
-                                                className="text-muted-foreground hover:text-foreground block duration-150">
-                                                <span>{item.name}</span>
+                                                className="text-slate-400 hover:text-white block transition-colors duration-150">
+                                                {item.name}
                                             </a>
                                         </li>
                                     ))}
@@ -202,15 +207,15 @@ const HeroHeader = () => {
                                 <Button
                                     asChild
                                     variant="outline"
-                                    className="border-white/20 bg-white/10 text-white hover:bg-white/20 hover:text-white"
+                                    className="border-white/10 bg-transparent text-slate-300 hover:bg-white/5 hover:text-white rounded-full px-5 h-9"
                                     size="sm">
-                                    <a href="https://github.com/kalidada18/himalayafeed" target="_blank" rel="noopener">
-                                        <span>GitHub</span>
+                                    <a href="https://github.com/kalidada18/himalayafeed" target="_blank" rel="noopener noreferrer">
+                                        GitHub
                                     </a>
                                 </Button>
                             </div>
                         </div>
-                    </motion.div>
+                    </div>
                 </div>
             </motion.nav>
         </header>
