@@ -52,10 +52,12 @@ export default function Feeds() {
   return (
     <section className="py-12 md:py-20" id="feeds">
       <div className="mx-auto max-w-7xl px-6 lg:px-12">
-        <div className="mb-12 text-center md:text-left">
-          <div className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">Blocklists</div>
-          <h2 className="text-3xl md:text-4xl font-bold flex items-center justify-center md:justify-start gap-3"><Server className="text-primary" /> Threat Feeds</h2>
-          <p className="mt-4 text-muted-foreground text-lg max-w-2xl">
+        <div className="mb-14 text-center md:text-left">
+          <div className="text-xs font-bold text-red-500 uppercase tracking-widest mb-3 drop-shadow-sm">Blocklists</div>
+          <h2 className="text-3xl md:text-5xl font-extrabold flex items-center justify-center md:justify-start gap-4 text-white">
+            <Server className="text-red-500" size={36} /> Threat Feeds
+          </h2>
+          <p className="mt-5 text-slate-400 text-lg max-w-2xl font-medium leading-relaxed">
             Integrate these plain text indicators directly into your Firewalls, IDS/IPS, and SIEMs. Updated regularly.
           </p>
         </div>
@@ -63,27 +65,27 @@ export default function Feeds() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {feeds.map((f, i) => (
             <motion.div 
-              className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-white/40 dark:border-white/10 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl p-6 shadow-xl transition-all hover:shadow-2xl" 
+              className="group flex flex-col justify-between overflow-hidden rounded-3xl border border-white/5 bg-slate-900/40 backdrop-blur-md p-8 shadow-xl transition-all duration-300 hover:shadow-2xl hover:bg-slate-900/60 hover:border-white/20 hover:-translate-y-1" 
               key={f.file} 
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              whileHover={{ scale: 1.02 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1, duration: 0.4 }}
             >
               <div>
-                <div className="flex items-center gap-4 mb-4">
-                  <div className={`p-3 rounded-xl ${f.color}`}>
+                <div className="flex items-center gap-4 mb-6">
+                  <div className={`p-3.5 rounded-2xl transition-colors duration-300 shadow-inner ${f.color}`}>
                     {f.icon}
                   </div>
-                  <h3 className="text-lg font-semibold">{f.name}</h3>
+                  <h3 className="text-xl font-bold text-white tracking-tight">{f.name}</h3>
                 </div>
-                <p className="text-muted-foreground text-sm mb-6 leading-relaxed">
+                <p className="text-slate-400 text-sm mb-8 leading-relaxed font-medium">
                   {f.desc}
                 </p>
               </div>
               <a 
                 href={`${BASE}ioc/${f.file}`} 
-                className="inline-flex items-center justify-center gap-2 w-full px-4 py-2 text-sm font-medium transition-colors border rounded-md hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2" 
+                className="inline-flex items-center justify-center gap-2 w-full px-5 py-3 text-sm font-bold transition-all duration-300 border border-white/10 rounded-full bg-white/5 text-white hover:bg-white/10 hover:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-slate-900 shadow-sm" 
                 target="_blank" 
                 rel="noopener"
               >

@@ -127,10 +127,12 @@ export default function ReportIP({ addToast }: any) {
   return (
     <section className="py-12 md:py-20" id="report-ip">
       <div className="mx-auto max-w-7xl px-6 lg:px-12">
-        <div className="mb-12 text-center md:text-left">
-          <div className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">Community</div>
-          <h2 className="text-3xl md:text-4xl font-bold flex items-center justify-center md:justify-start gap-3"><Flag className="text-primary" /> Report Malicious IP</h2>
-          <p className="mt-4 text-muted-foreground text-lg max-w-2xl">
+        <div className="mb-14 text-center md:text-left">
+          <div className="text-xs font-bold text-red-500 uppercase tracking-widest mb-3 drop-shadow-sm">Community</div>
+          <h2 className="text-3xl md:text-5xl font-extrabold flex items-center justify-center md:justify-start gap-4 text-white">
+            <Flag className="text-red-500" size={36} /> Report Malicious IP
+          </h2>
+          <p className="mt-5 text-slate-400 text-lg max-w-2xl font-medium leading-relaxed">
             Help strengthen our threat intelligence by reporting suspicious IPs, selecting a category,
             and leaving notes for our analysts.
           </p>
@@ -138,16 +140,17 @@ export default function ReportIP({ addToast }: any) {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Submit Form */}
-          <div className="lg:col-span-4 rounded-2xl border border-white/40 dark:border-white/10 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl shadow-xl p-6">
-            <div className="space-y-4">
+          <div className="lg:col-span-4 rounded-3xl border border-white/5 bg-slate-900/40 backdrop-blur-md shadow-2xl p-8 relative overflow-hidden group">
+            <div className="absolute top-0 inset-x-0 h-px w-full bg-gradient-to-r from-transparent via-red-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="space-y-6">
               <div>
-                <label className="flex items-center gap-2 text-sm font-medium mb-2 text-foreground" htmlFor="rip-ip-input">
-                  <Globe size={14} /> IP Address
+                <label className="flex items-center gap-2 text-sm font-semibold mb-2 text-slate-300" htmlFor="rip-ip-input">
+                  <Globe size={16} className="text-red-500" /> IP Address
                 </label>
                 <input
                   type="text"
                   id="rip-ip-input"
-                  className="w-full flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-full flex h-12 rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white ring-offset-slate-900 placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all"
                   placeholder="e.g. 192.168.1.1"
                   autoComplete="off"
                   spellCheck="false"
@@ -157,12 +160,12 @@ export default function ReportIP({ addToast }: any) {
               </div>
 
               <div>
-                <label className="flex items-center gap-2 text-sm font-medium mb-2 text-foreground" htmlFor="rip-category">
-                  <Tag size={14} /> Category
+                <label className="flex items-center gap-2 text-sm font-semibold mb-2 text-slate-300" htmlFor="rip-category">
+                  <Tag size={16} className="text-purple-500" /> Category
                 </label>
                 <select
                   id="rip-category"
-                  className="w-full flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="w-full flex h-12 rounded-xl border border-white/10 bg-slate-800 px-4 py-2 text-sm text-white ring-offset-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all appearance-none"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                 >
@@ -179,12 +182,12 @@ export default function ReportIP({ addToast }: any) {
               </div>
 
               <div>
-                <label className="flex items-center gap-2 text-sm font-medium mb-2 text-foreground" htmlFor="rip-comment">
-                  <MessageSquare size={14} /> Comment
+                <label className="flex items-center gap-2 text-sm font-semibold mb-2 text-slate-300" htmlFor="rip-comment">
+                  <MessageSquare size={16} className="text-blue-500" /> Comment
                 </label>
                 <textarea
                   id="rip-comment"
-                  className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
+                  className="flex min-h-[100px] w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white ring-offset-slate-900 placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none transition-all"
                   rows={4}
                   placeholder="Describe the suspicious activity..."
                   value={comment}
@@ -193,7 +196,7 @@ export default function ReportIP({ addToast }: any) {
               </div>
 
               <Button
-                className="w-full"
+                className="w-full h-12 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-base shadow-lg transition-all"
                 onClick={handleSubmit}
                 disabled={submitting}
               >
@@ -212,10 +215,11 @@ export default function ReportIP({ addToast }: any) {
           </div>
 
           {/* Reported IPs Table */}
-          <div className="lg:col-span-8 rounded-2xl border bg-card shadow-sm flex flex-col">
-            <div className="p-6 border-b flex items-center justify-between bg-muted/20">
-              <h3 className="font-semibold flex items-center gap-2 text-foreground"><List size={18} /> Community Reported IPs</h3>
-              <span className="text-sm text-muted-foreground font-medium bg-muted px-3 py-1 rounded-full">
+          <div className="lg:col-span-8 rounded-3xl border border-white/5 bg-slate-900/40 backdrop-blur-md shadow-2xl flex flex-col overflow-hidden relative">
+            <div className="absolute top-0 inset-x-0 h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-50"></div>
+            <div className="p-6 border-b border-white/10 flex items-center justify-between bg-white/5">
+              <h3 className="font-bold text-xl flex items-center gap-3 text-white"><List className="text-slate-400" size={20} /> Community Reports</h3>
+              <span className="text-sm text-slate-300 font-bold bg-white/10 px-4 py-1.5 rounded-full border border-white/5 shadow-inner">
                 {reportCount > 0 ? `${fmt(reportCount)} reports` : ''}
               </span>
             </div>
@@ -234,27 +238,27 @@ export default function ReportIP({ addToast }: any) {
                 </div>
               ) : (
                 <table className="w-full text-sm text-left">
-                  <thead className="text-xs uppercase bg-muted/50 text-muted-foreground">
+                  <thead className="text-xs uppercase bg-white/5 text-slate-400">
                     <tr>
-                      <th className="px-6 py-4 font-semibold">IP Address</th>
-                      <th className="px-6 py-4 font-semibold">Category</th>
-                      <th className="px-6 py-4 font-semibold">Comment</th>
-                      <th className="px-6 py-4 font-semibold">Reported</th>
+                      <th className="px-6 py-5 font-bold tracking-wider">IP Address</th>
+                      <th className="px-6 py-5 font-bold tracking-wider">Category</th>
+                      <th className="px-6 py-5 font-bold tracking-wider">Comment</th>
+                      <th className="px-6 py-5 font-bold tracking-wider">Reported</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y">
+                  <tbody className="divide-y divide-white/5">
                     {reports.map((row) => (
-                      <tr key={row.id || row.created_at} className="hover:bg-muted/20 transition-colors">
-                        <td className="px-6 py-4 font-mono font-medium">{row.ip}</td>
-                        <td className="px-6 py-4">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground border">
+                      <tr key={row.id || row.created_at} className="hover:bg-white/5 transition-colors">
+                        <td className="px-6 py-5 font-mono font-medium text-slate-300">{row.ip}</td>
+                        <td className="px-6 py-5">
+                          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-white/10 text-white border border-white/5 shadow-sm">
                             {row.category}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-muted-foreground truncate max-w-xs" title={row.comment || ''}>
+                        <td className="px-6 py-5 text-slate-400 truncate max-w-xs font-medium" title={row.comment || ''}>
                           {row.comment || '—'}
                         </td>
-                        <td className="px-6 py-4 text-muted-foreground whitespace-nowrap">{timeAgo(row.created_at)}</td>
+                        <td className="px-6 py-5 text-slate-400 whitespace-nowrap font-medium">{timeAgo(row.created_at)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -263,19 +267,21 @@ export default function ReportIP({ addToast }: any) {
             </div>
 
             {totalPages > 1 && !loading && !isEmpty && (
-              <div className="p-4 border-t flex items-center justify-between bg-muted/10">
+              <div className="p-4 border-t border-white/10 flex items-center justify-between bg-white/5">
                 <Button
                   variant="outline"
                   size="sm"
+                  className="bg-white/5 border-white/10 text-white hover:bg-white/10 hover:text-white rounded-full px-5"
                   onClick={() => loadReportedIPs(page - 1)}
                   disabled={page === 0}
                 >
                   <ChevronLeft size={16} className="mr-1" /> Prev
                 </Button>
-                <span className="text-sm text-muted-foreground font-medium">Page {page + 1} of {totalPages}</span>
+                <span className="text-sm text-slate-400 font-bold tracking-wide">Page {page + 1} of {totalPages}</span>
                 <Button
                   variant="outline"
                   size="sm"
+                  className="bg-white/5 border-white/10 text-white hover:bg-white/10 hover:text-white rounded-full px-5"
                   onClick={() => loadReportedIPs(page + 1)}
                   disabled={page >= totalPages - 1}
                 >
