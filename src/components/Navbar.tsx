@@ -56,11 +56,11 @@ export default function Navbar() {
                                 to="/"
                                 aria-label="home"
                                 className="flex items-center group relative z-10">
-                                <span className="font-extrabold text-2xl tracking-tight text-white transition-colors group-hover:text-slate-200">
-                                    Himalaya
+                                <span className="font-extrabold text-2xl tracking-wide text-white transition-colors group-hover:text-slate-200">
+                                    हिमालय
                                 </span>
-                                <span className="font-bold text-2xl tracking-tight text-red-500 transition-colors group-hover:text-red-400">
-                                    Feed
+                                <span className="font-bold text-2xl tracking-wide text-red-500 transition-colors group-hover:text-red-400 ml-1.5">
+                                    फिड
                                 </span>
                             </Link>
 
