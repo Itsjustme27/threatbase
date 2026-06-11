@@ -59,13 +59,17 @@ export function HeroSection({ scanInput, setScanInput, handleScan, statsData }: 
                         </div>
                     </div>
                 </section>
-                <section className="bg-white/30 dark:bg-slate-900/40 backdrop-blur-md border-y border-white/20 dark:border-white/10 pb-2 pt-12">
+                <section className="bg-white/[0.01] backdrop-blur-xl border-y border-white/5 pb-4 pt-4 mt-8 relative z-20">
                     <div className="group relative m-auto max-w-7xl px-6">
                         <div className="flex flex-col items-center md:flex-row">
-                            <div className="md:max-w-44 md:border-r md:pr-6 mb-6 md:mb-0">
-                                <p className="text-center md:text-end text-sm text-slate-400 font-bold tracking-wider uppercase">Intelligence Sources</p>
+                            <div className="md:max-w-56 md:border-r border-white/10 md:pr-8 mb-6 md:mb-0 flex items-center justify-center md:justify-end gap-3">
+                                <span className="relative flex h-2 w-2">
+                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                                  <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                                </span>
+                                <p className="text-center md:text-end text-xs text-transparent bg-clip-text bg-gradient-to-r from-slate-300 to-slate-500 font-extrabold tracking-[0.2em] uppercase">Intelligence Sources</p>
                             </div>
-                            <div className="relative py-6 md:w-[calc(100%-11rem)] overflow-hidden">
+                            <div className="relative py-2 md:w-[calc(100%-14rem)] overflow-hidden">
                                 {(() => {
                                     const rawSources = statsData?.ips_per_source ? Object.keys(statsData.ips_per_source) : []
                                     const sources = rawSources.length > 0 
@@ -100,13 +104,13 @@ export function HeroSection({ scanInput, setScanInput, handleScan, statsData }: 
                                         <InfiniteSlider
                                             speedOnHover={20}
                                             speed={40}
-                                            gap={64}>
+                                            gap={24}>
                                             {displayItems.map((item, idx) => {
                                                 const Icon = item.icon
                                                 return (
-                                                    <div key={idx} className="flex items-center gap-2 text-slate-400">
-                                                        <Icon size={24} className="text-slate-500" /> 
-                                                        <span className="font-bold tracking-wide uppercase text-sm">{item.name}</span>
+                                                    <div key={idx} className="flex items-center gap-3 text-slate-300 bg-white/[0.03] hover:bg-white/[0.06] border border-white/5 rounded-full px-5 py-2.5 transition-all duration-300 cursor-default hover:border-white/10 hover:shadow-[0_0_15px_rgba(34,211,238,0.1)] group">
+                                                        <Icon size={18} className="text-cyan-500/70 group-hover:text-cyan-400 transition-colors" /> 
+                                                        <span className="font-bold tracking-widest uppercase text-[11px]">{item.name}</span>
                                                     </div>
                                                 )
                                             })}
