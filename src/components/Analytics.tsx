@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { TrendingUp } from 'lucide-react'
+import { TrendingUp, Activity } from 'lucide-react'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -19,34 +19,52 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, ArcEleme
 
 export default function Analytics({ statsData, feedVersion }: any) {
   return (
-    <section className="py-12 md:py-20" id="analytics">
-      <div className="mx-auto max-w-7xl px-6 lg:px-12">
-        <div className="mb-14 text-center md:text-left">
-          <div className="text-xs font-bold text-red-500 uppercase tracking-widest mb-3 drop-shadow-sm">Insights</div>
-          <h2 className="text-3xl md:text-5xl font-extrabold flex items-center justify-center md:justify-start gap-4 text-white">
-            <TrendingUp className="text-red-500" size={36} /> Threat Landscape
+    <section className="py-12 md:py-24 relative" id="analytics">
+      <div className="mx-auto max-w-7xl px-6 lg:px-12 relative z-10">
+        <div className="mb-14 text-center md:text-left flex flex-col items-center md:items-start">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/80 border border-white/10 backdrop-blur-xl shadow-2xl text-xs font-bold uppercase tracking-widest mb-6 text-slate-300">
+            <span className="relative flex h-2.5 w-2.5 mr-1">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
+            </span>
+            Live Telemetry
+          </div>
+          <h2 className="text-4xl md:text-5xl font-extrabold flex items-center justify-center md:justify-start gap-4 text-white drop-shadow-sm tracking-tight">
+            Threat Landscape
           </h2>
           <p className="mt-5 text-slate-400 text-lg max-w-2xl font-medium leading-relaxed">
-            90-day volume trend of tracked indicators across our global sensor network.
+            90-day volume trend of tracked malicious indicators across our global sensor network, aggregated in real-time.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 rounded-3xl border border-white/5 bg-slate-900/40 backdrop-blur-md p-8 shadow-2xl transition-all duration-300 hover:bg-slate-900/60 relative overflow-hidden group">
-            <div className="absolute top-0 inset-x-0 h-px w-full bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <h3 className="text-xl font-bold mb-8 text-white tracking-tight">Volume Trend</h3>
-            <div className="h-80 w-full relative">
-              <HistoryChart feedVersion={feedVersion} />
+          {/* Line Chart Card */}
+          <div className="lg:col-span-2 rounded-3xl border border-white/10 bg-slate-900/60 backdrop-blur-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] p-8 relative overflow-hidden group">
+            <div className="absolute top-0 inset-x-0 h-[2px] w-full bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none"></div>
+            
+            <div className="relative z-10">
+              <h3 className="text-xl font-extrabold mb-8 text-white tracking-tight flex items-center gap-2">
+                <Activity className="text-cyan-400" size={20} /> Volume Trend
+              </h3>
+              <div className="h-80 w-full">
+                <HistoryChart feedVersion={feedVersion} />
+              </div>
             </div>
           </div>
 
-          <div className="rounded-3xl border border-white/5 bg-slate-900/40 backdrop-blur-md p-8 shadow-2xl transition-all duration-300 hover:bg-slate-900/60 relative overflow-hidden group">
-            <div className="absolute top-0 inset-x-0 h-px w-full bg-gradient-to-r from-transparent via-purple-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <h3 className="text-xl font-bold mb-8 text-white tracking-tight">Specialized Threat Categories</h3>
-            <div className="h-80 w-full relative flex items-center justify-center">
-              {statsData?.category_counts && (
-                <CategoryChart categories={statsData.category_counts} />
-              )}
+          {/* Donut Chart Card */}
+          <div className="rounded-3xl border border-white/10 bg-slate-900/60 backdrop-blur-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] p-8 relative overflow-hidden group">
+            <div className="absolute top-0 inset-x-0 h-[2px] w-full bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none"></div>
+            
+            <div className="relative z-10 h-full flex flex-col">
+              <h3 className="text-xl font-extrabold mb-8 text-white tracking-tight">Specialized Categories</h3>
+              <div className="flex-1 w-full relative flex items-center justify-center min-h-[300px]">
+                {statsData?.category_counts && (
+                  <CategoryChart categories={statsData.category_counts} />
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -80,13 +98,13 @@ function HistoryChart({ feedVersion }: any) {
             const diff = cur - prev
             if (diff > 0) {
               el.textContent = `↑ +${fmt(diff)}`
-              el.className = 'text-xs font-medium text-destructive ml-2'
+              el.className = 'text-xs font-bold text-red-400 ml-2 drop-shadow-sm'
             } else if (diff < 0) {
               el.textContent = `↓ ${fmt(diff)}`
-              el.className = 'text-xs font-medium text-green-500 ml-2'
+              el.className = 'text-xs font-bold text-emerald-400 ml-2 drop-shadow-sm'
             } else {
               el.textContent = '— 0'
-              el.className = 'text-xs font-medium text-muted-foreground ml-2'
+              el.className = 'text-xs font-bold text-slate-500 ml-2'
             }
           }
           updateTrend('trend-ips', today.total_unique_ips, yday.total_unique_ips)
@@ -100,14 +118,24 @@ function HistoryChart({ feedVersion }: any) {
       .catch((e) => console.warn('history.json unavailable', e))
   }, [feedVersion])
 
-  const accentColor = '#06b6d4' // Neon Cyan
-  const gridColor = 'rgba(255, 255, 255, 0.05)'
-  const textColor = '#94a3b8'
+  const gridColor = 'rgba(255, 255, 255, 0.03)'
+  const textColor = '#64748b' // slate-500
 
   const labels = history.map((h) => {
     const d = new Date(h.date)
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
   })
+
+  // Function to create gradient fills for lines
+  const createGradient = (context: any, colorStart: string, colorEnd: string) => {
+    const chart = context.chart
+    const { ctx, chartArea } = chart
+    if (!chartArea) return null
+    const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom)
+    gradient.addColorStop(0, colorStart)
+    gradient.addColorStop(1, colorEnd)
+    return gradient
+  }
 
   const data = {
     labels,
@@ -116,28 +144,31 @@ function HistoryChart({ feedVersion }: any) {
         label: 'IPv4',
         data: history.map((h) => h.total_unique_ips || 0),
         borderColor: '#06b6d4', // Cyan
-        backgroundColor: 'transparent',
-        borderWidth: 2.5,
+        backgroundColor: (c: any) => createGradient(c, 'rgba(6, 182, 212, 0.3)', 'rgba(6, 182, 212, 0.0)'),
+        borderWidth: 3,
         pointRadius: 0,
         pointHoverRadius: 6,
         tension: 0.4,
+        fill: true,
+      },
+      {
+        label: 'Domains',
+        data: history.map((h) => h.total_unique_domains || 0),
+        borderColor: '#a855f7', // Purple
+        backgroundColor: (c: any) => createGradient(c, 'rgba(168, 85, 247, 0.2)', 'rgba(168, 85, 247, 0.0)'),
+        borderWidth: 3,
+        pointRadius: 0,
+        pointHoverRadius: 6,
+        tension: 0.4,
+        fill: true,
       },
       {
         label: 'IPv6',
         data: history.map((h) => h.total_unique_ipv6 || 0),
         borderColor: '#10b981', // Emerald
         backgroundColor: 'transparent',
-        borderWidth: 2.5,
-        pointRadius: 0,
-        pointHoverRadius: 6,
-        tension: 0.4,
-      },
-      {
-        label: 'Domains',
-        data: history.map((h) => h.total_unique_domains || 0),
-        borderColor: '#a855f7', // Purple
-        backgroundColor: 'transparent',
-        borderWidth: 2.5,
+        borderWidth: 2,
+        borderDash: [5, 5],
         pointRadius: 0,
         pointHoverRadius: 6,
         tension: 0.4,
@@ -147,7 +178,7 @@ function HistoryChart({ feedVersion }: any) {
         data: history.map((h) => h.total_unique_urls || 0),
         borderColor: '#f59e0b', // Amber
         backgroundColor: 'transparent',
-        borderWidth: 2.5,
+        borderWidth: 2,
         pointRadius: 0,
         pointHoverRadius: 6,
         tension: 0.4,
@@ -157,7 +188,7 @@ function HistoryChart({ feedVersion }: any) {
         data: history.map((h) => h.total_unique_hashes || 0),
         borderColor: '#f43f5e', // Rose
         backgroundColor: 'transparent',
-        borderWidth: 2.5,
+        borderWidth: 2,
         pointRadius: 0,
         pointHoverRadius: 6,
         tension: 0.4,
@@ -173,10 +204,10 @@ function HistoryChart({ feedVersion }: any) {
         display: true,
         position: 'top',
         labels: {
-          color: textColor,
+          color: '#e2e8f0',
           usePointStyle: true,
           boxWidth: 8,
-          font: { size: 12, weight: 'bold' }
+          font: { size: 12, family: "'Inter', sans-serif", weight: '600' }
         }
       },
       subtitle: {
@@ -184,17 +215,21 @@ function HistoryChart({ feedVersion }: any) {
         text: labels.length > 0 ? '* Feed started ' + labels[0] + ' (Baseline aggregation)' : '',
         color: textColor,
         font: { size: 12, weight: 'normal', style: 'italic' },
-        padding: { bottom: 16 },
+        padding: { bottom: 20 },
         align: 'start',
       },
       tooltip: {
-        backgroundColor: 'rgba(15, 23, 42, 0.95)',
+        backgroundColor: 'rgba(15, 23, 42, 0.9)',
         titleColor: '#ffffff',
         bodyColor: '#e2e8f0',
         borderColor: 'rgba(255, 255, 255, 0.1)',
         borderWidth: 1,
-        padding: 12,
+        padding: 16,
         displayColors: true,
+        usePointStyle: true,
+        boxPadding: 6,
+        titleFont: { size: 14, family: "'Inter', sans-serif" },
+        bodyFont: { size: 13, family: "'Inter', sans-serif" },
         mode: 'index',
         intersect: false,
         callbacks: { label: (c: any) => ` ${c.dataset.label}: ${fmt(c.parsed.y)}` },
@@ -203,12 +238,13 @@ function HistoryChart({ feedVersion }: any) {
     scales: {
       x: {
         grid: { display: false, drawBorder: false },
-        ticks: { maxTicksLimit: 8, color: textColor },
+        ticks: { maxTicksLimit: 8, color: textColor, font: { family: "'Inter', sans-serif" } },
       },
       y: {
         grid: { color: gridColor, drawBorder: false },
         ticks: {
           color: textColor,
+          font: { family: "'Inter', sans-serif" },
           callback: (v: number) =>
             v >= 1e6 ? (v / 1e6).toFixed(1) + 'M' : v >= 1e3 ? (v / 1e3).toFixed(0) + 'K' : v,
         },
@@ -221,8 +257,9 @@ function HistoryChart({ feedVersion }: any) {
 }
 
 function CategoryChart({ categories }: any) {
-  const textColor = '#94a3b8'
-  const bgColors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#06b6d4', '#a855f7'] // Vibrant neon palette
+  const textColor = '#cbd5e1'
+  // Premium tech palette: Red, Orange, Amber, Emerald, Cyan, Purple
+  const bgColors = ['#f43f5e', '#f97316', '#eab308', '#10b981', '#06b6d4', '#a855f7'] 
 
   const sorted = Object.entries(categories)
     .filter(([k]) => k !== 'Mixed' && k !== 'Unknown')
@@ -236,9 +273,9 @@ function CategoryChart({ categories }: any) {
       {
         data: vals,
         backgroundColor: bgColors,
-        borderWidth: 2,
-        borderColor: '#0f172a', // Dark borders to match theme
-        hoverOffset: 4,
+        borderWidth: 0, // Remove stroke for sleek modern look
+        borderRadius: 8, // Rounded segments
+        hoverOffset: 8,
       },
     ],
   }
@@ -246,19 +283,28 @@ function CategoryChart({ categories }: any) {
   const options: any = {
     responsive: true,
     maintainAspectRatio: false,
-    cutout: '70%',
+    cutout: '80%', // Thinner sleek ring
     plugins: {
       legend: {
         position: 'bottom',
-        labels: { color: textColor, font: { size: 12 }, boxWidth: 12, padding: 16 },
+        labels: { 
+          color: textColor, 
+          font: { size: 12, family: "'Inter', sans-serif", weight: '500' }, 
+          usePointStyle: true,
+          pointStyle: 'circle',
+          padding: 20 
+        },
       },
       tooltip: {
-        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+        backgroundColor: 'rgba(15, 23, 42, 0.95)',
         titleColor: '#ffffff',
         bodyColor: '#e2e8f0',
         borderColor: 'rgba(255, 255, 255, 0.1)',
         borderWidth: 1,
-        padding: 12,
+        padding: 16,
+        usePointStyle: true,
+        boxPadding: 6,
+        bodyFont: { size: 14, family: "'Inter', sans-serif", weight: '600' },
         callbacks: {
           label: (context: any) => ' ' + context.label + ': ' + fmt(context.parsed),
         },

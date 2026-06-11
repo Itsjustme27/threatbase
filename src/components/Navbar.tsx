@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, X, Github } from 'lucide-react'
+import { Menu, X, Github, Mountain } from 'lucide-react'
 import { useScroll, motion, useMotionValueEvent } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -55,8 +55,13 @@ export default function Navbar() {
                             <Link
                                 to="/"
                                 aria-label="home"
-                                className="flex items-center font-bold text-2xl text-white tracking-tighter drop-shadow-md">
-                                Himalaya<span className="text-red-500">Feed</span>
+                                className="flex items-center gap-2.5 font-extrabold text-2xl tracking-tighter drop-shadow-md group">
+                                <div className="bg-gradient-to-br from-cyan-400 to-blue-600 p-1.5 rounded-xl shadow-[0_0_15px_rgba(6,182,212,0.3)] group-hover:shadow-[0_0_25px_rgba(6,182,212,0.6)] transition-all duration-300">
+                                    <Mountain size={20} className="text-white" strokeWidth={2.5} />
+                                </div>
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-200">
+                                    Himalaya<span className="text-transparent bg-clip-text bg-gradient-to-br from-red-400 to-rose-600">Feed</span>
+                                </span>
                             </Link>
 
                             <button
