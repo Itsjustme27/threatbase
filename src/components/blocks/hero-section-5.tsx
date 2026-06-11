@@ -6,7 +6,7 @@ import { ProgressiveBlur } from '@/components/ui/progressive-blur'
 import { cn } from '@/lib/utils'
 import ThreatMap from '../ThreatMap'
 import { Menu, X, ChevronRight, Shield, Server, Database, Lock, Network, Cloud, Activity, Globe, Search } from 'lucide-react'
-import { useScroll, motion } from 'framer-motion'
+import { useScroll, motion, useMotionValueEvent } from 'framer-motion'
 
 export function HeroSection({ scanInput, setScanInput, handleScan, statsData }: any) {
     return (
@@ -121,18 +121,32 @@ const menuItems = [
 const HeroHeader = () => {
     const [menuState, setMenuState] = React.useState(false)
     const [scrolled, setScrolled] = React.useState(false)
-    const { scrollYProgress } = useScroll()
+    const [hidden, setHidden] = React.useState(false)
+    const { scrollY } = useScroll()
 
-    React.useEffect(() => {
-        const unsubscribe = scrollYProgress.on('change', (latest) => {
-            setScrolled(latest > 0.05)
-        })
-        return () => unsubscribe()
-    }, [scrollYProgress])
+    useMotionValueEvent(scrollY, "change", (latest) => {
+        const previous = scrollY.getPrevious()
+        
+        // Style changes when scrolled past top
+        setScrolled(latest > 50)
+        
+        // Smart hide/reveal logic
+        if (latest > previous && latest > 150) {
+            setHidden(true)
+        } else {
+            setHidden(false)
+        }
+    })
 
     return (
         <header>
-            <nav
+            <motion.nav
+                variants={{
+                    visible: { y: 0 },
+                    hidden: { y: "-120%" }
+                }}
+                animate={hidden ? "hidden" : "visible"}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
                 data-state={menuState && 'active'}
                 className="group fixed z-50 w-full pt-2">
                 <div className={cn('mx-auto max-w-7xl rounded-full px-8 transition-all duration-500 lg:px-12 mt-6 border shadow-lg', scrolled ? 'bg-slate-900/80 backdrop-blur-2xl border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] py-3' : 'py-4 bg-white/5 backdrop-blur-md border-white/10')}>
