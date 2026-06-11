@@ -87,7 +87,7 @@ function initUI() {
 }
 
 function initSpotlight() {
-  const cards = document.querySelectorAll('.stat-card, .dl-card, .glass-panel');
+  const cards = document.querySelectorAll('.stat-card, .dl-card, .glass-panel, .report-ip-card, .reported-ips-wrap');
   cards.forEach(card => {
     card.addEventListener('mousemove', e => {
       const rect = card.getBoundingClientRect();
@@ -210,13 +210,13 @@ async function renderHistoryChart() {
     if (!ctx) return;
     
     const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-    const accentColor = isLight ? '#dc2626' : '#ef4444'; // var(--accent)
-    const gridColor = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.06)';
-    const textColor = isLight ? '#71717a' : '#a1a1aa';
+    const accentColor = '#ef4444';
+    const gridColor = isLight ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.05)';
+    const textColor = isLight ? '#475569' : '#94a3b8';
 
     const ctx2d = ctx.getContext('2d');
     const gradient = ctx2d.createLinearGradient(0, 0, 0, 350);
-    gradient.addColorStop(0, isLight ? 'rgba(220, 38, 38, 0.15)' : 'rgba(239, 68, 68, 0.15)');
+    gradient.addColorStop(0, 'rgba(239, 68, 68, 0.22)');
     gradient.addColorStop(1, 'rgba(239, 68, 68, 0)');
 
     if (historyChartInstance) {
@@ -232,12 +232,12 @@ async function renderHistoryChart() {
           data: vals,
           borderColor: accentColor,
           backgroundColor: gradient,
-          borderWidth: 2,
+          borderWidth: 2.5,
           pointRadius: 0,
           pointHoverRadius: 5,
           pointBackgroundColor: accentColor,
           fill: true,
-          tension: 0.3 // smoother curves
+          tension: 0.35
         }]
       },
       options: {
@@ -300,8 +300,8 @@ function renderCategoryChart(categories) {
   }
 
   const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-  const textColor = isLight ? '#71717a' : '#a1a1aa';
-  const bgColors = ['#ef4444', '#f59e0b', '#3b82f6', '#8b5cf6', '#10b981', '#ec4899'];
+  const textColor = isLight ? '#475569' : '#94a3b8';
+  const bgColors = ['#ef4444', '#10b981', '#a855f7', '#3b82f6', '#f59e0b', '#ec4899'];
   
   const ctx2d = ctx.getContext('2d');
   if (categoryChartInstance) categoryChartInstance.destroy();
@@ -314,7 +314,7 @@ function renderCategoryChart(categories) {
         data: vals,
         backgroundColor: bgColors,
         borderWidth: 2,
-        borderColor: isLight ? '#ffffff' : '#0a0a0b',
+        borderColor: isLight ? '#ffffff' : '#090a10',
         hoverOffset: 4
       }]
     },
@@ -611,5 +611,249 @@ if (ipInput) {
   });
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   Supabase — Community IP Reporting
+   ═══════════════════════════════════════════════════════════════ */
+
+const SUPABASE_URL = 'https://fybwjibrvwqwnspgswtp.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_OjwJ22ODAsYQjH-IJ-rXGg_OWRXor1m';
+
+let supabaseClient = null;
+try {
+  if (window.supabase && window.supabase.createClient) {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  }
+} catch (e) {
+  console.warn('Supabase client init failed:', e);
+}
+
+/* ── Toast Notifications ── */
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+
+  const iconName = type === 'success' ? 'check-circle' : 'alert-circle';
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.innerHTML = `<i data-lucide="${iconName}"></i><span>${message}</span>`;
+  container.appendChild(toast);
+
+  if (window.lucide) lucide.createIcons({ nodes: [toast] });
+
+  // Auto-dismiss after 4s
+  setTimeout(() => {
+    toast.classList.add('toast-exit');
+    setTimeout(() => toast.remove(), 350);
+  }, 4000);
+}
+
+/* ── Submit Throttle ── */
+let lastSubmitTime = 0;
+const SUBMIT_COOLDOWN = 15000; // 15 seconds between submissions
+
+/* ── Submit Report ── */
+async function submitReport() {
+  if (!supabaseClient) {
+    showToast('Supabase connection unavailable', 'error');
+    return;
+  }
+
+  const now = Date.now();
+  if (now - lastSubmitTime < SUBMIT_COOLDOWN) {
+    const remaining = Math.ceil((SUBMIT_COOLDOWN - (now - lastSubmitTime)) / 1000);
+    showToast(`Please wait ${remaining}s before submitting again`, 'error');
+    return;
+  }
+
+  const ipEl = document.getElementById('rip-ip-input');
+  const catEl = document.getElementById('rip-category');
+  const comEl = document.getElementById('rip-comment');
+  const btn = document.getElementById('rip-submit-btn');
+
+  const ip = ipEl.value.trim();
+  const category = catEl.value;
+  const comment = comEl.value.trim();
+
+  // Validate IP
+  if (!ip) {
+    showToast('Please enter an IP address', 'error');
+    ipEl.focus();
+    return;
+  }
+
+  const isValidIP = /^((25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(25[0-5]|2[0-4]\d|[01]?\d\d?)$/.test(ip) ||
+                    (ip.includes(':') && /^[0-9a-fA-F:]+$/.test(ip));
+
+  if (!isValidIP) {
+    showToast('Please enter a valid IPv4 or IPv6 address', 'error');
+    ipEl.focus();
+    return;
+  }
+
+  if (!category) {
+    showToast('Please select a threat category', 'error');
+    catEl.focus();
+    return;
+  }
+
+  // Disable button during submission
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner" style="border-color:rgba(255,255,255,0.3); border-top-color:#fff; width:14px; height:14px; display:inline-block; border-radius:50%; border-width:2px; border-style:solid; animation:spin 1s linear infinite;"></span> Submitting...';
+
+  try {
+    const { data, error } = await supabaseClient
+      .from('reported_ips')
+      .insert([{ ip, category, comment }]);
+
+    if (error) throw error;
+
+    lastSubmitTime = Date.now();
+    showToast('Report submitted successfully!', 'success');
+
+    // Reset form
+    ipEl.value = '';
+    catEl.selectedIndex = 0;
+    comEl.value = '';
+
+    // Refresh table
+    loadReportedIPs(0);
+  } catch (err) {
+    console.error('Submit error:', err);
+    showToast('Submission failed: ' + (err.message || 'Unknown error'), 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i data-lucide="send"></i> Submit Report';
+    if (window.lucide) lucide.createIcons();
+  }
+}
+
+/* ── Reported IPs Table ── */
+let reportPage = 0;
+const REPORT_PAGE_SIZE = 10;
+
+async function loadReportedIPs(page = 0) {
+  if (!supabaseClient) return;
+
+  reportPage = Math.max(0, page);
+  const from = reportPage * REPORT_PAGE_SIZE;
+  const to = from + REPORT_PAGE_SIZE - 1;
+
+  const tbody = document.getElementById('reported-ips-tbody');
+  const emptyEl = document.getElementById('rip-empty');
+  const tableContainer = document.querySelector('.reported-ips-table-container');
+  const paginationEl = document.getElementById('rip-pagination');
+  const countEl = document.getElementById('reported-ips-count');
+
+  // Show loading
+  if (tbody) {
+    tbody.innerHTML = '<tr class="rip-loading-row"><td colspan="4"><div class="rip-loading"><div class="rip-loading-spinner"></div> Loading reports...</div></td></tr>';
+  }
+  if (tableContainer) tableContainer.style.display = '';
+  if (emptyEl) emptyEl.style.display = 'none';
+
+  try {
+    const { data, error, count } = await supabaseClient
+      .from('reported_ips')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .range(from, to);
+
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+      if (reportPage === 0) {
+        // No data at all — show empty state
+        if (tableContainer) tableContainer.style.display = 'none';
+        if (emptyEl) emptyEl.style.display = 'block';
+        if (paginationEl) paginationEl.style.display = 'none';
+        if (countEl) countEl.textContent = '0 reports';
+      } else {
+        // Went past last page, go back
+        loadReportedIPs(reportPage - 1);
+      }
+      return;
+    }
+
+    // Update count
+    if (countEl) countEl.textContent = `${fmt(count)} reports`;
+
+    // Render rows
+    renderReportedTable(data);
+
+    // Pagination
+    const totalPages = Math.ceil(count / REPORT_PAGE_SIZE);
+    if (paginationEl) {
+      if (totalPages > 1) {
+        paginationEl.style.display = 'flex';
+        document.getElementById('rip-prev-btn').disabled = reportPage === 0;
+        document.getElementById('rip-next-btn').disabled = reportPage >= totalPages - 1;
+        document.getElementById('rip-page-info').textContent = `Page ${reportPage + 1} of ${totalPages}`;
+      } else {
+        paginationEl.style.display = 'none';
+      }
+    }
+
+    if (window.lucide) lucide.createIcons();
+  } catch (err) {
+    console.error('Failed to load reports:', err);
+    if (tbody) {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:24px;color:var(--text-muted);">Failed to load reports</td></tr>';
+    }
+  }
+}
+
+/* ── Category → Badge Class Map ── */
+function getCategoryBadge(category) {
+  const map = {
+    'Brute Force': 'rip-cat-brute',
+    'Port Scan': 'rip-cat-scan',
+    'Phishing': 'rip-cat-phishing',
+    'Malware / C2': 'rip-cat-malware',
+    'DDoS': 'rip-cat-ddos',
+    'Spam': 'rip-cat-spam',
+    'Exploit Attempt': 'rip-cat-exploit',
+    'Other': 'rip-cat-other'
+  };
+  return map[category] || 'rip-cat-other';
+}
+
+/* ── Time Ago ── */
+function timeAgo(dateStr) {
+  const now = new Date();
+  const date = new Date(dateStr);
+  const seconds = Math.floor((now - date) / 1000);
+
+  if (seconds < 60) return 'just now';
+  if (seconds < 3600) return Math.floor(seconds / 60) + 'm ago';
+  if (seconds < 86400) return Math.floor(seconds / 3600) + 'h ago';
+  if (seconds < 604800) return Math.floor(seconds / 86400) + 'd ago';
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+/* ── Render Table Rows ── */
+function renderReportedTable(data) {
+  const tbody = document.getElementById('reported-ips-tbody');
+  if (!tbody) return;
+
+  const escapeHtml = (str) => {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  };
+
+  tbody.innerHTML = data.map(row => `
+    <tr>
+      <td class="rip-cell-ip">${escapeHtml(row.ip)}</td>
+      <td><span class="rip-cat-badge ${getCategoryBadge(row.category)}">${escapeHtml(row.category)}</span></td>
+      <td class="rip-cell-comment" title="${escapeHtml(row.comment || '')}">${escapeHtml(row.comment || '—')}</td>
+      <td class="rip-cell-time">${timeAgo(row.created_at)}</td>
+    </tr>
+  `).join('');
+}
+
 // Start
-document.addEventListener('DOMContentLoaded', boot);
+document.addEventListener('DOMContentLoaded', () => {
+  boot();
+  // Load reported IPs on page load
+  setTimeout(() => loadReportedIPs(0), 500);
+});

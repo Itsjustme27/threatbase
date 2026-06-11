@@ -18,10 +18,18 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+  <!-- ═══════════════ BACKDROP CANVAS (GLOW BLOBS) ════════════ -->
+  <div class="blob-container" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
   <!-- ═══════════════ SKIP LINK ════════════════ -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
@@ -39,6 +47,7 @@
           <li><a href="#dashboard" class="active">Dashboard</a></li>
           <li><a href="#feeds">Threat Feeds</a></li>
           <li><a href="#analytics">Analytics</a></li>
+          <li><a href="#report-ip">Report IP</a></li>
           <li><a href="https://github.com/kalidada18/himalayafeed" target="_blank" rel="noopener">GitHub</a></li>
         </ul>
 
@@ -77,6 +86,7 @@
         <li><a href="#dashboard" class="mobile-link active"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
         <li><a href="#feeds" class="mobile-link"><i data-lucide="server"></i> Threat Feeds</a></li>
         <li><a href="#analytics" class="mobile-link"><i data-lucide="trending-up"></i> Analytics</a></li>
+        <li><a href="#report-ip" class="mobile-link"><i data-lucide="flag"></i> Report IP</a></li>
         <li><a href="https://github.com/kalidada18/himalayafeed" class="mobile-link" target="_blank" rel="noopener"><i
               data-lucide="github"></i> GitHub</a></li>
       </ul>
@@ -345,8 +355,99 @@
         </div>
       </section>
 
+      <!-- ═══════════════ REPORT IP ════════════════ -->
+      <section class="section" id="report-ip">
+        <div class="section-head">
+          <div class="section-label">Community</div>
+          <h2 class="section-title"><i data-lucide="flag"></i> Report Malicious IP</h2>
+          <p class="section-desc">Help strengthen our threat intelligence by reporting suspicious IPs, selecting a category, and leaving notes for our analysts.</p>
+        </div>
+
+        <!-- ── Submit Form Card ── -->
+        <div class="report-ip-card">
+          <div class="report-ip-form active" id="report-ip-form">
+            <div class="rip-field">
+              <label class="rip-label" for="rip-ip-input"><i data-lucide="globe"></i> IP Address</label>
+              <input type="text" id="rip-ip-input" class="rip-input" placeholder="e.g. 192.168.1.1" autocomplete="off" spellcheck="false">
+            </div>
+
+            <div class="rip-field">
+              <label class="rip-label" for="rip-category"><i data-lucide="tag"></i> Category</label>
+              <select id="rip-category" class="rip-select">
+                <option value="" disabled selected>Select threat category...</option>
+                <option value="Brute Force">Brute Force</option>
+                <option value="Port Scan">Port Scan</option>
+                <option value="Phishing">Phishing</option>
+                <option value="Malware / C2">Malware / C2</option>
+                <option value="DDoS">DDoS</option>
+                <option value="Spam">Spam</option>
+                <option value="Exploit Attempt">Exploit Attempt</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="rip-field">
+              <label class="rip-label" for="rip-comment"><i data-lucide="message-square"></i> Comment</label>
+              <textarea id="rip-comment" class="rip-textarea" rows="4" placeholder="Describe the suspicious activity..."></textarea>
+            </div>
+
+            <button class="btn btn-primary rip-submit" id="rip-submit-btn" onclick="submitReport()">
+              <i data-lucide="send"></i> Submit Report
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Reported IPs Table ── -->
+        <div class="reported-ips-wrap" id="reported-ips-wrap">
+          <div class="reported-ips-header">
+            <h3 class="reported-ips-title"><i data-lucide="list"></i> Community Reported IPs</h3>
+            <span class="reported-ips-count" id="reported-ips-count"></span>
+          </div>
+
+          <div class="reported-ips-table-container">
+            <table class="rip-table" id="rip-table">
+              <thead>
+                <tr>
+                  <th>IP Address</th>
+                  <th>Category</th>
+                  <th>Comment</th>
+                  <th>Reported</th>
+                </tr>
+              </thead>
+              <tbody id="reported-ips-tbody">
+                <tr class="rip-loading-row">
+                  <td colspan="4">
+                    <div class="rip-loading"><div class="rip-loading-spinner"></div> Loading reports...</div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Empty State -->
+          <div class="rip-empty" id="rip-empty" style="display:none;">
+            <i data-lucide="inbox"></i>
+            <p>No reports yet. Be the first to report a malicious IP!</p>
+          </div>
+
+          <!-- Pagination -->
+          <div class="rip-pagination" id="rip-pagination" style="display:none;">
+            <button class="btn btn-outline rip-page-btn" id="rip-prev-btn" onclick="loadReportedIPs(reportPage - 1)" disabled>
+              <i data-lucide="chevron-left"></i> Prev
+            </button>
+            <span class="rip-page-info" id="rip-page-info">Page 1</span>
+            <button class="btn btn-outline rip-page-btn" id="rip-next-btn" onclick="loadReportedIPs(reportPage + 1)">
+              Next <i data-lucide="chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
     </div>
   </main>
+
+  <!-- ═══════════════ TOAST NOTIFICATIONS ════════════ -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
 
   <!-- ═══════════════ FOOTER ═══════════════ -->
   <footer>

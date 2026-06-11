@@ -56,6 +56,18 @@ jobs:
             fi
           done
 
+      # ── 4.5 Sync Community Reports from Supabase ────────────────────────────
+      - name: Sync community-reported IPs
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: |
+          if [ -n "$SUPABASE_URL" ] && [ -n "$SUPABASE_SERVICE_KEY" ]; then
+            python sync_community_reports.py
+          else
+            echo "⚠ Supabase secrets not configured — skipping community sync"
+          fi
+
       # ── 5. Run the aggregator ────────────────────────────────────────────────
       - name: Run feed aggregator
         env:
@@ -64,7 +76,7 @@ jobs:
           PYTHONUNBUFFERED: '1'
         run: python update_feed.py
 
-      # ── 5. Commit and push ───────────────────────────────────────────────────
+      # ── 6. Commit and push ───────────────────────────────────────────────────
       #
       # Uses the official github-actions[bot] identity so commit history is clean.
       # The GITHUB_TOKEN has contents:write permission granted above.
@@ -75,8 +87,10 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Stage all generated output files (including dashboard data)
+          # Stage all generated output files (including dashboard data + community reports)
           git add ioc/malicious_ips.txt ioc/malicious_ipv6.txt ioc/malicious_cidrs.txt ioc/stats.json ioc/history.json ioc/malicious_domains.txt ioc/malicious_hashes.txt ioc/malicious_urls.txt
+          git add -f ioc/community_reports.json 2>/dev/null || true
+          git add -f custom_iocs.txt 2>/dev/null || true
 
           # Check whether any staged file actually changed
           if git diff --staged --quiet; then
