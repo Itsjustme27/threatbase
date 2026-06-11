@@ -124,13 +124,11 @@ export default function ThreatMap() {
         for (let i = 0; i < 5; i++) spawnAttack()
 
         const render = () => {
-          // Clear with heavier trailing effect (faster fade)
-          ctx.globalCompositeOperation = 'source-over'
-          ctx.fillStyle = 'rgba(15, 23, 42, 0.1)' // Slower fade for longer comet tails
-          ctx.fillRect(0, 0, width, height)
+          // Clear the canvas completely every frame for crisp 60fps (no smudging)
+          ctx.clearRect(0, 0, width, height)
           
-          // Draw map dots with red tint and slightly bigger
-          ctx.fillStyle = 'rgba(220, 38, 38, 0.3)' // red-600
+          // Draw map dots with red tint
+          ctx.fillStyle = 'rgba(220, 38, 38, 0.4)' // red-600
           dots.forEach(dot => {
             ctx.beginPath()
             ctx.arc(dot.x, dot.y, 1.5, 0, Math.PI * 2)
@@ -138,9 +136,12 @@ export default function ThreatMap() {
           })
 
           // Spawn new attacks randomly
-          if (Math.random() < 0.02 && attacks.length < 15) { // Spawn less often
+          if (Math.random() < 0.02 && attacks.length < 15) {
             spawnAttack()
           }
+
+          // Enable screen blending for beautiful neon overlap
+          ctx.globalCompositeOperation = 'screen'
 
           // Update and draw attacks
           for (let i = attacks.length - 1; i >= 0; i--) {
@@ -149,51 +150,48 @@ export default function ThreatMap() {
 
             if (a.progress >= 1) {
               attacks.splice(i, 1)
-              
-              // Draw explosion ripple
-              ctx.beginPath()
-              ctx.strokeStyle = a.color
-              ctx.lineWidth = 2
-              ctx.arc(a.target.x, a.target.y, 10, 0, Math.PI * 2)
-              ctx.stroke()
               continue
             }
 
             const midX = (a.source.x + a.target.x) / 2
             const midY = (a.source.y + a.target.y) / 2
-            
             const dist = Math.sqrt(Math.pow(a.target.x - a.source.x, 2) + Math.pow(a.target.y - a.source.y, 2))
             const cpY = midY - dist * 0.3
 
-            const t = a.progress
-            const invT = 1 - t
-            const currX = invT * invT * a.source.x + 2 * invT * t * midX + t * t * a.target.x
-            const currY = invT * invT * a.source.y + 2 * invT * t * cpY + t * t * a.target.y
-
-            // Calculate previous frame position to draw a short segment (comet head)
-            const tailLength = a.speed * 4 // Longer comet head
-            const prevT = Math.max(0, t - tailLength)
-            const invPrevT = 1 - prevT
-            const prevX = invPrevT * invPrevT * a.source.x + 2 * invPrevT * prevT * midX + prevT * prevT * a.target.x
-            const prevY = invPrevT * invPrevT * a.source.y + 2 * invPrevT * prevT * cpY + prevT * prevT * a.target.y
-
-            // Enable lighter blending for neon glow effect
-            ctx.globalCompositeOperation = 'lighter'
-
-            // Draw glowing comet head
-            ctx.beginPath()
-            ctx.moveTo(prevX, prevY)
-            ctx.lineTo(currX, currY)
-            ctx.strokeStyle = a.color
-            ctx.lineWidth = 2.5
-            ctx.lineCap = 'round'
-            ctx.shadowBlur = 15
-            ctx.shadowColor = a.color
-            ctx.stroke()
+            // Procedurally draw the comet tail (20 trailing segments)
+            const tailLength = 0.15 // Length of the tail relative to the curve
+            const segments = 20
             
-            ctx.shadowBlur = 0
+            for (let j = 0; j < segments; j++) {
+              const pointT = a.progress - (tailLength * (j / segments))
+              if (pointT < 0) continue
+
+              const invT = 1 - pointT
+              const px = invT * invT * a.source.x + 2 * invT * pointT * midX + pointT * pointT * a.target.x
+              const py = invT * invT * a.source.y + 2 * invT * pointT * cpY + pointT * pointT * a.target.y
+
+              const opacity = 1 - (j / segments)
+              const radius = 2.5 * opacity
+              
+              ctx.beginPath()
+              ctx.arc(px, py, radius, 0, Math.PI * 2)
+              ctx.fillStyle = `rgba(${hexToRgb(a.color)}, ${opacity})`
+              
+              // Only the head of the comet glows intensely
+              if (j === 0) {
+                ctx.shadowBlur = 15
+                ctx.shadowColor = a.color
+              } else {
+                ctx.shadowBlur = 0
+              }
+              
+              ctx.fill()
+              ctx.shadowBlur = 0
+            }
           }
 
+          // Reset composite operation for next frame
+          ctx.globalCompositeOperation = 'source-over'
           animationFrameId = requestAnimationFrame(render)
         }
 
