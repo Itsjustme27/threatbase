@@ -9,7 +9,7 @@ const menuItems = [
     { name: 'Dashboard', href: '/#dashboard' },
     { name: 'Threat Feeds', href: '/#feeds' },
     { name: 'Report IP', href: '/report' },
-    { name: 'Intel Sources', href: '/thanks' }
+    { name: 'Thanks', href: '/thanks' }
 ]
 
 export default function Navbar() {
