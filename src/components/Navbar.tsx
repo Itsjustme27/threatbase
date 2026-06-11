@@ -43,10 +43,10 @@ export default function Navbar() {
                 transition={{ duration: 0.4, ease: "easeInOut" }}
                 data-state={menuState && 'active'}
                 className={cn(
-                    "group fixed inset-x-0 top-0 z-50 transition-all duration-500 border-b",
+                    "group fixed inset-x-0 top-0 z-50 transition-all duration-500",
                     scrolled 
-                        ? "bg-slate-950/60 backdrop-blur-2xl border-white/5 shadow-2xl py-3" 
-                        : "bg-transparent border-transparent py-6"
+                        ? "bg-slate-900/40 backdrop-blur-3xl border-b border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] py-3" 
+                        : "bg-slate-900/10 backdrop-blur-lg border-b border-white/5 py-5"
                 )}
             >
                 <div className="mx-auto max-w-7xl px-6 lg:px-12">
@@ -55,11 +55,11 @@ export default function Navbar() {
                             <Link
                                 to="/"
                                 aria-label="home"
-                                className="flex items-center group relative z-10 transition-transform duration-300 hover:scale-[1.05]">
+                                className="flex items-center group relative z-10">
                                 <img 
                                     src={`${import.meta.env.BASE_URL}img/himalayafeed.png`} 
                                     alt="HimalayaFeed" 
-                                    className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover border-2 border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] group-hover:border-white/20 group-hover:shadow-[0_0_25px_rgba(6,182,212,0.4)] transition-all duration-300"
+                                    className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.12] group-hover:rotate-6"
                                 />
                             </Link>
 
