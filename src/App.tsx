@@ -11,6 +11,8 @@ import ThanksPage from './components/ThanksPage'
 import Footer from './components/Footer'
 import ToastContainer from './components/ToastContainer'
 import Navbar from './components/Navbar'
+import Profile from './components/Profile'
+import { AuthProvider } from './AuthContext'
 import { getBaseUrl, formatSyncTime, animateValue } from './utils'
 import { scanIndicatorLogic } from './scanner'
 
@@ -28,11 +30,11 @@ export default function App() {
   // Toast state
   const [toasts, setToasts] = useState([])
 
-  const addToast = useCallback((message, type = 'success') => {
+  const addToast = useCallback((message: string, type = 'success') => {
     const id = Date.now() + Math.random()
-    setToasts((prev) => [...prev, { id, message, type }])
+    setToasts((prev: any) => [...prev, { id, message, type }])
     setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id))
+      setToasts((prev: any) => prev.filter((t: any) => t.id !== id))
     }, 4000)
   }, [])
 
@@ -44,14 +46,12 @@ export default function App() {
     setShowReport(true)
     setScanResult(null)
 
-    // Artificial delay for the scanning UI effect
     const result = await scanIndicatorLogic(raw, feedVersion)
     await new Promise((r) => setTimeout(r, 1600))
 
     setScanResult(result)
     setIsScanning(false)
 
-    // Smooth scroll to the report section
     const section = document.getElementById('report-section')
     if (section) section.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }, [scanInput, feedVersion])
@@ -82,7 +82,6 @@ export default function App() {
     const searchParam = urlParams.get('search') || urlParams.get('q')
     if (searchParam) {
       setScanInput(searchParam)
-      // Trigger scan after a short delay for UI readiness
       setTimeout(() => {
         document.getElementById('scan-btn')?.click()
       }, 300)
@@ -105,7 +104,7 @@ export default function App() {
   }, [location])
 
   return (
-    <>
+    <AuthProvider>
       <Navbar />
 
       <Routes>
@@ -135,13 +134,13 @@ export default function App() {
           </main>
         } />
         
-        
         <Route path="/report" element={<ReportIP addToast={addToast} />} />
+        <Route path="/profile" element={<Profile addToast={addToast} />} />
         <Route path="/thanks" element={<ThanksPage />} />
       </Routes>
 
       <ToastContainer toasts={toasts} />
       <Footer />
-    </>
+    </AuthProvider>
   )
 }

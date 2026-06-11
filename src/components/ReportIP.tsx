@@ -5,10 +5,12 @@ import {
   ShieldAlert, Activity, AlertTriangle, ShieldCheck, CheckCircle2, Trophy,
   HelpCircle, User, Info, Check, Copy
 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import supabaseClient from '../supabaseClient'
 import { fmt, timeAgo } from '../utils'
 import { Button } from '@/components/ui/button'
 import Leaderboard from './Leaderboard'
+import { useAuth } from '../AuthContext'
 
 const REPORT_PAGE_SIZE = 10
 const SUBMIT_COOLDOWN = 15000
@@ -107,6 +109,7 @@ const THREAT_CATEGORIES = [
 ]
 
 export default function ReportIP({ addToast }: any) {
+  const { user, profile } = useAuth()
   const [ipValue, setIpValue] = useState('')
   const [selectedCats, setSelectedCats] = useState<string[]>([])
   const [comment, setComment] = useState('')
@@ -117,6 +120,13 @@ export default function ReportIP({ addToast }: any) {
   const [showOptional, setShowOptional] = useState(false)
   const [showPolicyModal, setShowPolicyModal] = useState(false)
   const lastSubmitRef = useRef(0)
+
+  // Sync profile username into alias when logged in
+  useEffect(() => {
+    if (profile?.username) {
+      setAlias(profile.username)
+    }
+  }, [profile])
 
   // Real-time IP address status validation state
   const [ipStatus, setIpStatus] = useState<{ type: 'empty' | 'valid_v4' | 'valid_v6' | 'private' | 'whitelisted' | 'invalid', msg: string }>({ type: 'empty', msg: '' })
@@ -557,15 +567,27 @@ export default function ReportIP({ addToast }: any) {
                                   <input
                                     type="text"
                                     id="rip-alias"
-                                    className="w-full h-11 rounded-xl border border-white/5 bg-slate-950/60 pl-8 pr-4 text-xs font-semibold text-slate-200 placeholder:text-slate-600 focus-visible:outline-none focus-visible:border-emerald-500/30 focus-visible:ring-1 focus-visible:ring-emerald-500/20 transition-all shadow-inner"
+                                    className={`w-full h-11 rounded-xl border border-white/5 bg-slate-950/60 pl-8 pr-4 text-xs font-semibold text-slate-200 placeholder:text-slate-600 focus-visible:outline-none transition-all shadow-inner ${
+                                      user ? 'opacity-60 cursor-not-allowed' : 'focus-visible:border-emerald-500/30 focus-visible:ring-1 focus-visible:ring-emerald-500/20'
+                                    }`}
                                     placeholder="Anonymous Defender"
                                     autoComplete="off"
                                     spellCheck="false"
                                     maxLength={24}
                                     value={alias}
                                     onChange={(e) => setAlias(e.target.value)}
+                                    disabled={!!user}
                                   />
                                 </div>
+                                {user && (
+                                  <p className="text-[10px] text-slate-500 font-semibold ml-1 mt-1">
+                                    Logged in as @{profile?.username || 'defender'}. Update your alias in your{' '}
+                                    <Link to="/profile" className="text-cyan-400 hover:underline hover:text-cyan-300">
+                                      account settings
+                                    </Link>
+                                    .
+                                  </p>
+                                )}
                               </div>
                             </motion.div>
                           )}
