@@ -138,20 +138,20 @@ export default function ReportIP({ addToast }: any) {
   }
 
   return (
-    <main className="min-h-screen pt-32 pb-24 relative bg-slate-950 overflow-hidden font-sans">
-      {/* Animated Abstract Background */}
+    <main className="min-h-screen pt-32 pb-24 relative bg-slate-900 overflow-hidden font-sans">
+      {/* Animated Abstract Background matching global theme */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <motion.div 
-          animate={{ scale: [1, 1.15, 1], opacity: [0.15, 0.25, 0.15], rotate: [0, 90, 0] }} 
+          animate={{ scale: [1, 1.15, 1], opacity: [0.05, 0.1, 0.05], rotate: [0, 90, 0] }} 
           transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] rounded-full bg-gradient-to-br from-red-600/30 via-rose-900/10 to-transparent blur-[120px]"
+          className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] rounded-full bg-gradient-to-br from-cyan-500/20 via-blue-900/10 to-transparent blur-[120px]"
         />
         <motion.div 
-          animate={{ scale: [1, 1.25, 1], opacity: [0.1, 0.2, 0.1], rotate: [0, -90, 0] }} 
+          animate={{ scale: [1, 1.25, 1], opacity: [0.05, 0.1, 0.05], rotate: [0, -90, 0] }} 
           transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          className="absolute top-[30%] -right-[20%] w-[60vw] h-[60vw] rounded-full bg-gradient-to-tl from-indigo-900/40 via-purple-900/10 to-transparent blur-[140px]"
+          className="absolute top-[30%] -right-[20%] w-[60vw] h-[60vw] rounded-full bg-gradient-to-tl from-slate-700/30 via-slate-900/10 to-transparent blur-[140px]"
         />
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay"></div>
       </div>
 
       <div className="mx-auto max-w-7xl px-6 lg:px-12 relative z-10">
@@ -187,9 +187,9 @@ export default function ReportIP({ addToast }: any) {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="xl:col-span-4"
           >
-            <div className="rounded-3xl border border-white/10 bg-slate-900/50 backdrop-blur-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] relative overflow-hidden group">
-              <div className="absolute top-0 inset-x-0 h-[2px] w-full bg-gradient-to-r from-transparent via-red-500/80 to-transparent"></div>
-              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
+            <div className="rounded-3xl border border-white/10 bg-slate-900/60 backdrop-blur-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] relative overflow-hidden group">
+              <div className="absolute top-0 inset-x-0 h-[2px] w-full bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay"></div>
               
               <div className="p-8 relative z-10 min-h-[500px] flex flex-col justify-center">
                 <AnimatePresence mode="wait">
@@ -277,7 +277,7 @@ export default function ReportIP({ addToast }: any) {
                       </div>
 
                       <Button
-                        className="w-full h-14 rounded-2xl bg-gradient-to-r from-white to-slate-200 text-slate-950 hover:from-white hover:to-white font-bold text-base shadow-[0_4px_20px_rgba(255,255,255,0.15)] hover:shadow-[0_4px_25px_rgba(255,255,255,0.3)] transition-all duration-300 transform hover:-translate-y-0.5 mt-6 border border-white/20"
+                        className="w-full h-14 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-base shadow-[0_4px_20px_rgba(34,211,238,0.2)] hover:shadow-[0_4px_25px_rgba(34,211,238,0.3)] transition-all duration-300 transform hover:-translate-y-0.5 mt-6 border border-cyan-400/20"
                         onClick={handleSubmit}
                         disabled={submitting}
                       >
@@ -334,11 +334,11 @@ export default function ReportIP({ addToast }: any) {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="xl:col-span-8 flex flex-col"
           >
-            <div className="rounded-3xl border border-white/10 bg-slate-900/50 backdrop-blur-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] flex flex-col overflow-hidden relative h-full group">
-              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay pointer-events-none"></div>
+            <div className="rounded-3xl border border-white/10 bg-slate-900/60 backdrop-blur-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] flex flex-col overflow-hidden relative h-full group">
+              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none"></div>
               
               {/* Table Header Section */}
-              <div className="p-6 md:px-8 flex items-center justify-between border-b border-white/5 bg-black/30 relative z-10">
+              <div className="p-6 md:px-8 flex items-center justify-between border-b border-white/5 bg-slate-900/80 relative z-10">
                 <h3 className="font-bold text-xl flex items-center gap-3 text-white">
                   <List className="text-slate-400" size={20} /> 
                   Global Intel Feed
