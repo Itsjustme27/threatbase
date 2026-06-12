@@ -218,7 +218,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                         </td>
                         <td className="px-5 py-4 align-top">
                           <div className="flex flex-wrap gap-1.5 justify-end">
-                            {row.category.split(', ').map((cat: string) => (
+                            {(row.category || 'Other').split(', ').map((cat: string) => (
                               <span key={cat} className="bg-[#777] border border-[#555] text-white text-[11px] px-1.5 py-0.5 rounded shadow-sm whitespace-nowrap">
                                 {cat}
                               </span>
