@@ -84,7 +84,7 @@ export default function Navbar() {
                             </button>
 
                             <div className="hidden lg:block">
-                                <ul className="flex gap-8 text-sm font-medium">
+                                <ul className="flex items-center gap-8 text-sm font-medium">
                                     {menuItems.map((item, index) => {
                                         const isActive = item.name === 'Report IP' && isReportActive
                                         return (
@@ -103,7 +103,7 @@ export default function Navbar() {
                                         )
                                     })}
                                     {user && (
-                                        <li>
+                                        <li className="flex items-center">
                                             <Link
                                                 to="/profile"
                                                 className="transition-all duration-300 tracking-wide font-bold text-sm px-4 py-2 rounded-full text-slate-400 hover:text-white hover:bg-white/5">
