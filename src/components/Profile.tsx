@@ -115,11 +115,11 @@ const getUserBadges = (profile: any, reportsCount: number, joinIndex: number | n
       id: 'initiate',
       name: 'Initiate',
       desc: 'Starting threat intelligence contributor',
-      style: 'from-slate-800/40 to-slate-900/40 text-slate-400 border-slate-800',
+      style: 'from-slate-800/40 to-slate-900/40 text-slate-400 border-slate-700/40 shadow-[0_0_10px_rgba(148,163,184,0.05)]',
       icon: (
-        <svg className="h-3.5 w-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="12" r="10" fill="currentColor" fillOpacity="0.1" />
-          <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
+        <svg className="h-3.5 w-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M12 2v2M12 20v2M2 12h2M20 12h2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         </svg>
       )
     });
