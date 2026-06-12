@@ -54,5 +54,47 @@
     "category": "Brute Force",
     "comment": "BruteForce Detected in Wordpress",
     "created_at": "2026-06-11T15:41:18.308707+00:00"
+  },
+  {
+    "id": "353bb1b7-7b94-4ac7-b5ae-5de70def4757",
+    "ip": "14.103.116.87",
+    "category": "Brute Force",
+    "comment": "Cowrie Honeypot: 5 unauthorised SSH/Telnet login attempts between 2026-06-12T11:34:16Z and 2026-06-12T11:51:54Z",
+    "created_at": "2026-06-12T11:52:41.552932+00:00"
+  },
+  {
+    "id": "675b8ad9-7f8a-4ee7-a10a-5d0ee17dd72e",
+    "ip": "65.49.1.183",
+    "category": "Port Scanning",
+    "comment": "Targeting random port 8080",
+    "created_at": "2026-06-12T13:02:38.007901+00:00"
+  },
+  {
+    "id": "8c6c4677-90c2-4fe3-b665-6b33ee81a6ce",
+    "ip": "69.5.169.16",
+    "category": "Port Scanning",
+    "comment": "FW-PortScan: Traffic Blocked srcport=20268 dstport=30461",
+    "created_at": "2026-06-12T13:47:32.160935+00:00"
+  },
+  {
+    "id": "356952f7-1e3e-4682-8f4b-056aba1fc1a0",
+    "ip": "136.117.12.187",
+    "category": "Port Scanning",
+    "comment": "Website Scanning / Scraping",
+    "created_at": "2026-06-12T13:48:15.151253+00:00"
+  },
+  {
+    "id": "52110531-2962-47a4-bd36-044314a4b2a9",
+    "ip": "2.57.217.229",
+    "category": "Brute Force",
+    "comment": "Brute force SSH login attempts.",
+    "created_at": "2026-06-12T15:06:54.104994+00:00"
+  },
+  {
+    "id": "f338452f-c17f-401e-8a83-5e6c7836e6f8",
+    "ip": "103.163.97.211",
+    "category": "Brute Force",
+    "comment": "SSH brute force attack",
+    "created_at": "2026-06-12T15:07:35.267596+00:00"
   }
 ]
