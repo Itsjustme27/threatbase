@@ -57,8 +57,8 @@ export default function Navbar() {
                 className={cn(
                     "group fixed z-50 transition-all duration-300 w-full",
                     scrolled 
-                        ? "bg-[#0A0C10]/60 backdrop-blur-xl border-b border-white/[0.05] shadow-[0_8px_30px_rgb(0,0,0,0.5)] py-2" 
-                        : "bg-transparent border-b border-transparent py-3"
+                        ? "bg-[#070A13]/60 backdrop-blur-xl border-b border-white/[0.05] shadow-[0_8px_30px_rgb(0,0,0,0.5)] py-2" 
+                        : "bg-transparent border-b border-transparent py-3.5"
                 )}
             >
                 <div className="w-full px-4 lg:px-8">
@@ -71,7 +71,7 @@ export default function Navbar() {
                                 <img 
                                     src={`${import.meta.env.BASE_URL}img/threatbase.png`} 
                                     alt="Threatbase" 
-                                    className="w-10 h-10 md:w-11 md:h-11 rounded-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.12] group-hover:rotate-6"
+                                    className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.12] group-hover:rotate-6"
                                 />
                             </Link>
 
@@ -83,8 +83,8 @@ export default function Navbar() {
                                 <X className="group-data-[state=active]:rotate-0 group-data-[state=active]:scale-100 group-data-[state=active]:opacity-100 absolute inset-0 m-auto size-6 -rotate-180 scale-0 opacity-0 duration-200" />
                             </button>
 
-                            <div className="hidden lg:flex lg:items-center">
-                                <ul className="flex items-center gap-8 text-sm font-medium">
+                            <div className="hidden lg:block">
+                                <ul className="flex gap-8 text-sm font-medium">
                                     {menuItems.map((item, index) => {
                                         const isActive = item.name === 'Report IP' && isReportActive
                                         return (
@@ -92,7 +92,7 @@ export default function Navbar() {
                                                 <Link
                                                     to={item.href}
                                                     className={cn(
-                                                        "transition-all duration-300 tracking-wide font-bold text-sm px-4 py-2 rounded-full flex items-center justify-center",
+                                                        "transition-all duration-300 tracking-wide font-bold text-sm px-4 py-2 rounded-full",
                                                         isActive 
                                                             ? "bg-white/10 text-white shadow-[0_0_15px_rgba(255,255,255,0.1)]"
                                                             : "text-slate-400 hover:text-white hover:bg-white/5"
@@ -103,10 +103,10 @@ export default function Navbar() {
                                         )
                                     })}
                                     {user && (
-                                        <li className="flex items-center">
+                                        <li>
                                             <Link
                                                 to="/profile"
-                                                className="transition-all duration-300 tracking-wide font-bold text-sm px-4 py-2 rounded-full text-slate-400 hover:text-white hover:bg-white/5 flex items-center justify-center">
+                                                className="transition-all duration-300 tracking-wide font-bold text-sm px-4 py-2 rounded-full text-slate-400 hover:text-white hover:bg-white/5">
                                                 My Account
                                             </Link>
                                         </li>

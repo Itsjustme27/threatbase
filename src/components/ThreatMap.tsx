@@ -63,7 +63,7 @@ export default function ThreatMap() {
         // Setup D3 Projection
         const projection = d3.geoEquirectangular()
           .fitSize([width, height * 1.4], land as any) // Scale slightly larger
-          .translate([width / 2, height / 2 + 140])
+          .translate([width / 2, height / 2 + 130])
 
         // Create a hidden canvas to draw the solid map
         const hiddenCanvas = document.createElement('canvas')
@@ -106,9 +106,9 @@ export default function ThreatMap() {
             dotCtx.moveTo(dot.x, dot.y)
             dotCtx.arc(dot.x, dot.y, 1.6, 0, Math.PI * 2)
           })
-          dotCtx.shadowColor = 'rgba(255, 0, 0, 0.95)'
+          dotCtx.shadowColor = 'rgba(255, 10, 10, 0.95)'
           dotCtx.shadowBlur = 8
-          dotCtx.fillStyle = 'rgba(255, 0, 0, 1.0)'
+          dotCtx.fillStyle = 'rgba(255, 20, 20, 1)'
           dotCtx.fill()
         }
 
@@ -143,18 +143,7 @@ export default function ThreatMap() {
           // Clear the canvas completely every frame for crisp 60fps (no smudging)
           ctx.clearRect(0, 0, width, height)
           
-          // 1. Draw solid dark landmasses and black country borders
-          ctx.beginPath()
-          const borderPath = d3.geoPath().projection(projection).context(ctx)
-          ctx.fillStyle = '#06080b'
-          borderPath(land as any)
-          ctx.fill()
-          
-          ctx.strokeStyle = '#000000'
-          ctx.lineWidth = 1.2
-          ctx.stroke()
-          
-          // 2. Draw cached background map dots on top
+          // Draw cached background map
           ctx.drawImage(dotCanvas, 0, 0)
 
           // Spawn new attacks randomly
@@ -232,7 +221,7 @@ export default function ThreatMap() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 pointer-events-none z-0 w-full h-full bg-transparent"
+      className="absolute inset-0 pointer-events-none z-0 w-full h-full bg-[#070A13]"
     />
   )
 }
