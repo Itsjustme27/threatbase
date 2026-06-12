@@ -129,10 +129,10 @@ const getUserBadges = (profile: any, reportsCount: number, joinIndex: number | n
   const isHelper = profile?.is_helper === true || 
                    profile?.role === 'helper' || 
                    profile?.username === 'kalidada18' || 
-                   profile?.username?.toLowerCase().includes('admin') ||
-                   profile?.username?.toLowerCase().includes('helper') ||
-                   profile?.bio?.toLowerCase().includes('helper') ||
-                   profile?.bio?.toLowerCase().includes('moderator');
+                   (profile?.username && typeof profile.username === 'string' && profile.username.toLowerCase().includes('admin')) ||
+                   (profile?.username && typeof profile.username === 'string' && profile.username.toLowerCase().includes('helper')) ||
+                   (profile?.bio && typeof profile.bio === 'string' && profile.bio.toLowerCase().includes('helper')) ||
+                   (profile?.bio && typeof profile.bio === 'string' && profile.bio.toLowerCase().includes('moderator'));
   if (isHelper) {
     badges.push({
       id: 'helper',
