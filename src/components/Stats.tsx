@@ -114,24 +114,27 @@ export default function Stats({ statsData }: any) {
 function StatCard({ label, icon, iconColorClass, valueId, sub, trendId }: any) {
   return (
     <motion.div
-      className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/[0.04] bg-slate-950/40 p-6 sm:p-8 transition-all duration-300 hover:bg-slate-900/30 hover:border-slate-700/40 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)] backdrop-blur-xl"
+      className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-white/[0.06] bg-white/[0.01] p-6 sm:p-8 transition-all duration-500 hover:bg-white/[0.03] hover:border-white/10 hover:-translate-y-1 hover:shadow-[0_8px_40px_rgba(0,0,0,0.4)] backdrop-blur-[40px] font-elegant"
       initial={{ opacity: 0, y: 15 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
+      {/* Subtle Aurora Glow per card */}
+      <div className="absolute -top-24 -right-24 w-48 h-48 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-colors duration-500 pointer-events-none z-0" />
+      
       <div className="flex items-center justify-between relative z-10">
-        <span className="text-sm font-semibold text-slate-400 tracking-wide group-hover:text-slate-300 transition-colors duration-200">{label}</span>
-        <div className={`p-2.5 rounded-xl border transition-all duration-300 ${iconColorClass}`}>
+        <span className="text-[11px] font-bold text-slate-400 tracking-widest uppercase group-hover:text-slate-300 transition-colors duration-200">{label}</span>
+        <div className={`p-3 rounded-2xl border transition-all duration-300 shadow-inner ${iconColorClass}`}>
           {icon}
         </div>
       </div>
 
-      <div className="mt-6 text-4xl font-extrabold tracking-tight text-white tabular-nums relative z-10" id={valueId}>-</div>
+      <div className="mt-8 text-4xl lg:text-5xl font-black tracking-tighter text-white tabular-nums relative z-10 drop-shadow-md" id={valueId}>-</div>
 
-      <div className="mt-4 text-xs text-slate-500 flex items-center justify-between font-medium relative z-10">
+      <div className="mt-6 text-[11px] text-slate-500 flex items-center justify-between font-medium relative z-10 uppercase tracking-widest">
         <span className="group-hover:text-slate-400 transition-colors duration-200">{sub}</span>
-        <span id={trendId} className="font-semibold px-2 py-0.5 rounded bg-white/[0.02] border border-white/[0.04] text-slate-300 shadow-sm group-hover:bg-white/[0.04] group-hover:border-white/[0.08] transition-colors duration-200"></span>
+        <span id={trendId} className="font-bold px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/[0.05] text-slate-300 shadow-inner group-hover:bg-white/[0.05] transition-colors duration-200"></span>
       </div>
     </motion.div>
   )

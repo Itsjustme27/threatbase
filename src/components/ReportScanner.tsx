@@ -57,7 +57,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
   if (scanResult) {
     const { isIP, isIPv6, isHash, isURL, isDomain } = scanResult
     if (isIP || isIPv6) {
-      vtHref = 'https://www.virustotal.com/gui/ip-address/' + encodeURIComponent(ip)
+      vtHref = 'https://www.virustotal.com/gui/search/' + encodeURIComponent(ip)
       abuseHref = 'https://www.abuseipdb.com/check/' + encodeURIComponent(ip)
       showVt = true
       showAbuse = true
@@ -213,14 +213,14 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                 </p>
               </div>
 
-              <div className="bg-amber-500/10 border border-amber-500/20 text-amber-200 px-5 py-4 rounded-xl text-sm shadow-[0_0_15px_rgba(245,158,11,0.05)] flex gap-3.5 items-start">
-                <AlertTriangle size={20} className="shrink-0 text-amber-400 mt-0.5" strokeWidth={2} />
-                <div className="space-y-1">
-                  <strong className="text-amber-300 block text-xs uppercase tracking-wider font-extrabold">Active Threat Warning</strong>
-                  <span className="text-slate-300 leading-relaxed text-xs">
+              <div className="relative overflow-hidden bg-slate-950/40 backdrop-blur-sm border border-white/[0.05] border-l-2 border-l-orange-500 px-6 py-5 rounded-xl shadow-lg font-elegant">
+                <div className="space-y-1.5 relative z-10">
+                  <strong className="bg-gradient-to-r from-orange-400 to-amber-300 bg-clip-text text-transparent block text-[11px] uppercase tracking-widest font-bold">Active Threat Warning</strong>
+                  <p className="text-slate-300 leading-relaxed text-xs">
                     Abusive activity was reported from this address within the past week. It may still be actively engaged in hostile operations.
-                  </span>
+                  </p>
                 </div>
+                <div className="absolute top-0 left-0 w-48 h-full bg-gradient-to-r from-orange-500/10 to-transparent pointer-events-none" />
               </div>
 
               <div className="overflow-hidden rounded-xl border border-white/[0.05] bg-slate-950/40 backdrop-blur-md shadow-2xl">
@@ -285,3 +285,5 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
     </section>
   )
 }
+
+

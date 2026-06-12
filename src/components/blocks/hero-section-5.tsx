@@ -21,7 +21,7 @@ export function HeroSection({ scanInput, setScanInput, handleScan, statsData }: 
                 <section className="relative z-10 pt-16 md:pt-20">
                     <div className="py-12 md:pb-24 lg:pb-32 lg:pt-16 relative">
                         <div className="relative z-10 mx-auto flex max-w-7xl flex-col px-6 lg:block lg:px-12">
-                            <div className="mx-auto max-w-2xl text-center lg:ml-0 lg:max-w-full lg:text-left relative">
+                            <div className="mx-auto max-w-2xl text-center lg:-ml-8 xl:-ml-12 lg:max-w-full lg:text-left relative">
                                 <div className="relative z-10">
                                     <h1 className="mt-8 max-w-3xl text-balance text-4xl md:text-5xl font-bold tracking-tight text-white lg:mt-12 xl:text-6xl drop-shadow-md">
                                         Built for Defenders <span className="block text-white/90 font-semibold mt-1">Powered by Open Intelligence</span>

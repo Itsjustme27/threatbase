@@ -12,6 +12,7 @@ import ThanksPage from './components/ThanksPage'
 import Footer from './components/Footer'
 import ToastContainer from './components/ToastContainer'
 import Navbar from './components/Navbar'
+import NotFound1 from './components/ui/8bit-not-found1'
 import Profile from './components/Profile'
 import { AuthProvider } from './AuthContext'
 import { getBaseUrl, formatSyncTime, animateValue } from './utils'
@@ -56,14 +57,16 @@ export default function App() {
     setShowReport(true)
     setScanResult(null)
 
+    setTimeout(() => {
+      const section = document.getElementById('report-section')
+      if (section) section.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }, 50)
+
     const result = await scanIndicatorLogic(raw, feedVersion)
     await new Promise((r) => setTimeout(r, 1600))
 
     setScanResult(result)
     setIsScanning(false)
-
-    const section = document.getElementById('report-section')
-    if (section) section.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }, [scanInput, feedVersion])
 
 
@@ -147,6 +150,7 @@ export default function App() {
         <Route path="/report" element={<ReportIP addToast={addToast} />} />
         <Route path="/profile/:username?" element={<Profile addToast={addToast} />} />
         <Route path="/thanks" element={<ThanksPage />} />
+        <Route path="*" element={<NotFound1 />} />
       </Routes>
 
       <ToastContainer toasts={toasts} />

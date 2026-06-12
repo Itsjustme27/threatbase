@@ -11,6 +11,7 @@ import { Typewriter } from '@/components/ui/typewriter'
 import Leaderboard from './Leaderboard'
 import { useAuth } from '../AuthContext'
 import { useSEO } from '@/useSEO'
+import { MatrixText } from '@/components/ui/matrix-text'
 
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -302,7 +303,7 @@ export default function ReportIP({ addToast }: any) {
             className="text-center relative"
           >
             <h1 className="text-4xl md:text-5xl font-black flex items-center justify-center gap-2 text-white tracking-tighter pb-2">
-              Community <span className="bg-gradient-to-r from-emerald-300 to-cyan-300 bg-clip-text text-transparent">Intel</span>
+              <MatrixText text="Community Intel" className="font-mono text-white" />
             </h1>
             <div className="mt-2 text-slate-400 text-sm md:text-base max-w-xl mx-auto leading-relaxed flex flex-wrap items-center justify-center min-h-[28px]">
               <span>{"Submissions feed the blacklist to "}</span>
@@ -501,26 +502,34 @@ export default function ReportIP({ addToast }: any) {
             </div>
           </div>
 
-          {/* Submissions Feed */}
-          <Card className="shadow-lg border-white/[0.05] bg-slate-950/40 backdrop-blur-md overflow-hidden mt-6">
-            <div className="p-4 md:px-6 flex items-center justify-between border-b border-white/5 bg-slate-950/25 relative z-10">
-              <div className="flex gap-6">
-                <div className="font-semibold text-xs py-1.5 rounded-lg flex items-center gap-2 text-white">
-                  <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="url(#listBorderGrad)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                    <defs>
-                      <linearGradient id="listBorderGrad" x1="12" y1="6" x2="12" y2="18" gradientUnits="userSpaceOnUse">
-                        <stop stopColor="#34D399" />
-                        <stop offset="1" stopColor="#059669" />
-                      </linearGradient>
-                    </defs>
-                  </svg> Submissions Feed
+          {/* Submissions Feed - Aurora UI */}
+          <div className="relative mt-12 w-full group">
+            {/* Aurora Background Orbs */}
+            <div className="absolute -inset-1 opacity-40 group-hover:opacity-60 transition-opacity duration-700 blur-3xl pointer-events-none z-0">
+              <div className="absolute top-0 -left-10 w-72 h-72 bg-emerald-500/30 rounded-full mix-blend-screen filter blur-3xl animate-blob" />
+              <div className="absolute top-0 -right-10 w-72 h-72 bg-cyan-500/30 rounded-full mix-blend-screen filter blur-3xl animate-blob animation-delay-2000" />
+              <div className="absolute -bottom-20 left-40 w-72 h-72 bg-purple-500/30 rounded-full mix-blend-screen filter blur-3xl animate-blob animation-delay-4000" />
+            </div>
+
+            <Card className="relative z-10 shadow-2xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-[40px] overflow-hidden font-elegant tracking-tight rounded-2xl">
+              <div className="p-4 md:px-8 py-5 flex items-center justify-between border-b border-white/[0.06] bg-gradient-to-r from-white/[0.02] to-transparent">
+                <div className="flex gap-6">
+                  <div className="font-semibold text-sm rounded-lg flex items-center gap-3 text-white">
+                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="url(#listBorderGrad)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <defs>
+                        <linearGradient id="listBorderGrad" x1="12" y1="6" x2="12" y2="18" gradientUnits="userSpaceOnUse">
+                          <stop stopColor="#34D399" />
+                          <stop offset="1" stopColor="#06B6D4" />
+                        </linearGradient>
+                      </defs>
+                    </svg> Submissions Feed
+                  </div>
+                </div>
+                <div className="hidden sm:flex text-[10px] text-slate-300 font-bold bg-white/[0.05] px-4 py-1.5 rounded-full border border-white/10 items-center gap-2 shadow-inner">
+                  {reportCount > 0 ? `${fmt(reportCount)} SUBMISSIONS` : 'LIVE FEED'}
                 </div>
               </div>
-              <div className="hidden sm:flex text-[10px] text-slate-400 font-bold bg-white/[0.03] px-3 py-1.5 rounded-md border border-white/5 items-center gap-2">
-                {reportCount > 0 ? `${fmt(reportCount)} SUBMISSIONS` : 'LIVE FEED'}
-              </div>
-            </div>
 
             <div className="overflow-x-auto min-h-[300px]">
               {loading ? (
@@ -592,8 +601,7 @@ export default function ReportIP({ addToast }: any) {
                           <td className="px-6 py-4.5 text-slate-400 max-w-[200px] sm:max-w-xs md:max-w-md">
                             {row.comment ? (
                               <span className="flex items-start gap-1.5 group-hover:text-slate-300 transition-colors">
-                                <AlertTriangle size={13} className="text-slate-500 flex-shrink-0 mt-0.5" />
-                                <span className="whitespace-normal leading-relaxed text-slate-400 font-medium">{row.comment}</span>
+                                <span className="whitespace-normal leading-relaxed text-slate-300 font-medium">{row.comment}</span>
                               </span>
                             ) : (
                               <span className="text-slate-600 italic text-[11px] font-medium">No Context Recorded</span>
@@ -685,7 +693,7 @@ export default function ReportIP({ addToast }: any) {
             </div>
           )}
         </AnimatePresence>
-
+      </div>
       </div>
     </main>
   )
