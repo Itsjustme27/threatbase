@@ -4,6 +4,18 @@ import { Bug, ShieldCheck, AlertTriangle, AlertOctagon, ChevronRight, Search, Ch
 import supabaseClient from '../supabaseClient'
 import { timeAgo } from '../utils'
 
+const getCategoryColor = (cat: string) => {
+  if (!cat) return 'bg-slate-500/10 text-slate-300 border border-slate-500/20'
+  const c = cat.toLowerCase()
+  if (c.includes('brute') || c.includes('force')) return 'bg-orange-500/10 text-orange-400 border border-orange-500/20'
+  if (c.includes('malware')) return 'bg-red-500/10 text-red-400 border border-red-500/20'
+  if (c.includes('ddos')) return 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
+  if (c.includes('phish')) return 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+  if (c.includes('scan')) return 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20'
+  if (c.includes('botnet')) return 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+  return 'bg-slate-500/10 text-slate-300 border border-slate-500/20'
+}
+
 export default function ReportScanner({ scanResult, isScanning, showReport, scanInput }: any) {
   const [reports, setReports] = useState<any[]>([])
   const [loadingReports, setLoadingReports] = useState(false)
@@ -170,78 +182,100 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
             </motion.div>
           )}
 
-          {reports.length > 0 && !isScanning && (
+          {loadingReports && !isScanning && (
+            <motion.div 
+              key="loading-reports"
+              className="w-full flex flex-col items-center justify-center py-20 bg-slate-950/20 backdrop-blur-md rounded-2xl border border-white/[0.05]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <div className="relative h-8 w-8 mb-4">
+                <div className="absolute inset-0 rounded-full border border-slate-800"></div>
+                <div className="absolute inset-0 rounded-full border border-slate-500 border-t-transparent animate-spin"></div>
+              </div>
+              <p className="font-semibold tracking-wider text-[10px] text-slate-500 uppercase">Fetching community reports...</p>
+            </motion.div>
+          )}
+
+          {reports.length > 0 && !isScanning && !loadingReports && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="w-full"
+              className="w-full space-y-6"
             >
-              <h3 className="text-[22px] text-[#FFB300] mb-5 text-center font-sans tracking-wide">
-                IP Abuse Reports for <span className="font-bold">{ip}</span>:
-              </h3>
-              
-              <p className="text-[13px] text-slate-200 mb-5 px-2 font-sans tracking-wide">
-                This IP address has been reported a total of <span className="font-bold">{reports.length.toLocaleString()}</span> times from distinct sources. {ip} was first reported on {new Date(reports[reports.length - 1].created_at || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric'})}, and the most recent report was <span className="font-bold">{timeAgo(reports[0].created_at || new Date().toISOString())}</span>.
-              </p>
-
-              <div className="bg-[#EFA034] text-white px-4 py-3.5 rounded text-[13px] mb-6 shadow-lg flex gap-3 items-start md:items-center">
-                <AlertTriangle size={18} className="shrink-0 mt-0.5 md:mt-0 opacity-90" strokeWidth={2.5} />
-                <span>
-                  <strong>Recent Reports:</strong> We have received reports of abusive activity from this IP address within the last week. It is potentially still actively engaged in abusive activities.
-                </span>
+              <div>
+                <h3 className="text-xl md:text-2xl font-black text-white tracking-tight mb-2">
+                  Community Reports for <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent font-mono">{ip}</span>
+                </h3>
+                <p className="text-xs md:text-sm text-slate-400 leading-relaxed font-medium">
+                  This IP address has been reported <span className="text-white font-bold">{reports.length.toLocaleString()}</span> times. First reported on <span className="text-slate-300 font-medium">{new Date(reports[reports.length - 1].created_at || Date.now()).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric'})}</span>, with the most recent report from <span className="text-slate-300 font-medium">{timeAgo(reports[0].created_at || new Date().toISOString())}</span>.
+                </p>
               </div>
 
-              <div className="overflow-x-auto border border-[#333] bg-[#0E0E0E]">
-                <table className="w-full text-left border-collapse min-w-[800px] font-sans">
-                  <thead>
-                    <tr className="border-b border-[#333] bg-black">
-                      <th className="px-5 py-3.5 font-bold text-white text-[13px] w-[20%]">Reporter</th>
-                      <th className="px-5 py-3.5 font-bold text-white text-[13px] w-[25%] flex items-center gap-1.5">
-                        IoA Timestamp (UTC) 
-                        <span className="text-[#3273dc] text-[10px] font-bold ml-0.5 bg-[#3273dc]/10 rounded-full w-3.5 h-3.5 inline-flex items-center justify-center cursor-help">?</span>
-                      </th>
-                      <th className="px-5 py-3.5 font-bold text-white text-[13px] w-[35%]">Comment</th>
-                      <th className="px-5 py-3.5 font-bold text-white text-[13px] w-[20%]">Categories</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {reports.map((row, idx) => {
-                      const createdAt = row.created_at || new Date().toISOString();
-                      const reporter = row.reporter_alias || 'Anonymous';
-                      const comment = row.comment || 'No context provided.';
-                      const categories = (row.category || 'Other').split(', ');
-                      
-                      return (
-                      <tr key={idx} className={`border-b border-[#333] ${idx % 2 === 0 ? 'bg-[#181818]' : 'bg-[#222222]'}`}>
-                        <td className="px-5 py-4 text-[13px] align-top">
+              <div className="bg-amber-500/10 border border-amber-500/20 text-amber-200 px-5 py-4 rounded-xl text-sm shadow-[0_0_15px_rgba(245,158,11,0.05)] flex gap-3.5 items-start">
+                <AlertTriangle size={20} className="shrink-0 text-amber-400 mt-0.5" strokeWidth={2} />
+                <div className="space-y-1">
+                  <strong className="text-amber-300 block text-xs uppercase tracking-wider font-extrabold">Active Threat Warning</strong>
+                  <span className="text-slate-300 leading-relaxed text-xs">
+                    Abusive activity was reported from this address within the past week. It may still be actively engaged in hostile operations.
+                  </span>
+                </div>
+              </div>
+
+              <div className="overflow-hidden rounded-xl border border-white/[0.05] bg-slate-950/40 backdrop-blur-md shadow-2xl">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs text-left min-w-[800px]">
+                    <thead className="text-[10px] uppercase bg-slate-950/45 text-slate-400 font-bold border-b border-white/5 tracking-widest">
+                      <tr>
+                        <th className="px-6 py-5 w-[20%]">Reporter</th>
+                        <th className="px-6 py-5 w-[25%]">
                           <div className="flex items-center gap-1.5">
-                            <Check size={14} className="text-[#32CD32] shrink-0" strokeWidth={3} />
-                            <span className="text-base leading-none">🇺🇸</span>
-                            <span className="text-[#3273dc] hover:text-[#23527c] hover:underline cursor-pointer">{reporter}</span>
+                            IoA Timestamp (UTC) 
+                            <span className="text-cyan-400 text-[9px] font-bold bg-cyan-400/10 rounded-full w-3.5 h-3.5 inline-flex items-center justify-center cursor-help" title="Indicator of Attack timestamp">?</span>
                           </div>
-                        </td>
-                        <td className="px-5 py-4 text-[13px] text-[#ddd] align-top">
-                          <div>{createdAt.replace('T', ' ').substring(0, 19)}</div>
-                          <div className="text-[#999] text-[12px] mt-1">({timeAgo(createdAt)})</div>
-                        </td>
-                        <td className="px-5 py-4 text-[13px] text-[#ddd] align-top max-w-[300px]">
-                          <div className="truncate">{comment}</div>
-                          {row.comment && <div className="text-[#3273dc] hover:text-[#23527c] hover:underline text-[12px] mt-2 cursor-pointer text-right w-full block">show more</div>}
-                        </td>
-                        <td className="px-5 py-4 align-top">
-                          <div className="flex flex-wrap gap-1.5 justify-end">
-                            {categories.map((cat: string) => (
-                              <span key={cat} className="bg-[#777] border border-[#555] text-white text-[11px] px-1.5 py-0.5 rounded shadow-sm whitespace-nowrap">
-                                {cat}
-                              </span>
-                            ))}
-                          </div>
-                        </td>
+                        </th>
+                        <th className="px-6 py-5 w-[35%]">Comment</th>
+                        <th className="px-6 py-5 text-right w-[20%]">Categories</th>
                       </tr>
-                      )
-                    })}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                      {reports.map((row, idx) => {
+                        const createdAt = row.created_at || new Date().toISOString();
+                        const reporter = row.reporter_alias || 'Anonymous';
+                        const comment = row.comment || 'No context provided.';
+                        const categories = (row.category || 'Other').split(', ');
+                        
+                        return (
+                          <tr key={idx} className="hover:bg-white/[0.015] transition-colors group">
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center gap-2">
+                                <Check size={14} className="text-emerald-400 shrink-0" strokeWidth={2.5} />
+                                <span className="font-bold text-slate-300">@{reporter}</span>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-slate-400">
+                              <div>{createdAt.replace('T', ' ').substring(0, 19)}</div>
+                              <div className="text-[10px] text-slate-500 font-medium mt-1">({timeAgo(createdAt)})</div>
+                            </td>
+                            <td className="px-6 py-4 text-slate-300 max-w-[300px]">
+                              <div className="leading-relaxed font-medium line-clamp-2" title={comment}>{comment}</div>
+                            </td>
+                            <td className="px-6 py-4 text-right">
+                              <div className="flex flex-wrap gap-1.5 justify-end">
+                                {categories.map((cat: string) => (
+                                  <span key={cat} className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold tracking-wider ${getCategoryColor(cat)}`}>
+                                    {cat}
+                                  </span>
+                                ))}
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </motion.div>
           )}
