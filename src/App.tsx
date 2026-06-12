@@ -14,6 +14,8 @@ import ToastContainer from './components/ToastContainer'
 import Navbar from './components/Navbar'
 import NotFound1 from './components/ui/8bit-not-found1'
 import Profile from './components/Profile'
+import TermsPage from './components/TermsPage'
+import PrivacyPage from './components/PrivacyPage'
 import { AuthProvider } from './AuthContext'
 import { getBaseUrl, formatSyncTime, animateValue } from './utils'
 import { scanIndicatorLogic } from './scanner'
@@ -147,6 +149,8 @@ export default function App() {
         } />
         
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/report" element={<ReportIP addToast={addToast} />} />
         <Route path="/profile/:username?" element={<Profile addToast={addToast} />} />
         <Route path="/thanks" element={<ThanksPage />} />

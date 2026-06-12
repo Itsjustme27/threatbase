@@ -37,8 +37,8 @@ export default function Footer() {
         ]}
         copyright={`© ${new Date().getFullYear()} Threatbase. Built By Curiosity.`}
         legalLinks={[
-          { name: "Terms and Conditions", href: "/terms.txt" },
-          { name: "Privacy Policy", href: "/privacy.txt" },
+          { name: "Terms and Conditions", href: "/terms" },
+          { name: "Privacy Policy", href: "/privacy" },
         ]}
       />
       </div>

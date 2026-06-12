@@ -716,7 +716,18 @@ export default function ReportIP({ addToast }: any) {
                   </div>
                 </div>
                 <div className="text-xs text-slate-300 space-y-6 leading-relaxed overflow-y-auto pr-2 custom-scrollbar">
-                  <div><h4 className="font-bold text-white text-sm mb-2 border-l-2 border-red-500 pl-2">1. Target Integrity</h4><p className="text-slate-400">Only report public IP addresses demonstrating malicious activity.</p></div>
+                  <div>
+                    <h4 className="font-bold text-white text-sm mb-2 border-l-2 border-red-500 pl-2">1. Target Integrity</h4>
+                    <p className="text-slate-400">Only report public IP addresses demonstrating malicious activity. Do not report private networks (e.g., 192.168.x.x), loopback addresses, or legitimate DNS/infrastructure unless actively weaponized.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white text-sm mb-2 border-l-2 border-red-500 pl-2">2. Accuracy and Evidence</h4>
+                    <p className="text-slate-400">Provide clear and concise evidence or reasoning in your submission comment. Deliberately submitting false reports, false positives, or targeted harassment will result in a permanent account ban.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white text-sm mb-2 border-l-2 border-red-500 pl-2">3. No Personal Information</h4>
+                    <p className="text-slate-400">Do not include Personally Identifiable Information (PII) in your reports unless it is directly part of the threat indicators (e.g., a phishing email address used by an attacker).</p>
+                  </div>
                 </div>
                 <div className="flex items-center justify-end pt-4 mt-2 border-t border-white/[0.05] shrink-0">
                   <button type="button" onClick={() => setShowPolicyModal(false)} className="px-6 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition-all select-none">
