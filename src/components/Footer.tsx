@@ -22,7 +22,6 @@ export default function Footer() {
               { name: "Dashboard", href: "/#dashboard" },
               { name: "Threat Feeds", href: "/#feeds" },
               { name: "Report IP", href: "/report" },
-              { name: "Report Bug", href: "/report-bug" },
             ],
           },
           {

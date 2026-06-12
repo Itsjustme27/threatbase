@@ -10,15 +10,13 @@ const menuItems = [
     { name: 'Dashboard', href: '/#dashboard' },
     { name: 'About Us', href: '/about' },
     { name: 'Threat Feeds', href: '/#feeds' },
-    { name: 'Report IP', href: '/report' },
-    { name: 'Report Bug', href: '/report-bug' }
+    { name: 'Report IP', href: '/report' }
 ]
 
 export default function Navbar() {
     const navigate = useNavigate()
     const location = useLocation()
     const isReportActive = location.pathname === '/report'
-    const isReportBugActive = location.pathname === '/report-bug'
     const { user, profile, loading, signInWithGoogle, signOut } = useAuth()
     const [dropdownOpen, setDropdownOpen] = React.useState(false)
     const [menuState, setMenuState] = React.useState(false)
@@ -88,7 +86,7 @@ export default function Navbar() {
                             <div className="hidden lg:flex lg:items-center">
                                 <ul className="flex items-center gap-8 text-sm font-medium">
                                     {menuItems.map((item, index) => {
-                                        const isActive = (item.name === 'Report IP' && isReportActive) || (item.name === 'Report Bug' && isReportBugActive)
+                                        const isActive = item.name === 'Report IP' && isReportActive
                                         return (
                                             <li key={index} className="flex items-center">
                                                 <Link
@@ -121,7 +119,7 @@ export default function Navbar() {
                             <div className="lg:hidden">
                                 <ul className="space-y-6 text-base font-medium">
                                     {menuItems.map((item, index) => {
-                                        const isActive = (item.name === 'Report IP' && isReportActive) || (item.name === 'Report Bug' && isReportBugActive)
+                                        const isActive = item.name === 'Report IP' && isReportActive
                                         return (
                                             <li key={index}>
                                                 <Link

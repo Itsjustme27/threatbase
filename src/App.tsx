@@ -13,7 +13,6 @@ import Footer from './components/Footer'
 import ToastContainer from './components/ToastContainer'
 import Navbar from './components/Navbar'
 import Profile from './components/Profile'
-import ReportBug from './components/ReportBug'
 import { AuthProvider } from './AuthContext'
 import { getBaseUrl, formatSyncTime, animateValue } from './utils'
 import { scanIndicatorLogic } from './scanner'
@@ -138,7 +137,6 @@ export default function App() {
         
         <Route path="/about" element={<AboutPage />} />
         <Route path="/report" element={<ReportIP addToast={addToast} />} />
-        <Route path="/report-bug" element={<ReportBug addToast={addToast} />} />
         <Route path="/profile/:username?" element={<Profile addToast={addToast} />} />
         <Route path="/thanks" element={<ThanksPage />} />
       </Routes>
