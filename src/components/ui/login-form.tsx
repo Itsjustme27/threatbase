@@ -1,6 +1,5 @@
-"use client";
 import { useEffect, useRef, useState } from "react";
-import { User, Lock, ArrowRight, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useAuth } from "../../AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -206,40 +205,11 @@ interface LoginFormProps {
 }
 
 /**
- * A glassmorphism-style login form component with animated labels and Google login.
+ * A glassmorphism-style login form component with Google login only.
  */
 export function LoginForm({ addToast }: LoginFormProps) {
-  const { signInWithEmail, signUpWithEmail, signInWithGoogle } = useAuth();
-  const navigate = useNavigate();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { signInWithGoogle } = useAuth();
   const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim() || !password.trim()) {
-      addToast("Please fill in all credentials fields", "error");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      if (mode === "signin") {
-        await signInWithEmail(email.trim(), password.trim());
-        addToast("Welcome back! Successfully logged in.", "success");
-      } else {
-        await signUpWithEmail(email.trim(), password.trim());
-        addToast("Registration initiated! Please verify your email check if a verification mail was sent.", "success");
-      }
-      navigate("/");
-    } catch (err: any) {
-      console.error("Authentication action failed:", err);
-      addToast(err.message || "Authentication failed. Please verify credentials.", "error");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleGoogleSignIn = async () => {
     setLoading(true);
@@ -254,121 +224,35 @@ export function LoginForm({ addToast }: LoginFormProps) {
 
   return (
     <div className="w-full max-w-sm p-8 space-y-6 bg-slate-900/60 backdrop-blur-lg rounded-2xl border border-white/10 shadow-2xl relative z-10 select-none">
-      <div className="text-center">
+      <div className="text-center space-y-2">
         <h2 className="text-3xl font-bold text-white tracking-tight">
-          {mode === "signin" ? "Welcome Back" : "Register Intel Account"}
+          Welcome Back
         </h2>
-        <p className="mt-2 text-xs text-slate-400 font-semibold uppercase tracking-wider">
-          {mode === "signin" ? "Sign in to access threat database" : "Create alias details to join database"}
+        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+          Sign in to access threat database
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-8 pt-4">
-        {/* Email Input with Animated Label */}
-        <div className="relative z-0">
-          <input
-            type="email"
-            id="floating_email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-slate-700 appearance-none focus:outline-none focus:ring-0 focus:border-emerald-500 peer transition-colors font-medium"
-            placeholder=" " 
-            required
-            disabled={loading}
-          />
-          <label
-            htmlFor="floating_email"
-            className="absolute text-sm text-slate-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-emerald-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 flex items-center font-semibold"
-          >
-            <User className="inline-block mr-2" size={14} />
-            Email Address
-          </label>
-        </div>
-
-        {/* Password Input with Animated Label */}
-        <div className="relative z-0">
-          <input
-            type="password"
-            id="floating_password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="block py-2.5 px-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-slate-700 appearance-none focus:outline-none focus:ring-0 focus:border-emerald-500 peer transition-colors font-mono"
-            placeholder=" "
-            required
-            disabled={loading}
-          />
-          <label
-            htmlFor="floating_password"
-            className="absolute text-sm text-slate-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-emerald-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 flex items-center font-semibold"
-          >
-            <Lock className="inline-block mr-2" size={14} />
-            Password
-          </label>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <a href="#" className="text-xs text-slate-400 hover:text-white transition font-medium">Forgot Password?</a>
-        </div>
-        
-        <button
-          type="submit"
-          disabled={loading}
-          className="group w-full flex items-center justify-center py-3 px-4 bg-emerald-600 hover:bg-emerald-500 disabled:bg-emerald-800 disabled:cursor-not-allowed rounded-xl text-white font-bold text-xs uppercase tracking-wider transition-all duration-300 cursor-pointer shadow-lg active:scale-95"
-        >
-          {loading ? (
-            <Loader2 className="animate-spin h-4 w-4" />
-          ) : (
-            <>
-              <span>{mode === "signin" ? "Sign In" : "Sign Up"}</span>
-              <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-0.5 transition-transform" />
-            </>
-          )}
-        </button>
-
-        {/* Divider */}
-        <div className="relative flex py-2 items-center">
-            <div className="flex-grow border-t border-slate-800"></div>
-            <span className="flex-shrink mx-4 text-slate-500 text-[10px] font-bold tracking-widest uppercase">OR CONTINUE WITH</span>
-            <div className="flex-grow border-t border-slate-800"></div>
-        </div>
-
+      <div className="pt-4">
         {/* Google Login Button */}
         <button
           type="button"
           onClick={handleGoogleSignIn}
           disabled={loading}
-          className="w-full flex items-center justify-center py-2.5 px-4 bg-white hover:bg-white/90 disabled:opacity-60 disabled:cursor-not-allowed rounded-xl text-slate-800 font-bold text-xs uppercase tracking-wider transition-all duration-300 cursor-pointer shadow-md active:scale-95"
+          className="w-full flex items-center justify-center py-3 px-4 bg-white hover:bg-white/90 disabled:opacity-60 disabled:cursor-not-allowed rounded-xl text-slate-800 font-bold text-xs uppercase tracking-wider transition-all duration-300 cursor-pointer shadow-md active:scale-95"
         >
-          <svg className="w-4 h-4 mr-2" viewBox="0 0 48 48">
-            <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039L38.802 8.841C34.553 4.806 29.613 2.5 24 2.5C11.983 2.5 2.5 11.983 2.5 24s9.483 21.5 21.5 21.5S45.5 36.017 45.5 24c0-1.538-.135-3.022-.389-4.417z"></path><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12.5 24 12.5c3.059 0 5.842 1.154 7.961 3.039l5.839-5.841C34.553 4.806 29.613 2.5 24 2.5C16.318 2.5 9.642 6.723 6.306 14.691z"></path><path fill="#4CAF50" d="M24 45.5c5.613 0 10.553-2.306 14.802-6.341l-5.839-5.841C30.842 35.846 27.059 38 24 38c-5.039 0-9.345-2.608-11.124-6.481l-6.571 4.819C9.642 41.277 16.318 45.5 24 45.5z"></path><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l5.839 5.841C44.196 35.123 45.5 29.837 45.5 24c0-1.538-.135-3.022-.389-4.417z"></path>
-          </svg>
-          Sign in with Google
+          {loading ? (
+            <Loader2 className="animate-spin h-4 w-4 text-slate-800" />
+          ) : (
+            <>
+              <svg className="w-4 h-4 mr-2" viewBox="0 0 48 48">
+                <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039L38.802 8.841C34.553 4.806 29.613 2.5 24 2.5C11.983 2.5 2.5 11.983 2.5 24s9.483 21.5 21.5 21.5S45.5 36.017 45.5 24c0-1.538-.135-3.022-.389-4.417z"></path><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12.5 24 12.5c3.059 0 5.842 1.154 7.961 3.039l5.839-5.841C34.553 4.806 29.613 2.5 24 2.5C16.318 2.5 9.642 6.723 6.306 14.691z"></path><path fill="#4CAF50" d="M24 45.5c5.613 0 10.553-2.306 14.802-6.341l-5.839-5.841C30.842 35.846 27.059 38 24 38c-5.039 0-9.345-2.608-11.124-6.481l-6.571 4.819C9.642 41.277 16.318 45.5 24 45.5z"></path><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l5.839 5.841C44.196 35.123 45.5 29.837 45.5 24c0-1.538-.135-3.022-.389-4.417z"></path>
+              </svg>
+              <span>Sign In with Google</span>
+            </>
+          )}
         </button>
-      </form>
-
-      <p className="text-center text-xs text-slate-400 font-semibold">
-        {mode === "signin" ? (
-          <>
-            Don't have an account?{" "}
-            <button
-              onClick={() => setMode("signup")}
-              className="font-bold text-emerald-400 hover:text-emerald-300 transition cursor-pointer"
-            >
-              Sign Up
-            </button>
-          </>
-        ) : (
-          <>
-            Already have an account?{" "}
-            <button
-              onClick={() => setMode("signin")}
-              className="font-bold text-emerald-400 hover:text-emerald-300 transition cursor-pointer"
-            >
-              Sign In
-            </button>
-          </>
-        )}
-      </p>
+      </div>
     </div>
   );
 }
