@@ -10,13 +10,15 @@ const menuItems = [
     { name: 'Dashboard', href: '/#dashboard' },
     { name: 'About Us', href: '/about' },
     { name: 'Threat Feeds', href: '/#feeds' },
-    { name: 'Report IP', href: '/report' }
+    { name: 'Report IP', href: '/report' },
+    { name: 'Report Bug', href: '/report-bug' }
 ]
 
 export default function Navbar() {
     const navigate = useNavigate()
     const location = useLocation()
     const isReportActive = location.pathname === '/report'
+    const isReportBugActive = location.pathname === '/report-bug'
     const { user, profile, loading, signInWithGoogle, signOut } = useAuth()
     const [dropdownOpen, setDropdownOpen] = React.useState(false)
     const [menuState, setMenuState] = React.useState(false)
@@ -57,8 +59,8 @@ export default function Navbar() {
                 className={cn(
                     "group fixed z-50 transition-all duration-300 w-full",
                     scrolled 
-                        ? "bg-[#0A0C10]/60 backdrop-blur-xl border-b border-white/[0.05] shadow-[0_8px_30px_rgb(0,0,0,0.5)] py-3" 
-                        : "bg-transparent border-b border-transparent py-5"
+                        ? "bg-[#0A0C10]/60 backdrop-blur-xl border-b border-white/[0.05] shadow-[0_8px_30px_rgb(0,0,0,0.5)] py-2" 
+                        : "bg-transparent border-b border-transparent py-3"
                 )}
             >
                 <div className="w-full px-4 lg:px-8">
@@ -71,7 +73,7 @@ export default function Navbar() {
                                 <img 
                                     src={`${import.meta.env.BASE_URL}img/threatbase.png`} 
                                     alt="Threatbase" 
-                                    className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.12] group-hover:rotate-6"
+                                    className="w-10 h-10 md:w-11 md:h-11 rounded-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.12] group-hover:rotate-6"
                                 />
                             </Link>
 
@@ -86,7 +88,7 @@ export default function Navbar() {
                             <div className="hidden lg:flex lg:items-center">
                                 <ul className="flex items-center gap-8 text-sm font-medium">
                                     {menuItems.map((item, index) => {
-                                        const isActive = item.name === 'Report IP' && isReportActive
+                                        const isActive = (item.name === 'Report IP' && isReportActive) || (item.name === 'Report Bug' && isReportBugActive)
                                         return (
                                             <li key={index} className="flex items-center">
                                                 <Link
@@ -119,7 +121,7 @@ export default function Navbar() {
                             <div className="lg:hidden">
                                 <ul className="space-y-6 text-base font-medium">
                                     {menuItems.map((item, index) => {
-                                        const isActive = item.name === 'Report IP' && isReportActive
+                                        const isActive = (item.name === 'Report IP' && isReportActive) || (item.name === 'Report Bug' && isReportBugActive)
                                         return (
                                             <li key={index}>
                                                 <Link
