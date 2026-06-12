@@ -175,7 +175,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
               </h3>
               
               <p className="text-[13px] text-slate-200 mb-5 px-2 font-sans tracking-wide">
-                This IP address has been reported a total of <span className="font-bold">{reports.length.toLocaleString()}</span> times from distinct sources. {ip} was first reported on {new Date(reports[reports.length - 1].created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric'})}, and the most recent report was <span className="font-bold">{timeAgo(reports[0].created_at)}</span>.
+                This IP address has been reported a total of <span className="font-bold">{reports.length.toLocaleString()}</span> times from distinct sources. {ip} was first reported on {new Date(reports[reports.length - 1].created_at || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric'})}, and the most recent report was <span className="font-bold">{timeAgo(reports[0].created_at || new Date().toISOString())}</span>.
               </p>
 
               <div className="bg-[#EFA034] text-white px-4 py-3.5 rounded text-[13px] mb-6 shadow-lg flex gap-3 items-start md:items-center">
@@ -199,26 +199,32 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                     </tr>
                   </thead>
                   <tbody>
-                    {reports.map((row, idx) => (
+                    {reports.map((row, idx) => {
+                      const createdAt = row.created_at || new Date().toISOString();
+                      const reporter = row.reporter_alias || 'Anonymous';
+                      const comment = row.comment || 'No context provided.';
+                      const categories = (row.category || 'Other').split(', ');
+                      
+                      return (
                       <tr key={idx} className={`border-b border-[#333] ${idx % 2 === 0 ? 'bg-[#181818]' : 'bg-[#222222]'}`}>
                         <td className="px-5 py-4 text-[13px] align-top">
                           <div className="flex items-center gap-1.5">
                             <Check size={14} className="text-[#32CD32] shrink-0" strokeWidth={3} />
                             <span className="text-base leading-none">🇺🇸</span>
-                            <span className="text-[#3273dc] hover:text-[#23527c] hover:underline cursor-pointer">{row.reporter_alias || 'Anonymous'}</span>
+                            <span className="text-[#3273dc] hover:text-[#23527c] hover:underline cursor-pointer">{reporter}</span>
                           </div>
                         </td>
                         <td className="px-5 py-4 text-[13px] text-[#ddd] align-top">
-                          <div>{row.created_at.replace('T', ' ').substring(0, 19)}</div>
-                          <div className="text-[#999] text-[12px] mt-1">({timeAgo(row.created_at)})</div>
+                          <div>{createdAt.replace('T', ' ').substring(0, 19)}</div>
+                          <div className="text-[#999] text-[12px] mt-1">({timeAgo(createdAt)})</div>
                         </td>
                         <td className="px-5 py-4 text-[13px] text-[#ddd] align-top max-w-[300px]">
-                          <div className="truncate">{row.comment || 'No context provided.'}</div>
+                          <div className="truncate">{comment}</div>
                           {row.comment && <div className="text-[#3273dc] hover:text-[#23527c] hover:underline text-[12px] mt-2 cursor-pointer text-right w-full block">show more</div>}
                         </td>
                         <td className="px-5 py-4 align-top">
                           <div className="flex flex-wrap gap-1.5 justify-end">
-                            {(row.category || 'Other').split(', ').map((cat: string) => (
+                            {categories.map((cat: string) => (
                               <span key={cat} className="bg-[#777] border border-[#555] text-white text-[11px] px-1.5 py-0.5 rounded shadow-sm whitespace-nowrap">
                                 {cat}
                               </span>
@@ -226,7 +232,8 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                           </div>
                         </td>
                       </tr>
-                    ))}
+                      )
+                    })}
                   </tbody>
                 </table>
               </div>
