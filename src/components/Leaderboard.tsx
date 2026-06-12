@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Award } from 'lucide-react'
+import { Crown, Diamond, Star, Shield, Target, Trophy, ShieldCheck } from 'lucide-react'
 import supabaseClient from '../supabaseClient'
 import { fmt } from '../utils'
 
@@ -9,64 +9,35 @@ const getRankInfo = (count: number) => {
   if (count >= 500) {
     return {
       name: 'Legend',
-      style: 'from-yellow-500/20 to-amber-500/30 text-yellow-400 border-yellow-500/30',
-      shadow: 'shadow-[0_0_20px_rgba(234,179,8,0.25)]',
-      icon: (
-        <svg className="h-3.5 w-3.5 text-yellow-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor" fillOpacity="0.2" />
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-        </svg>
-      )
+      style: 'bg-amber-500/10 border-amber-500/30 text-amber-500 transition-all duration-500 group-hover:bg-amber-500/20 group-hover:border-amber-400/60 group-hover:text-amber-400',
+      icon: <Trophy size={14} className="text-amber-500 transition-all duration-500 group-hover:text-amber-400" strokeWidth={2.5} />
     }
   }
   if (count >= 300) {
     return {
       name: 'Elite',
-      style: 'from-purple-500/20 to-fuchsia-600/30 text-purple-400 border-purple-500/30',
-      shadow: 'shadow-[0_0_15px_rgba(168,85,247,0.2)]',
-      icon: (
-        <svg className="h-3.5 w-3.5 text-purple-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L2 12l10 10 10-10L12 2z" fill="currentColor" fillOpacity="0.2" />
-          <path d="M12 2L2 12l10 10 10-10L12 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-        </svg>
-      )
+      style: 'bg-fuchsia-500/10 border-fuchsia-500/30 text-fuchsia-500 transition-all duration-500 group-hover:bg-fuchsia-500/20 group-hover:border-fuchsia-400/60 group-hover:text-fuchsia-400',
+      icon: <Diamond size={14} className="text-fuchsia-500 transition-all duration-500 group-hover:text-fuchsia-400" strokeWidth={2.5} />
     }
   }
   if (count >= 100) {
     return {
       name: 'Pro',
-      style: 'from-cyan-500/20 to-blue-600/30 text-cyan-400 border-cyan-500/30 shadow-[0_0_15px_rgba(34,211,238,0.2)]',
-      icon: (
-        <svg className="h-3.5 w-3.5 text-cyan-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="currentColor" fillOpacity="0.2" />
-          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-        </svg>
-      )
+      style: 'bg-cyan-500/10 border-cyan-500/30 text-cyan-500 transition-all duration-500 group-hover:bg-cyan-500/20 group-hover:border-cyan-400/60 group-hover:text-cyan-400',
+      icon: <Star size={14} className="text-cyan-500 transition-all duration-500 group-hover:text-cyan-400" strokeWidth={2.5} />
     }
   }
   if (count >= 50) {
     return {
       name: 'Defender',
-      style: 'from-emerald-500/20 to-teal-600/30 text-emerald-400 border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.2)]',
-      icon: (
-        <svg className="h-3.5 w-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="currentColor" fillOpacity="0.2" />
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" strokeWidth="1.5" />
-          <path d="M9 11l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      )
+      style: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500 transition-all duration-500 group-hover:bg-emerald-500/20 group-hover:border-emerald-400/60 group-hover:text-emerald-400',
+      icon: <Shield size={14} className="text-emerald-500 transition-all duration-500 group-hover:text-emerald-400" strokeWidth={2.5} />
     }
   }
   return {
     name: 'Initiate',
-    style: 'from-slate-800/40 to-slate-900/60 text-slate-400 border-slate-700/40',
-    shadow: 'shadow-[0_0_10px_rgba(148,163,184,0.05)]',
-    icon: (
-      <svg className="h-3.5 w-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="1.5" />
-        <path d="M12 2v2M12 20v2M2 12h2M20 12h2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      </svg>
-    )
+    style: 'bg-slate-500/10 border-slate-500/30 text-slate-400 transition-all duration-500 group-hover:bg-slate-400/20 group-hover:border-slate-300/40 group-hover:text-slate-200',
+    icon: <Target size={14} className="text-slate-400 transition-all duration-500 group-hover:text-slate-200" strokeWidth={2.5} />
   }
 }
 
@@ -125,36 +96,49 @@ export default function Leaderboard() {
         return (
           <motion.div
             key={leader.reporter_alias}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="flex items-center justify-between p-3.5 rounded-lg bg-white/[0.01] border border-white/5 hover:bg-white/[0.03] transition-colors relative overflow-hidden group"
+            className="flex items-center justify-between p-5 rounded-2xl bg-white/[0.02] border border-white/[0.05] hover:border-white/10 hover:bg-white/[0.04] shadow-[0_4px_24px_-8px_rgba(0,0,0,0.5)] backdrop-blur-sm transition-all relative overflow-hidden group gap-4"
           >
-            {/* Top 3 Glow effect behind the row */}
-            {index < 3 && (
-              <div className={`absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b ${rank.color}`} />
-            )}
-
-            <div className="flex items-center gap-4 relative z-10">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-white/5 text-sm font-semibold text-slate-400">
-                #{index + 1}
+            <div className="flex items-center gap-4 relative z-10 flex-1 min-w-0">
+              <div className={`flex items-center justify-center flex-shrink-0 w-12 h-12 rounded-full font-bold font-elegant border transition-all duration-500 ${
+                index === 0 ? 'bg-yellow-500/5 border-yellow-500/20 text-yellow-500 group-hover:bg-yellow-400/10 group-hover:border-yellow-400/50' :
+                index === 1 ? 'bg-slate-400/5 border-slate-400/20 text-slate-400 group-hover:bg-slate-200/10 group-hover:border-slate-300/50' :
+                index === 2 ? 'bg-orange-600/5 border-orange-600/20 text-orange-600 group-hover:bg-orange-500/10 group-hover:border-orange-400/50' :
+                'bg-white/[0.02] text-slate-500 border-white/[0.03] text-[14px] group-hover:bg-white/[0.05] group-hover:border-white/[0.1] group-hover:text-slate-300'
+              }`}>
+                {index === 0 ? <Crown size={22} className="text-yellow-600 fill-transparent transition-all duration-500 group-hover:text-yellow-400 group-hover:fill-yellow-400/30" strokeWidth={2} /> :
+                 index === 1 ? <Crown size={22} className="text-slate-400 fill-transparent transition-all duration-500 group-hover:text-slate-300 group-hover:fill-slate-300/30" strokeWidth={2} /> :
+                 index === 2 ? <Crown size={22} className="text-orange-600 fill-transparent transition-all duration-500 group-hover:text-orange-400 group-hover:fill-orange-400/30" strokeWidth={2} /> :
+                 `#${index + 1}`}
               </div>
-              <div>
-                <h4 className="font-semibold text-slate-200 text-base tracking-wide">@{leader.reporter_alias}</h4>
-                <div className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full mt-1.5 border bg-gradient-to-r ${rank.style} ${rank.shadow}`}>
-                  {rank.icon}
-                  <span className="text-[10px] uppercase font-bold tracking-widest drop-shadow-sm">
-                    {rank.name}
-                  </span>
+              <div className="flex flex-col justify-center gap-2 flex-1 min-w-0">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h4 className="font-semibold text-white/80 transition-all duration-500 group-hover:text-white text-[15px] md:text-[16px] tracking-tight font-elegant leading-tight break-words">@{leader.reporter_alias}</h4>
+                  {leader.reporter_alias === 'lamichhanesujal18' && (
+                    <span className="flex-shrink-0 px-1.5 py-[2px] bg-indigo-500/10 border border-indigo-500/30 text-indigo-400/80 text-[9px] uppercase tracking-widest font-bold rounded flex items-center gap-1 transition-all duration-500 group-hover:bg-indigo-500/20 group-hover:border-indigo-400/50 group-hover:text-indigo-300">
+                      <ShieldCheck size={10} strokeWidth={3} className="transition-all duration-500" />
+                      Admin
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-wrap items-center">
+                  <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border backdrop-blur-sm flex-shrink-0 ${rank.style}`}>
+                    {rank.icon}
+                    <span className="text-[10px] uppercase font-bold tracking-[0.1em] text-slate-200">
+                      {rank.name}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="text-right relative z-10">
-              <div className="text-xl font-bold text-slate-200">
+            <div className="text-right relative z-10 flex flex-col justify-center flex-shrink-0">
+              <div className="text-[28px] font-black text-white font-elegant tracking-tight leading-none mb-1">
                 {fmt(leader.reports_count)}
               </div>
-              <div className="text-[10px] uppercase tracking-wide text-slate-500 font-medium">
+              <div className="text-[10px] uppercase tracking-[0.15em] text-slate-400 font-bold whitespace-nowrap">
                 Intel Reports
               </div>
             </div>

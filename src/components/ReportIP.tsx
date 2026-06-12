@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  AlertTriangle, Copy, Check, ChevronLeft, ChevronRight
+  AlertTriangle, Copy, Check, ChevronLeft, ChevronRight, HelpCircle, Users, ShieldCheck
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { SignIn1 } from '@/components/ui/modern-stunning-sign-in'
@@ -94,6 +94,31 @@ const THREAT_CATEGORIES = [
   { value: 'botnet', label: 'Botnet' },
   { value: 'other', label: 'Other' },
 ];
+
+const CommentCell = ({ comment }: { comment: string }) => {
+  const [expanded, setExpanded] = useState(false);
+  const maxLength = 100;
+
+  if (!comment) return <span className="text-slate-500 italic">No comment provided</span>;
+  
+  if (comment.length <= maxLength) {
+    return <div className="whitespace-pre-wrap break-words leading-relaxed text-slate-200 font-mono text-[12px]">{comment}</div>;
+  }
+
+  return (
+    <div className="whitespace-pre-wrap break-words leading-relaxed text-slate-200 font-mono text-[12px]">
+      {expanded ? comment : `${comment.substring(0, maxLength).trim()}...`}
+      <div className="text-right mt-1">
+        <button 
+          onClick={() => setExpanded(!expanded)} 
+          className="text-[#3b82f6] hover:underline text-[11px] font-sans font-medium"
+        >
+          {expanded ? 'show less' : 'show more'}
+        </button>
+      </div>
+    </div>
+  );
+};
 
 export default function ReportIP({ addToast }: any) {
   const { user, profile, signInWithGoogle } = useAuth()
@@ -416,17 +441,20 @@ export default function ReportIP({ addToast }: any) {
                         />
                       </div>
 
-                      <div className="space-y-2">
+                      <div className="space-y-2 opacity-70">
                         <Label htmlFor="contributorName" className="text-base font-medium text-slate-300">
-                          Your Alias <span className="text-slate-500 text-sm font-normal">(optional)</span>
+                          Your Alias
                         </Label>
                         <Input
                           id="contributorName"
                           placeholder="Anonymous"
                           value={alias}
-                          onChange={(e) => setAlias(e.target.value)}
-                          className="h-11 bg-black/20 border-white/10 text-white placeholder:text-slate-500"
+                          readOnly
+                          className="h-11 bg-black/20 border-white/10 text-white placeholder:text-slate-500 cursor-not-allowed focus-visible:ring-0"
                         />
+                        <p className="text-[11px] text-slate-400 mt-1">
+                          Locked to your profile username. You can change it in your <Link to={profile?.username ? `/u/${profile.username}` : "/profile"} className="text-blue-400 hover:underline font-semibold">Profile Settings</Link>.
+                        </p>
                       </div>
 
                       <div className="pt-4 flex flex-col gap-3">
@@ -465,40 +493,31 @@ export default function ReportIP({ addToast }: any) {
             </div>
 
             <div className="lg:col-span-1">
-              <Card className="shadow-lg sticky top-24 border-white/[0.05] bg-slate-950/40 backdrop-blur-md">
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-blue-500/10 rounded-lg border border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.1)]">
-                      <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="url(#usersBorderGrad)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        <circle cx="9" cy="7" r="4" fill="url(#usersCore)" stroke="url(#usersBorderGrad)" strokeWidth="1.5" />
-                        <path d="M23 21v-2a4 4 0 00-3-3.87" stroke="url(#usersBorderGrad)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M16 3.13a4 4 0 010 7.75" stroke="url(#usersBorderGrad)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        <defs>
-                          <linearGradient id="usersBorderGrad" x1="12" y1="3" x2="12" y2="21" gradientUnits="userSpaceOnUse">
-                            <stop stopColor="#60A5FA" />
-                            <stop offset="0.5" stopColor="#3B82F6" />
-                            <stop offset="1" stopColor="#1D4ED8" />
-                          </linearGradient>
-                          <linearGradient id="usersCore" x1="9" y1="3" x2="9" y2="11" gradientUnits="userSpaceOnUse">
-                            <stop stopColor="#3B82F6" stopOpacity="0.4" />
-                            <stop offset="1" stopColor="#1E3A8A" stopOpacity="0.1" />
-                          </linearGradient>
-                        </defs>
-                      </svg>
+              <div className="sticky top-24 relative group">
+                <div className="absolute -inset-1 opacity-30 group-hover:opacity-50 transition-opacity duration-700 blur-2xl pointer-events-none z-0">
+                  <div className="absolute -top-4 -left-4 w-48 h-48 bg-blue-500/20 rounded-full mix-blend-screen filter blur-3xl animate-blob" />
+                  <div className="absolute top-20 -right-4 w-48 h-48 bg-indigo-500/20 rounded-full mix-blend-screen filter blur-3xl animate-blob animation-delay-2000" />
+                  <div className="absolute -bottom-8 left-10 w-48 h-48 bg-purple-500/20 rounded-full mix-blend-screen filter blur-3xl animate-blob animation-delay-4000" />
+                </div>
+                <Card className="relative z-10 shadow-2xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-[40px] overflow-hidden rounded-2xl">
+                  <CardHeader className="pb-6 pt-6 px-6 border-b border-white/[0.05] bg-gradient-to-r from-white/[0.02] to-transparent">
+                    <div className="flex items-center gap-4">
+                      <div className="p-3 bg-blue-500/10 rounded-2xl border border-blue-500/20 text-blue-400 drop-shadow-[0_0_12px_rgba(59,130,246,0.5)]">
+                        <Users size={24} strokeWidth={1.5} />
+                      </div>
+                      <div>
+                        <CardTitle className="text-[22px] font-bold text-white tracking-wide drop-shadow-sm">Top Contributors</CardTitle>
+                        <CardDescription className="text-slate-400 mt-0.5">Global threat intelligence leaders</CardDescription>
+                      </div>
                     </div>
-                    <div>
-                      <CardTitle className="text-xl text-white">Top Contributors</CardTitle>
-                      <CardDescription className="text-slate-400">Global threat intelligence leaders</CardDescription>
+                  </CardHeader>
+                  <CardContent className="p-0 pt-4">
+                    <div className="h-[400px] overflow-y-auto custom-scrollbar px-6 pb-6">
+                      <Leaderboard />
                     </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <div className="h-[400px] overflow-y-auto custom-scrollbar px-6 pb-6">
-                    <Leaderboard />
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </div>
 
@@ -550,68 +569,83 @@ export default function ReportIP({ addToast }: any) {
                   </div>
                 </div>
               ) : (
-                <table className="w-full text-xs text-left">
-                  <thead className="text-[10px] uppercase bg-slate-950/45 text-slate-400 font-bold border-b border-white/5 tracking-widest">
+                <table className="w-full text-left font-sans">
+                  <thead className="bg-black/40 backdrop-blur-sm text-white border-b border-white/[0.08]">
                     <tr>
-                      <th className="px-8 py-5">IP Address</th>
-                      <th className="px-6 py-5">Category</th>
-                      <th className="px-6 py-5">Context</th>
-                      <th className="px-8 py-5 text-right">Age</th>
+                      <th className="px-4 py-3 text-[13px] font-bold tracking-wide w-[12%]">IP Address</th>
+                      <th className="px-4 py-3 text-[13px] font-bold tracking-wide w-[15%]">Reporter</th>
+                      <th className="px-4 py-3 text-[13px] font-bold tracking-wide w-[20%]">
+                        <div className="flex items-center gap-1.5">
+                          IoA Timestamp (UTC)
+                          <HelpCircle size={14} className="text-[#3b82f6] fill-[#3b82f6]/20" />
+                        </div>
+                      </th>
+                      <th className="px-4 py-3 text-[13px] font-bold tracking-wide">Comment</th>
+                      <th className="px-4 py-3 text-[13px] font-bold tracking-wide text-right w-[15%]">Categories</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/5">
+                  <tbody>
                     <AnimatePresence>
-                      {reports.map((row, idx) => (
-                        <motion.tr
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: idx * 0.03 }}
-                          key={row.id || row.created_at}
-                          className="hover:bg-white/[0.015] transition-colors group"
-                        >
-                          <td className="px-8 py-4.5 whitespace-nowrap">
-                            <div className="flex flex-col gap-1.5">
-                              <div className="font-mono font-bold text-slate-200 flex items-center gap-2 text-sm">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
-                                <span>{row.ip}</span>
-                                <button
-                                  type="button"
-                                  onClick={() => handleCopyIp(row.ip)}
-                                  className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-white/5 text-slate-500 hover:text-slate-300 w-5 h-5 flex items-center justify-center cursor-pointer"
-                                >
-                                  {copiedIp === row.ip ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
-                                </button>
-                              </div>
-                              {row.reporter_alias && (
-                                <div className="text-[9px] uppercase tracking-wider text-slate-500 font-bold pl-4">
-                                  By <span className="text-slate-400">@{row.reporter_alias}</span>
-                                </div>
-                              )}
-                            </div>
-                          </td>
-                          <td className="px-6 py-4.5">
-                            <div className="flex flex-wrap gap-1.5 max-w-[240px]">
-                              {(row.category || 'Other').split(', ').map((cat: string) => (
-                                <span key={cat} className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold tracking-wider ${getCategoryColor(cat)}`}>
-                                  {cat}
-                                </span>
-                              ))}
-                            </div>
-                          </td>
-                          <td className="px-6 py-4.5 text-slate-400 max-w-[200px] sm:max-w-xs md:max-w-md">
-                            {row.comment ? (
-                              <span className="flex items-start gap-1.5 group-hover:text-slate-300 transition-colors">
-                                <span className="whitespace-normal leading-relaxed text-slate-300 font-medium">{row.comment}</span>
+                      {reports.map((row, idx) => {
+                        const dateObj = new Date(row.created_at);
+                        const fullDate = dateObj.toISOString().replace('T', ' ').substring(0, 19);
+                        const categories = (row.category || 'Other').split(', ');
+                        
+                        return (
+                          <motion.tr
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: idx * 0.03 }}
+                            key={row.id || row.created_at}
+                            className="bg-white/[0.02] even:bg-transparent hover:bg-white/[0.04] transition-colors group border-b border-white/[0.02] last:border-0"
+                          >
+                            {/* IP Address */}
+                            <td className="px-4 py-3 align-top whitespace-nowrap">
+                              <span className="text-slate-300 font-mono text-[13px] font-medium">
+                                {row.ip}
                               </span>
-                            ) : (
-                              <span className="text-slate-600 italic text-[11px] font-medium">No Context Recorded</span>
-                            )}
-                          </td>
-                          <td className="px-8 py-4.5 text-slate-500 whitespace-nowrap font-medium text-right group-hover:text-slate-400 transition-colors">
-                            {timeAgo(row.created_at)}
-                          </td>
-                        </motion.tr>
-                      ))}
+                            </td>
+
+                            {/* Reporter */}
+                            <td className="px-4 py-3 align-top whitespace-nowrap">
+                              <div className="flex items-center gap-1.5">
+                                <Check size={14} strokeWidth={3} className="text-[#10b981]" />
+                                <span className="text-[#3b82f6] hover:underline cursor-pointer text-[13px] font-medium">
+                                  {row.reporter_alias || 'Anonymous'}
+                                </span>
+                                {row.reporter_alias === 'lamichhanesujal18' && (
+                                  <span className="ml-1 px-1.5 py-[1px] bg-indigo-500/20 border border-indigo-500/40 text-indigo-400 text-[8px] uppercase tracking-widest font-bold rounded shadow-[0_0_5px_rgba(99,102,241,0.2)] flex items-center gap-0.5 drop-shadow-sm">
+                                    <ShieldCheck size={8} strokeWidth={3} />
+                                    Admin
+                                  </span>
+                                )}
+                              </div>
+                            </td>
+
+                            {/* Timestamp */}
+                            <td className="px-4 py-3 align-top whitespace-nowrap">
+                              <div className="text-[13px] text-slate-200 font-medium">{fullDate}</div>
+                              <div className="text-[11px] text-slate-500 mt-0.5">({timeAgo(row.created_at)})</div>
+                            </td>
+
+                            {/* Comment */}
+                            <td className="px-4 py-3 align-top">
+                              <CommentCell comment={row.comment} />
+                            </td>
+
+                            {/* Categories */}
+                            <td className="px-4 py-3 align-top">
+                              <div className="flex flex-col items-end gap-1.5">
+                                {categories.map(cat => (
+                                  <span key={cat} className="inline-block px-2 py-0.5 bg-white/10 text-white text-[10px] rounded-[3px] font-medium whitespace-nowrap border border-white/[0.05]">
+                                    {cat}
+                                  </span>
+                                ))}
+                              </div>
+                            </td>
+                          </motion.tr>
+                        )
+                      })}
                     </AnimatePresence>
                   </tbody>
                 </table>

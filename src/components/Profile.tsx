@@ -8,6 +8,7 @@ import { useAuth } from '../AuthContext'
 import supabaseClient from '../supabaseClient'
 import { Button } from '@/components/ui/button'
 import { fmt, timeAgo } from '../utils'
+import { useSEO } from '../useSEO'
 
 const getUserBadges = (profile: any, reportsCount: number, joinIndex: number | null) => {
   const badges = [];
@@ -304,6 +305,19 @@ export default function Profile({ addToast }: any) {
     setSaving(true)
 
     try {
+      // Check if username is already taken by someone else
+      const { data: existingUser } = await supabaseClient
+        .from('profiles')
+        .select('id')
+        .eq('username', editUsername.trim())
+        .maybeSingle()
+
+      if (existingUser && existingUser.id !== user.id) {
+        addToast('This username alias is already taken by another user', 'error')
+        setSaving(false)
+        return
+      }
+
       const { error } = await supabaseClient
         .from('profiles')
         .upsert({
@@ -356,6 +370,15 @@ export default function Profile({ addToast }: any) {
     }
   }
 
+  const activeProfile = viewedProfile || authProfile || { user_metadata: user?.user_metadata, email: user?.email }
+  const usernameDisplay = activeProfile?.username || editUsername || activeProfile?.email?.split('@')[0] || 'User'
+
+  useSEO({
+    title: `${usernameDisplay}'s Profile — Threatbase`,
+    description: `View ${usernameDisplay}'s threat intelligence contributions, badges, and activity on Threatbase.`,
+    path: `/u/${paramUsername || usernameDisplay}`,
+  })
+
   if (authLoading || loadingProfile) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#0B0F19] text-slate-400">
@@ -376,9 +399,6 @@ export default function Profile({ addToast }: any) {
       </div>
     )
   }
-
-  const activeProfile = viewedProfile || authProfile || { user_metadata: user?.user_metadata, email: user?.email }
-  const usernameDisplay = activeProfile?.username || editUsername || activeProfile?.email?.split('@')[0]
 
   const getCategoryColor = (cat: string) => {
     if (!cat) return 'text-slate-300'
