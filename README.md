@@ -22,17 +22,6 @@ Threatbase is a high-performance threat intelligence ecosystem. It consists of t
 1. **The Backend Intelligence Engine**: Automatically collects, deduplicates, and curates malicious Indicators of Compromise (IOCs) from industry-leading open-source feeds.
 2. **The Threat Dashboard**: A breathtaking, ultra-premium SaaS frontend built in React that allows defenders to view analytics, search indicators, and manually report live threats.
 
----
-
-## ✨ Features
-
-- **Live Threat Scanner**: Instantly check IPs, domains, and hashes against our global database.
-- **Community Intel Feed**: A real-time feed of user-reported threats.
-- **Gamified Leaderboard**: Top contributors who report verified malicious IPs earn unique glowing ranks (Initiate, Guardian, Vanguard, Elite Defender).
-- **Automated OSINT Aggregation**: Pulls from 30+ blacklists every hour (AbuseIPDB, Spamhaus, FireHOL, etc.).
-- **Mobile-First Responsive Design**: Flawlessly adapts to any screen size, complete with card-based data tables.
-- **Secure By Design**: Implements rigorous input sanitization via DOMPurify and UI-level rate limiting to defend against spam and injection attacks.
-- **Ultra-Premium UI**: Sleek, minimal glassmorphism design tailored for SOC analysts.
 
 <br/>
 
