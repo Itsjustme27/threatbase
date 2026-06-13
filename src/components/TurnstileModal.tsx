@@ -1,7 +1,7 @@
 import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Turnstile } from '@marsidev/react-turnstile'
-import { X } from 'lucide-react'
+import { X, Shield } from 'lucide-react'
 
 interface TurnstileModalProps {
   isOpen: boolean
@@ -10,53 +10,62 @@ interface TurnstileModalProps {
   siteKey?: string
 }
 
-export default function TurnstileModal({ isOpen, onClose, onSuccess, siteKey = '1x00000000000000000000AA' }: TurnstileModalProps) {
+export default function TurnstileModal({ isOpen, onClose, onSuccess, siteKey = '0x4AAAAAADj2T6kY9_5dXRhs' }: TurnstileModalProps) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <>
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#0B0F19]/90 backdrop-blur-sm transition-opacity"
           />
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            initial={{ opacity: 0, scale: 0.98, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed left-1/2 top-1/2 z-50 w-full max-w-sm -translate-x-1/2 -translate-y-1/2"
+            exit={{ opacity: 0, scale: 0.98, y: 10 }}
+            transition={{ type: "spring", bounce: 0, duration: 0.4 }}
+            className="relative z-10 w-full max-w-sm px-4"
           >
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/90 p-6 shadow-2xl backdrop-blur-xl">
+            <div className="relative w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-950 p-6 shadow-2xl">
+              
               <button
                 onClick={onClose}
-                className="absolute right-4 top-4 rounded-full p-1 text-slate-400 hover:bg-white/10 hover:text-white transition-colors"
+                className="absolute right-4 top-4 rounded-md p-1.5 text-slate-400 hover:bg-slate-800 hover:text-slate-100 transition-colors"
+                aria-label="Close"
               >
-                <X size={18} />
+                <X size={16} strokeWidth={2} />
               </button>
               
-              <div className="mb-6 mt-2 text-center">
-                <h3 className="text-lg font-semibold text-white">Security Check</h3>
-                <p className="mt-1 text-sm text-slate-400">Please verify you are human to proceed with the scan.</p>
+              <div className="mb-6 mt-1 flex flex-col items-center text-center">
+                <div className="mb-4 flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border-2 border-slate-800 bg-slate-900 shadow-lg">
+                  <img src={`${import.meta.env.BASE_URL}img/threatbase.png`} alt="Threatbase Logo" className="h-full w-full object-cover" />
+                </div>
+                <h3 className="text-lg font-medium text-slate-100 tracking-tight">Human Verification</h3>
+                <p className="mt-2 text-sm text-slate-400 max-w-[280px]">
+                  Please complete the security check to proceed with your scan.
+                </p>
               </div>
 
               <div className="flex justify-center">
-                <Turnstile
-                  siteKey={siteKey}
-                  onSuccess={(token) => {
-                    // Small delay for better UX
-                    setTimeout(() => onSuccess(token), 500)
-                  }}
-                  options={{
-                    theme: 'dark',
-                    size: 'normal'
-                  }}
-                />
+                <div className="overflow-hidden rounded-lg border border-slate-800 bg-[#222]">
+                  <Turnstile
+                    siteKey={siteKey}
+                    onSuccess={(token) => {
+                      setTimeout(() => onSuccess(token), 300)
+                    }}
+                    options={{
+                      theme: 'dark',
+                      size: 'normal'
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </motion.div>
-        </>
+        </div>
       )}
     </AnimatePresence>
   )
