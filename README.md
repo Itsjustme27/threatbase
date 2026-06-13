@@ -42,7 +42,7 @@
 
 ## 🧩 What Is Threatbase?
 
-Threatbase is a **fully-automated threat intelligence ecosystem** — no VPS, no API keys, no infrastructure costs. It ingests, deduplicates, and curates malicious IOCs from 10+ industry-leading OSINT feeds, then serves them through a sleek React dashboard and raw-URL blocklists.
+Threatbase is a **fully-automated threat intelligence ecosystem**. It ingests, deduplicates, and curates malicious IOCs from 10+ industry-leading OSINT feeds, then serves them through a sleek React dashboard and raw-URL blocklists.
 
 ```
   OSINT Feeds → Python Aggregator → GitHub Actions → Raw Blocklists
