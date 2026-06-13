@@ -46,7 +46,10 @@ export default function App() {
   const SCAN_COOLDOWN = 3000 // 3 seconds
 
   // Initial verification
-  const [isHumanVerified, setIsHumanVerified] = useState(() => sessionStorage.getItem('human_verified') === 'true')
+  const [isHumanVerified, setIsHumanVerified] = useState(() => {
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    return isLocal || sessionStorage.getItem('human_verified') === 'true'
+  })
 
   // Toast state
   const [toasts, setToasts] = useState([])
