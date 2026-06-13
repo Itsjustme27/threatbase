@@ -60,10 +60,10 @@ export default function ThanksPage() {
           </motion.div>
 
           <h1 className="text-5xl md:text-7xl font-black flex flex-col items-center justify-center gap-3 text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-slate-400 tracking-tight drop-shadow-sm pb-2">
-            Thank you, @{displayName}!
+            Intel Sources
           </h1>
           <p className="mt-4 text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed drop-shadow">
-            Your contribution is vital to keeping networks safe. The Threatbase community appreciates your effort, along with the tireless work of the following open-source threat intelligence organizations.
+            Thank you, <strong className="text-white">@{displayName}</strong>, for your contribution! Threatbase is powered by the global cybersecurity community. We extend our deepest gratitude to you and the following open-source projects for providing free, high-quality threat intelligence.
           </p>
         </motion.div>
 

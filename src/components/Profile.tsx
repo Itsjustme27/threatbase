@@ -332,6 +332,21 @@ export default function Profile({ addToast }: any) {
 
       if (error) throw error
 
+      // Update past reports to reflect new alias
+      const oldUsername = authProfile?.username || user.email?.split('@')[0] || '';
+      const newUsername = editUsername.trim();
+      
+      if (oldUsername && oldUsername !== newUsername) {
+        const { error: updateError } = await supabaseClient
+          .from('reported_ips')
+          .update({ reporter_alias: newUsername })
+          .eq('reporter_alias', oldUsername);
+          
+        if (updateError) {
+          console.error("Failed to update past reports with new username:", updateError);
+        }
+      }
+
       addToast('Account profile updated successfully!', 'success')
       await refreshProfile()
       setIsEditing(false)
