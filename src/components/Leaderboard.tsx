@@ -90,7 +90,7 @@ export default function Leaderboard() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="w-full flex flex-col">
       {leaders.map((leader, index) => {
         const rank = getRankInfo(leader.reports_count)
         return (
@@ -99,14 +99,14 @@ export default function Leaderboard() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="flex items-center justify-between py-4 px-6 rounded-2xl bg-[#1A1C23]/90 border border-white/[0.03] hover:border-white/[0.08] hover:bg-[#22252F]/90 shadow-lg backdrop-blur-sm transition-all duration-300 relative overflow-hidden group gap-4"
+            className="flex items-center justify-between py-4 px-3 border-b border-white/[0.06] last:border-0 hover:bg-white/[0.02] transition-colors duration-200 relative group gap-4"
           >
             <div className="flex items-center gap-4 relative z-10 flex-1 min-w-0">
-              <div className={`flex items-center justify-center flex-shrink-0 w-12 h-12 rounded-full font-bold font-elegant border transition-all duration-500 ${
-                index === 0 ? 'bg-yellow-500/5 border-yellow-500/20 text-yellow-500 group-hover:bg-yellow-400/10 group-hover:border-yellow-400/50' :
-                index === 1 ? 'bg-slate-400/5 border-slate-400/20 text-slate-400 group-hover:bg-slate-200/10 group-hover:border-slate-300/50' :
-                index === 2 ? 'bg-orange-600/5 border-orange-600/20 text-orange-600 group-hover:bg-orange-500/10 group-hover:border-orange-400/50' :
-                'bg-white/[0.02] text-slate-500 border-white/[0.03] text-[14px] group-hover:bg-white/[0.05] group-hover:border-white/[0.1] group-hover:text-slate-300'
+              <div className={`flex items-center justify-center flex-shrink-0 w-10 h-10 rounded-full font-bold font-elegant border transition-all duration-500 ${
+                index === 0 ? 'bg-yellow-500/5 border-yellow-500/20 text-yellow-500' :
+                index === 1 ? 'bg-slate-400/5 border-slate-400/20 text-slate-400' :
+                index === 2 ? 'bg-orange-600/5 border-orange-600/20 text-orange-600' :
+                'bg-transparent text-slate-500 border-transparent text-[14px]'
               }`}>
                 {index === 0 ? <img src={`${import.meta.env.BASE_URL}img/1streward.png`} alt="1st Place" className="w-8 h-8 object-contain drop-shadow-md transition-all duration-500 group-hover:scale-110" /> :
                  index === 1 ? <img src={`${import.meta.env.BASE_URL}img/2ndmedal.png`} alt="2nd Place" className="w-8 h-8 object-contain drop-shadow-md transition-all duration-500 group-hover:scale-110" /> :
@@ -129,7 +129,7 @@ export default function Leaderboard() {
             </div>
 
             <div className="text-right relative z-10 flex flex-col justify-center flex-shrink-0">
-              <div className="text-[28px] font-black text-white font-elegant tracking-tight leading-none mb-1">
+              <div className="text-xl font-bold text-white font-elegant tracking-tight leading-none mb-0.5">
                 {fmt(leader.reports_count)}
               </div>
               <div className="text-[10px] uppercase tracking-[0.15em] text-slate-400 font-bold whitespace-nowrap">
