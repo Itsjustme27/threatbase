@@ -133,6 +133,38 @@ def backup_to_json(reports):
     log.info(f"  Backed up {len(existing)} total reports to {backup_file}")
 
 
+def fetch_false_positives():
+    """Fetch all disputes, tally by IP, and save false positives (>= 3 disputes)."""
+    log.info("Fetching disputes from Supabase to generate false positives list...")
+    url = f"{SUPABASE_URL}/rest/v1/disputes"
+    params = {
+        "select": "ip"
+    }
+    try:
+        r = requests.get(url, headers={**HEADERS, "Prefer": ""}, params=params, timeout=30)
+        r.raise_for_status()
+        disputes = r.json()
+        
+        counts = {}
+        for d in disputes:
+            ip = d.get("ip", "")
+            if ip:
+                counts[ip] = counts.get(ip, 0) + 1
+                
+        false_positives = [ip for ip, count in counts.items() if count >= 3]
+        
+        os.makedirs("ioc", exist_ok=True)
+        with open("ioc/false_positives.txt", "w", encoding="utf-8") as f:
+            for ip in false_positives:
+                f.write(ip + "\n")
+                
+        log.info(f"  Saved {len(false_positives)} false positive IPs to ioc/false_positives.txt")
+        return false_positives
+    except Exception as e:
+        log.error(f"  Failed to fetch disputes: {e}")
+        return []
+
+
 def main():
     log.info("═" * 55)
     log.info("  Threatbase — Community Report Sync")
@@ -208,6 +240,9 @@ def main():
     log.info("Marking reports as processed in Supabase...")
     report_ids = [r["id"] for r in reports]
     mark_as_processed(report_ids)
+
+    # 6. Fetch disputes and generate false positives list
+    fetch_false_positives()
 
     log.info(f"✓ Done! {len(valid_ips)} community IPs will be merged in next feed update.")
 

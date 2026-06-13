@@ -254,6 +254,21 @@ def numerical_ip_key(ip: str) -> tuple:
     return tuple(int(octet) for octet in ip.split("."))
 
 
+def load_false_positives(filename="ioc/false_positives.txt") -> set:
+    result = set()
+    if os.path.exists(filename):
+        try:
+            with open(filename, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith(('#', '//')):
+                        result.add(line)
+            log.info(f"Loaded {len(result)} false positives")
+        except Exception as e:
+            log.error(f"Failed to load {filename}: {e}")
+    return result
+
+
 def load_custom_iocs(filename="custom_iocs.txt") -> dict:
     result = {"ips": set(), "ipv6": set(), "cidrs": set(), "domains": set(), "hashes": set(), "urls": set()}
     if not os.path.exists(filename):
@@ -745,6 +760,7 @@ def main():
     # ── Load Custom IOCs and Existing IOCs (Cumulative feature)
     custom_iocs = load_custom_iocs()
     existing_iocs = load_existing_iocs()
+    false_positives = load_false_positives()
 
     # ── Fetch ALL feeds in parallel ──────────────────────────────────────────
     log.info("Fetching all feeds in parallel...")
@@ -882,6 +898,25 @@ def main():
         url_sources["custom_iocs.txt"] = custom_iocs["urls"]
     if existing_iocs["urls"]:
         url_sources["historical"] = existing_iocs["urls"]
+
+    # ── Remove False Positives ───────────────────────────────────────────────
+    if false_positives:
+        log.info(f"Removing {len(false_positives)} false positives from all feeds...")
+        import sys; sys.stderr.flush()
+        for fp in false_positives:
+            if fp in ip_count:
+                del ip_count[fp]
+            all_domains.discard(fp)
+            all_ipv6.discard(fp)
+            all_cidrs.discard(fp)
+            
+            custom_iocs["ips"].discard(fp)
+            existing_iocs["ips"].discard(fp)
+            
+            for h in list(hash_sources.keys()):
+                hash_sources[h].discard(fp)
+            for u in list(url_sources.keys()):
+                url_sources[u].discard(fp)
 
     # Sort IPs once
     log.info("Sorting IPs...")

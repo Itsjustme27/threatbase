@@ -165,7 +165,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  {type === 'danger' && (
+                  {(type === 'danger' || type === 'disputed') && (
                     <button
                       onClick={handleDispute}
                       disabled={isDisputing}
