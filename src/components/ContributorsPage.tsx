@@ -29,7 +29,7 @@ export default function ContributorsPage() {
             transition={{ duration: 0.6 }}
             className="text-center relative"
           >
-            <h1 className="text-4xl md:text-5xl font-black flex items-center justify-center gap-2 text-white tracking-tighter pb-2">
+            <h1 className="text-4xl md:text-5xl font-black font-righteous flex items-center justify-center gap-2 text-white tracking-tighter pb-2">
               <span className="text-liquid-red drop-shadow-md">Top Contributors</span>
             </h1>
             <p className="mt-2 text-slate-400 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
