@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Bug, ShieldCheck, AlertTriangle, AlertOctagon, ChevronRight, Search, Check } from 'lucide-react'
 import supabaseClient from '../supabaseClient'
-import { timeAgo } from '../utils'
+import { timeAgo, getCategoryIconPath } from '../utils'
 
 const getCategoryColor = (cat: string) => {
   if (!cat) return 'bg-slate-500/10 text-slate-300 border border-slate-500/20'
@@ -266,7 +266,8 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                             <td className="block md:table-cell px-0 py-1 md:px-6 md:py-4 text-right">
                               <div className="flex flex-wrap md:justify-end gap-1.5 pt-1 md:pt-0">
                                 {categories.map((cat: string) => (
-                                  <span key={cat} className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold tracking-wider ${getCategoryColor(cat)}`}>
+                                  <span key={cat} className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-bold tracking-wider ${getCategoryColor(cat)}`}>
+                                    <img src={getCategoryIconPath(cat)} alt={cat} className="w-3 h-3 object-contain drop-shadow-sm" />
                                     {cat}
                                   </span>
                                 ))}

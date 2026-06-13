@@ -1,4 +1,4 @@
-import { Radar, Network, Fingerprint, Unlink, Layers, Server, Download } from 'lucide-react'
+import { Server, Download } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 const BASE = import.meta.env.BASE_URL
@@ -8,42 +8,42 @@ const feeds = [
     name: 'IPv4 Blocklist',
     desc: 'High-confidence malicious IPs with risk scores (10-100). Format: IP,Score.',
     file: 'malicious_ips.txt',
-    icon: <Radar size={20} />,
+    icon: <img src={`${BASE}img/ipv4icon.png`} alt="IPv4" className="w-8 h-8 object-contain invert opacity-80" />,
     color: 'text-red-500 bg-red-500/10',
   },
   {
     name: 'Domain Blocklist',
     desc: 'Malicious, phishing, and C2 domains ready for DNS sinkholing.',
     file: 'malicious_domains.txt',
-    icon: <Network size={20} />,
+    icon: <img src={`${BASE}img/domain.png`} alt="Domain" className="w-8 h-8 object-contain drop-shadow-sm" />,
     color: 'text-indigo-500 bg-indigo-500/10',
   },
   {
     name: 'Hash Blocklist',
     desc: 'SHA-256 malware file signatures for EDRs and AV scanners.',
     file: 'malicious_hashes.txt',
-    icon: <Fingerprint size={20} />,
+    icon: <img src={`${BASE}img/file.png`} alt="File" className="w-8 h-8 object-contain drop-shadow-sm" />,
     color: 'text-blue-500 bg-blue-500/10',
   },
   {
     name: 'URL Blocklist',
     desc: 'Complete malicious URLs for web proxies and filtering.',
     file: 'malicious_urls.txt',
-    icon: <Unlink size={20} />,
+    icon: <img src={`${BASE}img/url.png`} alt="URL" className="w-8 h-8 object-contain drop-shadow-sm" />,
     color: 'text-rose-500 bg-rose-500/10',
   },
   {
     name: 'IPv6 Blocklist',
     desc: 'High-confidence malicious IPv6 addresses.',
     file: 'malicious_ipv6.txt',
-    icon: <Network size={20} />,
+    icon: <img src={`${BASE}img/ipv6.png`} alt="IPv6" className="w-8 h-8 object-contain invert opacity-80" />,
     color: 'text-sky-500 bg-sky-500/10',
   },
   {
     name: 'CIDR Blocklist',
     desc: 'Malicious IPv4 and IPv6 subnets (CIDR notation).',
     file: 'malicious_cidrs.txt',
-    icon: <Layers size={20} />,
+    icon: <img src={`${BASE}img/cidrs.png`} alt="CIDR" className="w-8 h-8 object-contain drop-shadow-sm" />,
     color: 'text-red-600 bg-red-600/10',
   },
 ]

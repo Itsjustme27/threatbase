@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Radar, Network, Fingerprint, Unlink, Layers } from 'lucide-react'
+import { Radar } from 'lucide-react'
 import { animateValue, getBaseUrl, fmt } from '../utils'
 
 export default function Stats({ statsData }: any) {
@@ -59,7 +59,7 @@ export default function Stats({ statsData }: any) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <StatCard
             label="Malicious IPs"
-            icon={<Radar size={20} />}
+            icon={<img src={`${import.meta.env.BASE_URL}img/ipv4icon.png`} alt="IPv4" className="w-8 h-8 object-contain invert opacity-80" />}
             iconColorClass="text-red-400 bg-red-950/30 border-red-500/20 group-hover:border-red-500/40"
             valueId="n-total"
             sub="Active IPv4 addresses"
@@ -67,7 +67,7 @@ export default function Stats({ statsData }: any) {
           />
           <StatCard
             label="Domains"
-            icon={<Network size={20} />}
+            icon={<img src={`${import.meta.env.BASE_URL}img/domain.png`} alt="Domain" className="w-8 h-8 object-contain drop-shadow-sm" />}
             iconColorClass="text-indigo-400 bg-indigo-950/30 border-indigo-500/20 group-hover:border-indigo-500/40"
             valueId="n-domains"
             sub="Known malicious domains"
@@ -75,7 +75,7 @@ export default function Stats({ statsData }: any) {
           />
           <StatCard
             label="File Hashes"
-            icon={<Fingerprint size={20} />}
+            icon={<img src={`${import.meta.env.BASE_URL}img/file.png`} alt="File Hash" className="w-8 h-8 object-contain drop-shadow-sm" />}
             iconColorClass="text-blue-400 bg-blue-950/30 border-blue-500/20 group-hover:border-blue-500/40"
             valueId="n-hashes"
             sub="SHA-256 signatures"
@@ -83,7 +83,7 @@ export default function Stats({ statsData }: any) {
           />
           <StatCard
             label="Malicious URLs"
-            icon={<Unlink size={20} />}
+            icon={<img src={`${import.meta.env.BASE_URL}img/url.png`} alt="URL" className="w-8 h-8 object-contain drop-shadow-sm" />}
             iconColorClass="text-rose-400 bg-rose-950/30 border-rose-500/20 group-hover:border-rose-500/40"
             valueId="n-urls"
             sub="Active phishing URLs"
@@ -91,7 +91,7 @@ export default function Stats({ statsData }: any) {
           />
           <StatCard
             label="IPv6 Addresses"
-            icon={<Network size={20} />}
+            icon={<img src={`${import.meta.env.BASE_URL}img/ipv6.png`} alt="IPv6" className="w-8 h-8 object-contain invert opacity-80" />}
             iconColorClass="text-sky-400 bg-sky-950/30 border-sky-500/20 group-hover:border-sky-500/40"
             valueId="n-ipv6"
             sub="Active IPv6 threats"
@@ -99,7 +99,7 @@ export default function Stats({ statsData }: any) {
           />
           <StatCard
             label="CIDR Blocks"
-            icon={<Layers size={20} />}
+            icon={<img src={`${import.meta.env.BASE_URL}img/cidrs.png`} alt="CIDR" className="w-8 h-8 object-contain drop-shadow-sm" />}
             iconColorClass="text-red-500 bg-red-950/30 border-red-500/20 group-hover:border-red-500/40"
             valueId="n-cidrs"
             sub="Malicious subnets"

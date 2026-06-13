@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu, X, Github, LogIn, LogOut, User as UserIcon, ChevronDown } from 'lucide-react'
+import { Menu, X, Github, LogIn, LogOut, User as UserIcon, ChevronDown, Heart } from 'lucide-react'
 import { useScroll, motion, AnimatePresence, useMotionValueEvent } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -10,7 +10,8 @@ const menuItems = [
     { name: 'Dashboard', href: '/#dashboard' },
     { name: 'About Us', href: '/about' },
     { name: 'Threat Feeds', href: '/#feeds' },
-    { name: 'Report IP', href: '/report' }
+    { name: 'Report IP', href: '/report' },
+    { name: 'Top Contributors', href: '/contributors' }
 ]
 
 export default function Navbar() {
@@ -148,6 +149,16 @@ export default function Navbar() {
                             </div>
                             
                             <div className="flex w-full flex-col space-y-4 sm:flex-row sm:items-center sm:justify-center lg:justify-end sm:gap-4 sm:space-y-0 md:w-fit relative mt-6 lg:mt-0">
+                                <Button
+                                    asChild
+                                    variant="outline"
+                                    className="border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20 hover:text-white rounded-full px-5 h-10 transition-all duration-300 hover:shadow-[0_0_15px_rgba(255,255,255,0.05)] gap-2 text-xs font-semibold"
+                                    size="sm">
+                                    <Link to="/thanks" onClick={() => setMenuState(false)}>
+                                        <Heart size={14} className="text-red-400 fill-red-400/20" />
+                                        Thanks
+                                    </Link>
+                                </Button>
                                 <Button
                                     asChild
                                     variant="outline"

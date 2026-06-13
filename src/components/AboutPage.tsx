@@ -1,7 +1,6 @@
 import React from 'react'
 import IsoLevelWarp from '@/components/ui/isometric-wave-grid-background'
 import { motion } from 'framer-motion'
-import { Database, Target, Zap } from 'lucide-react'
 import { useSEO } from '@/useSEO'
 
 export default function AboutPage() {
@@ -12,19 +11,19 @@ export default function AboutPage() {
   })
   const features = [
     {
-      icon: <Database size={24} />,
+      icon: <img src={`${import.meta.env.BASE_URL}img/database.png`} alt="Database" className="w-8 h-8 object-contain drop-shadow-sm" />,
       iconColorClass: "text-red-400 bg-red-950/30 border-red-500/20 group-hover:border-red-500/40",
       title: "Discover IOCs",
       desc: "Access verified indicators of compromise to proactively defend networks."
     },
     {
-      icon: <Target size={24} />,
+      icon: <img src={`${import.meta.env.BASE_URL}img/threat.png`} alt="Threats" className="w-8 h-8 object-contain drop-shadow-sm" />,
       iconColorClass: "text-indigo-400 bg-indigo-950/30 border-indigo-500/20 group-hover:border-indigo-500/40",
       title: "Track Threats",
       desc: "Monitor emerging threat actors, malware campaigns, and attack vectors."
     },
     {
-      icon: <Zap size={24} />,
+      icon: <img src={`${import.meta.env.BASE_URL}img/action.png`} alt="Actionable Intel" className="w-8 h-8 object-contain drop-shadow-sm" />,
       iconColorClass: "text-blue-400 bg-blue-950/30 border-blue-500/20 group-hover:border-blue-500/40",
       title: "Actionable Intel",
       desc: "Transform raw security data and logs into clear, actionable intelligence."

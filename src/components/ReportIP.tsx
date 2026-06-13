@@ -6,9 +6,8 @@ import {
 import { Link } from 'react-router-dom'
 import { SignIn1 } from '@/components/ui/modern-stunning-sign-in'
 import supabaseClient from '../supabaseClient'
-import { fmt, timeAgo } from '../utils'
+import { fmt, timeAgo, getAvatarForName, getCategoryIconPath } from '../utils'
 import { Typewriter } from '@/components/ui/typewriter'
-import Leaderboard from './Leaderboard'
 import { useAuth } from '../AuthContext'
 import { useSEO } from '@/useSEO'
 import { MatrixText } from '@/components/ui/matrix-text'
@@ -364,32 +363,13 @@ export default function ReportIP({ addToast }: any) {
             </div>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
+          <div className="max-w-3xl mx-auto">
+            <div>
               <Card className="shadow-lg border-white/[0.05] bg-slate-950/40 backdrop-blur-md">
                 <CardHeader>
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-red-500/10 rounded-lg border border-red-500/20 shadow-[0_0_15px_rgba(239,68,68,0.1)]">
-                      <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L4 5.5v5.5c0 5.5 3.5 10.2 8 11.5 4.5-1.3 8-6 8-11.5V5.5L12 2z" fill="url(#shieldGlow)" opacity="0.1" />
-                        <path d="M12 2L4 5.5v5.5c0 5.5 3.5 10.2 8 11.5 4.5-1.3 8-6 8-11.5V5.5L12 2z" stroke="url(#shieldBorderGrad)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M12 6.5c-2.5 1.5-4 3-4 6 0 3.5 2 6 4 7 2-1 4-3.5 4-7 0-3-1.5-4.5-4-6z" fill="url(#shieldCore)" stroke="url(#shieldBorderGrad)" strokeWidth="1" />
-                        <defs>
-                          <linearGradient id="shieldGlow" x1="12" y1="2" x2="12" y2="22.5" gradientUnits="userSpaceOnUse">
-                            <stop stopColor="#EF4444" />
-                            <stop offset="1" stopColor="#7F1D1D" />
-                          </linearGradient>
-                          <linearGradient id="shieldBorderGrad" x1="12" y1="2" x2="12" y2="22.5" gradientUnits="userSpaceOnUse">
-                            <stop stopColor="#FCA5A5" />
-                            <stop offset="0.5" stopColor="#EF4444" />
-                            <stop offset="1" stopColor="#991B1B" />
-                          </linearGradient>
-                          <linearGradient id="shieldCore" x1="12" y1="6.5" x2="12" y2="19.5" gradientUnits="userSpaceOnUse">
-                            <stop stopColor="#EF4444" stopOpacity="0.4" />
-                            <stop offset="1" stopColor="#7F1D1D" stopOpacity="0.1" />
-                          </linearGradient>
-                        </defs>
-                      </svg>
+                      <img src={`${import.meta.env.BASE_URL}img/report.png`} alt="Report Icon" className="w-8 h-8 object-contain invert opacity-80" />
                     </div>
                     <div>
                       <CardTitle className="text-xl md:text-2xl text-white">Submit Malicious IP</CardTitle>
@@ -436,7 +416,7 @@ export default function ReportIP({ addToast }: any) {
                             {THREAT_CATEGORIES.map((cat) => (
                               <SelectItem key={cat.value} value={cat.value} className="text-slate-200 focus:bg-white/10">
                                 <div className="flex items-center gap-2">
-                                  <AlertTriangle className="h-4 w-4 text-orange-500" />
+                                  <img src={`${import.meta.env.BASE_URL}img/${cat.value === 'scanning' ? 'other' : cat.value.replace('-', '')}.png`} alt={cat.label} className="w-4 h-4 object-contain drop-shadow-sm" onError={(e) => { e.currentTarget.src = `${import.meta.env.BASE_URL}img/other.png` }} />
                                   {cat.label}
                                 </div>
                               </SelectItem>
@@ -507,34 +487,6 @@ export default function ReportIP({ addToast }: any) {
                   )}
                 </CardContent>
               </Card>
-            </div>
-
-            <div className="lg:col-span-1">
-              <div className="sticky top-24 relative group">
-                <div className="absolute -inset-1 opacity-30 group-hover:opacity-50 transition-opacity duration-700 blur-2xl pointer-events-none z-0">
-                  <div className="absolute -top-4 -left-4 w-48 h-48 bg-blue-500/20 rounded-full mix-blend-screen filter blur-3xl animate-blob" />
-                  <div className="absolute top-20 -right-4 w-48 h-48 bg-indigo-500/20 rounded-full mix-blend-screen filter blur-3xl animate-blob animation-delay-2000" />
-                  <div className="absolute -bottom-8 left-10 w-48 h-48 bg-purple-500/20 rounded-full mix-blend-screen filter blur-3xl animate-blob animation-delay-4000" />
-                </div>
-                <Card className="relative z-10 shadow-2xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-[40px] overflow-hidden rounded-2xl">
-                  <CardHeader className="pb-6 pt-6 px-6 border-b border-white/[0.05] bg-gradient-to-r from-white/[0.02] to-transparent">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 bg-blue-500/10 rounded-2xl border border-blue-500/20 text-blue-400 drop-shadow-[0_0_12px_rgba(59,130,246,0.5)]">
-                        <Users size={24} strokeWidth={1.5} />
-                      </div>
-                      <div>
-                        <CardTitle className="text-[22px] font-bold text-white tracking-wide drop-shadow-sm">Top Contributors</CardTitle>
-                        <CardDescription className="text-slate-400 mt-0.5">Global threat intelligence leaders</CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="p-0 pt-4">
-                    <div className="h-[400px] overflow-y-auto custom-scrollbar px-6 pb-6">
-                      <Leaderboard />
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
             </div>
           </div>
 
@@ -626,14 +578,14 @@ export default function ReportIP({ addToast }: any) {
                             {/* Reporter */}
                             <td className="block md:table-cell px-0 py-1 md:px-4 md:py-3 align-top whitespace-nowrap">
                               <div className="flex items-center gap-1.5">
-                                <Check size={14} strokeWidth={3} className="text-[#10b981]" />
+                                <img src={getAvatarForName(row.reporter_alias)} alt="Avatar" className="w-4 h-4 rounded-full border border-white/10 bg-black/20 object-cover" />
                                 <span className="text-[#3b82f6] hover:underline cursor-pointer text-[13px] font-medium">
                                   {row.reporter_alias || 'Anonymous'}
                                 </span>
                                 {row.reporter_alias === 'lamichhanesujal18' && (
-                                  <span className="ml-1 px-1.5 py-[1px] bg-indigo-500/20 border border-indigo-500/40 text-indigo-400 text-[8px] uppercase tracking-widest font-bold rounded shadow-[0_0_5px_rgba(99,102,241,0.2)] flex items-center gap-0.5 drop-shadow-sm">
-                                    <ShieldCheck size={8} strokeWidth={3} />
-                                    Admin
+                                  <span className="ml-1 flex items-center gap-2 transition-transform duration-500 hover:scale-105">
+                                    <img src={`${import.meta.env.BASE_URL}img/admin.png`} title="Admin" alt="Admin" className="w-7 h-7 object-contain drop-shadow-md transition-all duration-500" />
+                                    <img src={`${import.meta.env.BASE_URL}img/hunter.png`} title="Hunter" alt="Hunter" className="w-7 h-7 object-contain drop-shadow-md transition-all duration-500" />
                                   </span>
                                 )}
                               </div>
@@ -656,7 +608,8 @@ export default function ReportIP({ addToast }: any) {
                             <td className="block md:table-cell px-0 py-1 md:px-4 md:py-3 align-top">
                               <div className="flex flex-wrap md:flex-col items-start md:items-end gap-1.5 pt-1 md:pt-0">
                                 {categories.map(cat => (
-                                  <span key={cat} className="inline-block px-2 py-0.5 bg-white/10 text-white text-[10px] rounded-[3px] font-medium whitespace-nowrap border border-white/[0.05]">
+                                  <span key={cat} className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-white/10 text-white text-[10px] rounded-[3px] font-medium whitespace-nowrap border border-white/[0.05]">
+                                    <img src={getCategoryIconPath(cat)} alt={cat} className="w-3 h-3 object-contain drop-shadow-sm" />
                                     {cat}
                                   </span>
                                 ))}

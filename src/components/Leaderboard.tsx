@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Crown, Diamond, Star, Shield, Target, Trophy, ShieldCheck } from 'lucide-react'
+import { Crown, Diamond, Star, Shield, Target, Trophy, ShieldCheck, Medal } from 'lucide-react'
 import supabaseClient from '../supabaseClient'
-import { fmt } from '../utils'
+import { fmt, getAvatarForName } from '../utils'
 
 // Ranks based on number of reports
 const getRankInfo = (count: number) => {
@@ -108,29 +108,23 @@ export default function Leaderboard() {
                 index === 2 ? 'bg-orange-600/5 border-orange-600/20 text-orange-600 group-hover:bg-orange-500/10 group-hover:border-orange-400/50' :
                 'bg-white/[0.02] text-slate-500 border-white/[0.03] text-[14px] group-hover:bg-white/[0.05] group-hover:border-white/[0.1] group-hover:text-slate-300'
               }`}>
-                {index === 0 ? <Crown size={22} className="text-yellow-600 fill-transparent transition-all duration-500 group-hover:text-yellow-400 group-hover:fill-yellow-400/30" strokeWidth={2} /> :
-                 index === 1 ? <Crown size={22} className="text-slate-400 fill-transparent transition-all duration-500 group-hover:text-slate-300 group-hover:fill-slate-300/30" strokeWidth={2} /> :
-                 index === 2 ? <Crown size={22} className="text-orange-600 fill-transparent transition-all duration-500 group-hover:text-orange-400 group-hover:fill-orange-400/30" strokeWidth={2} /> :
+                {index === 0 ? <img src={`${import.meta.env.BASE_URL}img/1streward.png`} alt="1st Place" className="w-8 h-8 object-contain drop-shadow-md transition-all duration-500 group-hover:scale-110" /> :
+                 index === 1 ? <img src={`${import.meta.env.BASE_URL}img/2ndmedal.png`} alt="2nd Place" className="w-8 h-8 object-contain drop-shadow-md transition-all duration-500 group-hover:scale-110" /> :
+                 index === 2 ? <img src={`${import.meta.env.BASE_URL}img/3rdmedal.png`} alt="3rd Place" className="w-8 h-8 object-contain drop-shadow-md transition-all duration-500 group-hover:scale-110" /> :
                  `#${index + 1}`}
               </div>
               <div className="flex flex-col justify-center gap-2 flex-1 min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
+                  <img src={getAvatarForName(leader.reporter_alias)} alt="Avatar" className="w-6 h-6 rounded-full border border-white/10 bg-black/20 object-cover drop-shadow-sm" />
                   <h4 className="font-semibold text-white/80 transition-all duration-500 group-hover:text-white text-[15px] md:text-[16px] tracking-tight font-elegant leading-tight break-words">@{leader.reporter_alias}</h4>
                   {leader.reporter_alias === 'lamichhanesujal18' && (
-                    <span className="flex-shrink-0 px-1.5 py-[2px] bg-indigo-500/10 border border-indigo-500/30 text-indigo-400/80 text-[9px] uppercase tracking-widest font-bold rounded flex items-center gap-1 transition-all duration-500 group-hover:bg-indigo-500/20 group-hover:border-indigo-400/50 group-hover:text-indigo-300">
-                      <ShieldCheck size={10} strokeWidth={3} className="transition-all duration-500" />
-                      Admin
+                    <span className="flex-shrink-0 flex items-center gap-2 transition-transform duration-500 hover:scale-105">
+                      <img src={`${import.meta.env.BASE_URL}img/admin.png`} title="Admin" alt="Admin" className="w-7 h-7 object-contain drop-shadow-md transition-all duration-500" />
+                      <img src={`${import.meta.env.BASE_URL}img/hunter.png`} title="Hunter" alt="Hunter" className="w-7 h-7 object-contain drop-shadow-md transition-all duration-500" />
                     </span>
                   )}
                 </div>
-                <div className="flex flex-wrap items-center">
-                  <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border backdrop-blur-sm flex-shrink-0 ${rank.style}`}>
-                    {rank.icon}
-                    <span className="text-[10px] uppercase font-bold tracking-[0.1em] text-slate-200">
-                      {rank.name}
-                    </span>
-                  </div>
-                </div>
+
               </div>
             </div>
 

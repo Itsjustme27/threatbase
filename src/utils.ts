@@ -61,3 +61,35 @@ export function escapeHtml(str) {
   div.textContent = str
   return div.innerHTML
 }
+
+/** Predict male/female avatar based on name heuristically */
+export function getAvatarForName(name) {
+  if (!name || name === 'Anonymous') return `${import.meta.env.BASE_URL}img/maledefender.png`
+  
+  const n = name.toLowerCase()
+  const femaleIndicators = ['sarah', 'jessica', 'emily', 'mary', 'linda', 'anna', 'emma', 'olivia', 'sophia', 'isabella', 'mia', 'charlotte', 'amelia', 'harper', 'evelyn', 'abigail', 'maria', 'jane', 'jennifer', 'susan', 'lisa', 'karen', 'betty', 'helen', 'sandra', 'ashley', 'kimberly', 'donna', 'carol', 'michelle', 'amanda', 'melissa', 'deborah', 'stephanie', 'rebecca', 'sharon', 'laura', 'cynthia', 'kathleen', 'amy', 'shirley', 'angela', 'heather', 'nicole', 'girl', 'woman', 'lady', 'queen']
+  
+  for (const f of femaleIndicators) {
+      if (n.includes(f)) return `${import.meta.env.BASE_URL}img/femaledefender.png`
+  }
+  
+  // Rough heuristic for typical feminine suffixes in English and Latin names
+  if (/a[0-9_]*$/.test(n) || /ie[0-9_]*$/.test(n) || /ynn[0-9_]*$/.test(n) || /ella[0-9_]*$/.test(n) || /ia[0-9_]*$/.test(n)) {
+      return `${import.meta.env.BASE_URL}img/femaledefender.png`
+  }
+  
+  return `${import.meta.env.BASE_URL}img/maledefender.png`
+}
+
+/** Get the PNG icon path for a threat category label */
+export function getCategoryIconPath(label) {
+  if (!label) return `${import.meta.env.BASE_URL}img/other.png`
+  const l = label.toLowerCase()
+  if (l.includes('malware')) return `${import.meta.env.BASE_URL}img/malware.png`
+  if (l.includes('phish')) return `${import.meta.env.BASE_URL}img/phishing.png`
+  if (l.includes('spam')) return `${import.meta.env.BASE_URL}img/spam.png`
+  if (l.includes('ddos')) return `${import.meta.env.BASE_URL}img/DDoS.png`
+  if (l.includes('brute')) return `${import.meta.env.BASE_URL}img/bruteforce.png`
+  if (l.includes('botnet')) return `${import.meta.env.BASE_URL}img/botnet.png`
+  return `${import.meta.env.BASE_URL}img/other.png`
+}

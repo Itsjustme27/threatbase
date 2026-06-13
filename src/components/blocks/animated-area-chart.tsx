@@ -16,7 +16,6 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/area-chart";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { getBaseUrl } from "../../utils";
 
@@ -69,16 +68,10 @@ export default function AnimatedHighlightedAreaChart({ feedVersion }: { feedVers
       
       <div className="relative z-10">
         <CardHeader>
-          <CardTitle className="text-xl font-extrabold flex items-center gap-2 text-white tracking-tight">
-            Threat Landscape Trends
-            <Badge
-              variant="outline"
-              className="text-emerald-500 bg-emerald-500/10 border-none ml-2"
-            >
-              <TrendingUp className="h-4 w-4 mr-1" />
-              <span>Live Updates</span>
-            </Badge>
-          </CardTitle>
+            <CardTitle className="text-xl font-extrabold flex items-center gap-2 text-white tracking-tight">
+              Threat Landscape Trends
+              <img src={`${import.meta.env.BASE_URL}img/trending.png`} alt="Trending" className="h-6 object-contain ml-2 drop-shadow-sm" />
+            </CardTitle>
           <CardDescription className="text-slate-400 font-medium mt-1">
             Tracking malicious IPv4 and Domains activity over time
           </CardDescription>
