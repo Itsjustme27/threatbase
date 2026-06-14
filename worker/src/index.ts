@@ -24,62 +24,61 @@ export default {
 		}
 
 		try {
-			// Query ThreatFox API
+			const tags = new Set<string>();
+			let malwarePrintable = '';
+
+			// 1. Prepare ThreatFox Request
 			const threatFoxRequest = {
 				query: 'search_ioc',
 				search_term: ioc
 			};
-
-			const tfRes = await fetch('https://threatfox-api.abuse.ch/api/v1/', {
+			const tfPromise = fetch('https://threatfox-api.abuse.ch/api/v1/', {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(threatFoxRequest)
-			});
+			}).then(res => res.json());
 
-			const data = await tfRes.json() as any;
+			// 2. Prepare AlienVault OTX Request
+			const otxPromise = fetch(`https://otx.alienvault.com/api/v1/indicators/IPv4/${ioc}/general`)
+				.then(res => res.json());
 
-			if (data.query_status === 'ok' && data.data) {
-				const tags = new Set<string>();
-				let malwarePrintable = '';
-				
-				for (const item of data.data) {
-					if (item.tags) {
-						for (const t of item.tags) {
-							tags.add(t);
+			// Execute concurrently
+			const [tfResult, otxResult] = await Promise.allSettled([tfPromise, otxPromise]);
+
+			// Process ThreatFox Data
+			if (tfResult.status === 'fulfilled') {
+				const data = tfResult.value as any;
+				if (data.query_status === 'ok' && data.data) {
+					for (const item of data.data) {
+						if (item.tags) item.tags.forEach((t: string) => tags.add(t));
+						if (item.threat_type) tags.add(item.threat_type);
+						if (item.malware_printable && !malwarePrintable) {
+							malwarePrintable = item.malware_printable;
 						}
 					}
-					if (item.threat_type) {
-						tags.add(item.threat_type);
-					}
-					if (item.malware_printable) {
-						malwarePrintable = item.malware_printable;
+				}
+			}
+
+			// Process AlienVault OTX Data
+			if (otxResult.status === 'fulfilled') {
+				const data = otxResult.value as any;
+				if (data.pulse_info && data.pulse_info.pulses) {
+					for (const pulse of data.pulse_info.pulses) {
+						if (pulse.tags) pulse.tags.forEach((t: string) => tags.add(t));
 					}
 				}
-				
-				return new Response(JSON.stringify({
-					success: true,
-					tags: Array.from(tags),
-					malware: malwarePrintable
-				}), {
-					headers: {
-						'Content-Type': 'application/json',
-						...corsHeaders
-					}
-				});
-			} else {
-				return new Response(JSON.stringify({
-					success: true,
-					tags: [],
-					malware: null
-				}), {
-					headers: {
-						'Content-Type': 'application/json',
-						...corsHeaders
-					}
-				});
 			}
+
+			return new Response(JSON.stringify({
+				success: true,
+				tags: Array.from(tags),
+				malware: malwarePrintable || null
+			}), {
+				headers: {
+					'Content-Type': 'application/json',
+					...corsHeaders
+				}
+			});
 		} catch (e: any) {
 			return new Response(JSON.stringify({ error: e.message }), { 
 				status: 500, 
