@@ -25,8 +25,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
   const [isDisputing, setIsDisputing] = useState(false)
   const [showDisputeForm, setShowDisputeForm] = useState(false)
   const [disputeReason, setDisputeReason] = useState('')
-  const [isDeepScanning, setIsDeepScanning] = useState(false)
-  const [deepScanData, setDeepScanData] = useState<any>(null)
+
   const { user } = useAuth()
 
   const ip = scanResult?.ip || scanInput?.trim() || ''
@@ -88,32 +87,13 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
   }, [scanResult, ip])
 
   // Build external links
-  let vtHref = '#'
   let abuseHref = '#'
-  let showVt = false
   let showAbuse = false
   if (scanResult) {
-    const { isIP, isIPv6, isHash, isURL, isDomain } = scanResult
+    const { isIP, isIPv6 } = scanResult
     if (isIP || isIPv6) {
-      vtHref = 'https://www.virustotal.com/gui/search/' + encodeURIComponent(ip)
       abuseHref = 'https://www.abuseipdb.com/check/' + encodeURIComponent(ip)
-      showVt = true
       showAbuse = true
-    } else if (isHash) {
-      vtHref = 'https://www.virustotal.com/gui/file/' + ip
-      showVt = true
-    } else if (isURL) {
-      // VirusTotal uses base64url without padding for URLs
-      try {
-        const b64 = btoa(unescape(encodeURIComponent(ip))).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_')
-        vtHref = 'https://www.virustotal.com/gui/url/' + b64
-      } catch(e) {
-        vtHref = 'https://www.virustotal.com/gui/search/' + encodeURIComponent(ip)
-      }
-      showVt = true
-    } else if (isDomain) {
-      vtHref = 'https://www.virustotal.com/gui/domain/' + ip
-      showVt = true
     }
   }
 
@@ -150,28 +130,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
     }
   }
 
-  const handleDeepScan = async () => {
-    if (!ip) return;
-    setIsDeepScanning(true);
-    try {
-      // Points to your deployed Cloudflare Worker
-      const workerUrl = 'https://threatbase-deepscan.sujallamichhane.workers.dev/'; 
-      const iocType = scanResult?.isDomain ? 'domain' : scanResult?.isURL ? 'url' : scanResult?.isHash ? 'hash' : scanResult?.isIPv6 ? 'IPv6' : 'IPv4';
-      const res = await fetch(`${workerUrl}?ioc=${encodeURIComponent(ip)}&type=${iocType}`);
-      
-      if (!res.ok) throw new Error('Worker failed');
-      const data = await res.json();
-      setDeepScanData(data);
-    } catch (e: any) {
-      if (e instanceof Error) {
-        addToast(`Deep Scan failed: ${e.message}`, 'error');
-      } else {
-        addToast('Deep Scan failed. Ensure your Cloudflare Worker is accessible.', 'error');
-      }
-    } finally {
-      setIsDeepScanning(false);
-    }
-  }
+
 
   const StatusIcon = type === 'danger' ? Bug : type === 'safe' ? ShieldCheck : type === 'disputed' ? ShieldAlert : AlertTriangle
 
@@ -347,90 +306,9 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                   <div>
                     <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">External Intelligence</h4>
                     
-                    {/* Deep Scan Button */}
-                    <div className="mb-6 bg-slate-900/40 rounded-xl p-4 border border-white/5 shadow-inner">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="text-xs font-bold text-slate-300">Deep Scan</span>
-                        <button 
-                          onClick={handleDeepScan}
-                          disabled={isDeepScanning}
-                          className="px-3 py-1.5 rounded-lg text-[10px] font-bold tracking-wider uppercase bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors disabled:opacity-50 flex items-center gap-2"
-                        >
-                          {isDeepScanning ? (
-                            <><div className="w-3 h-3 border-2 border-primary border-t-transparent rounded-full animate-spin"></div> Scanning</>
-                          ) : 'Deep Scan'}
-                        </button>
-                      </div>
-                      
-                      {deepScanData ? (
-                        <div className="space-y-3">
-                          {deepScanData.error ? (
-                            <div className="text-[10px] text-destructive italic">{deepScanData.error} {deepScanData.detail && `(${deepScanData.detail})`}</div>
-                          ) : deepScanData.message ? (
-                            <div className="text-[10px] text-slate-500 italic">{deepScanData.message}</div>
-                          ) : deepScanData.verdict ? (
-                            <>
-                              <div className="flex items-center justify-between">
-                                <span className="text-xs text-slate-500 font-semibold">VT Verdict:</span>
-                                <span className={`text-xs font-bold uppercase ${deepScanData.verdict === 'malicious' ? 'text-destructive' : deepScanData.verdict === 'suspicious' ? 'text-orange-400' : deepScanData.verdict === 'clean' ? 'text-emerald-500' : 'text-slate-400'}`}>
-                                  {deepScanData.verdict}
-                                </span>
-                              </div>
-                              {deepScanData.stats && (
-                                <div className="grid grid-cols-2 gap-2 mt-2">
-                                  <div className="bg-destructive/10 border border-destructive/20 rounded p-1.5 text-center">
-                                    <div className="text-[10px] text-destructive font-bold">Malicious</div>
-                                    <div className="text-sm font-mono text-destructive">{deepScanData.stats.malicious}</div>
-                                  </div>
-                                  <div className="bg-orange-500/10 border border-orange-500/20 rounded p-1.5 text-center">
-                                    <div className="text-[10px] text-orange-400 font-bold">Suspicious</div>
-                                    <div className="text-sm font-mono text-orange-400">{deepScanData.stats.suspicious}</div>
-                                  </div>
-                                  <div className="bg-emerald-500/10 border border-emerald-500/20 rounded p-1.5 text-center">
-                                    <div className="text-[10px] text-emerald-500 font-bold">Harmless</div>
-                                    <div className="text-sm font-mono text-emerald-500">{deepScanData.stats.harmless}</div>
-                                  </div>
-                                  <div className="bg-slate-500/10 border border-slate-500/20 rounded p-1.5 text-center">
-                                    <div className="text-[10px] text-slate-400 font-bold">Undetected</div>
-                                    <div className="text-sm font-mono text-slate-400">{deepScanData.stats.undetected}</div>
-                                  </div>
-                                </div>
-                              )}
-                              {deepScanData.extra?.categories && Object.keys(deepScanData.extra.categories).length > 0 && (
-                                <div className="text-xs text-slate-300 leading-relaxed mt-2 border-t border-white/5 pt-2">
-                                  <span className="font-semibold text-slate-500 mr-2">Categories:</span>
-                                  {Object.values(deepScanData.extra.categories).slice(0, 5).join(', ')}
-                                </div>
-                              )}
-                              {deepScanData.vt_link && (
-                                <div className="mt-2 text-right">
-                                  <a href={deepScanData.vt_link} target="_blank" rel="noopener noreferrer" className="text-[10px] text-primary hover:underline">
-                                    View Full Analysis &rarr;
-                                  </a>
-                                </div>
-                              )}
-                            </>
-                          ) : (
-                            <div className="text-[10px] text-slate-500 italic">No details found.</div>
-                          )}
-                        </div>
-                      ) : (
-                        <div className="text-[10px] text-slate-500 leading-relaxed">
-                          Run a deep scan to fetch live VirusTotal intelligence via Cloudflare Workers.
-                        </div>
-                      )}
-                    </div>
+
 
                     <div className="flex flex-col">
-                      {showVt && (
-                        <a href={vtHref} target="_blank" rel="noopener" className="group flex items-center justify-between py-3 border-b border-white/5 hover:bg-white/[0.02] px-3 -mx-3 rounded-lg transition-colors">
-                          <div className="flex items-center gap-3">
-                            <img src="https://www.virustotal.com/gui/images/favicon.png" alt="" className="w-4 h-4 opacity-80 group-hover:opacity-100 transition-opacity" />
-                            <span className="font-medium text-sm text-slate-300 group-hover:text-white transition-colors">VirusTotal</span>
-                          </div>
-                          <ChevronRight size={16} className="text-slate-600 group-hover:text-slate-300 transition-colors" />
-                        </a>
-                      )}
                       {showAbuse && (
                         <a href={abuseHref} target="_blank" rel="noopener" className="group flex items-center justify-between py-3 border-b border-white/5 hover:bg-white/[0.02] px-3 -mx-3 rounded-lg transition-colors">
                           <div className="flex items-center gap-3">
@@ -440,7 +318,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                           <ChevronRight size={16} className="text-slate-600 group-hover:text-slate-300 transition-colors" />
                         </a>
                       )}
-                      {!showVt && !showAbuse && (
+                      {!showAbuse && (
                         <p className="text-sm text-slate-500 italic">No external links available.</p>
                       )}
                     </div>

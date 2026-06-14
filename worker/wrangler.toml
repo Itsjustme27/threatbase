@@ -1,6 +1,0 @@
-name = "threatbase-deepscan"
-main = "src/index.ts"
-compatibility_date = "2024-02-20"
-
-[observability]
-enabled = true
