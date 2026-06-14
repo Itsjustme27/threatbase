@@ -363,25 +363,60 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                       </div>
                       
                       {deepScanData ? (
-                        <div className="space-y-2">
-                          {deepScanData.malware && (
-                            <div className="text-xs">
-                              <span className="text-slate-500 font-semibold mr-2">Family:</span>
-                              <span className="text-destructive font-bold">{deepScanData.malware}</span>
-                            </div>
-                          )}
-                          {deepScanData.tags && deepScanData.tags.length > 0 ? (
-                            <div className="text-xs text-slate-300 leading-relaxed mt-2">
-                              <span className="font-semibold text-slate-500 mr-2">Associated with:</span>
-                              {normalizeTags(deepScanData.tags).join(', ')}
-                            </div>
+                        <div className="space-y-3">
+                          {deepScanData.error ? (
+                            <div className="text-[10px] text-destructive italic">{deepScanData.error} {deepScanData.detail && `(${deepScanData.detail})`}</div>
+                          ) : deepScanData.message ? (
+                            <div className="text-[10px] text-slate-500 italic">{deepScanData.message}</div>
+                          ) : deepScanData.verdict ? (
+                            <>
+                              <div className="flex items-center justify-between">
+                                <span className="text-xs text-slate-500 font-semibold">VT Verdict:</span>
+                                <span className={`text-xs font-bold uppercase ${deepScanData.verdict === 'malicious' ? 'text-destructive' : deepScanData.verdict === 'suspicious' ? 'text-orange-400' : deepScanData.verdict === 'clean' ? 'text-emerald-500' : 'text-slate-400'}`}>
+                                  {deepScanData.verdict}
+                                </span>
+                              </div>
+                              {deepScanData.stats && (
+                                <div className="grid grid-cols-2 gap-2 mt-2">
+                                  <div className="bg-destructive/10 border border-destructive/20 rounded p-1.5 text-center">
+                                    <div className="text-[10px] text-destructive font-bold">Malicious</div>
+                                    <div className="text-sm font-mono text-destructive">{deepScanData.stats.malicious}</div>
+                                  </div>
+                                  <div className="bg-orange-500/10 border border-orange-500/20 rounded p-1.5 text-center">
+                                    <div className="text-[10px] text-orange-400 font-bold">Suspicious</div>
+                                    <div className="text-sm font-mono text-orange-400">{deepScanData.stats.suspicious}</div>
+                                  </div>
+                                  <div className="bg-emerald-500/10 border border-emerald-500/20 rounded p-1.5 text-center">
+                                    <div className="text-[10px] text-emerald-500 font-bold">Harmless</div>
+                                    <div className="text-sm font-mono text-emerald-500">{deepScanData.stats.harmless}</div>
+                                  </div>
+                                  <div className="bg-slate-500/10 border border-slate-500/20 rounded p-1.5 text-center">
+                                    <div className="text-[10px] text-slate-400 font-bold">Undetected</div>
+                                    <div className="text-sm font-mono text-slate-400">{deepScanData.stats.undetected}</div>
+                                  </div>
+                                </div>
+                              )}
+                              {deepScanData.extra?.categories && Object.keys(deepScanData.extra.categories).length > 0 && (
+                                <div className="text-xs text-slate-300 leading-relaxed mt-2 border-t border-white/5 pt-2">
+                                  <span className="font-semibold text-slate-500 mr-2">Categories:</span>
+                                  {Object.values(deepScanData.extra.categories).slice(0, 5).join(', ')}
+                                </div>
+                              )}
+                              {deepScanData.vt_link && (
+                                <div className="mt-2 text-right">
+                                  <a href={deepScanData.vt_link} target="_blank" rel="noopener noreferrer" className="text-[10px] text-primary hover:underline">
+                                    View Full Analysis &rarr;
+                                  </a>
+                                </div>
+                              )}
+                            </>
                           ) : (
-                            <div className="text-[10px] text-slate-500 italic">No live tags found for this indicator.</div>
+                            <div className="text-[10px] text-slate-500 italic">No details found.</div>
                           )}
                         </div>
                       ) : (
                         <div className="text-[10px] text-slate-500 leading-relaxed">
-                          Run a deep scan to fetch live malware families and tags directly from ThreatFox via Cloudflare Workers.
+                          Run a deep scan to fetch live VirusTotal intelligence via Cloudflare Workers.
                         </div>
                       )}
                     </div>
