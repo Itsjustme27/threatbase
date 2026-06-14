@@ -9,6 +9,7 @@ import supabaseClient from '../supabaseClient'
 import { Button } from '@/components/ui/button'
 import { fmt, timeAgo } from '../utils'
 import { useSEO } from '../useSEO'
+import MfaSetup from './MfaSetup'
 
 const getUserBadges = (profile: any, reportsCount: number, joinIndex: number | null) => {
   const badges = [];
@@ -687,6 +688,17 @@ export default function Profile({ addToast }: any) {
             )}
           </div>
         </motion.div>
+
+        {/* Security Settings */}
+        {isOwnProfile && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+          >
+            <MfaSetup addToast={addToast} />
+          </motion.div>
+        )}
 
         {/* Danger Zone */}
         {isOwnProfile && (

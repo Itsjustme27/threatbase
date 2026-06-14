@@ -7,6 +7,9 @@ interface AuthContextType {
   session: Session | null
   profile: any | null
   loading: boolean
+  requiresMfa: boolean
+  mfaVerified: () => void
+  checkMfaLevel: () => Promise<void>
   signInWithGoogle: () => Promise<void>
   signInWithEmail: (email: string, password: string) => Promise<void>
   signUpWithEmail: (email: string, password: string) => Promise<void>
@@ -21,6 +24,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null)
   const [profile, setProfile] = useState<any | null>(null)
   const [loading, setLoading] = useState(true)
+  const [requiresMfa, setRequiresMfa] = useState(false)
+
+  const checkMfaLevel = async () => {
+    if (!supabaseClient) return
+    const { data, error } = await supabaseClient.auth.mfa.getAuthenticatorAssuranceLevel()
+    if (error) {
+      console.error('Error fetching MFA level:', error)
+      return
+    }
+    if (data.nextLevel === 'aal2' && data.currentLevel === 'aal1') {
+      setRequiresMfa(true)
+    } else {
+      setRequiresMfa(false)
+    }
+  }
+
+  const mfaVerified = () => {
+    setRequiresMfa(false)
+    checkMfaLevel()
+  }
 
   const fetchProfile = async (userId: string) => {
     if (!supabaseClient) return null
@@ -63,6 +86,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const u = session?.user ?? null
       setUser(u)
       if (u) {
+        await checkMfaLevel()
         const p = await fetchProfile(u.id)
         setProfile(p)
       }
@@ -76,10 +100,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const u = currentSession?.user ?? null
         setUser(u)
         if (u) {
+          await checkMfaLevel()
           const p = await fetchProfile(u.id)
           setProfile(p)
         } else {
           setProfile(null)
+          setRequiresMfa(false)
         }
         setLoading(false)
       }
@@ -133,6 +159,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         session,
         profile,
         loading,
+        requiresMfa,
+        mfaVerified,
+        checkMfaLevel,
         signInWithGoogle,
         signInWithEmail,
         signUpWithEmail,
