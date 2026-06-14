@@ -161,9 +161,12 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
       if (!res.ok) throw new Error('Worker failed');
       const data = await res.json();
       setDeepScanData(data);
-    } catch (err: any) {
-      console.error(err);
-      addToast('Deep Scan failed. Ensure your Cloudflare Worker is running locally on port 8787.', 'error');
+    } catch (e: any) {
+      if (e instanceof Error) {
+        addToast(`Deep Scan failed: ${e.message}`, 'error');
+      } else {
+        addToast('Deep Scan failed. Ensure your Cloudflare Worker is accessible.', 'error');
+      }
     } finally {
       setIsDeepScanning(false);
     }
