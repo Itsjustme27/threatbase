@@ -728,21 +728,27 @@ def filter_ips(ip_sources, custom_ips, existing_ips):
         "romainmarcoux_outgoing_ab": "LOW",
     }
     
-    filtered_ip_count = {}
+    filtered_ip_info = {}
     for ip, feeds in ip_to_feeds.items():
         num_sources = len(feeds)
         tiers = [FEED_TRUST_TIERS.get(f, "LOW") for f in feeds]
         
+        tags = set()
+        for f in feeds:
+            cat = FEED_CATEGORIES.get(f)
+            if cat and cat != "Mixed":
+                tags.add(cat)
+                
         if "HIGH" in tiers:
-            filtered_ip_count[ip] = num_sources
+            filtered_ip_info[ip] = {"count": num_sources, "score": "HIGH", "tags": sorted(list(tags))}
         elif "MEDIUM" in tiers:
             if num_sources >= 2:
-                filtered_ip_count[ip] = num_sources
+                filtered_ip_info[ip] = {"count": num_sources, "score": "MEDIUM", "tags": sorted(list(tags))}
         else:
             if num_sources >= 3:
-                filtered_ip_count[ip] = num_sources
+                filtered_ip_info[ip] = {"count": num_sources, "score": "LOW", "tags": sorted(list(tags))}
                 
-    return filtered_ip_count
+    return filtered_ip_info
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -861,8 +867,8 @@ def main():
     t0 = time.time()
 
     from collections import Counter
-    filtered_ip_count = filter_ips(ip_sources, custom_iocs["ips"], existing_iocs["ips"])
-    ip_count = Counter(filtered_ip_count)
+    filtered_ip_info = filter_ips(ip_sources, custom_iocs["ips"], existing_iocs["ips"])
+    ip_count = {ip: info["count"] for ip, info in filtered_ip_info.items()}
 
     # ── Merge Domains ────────────────────────────────────────────────────────
     log.info("Merging Domains...")
@@ -950,12 +956,14 @@ def main():
         timestamp = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
         f.write("# Threatbase Threat Intelligence Feed - IPs\n")
         f.write("# (https://github.com/kalidada18/threatbase)\n")
-        f.write("# Format: IP\n")
+        f.write("# Format: IP,FeedCount,RiskScore,Tags\n")
         f.write("#\n")
         f.write(f"# Last update: {timestamp}\n")
         f.write("#\n")
         for ip in sorted_ips:
-            f.write(f"{ip}\n")
+            info = filtered_ip_info[ip]
+            tags_str = "|".join(info["tags"]) if info["tags"] else "Mixed"
+            f.write(f"{ip},{info['count']},{info['score']},{tags_str}\n")
 
     # Plain text domain list
     log.info("Sorting and saving malicious_domains.txt...")

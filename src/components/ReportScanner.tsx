@@ -25,6 +25,8 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
   const [isDisputing, setIsDisputing] = useState(false)
   const [showDisputeForm, setShowDisputeForm] = useState(false)
   const [disputeReason, setDisputeReason] = useState('')
+  const [isDeepScanning, setIsDeepScanning] = useState(false)
+  const [deepScanData, setDeepScanData] = useState<any>(null)
   const { user } = useAuth()
 
   const ip = scanResult?.ip || scanInput?.trim() || ''
@@ -148,6 +150,25 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
     }
   }
 
+  const handleDeepScan = async () => {
+    if (!ip) return;
+    setIsDeepScanning(true);
+    try {
+      // Points to your deployed Cloudflare Worker
+      const workerUrl = 'https://threatbase.sujallamichhane.workers.dev/'; 
+      const res = await fetch(`${workerUrl}?ioc=${encodeURIComponent(ip)}`);
+      
+      if (!res.ok) throw new Error('Worker failed');
+      const data = await res.json();
+      setDeepScanData(data);
+    } catch (err: any) {
+      console.error(err);
+      addToast('Deep Scan failed. Ensure your Cloudflare Worker is running locally on port 8787.', 'error');
+    } finally {
+      setIsDeepScanning(false);
+    }
+  }
+
   const StatusIcon = type === 'danger' ? Bug : type === 'safe' ? ShieldCheck : type === 'disputed' ? ShieldAlert : AlertTriangle
 
   if (!showReport) return null;
@@ -230,10 +251,23 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                   <div className="md:col-span-2">
                     <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">Assessment</h4>
                     {type === 'danger' ? (
-                      <p className="text-slate-300 leading-relaxed text-sm">
-                        The indicator <code className="px-1.5 py-0.5 rounded bg-slate-800 border border-white/5 font-mono text-red-400">{ip}</code> has been positively identified as malicious by the
-                        Threatbase global sensor network. It is currently active in our threat intelligence blocklists.
-                      </p>
+                      <div className="space-y-3">
+                        <p className="text-slate-300 leading-relaxed text-sm">
+                          The indicator <code className="px-1.5 py-0.5 rounded bg-slate-800 border border-white/5 font-mono text-red-400">{ip}</code> has been positively identified as malicious by the
+                          Threatbase global sensor network. It is currently active in our threat intelligence blocklists.
+                        </p>
+                        {scanResult?.tags && scanResult.tags.length > 0 && (
+                          <div className="flex flex-wrap items-center gap-2 pt-1">
+                            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mr-1">Known Threats:</span>
+                            {scanResult.tags.map((tag: string) => (
+                               <span key={tag} className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-bold tracking-wider ${getCategoryColor(tag)}`}>
+                                 <img src={getCategoryIconPath(tag)} alt={tag} className="w-3 h-3 object-contain drop-shadow-sm" />
+                                 {tag}
+                               </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     ) : type === 'safe' ? (
                       <p className="text-slate-300 leading-relaxed text-sm">
                         The indicator <code className="px-1.5 py-0.5 rounded bg-slate-800 border border-white/5 font-mono text-emerald-400">{ip}</code> is <strong>not currently listed</strong> in the active
@@ -308,6 +342,49 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
 
                   <div>
                     <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">External Intelligence</h4>
+                    
+                    {/* Deep Scan Button */}
+                    <div className="mb-6 bg-slate-900/40 rounded-xl p-4 border border-white/5 shadow-inner">
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-xs font-bold text-slate-300">Live API Lookup</span>
+                        <button 
+                          onClick={handleDeepScan}
+                          disabled={isDeepScanning}
+                          className="px-3 py-1.5 rounded-lg text-[10px] font-bold tracking-wider uppercase bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 hover:bg-cyan-500/20 transition-colors disabled:opacity-50 flex items-center gap-2"
+                        >
+                          {isDeepScanning ? (
+                            <><div className="w-3 h-3 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div> Scanning</>
+                          ) : 'Deep Scan'}
+                        </button>
+                      </div>
+                      
+                      {deepScanData ? (
+                        <div className="space-y-2">
+                          {deepScanData.malware && (
+                            <div className="text-xs">
+                              <span className="text-slate-500 font-semibold mr-2">Family:</span>
+                              <span className="text-red-400 font-bold">{deepScanData.malware}</span>
+                            </div>
+                          )}
+                          {deepScanData.tags && deepScanData.tags.length > 0 ? (
+                            <div className="flex flex-wrap gap-1.5 mt-2">
+                              {deepScanData.tags.map((tag: string) => (
+                                <span key={tag} className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[9px] font-bold tracking-wider ${getCategoryColor(tag)}`}>
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="text-[10px] text-slate-500 italic">No live tags found for this indicator.</div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="text-[10px] text-slate-500 leading-relaxed">
+                          Run a deep scan to fetch live malware families and tags directly from ThreatFox via Cloudflare Workers.
+                        </div>
+                      )}
+                    </div>
+
                     <div className="flex flex-col">
                       {showVt && (
                         <a href={vtHref} target="_blank" rel="noopener" className="group flex items-center justify-between py-3 border-b border-white/5 hover:bg-white/[0.02] px-3 -mx-3 rounded-lg transition-colors">

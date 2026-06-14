@@ -90,6 +90,7 @@ export async function scanIndicatorLogic(rawInput, feedVersion) {
   let feedCount = 1
   let isDisputed = false
   let disputeCount = 0
+  let tags = []
 
   try {
     let list = []
@@ -120,6 +121,9 @@ export async function scanIndicatorLogic(rawInput, feedVersion) {
           feedCount = parts[1]
           riskScore = parts[2]
         }
+        if (parts.length >= 4) {
+          tags = parts[3].split('|').filter(t => t.trim() !== '' && t !== 'Mixed')
+        }
       }
 
       if (supabaseClient) {
@@ -145,5 +149,5 @@ export async function scanIndicatorLogic(rawInput, feedVersion) {
     console.error(e)
   }
 
-  return { type: scanType, ip, isIP, isDomain, isHash, isURL, isIPv6, isCIDR, isMalicious, riskScore, feedCount, isDisputed, disputeCount }
+  return { type: scanType, ip, isIP, isDomain, isHash, isURL, isIPv6, isCIDR, isMalicious, riskScore, feedCount, isDisputed, disputeCount, tags }
 }
