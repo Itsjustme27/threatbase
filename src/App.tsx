@@ -23,7 +23,6 @@ import { scanIndicatorLogic } from './scanner'
 import { useSEO } from './useSEO'
 import TurnstileModal from './components/TurnstileModal'
 import InitialVerification from './components/InitialVerification'
-import MfaChallengeModal from './components/MfaChallengeModal'
 
 export default function App() {
   const [statsData, setStatsData] = useState(null)
@@ -159,7 +158,6 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <MfaChallengeModal />
       <Navbar />
 
       <Routes>

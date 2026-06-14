@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { User, Session } from '@supabase/supabase-js'
 import supabaseClient from './supabaseClient'
+import MfaChallengeModal from './components/MfaChallengeModal'
+
 
 interface AuthContextType {
   user: User | null
@@ -169,7 +171,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         refreshProfile,
       }}
     >
-      {children}
+      {requiresMfa ? <MfaChallengeModal /> : children}
     </AuthContext.Provider>
   )
 }

@@ -108,8 +108,12 @@ export default function MfaChallengeModal() {
           <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
           
           <div className="flex flex-col items-center text-center space-y-6">
-            <div className="w-16 h-16 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.15)] text-blue-400">
-              <Shield size={32} />
+            <div className="w-16 h-16 rounded-full border border-blue-500/20 flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.15)] overflow-hidden">
+              <img 
+                src={`${import.meta.env.BASE_URL}img/threatbase.png`} 
+                alt="Threatbase Logo" 
+                className="w-full h-full object-cover"
+              />
             </div>
             
             <div className="space-y-2">

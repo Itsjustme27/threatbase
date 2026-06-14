@@ -49,7 +49,8 @@ export default function MfaSetup({ addToast }: { addToast: (msg: string, type: '
     try {
       // 1. Enroll
       const { data: enrollData, error: enrollError } = await supabaseClient.auth.mfa.enroll({
-        factorType: 'totp'
+        factorType: 'totp',
+        issuer: 'Threatbase'
       })
       
       if (enrollError) throw enrollError
