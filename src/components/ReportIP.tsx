@@ -334,13 +334,16 @@ export default function ReportIP({ addToast }: any) {
     setIsSavingEdit(true)
     try {
       const safeComment = DOMPurify.sanitize(editComment.trim())
-      const { error } = await supabaseClient
+      const { data, error } = await supabaseClient
         .from('reported_ips')
         .update({ comment: safeComment })
         .eq('id', id)
-        .eq('reporter_alias', alias || '')
+        .select()
         
       if (error) throw error
+      if (!data || data.length === 0) {
+        throw new Error('Update affected 0 rows. Check Supabase RLS policies.')
+      }
       
       addToast('Comment updated successfully!', 'success')
       setEditingRowId(null)
