@@ -194,6 +194,7 @@ def main():
         "4.2.2.0/24",       # Level3 DNS
         "94.140.14.0/24",   # AdGuard DNS
         "94.140.15.0/24",   # AdGuard DNS
+        "192.195.233.204/32", # User False Positive
     ]
 
     parsed_whitelist = [ipaddress.ip_network(cidr) for cidr in _WHITELIST_CIDRS]

@@ -97,7 +97,8 @@ export default function App() {
     }, 50)
 
     const result = await scanIndicatorLogic(raw, feedVersion)
-    await new Promise((r) => setTimeout(r, 1600))
+    // Add artificial delay to make the scan feel more powerful and comprehensive (4.5 seconds)
+    await new Promise((r) => setTimeout(r, 4500))
 
     setScanResult(result)
     setIsScanning(false)

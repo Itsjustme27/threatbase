@@ -4,6 +4,7 @@ import { Bug, ShieldCheck, AlertTriangle, AlertOctagon, ChevronRight, Search, Ch
 import supabaseClient from '../supabaseClient'
 import { timeAgo, getCategoryIconPath, normalizeTags } from '../utils'
 import { useAuth } from '../AuthContext'
+import Loader from './ui/loader'
 
 const getCategoryColor = (cat: string) => {
   if (!cat) return 'bg-slate-500/10 text-slate-300 border border-slate-500/20'
@@ -43,10 +44,9 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
     : null
 
   useEffect(() => {
-    if (scanResult && (scanResult.isIP || scanResult.isIPv6) && ip) {
+    if (scanResult && (scanResult.isIP || scanResult.isIPv6 || scanResult.isDomain) && ip) {
       setLoadingReports(true)
-      setLoadingIpInfo(true)
-      
+
       supabaseClient
         .from('reported_ips')
         .select('*')
@@ -59,27 +59,33 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
         })
         .catch(() => setLoadingReports(false))
 
-      fetch(`https://get.geojs.io/v1/ip/geo/${ip}.json`)
-        .then(r => r.json())
-        .then(data => {
-          if (data && data.ip) {
-            setIpInfo({
-              country: data.country,
-              city: data.city,
-              isp: data.organization_name || data.organization,
-              asn: data.asn ? `AS${data.asn}` : null,
-              country_flag: data.country_code ? `https://flagcdn.com/w20/${data.country_code.toLowerCase()}.png` : null
-            })
-          } else {
+      if (scanResult.isIP || scanResult.isIPv6) {
+        setLoadingIpInfo(true)
+        fetch(`https://get.geojs.io/v1/ip/geo/${ip}.json`)
+          .then(r => r.json())
+          .then(data => {
+            if (data && data.ip) {
+              setIpInfo({
+                country: data.country,
+                city: data.city,
+                isp: data.organization_name || data.organization,
+                asn: data.asn ? `AS${data.asn}` : null,
+                country_flag: data.country_code ? `https://flagcdn.com/w20/${data.country_code.toLowerCase()}.png` : null
+              })
+            } else {
+              setIpInfo(null)
+            }
+            setLoadingIpInfo(false)
+          })
+          .catch((err) => {
+            console.error("IP lookup failed:", err);
             setIpInfo(null)
-          }
-          setLoadingIpInfo(false)
-        })
-        .catch((err) => {
-          console.error("IP lookup failed:", err);
-          setIpInfo(null)
-          setLoadingIpInfo(false)
-        })
+            setLoadingIpInfo(false)
+          })
+      } else {
+        setLoadingIpInfo(false)
+        setIpInfo(null)
+      }
     } else {
       setReports([])
       setIpInfo(null)
@@ -90,9 +96,9 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
   let abuseHref = '#'
   let showAbuse = false
   if (scanResult) {
-    const { isIP, isIPv6 } = scanResult
-    if (isIP || isIPv6) {
-      abuseHref = 'https://www.abuseipdb.com/check/' + encodeURIComponent(ip)
+    const { isIP, isIPv6, isDomain } = scanResult
+    if (isIP || isIPv6 || isDomain) {
+      abuseHref = 'https://www.whois.com/whois/' + encodeURIComponent(ip)
       showAbuse = true
     }
   }
@@ -101,7 +107,8 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
     if (!user) return addToast('Please sign in to report a false positive.', 'error')
     if (!supabaseClient) return addToast('Database connection unavailable.', 'error')
     if (!disputeReason.trim()) return addToast('Please provide a reason.', 'error')
-    
+    if (disputeReason.length > 500) return addToast('Reason must be under 500 characters.', 'error')
+
     setIsDisputing(true)
     try {
       const alias = user.user_metadata?.username || user.user_metadata?.full_name || user.email?.split('@')[0]
@@ -110,7 +117,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
         reporter_alias: alias,
         reason: disputeReason.trim()
       }])
-      
+
       if (error) {
         if (error.code === '23505') {
           addToast('You have already disputed this indicator.', 'error')
@@ -143,19 +150,27 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
           {isScanning ? (
             <motion.div 
               key="scanning"
-              className="w-full min-h-[300px] flex flex-col items-center justify-center bg-slate-900 rounded-2xl border border-slate-800 p-8 shadow-sm"
+              className="w-full min-h-[420px] flex flex-col items-center justify-center p-8 relative overflow-visible"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
+              exit={{ opacity: 0, scale: 0.98 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="relative flex items-center justify-center w-16 h-16 mb-6">
-                <div className="absolute inset-0 rounded-full border-2 border-slate-700/50"></div>
-                <div className="absolute inset-0 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
-                <Search className="text-primary" size={20} />
+              {/* Subtle radial gradient background */}
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent opacity-50 pointer-events-none"></div>
+
+              {/* Gooey Loader Animation */}
+              <div className="mb-12 flex justify-center items-center">
+                <Loader />
               </div>
-              <div className="text-sm font-medium text-slate-400 tracking-wide uppercase">Scanning target</div>
-              <div className="mt-3 text-xl font-mono text-white">{ip}</div>
+
+              <div className="z-10 flex flex-col items-center mt-2">
+                <div className="flex items-center gap-2 mb-3">
+                  <motion.div animate={{ opacity: [1, 0, 1] }} transition={{ duration: 1, repeat: Infinity }} className="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_var(--tw-colors-primary)]" />
+                  <span className="text-xs font-bold text-slate-300 tracking-[0.25em] uppercase drop-shadow-md">Scanning Target</span>
+                </div>
+                <div className="text-3xl md:text-4xl font-mono font-bold tracking-tight text-white mb-6 drop-shadow-lg">{ip}</div>
+              </div>
             </motion.div>
           ) : scanResult ? (
             <motion.div
@@ -167,167 +182,170 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
               className="w-full space-y-12"
             >
               {/* Scan Result Card */}
-              <div className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-sm">
-                {/* Header */}
-                <div className="p-6 md:p-8 flex items-start justify-between border-b border-slate-800 bg-slate-800/20">
-                  <div className="flex items-center gap-5">
-                    <div className={`p-3 rounded-xl ${type === 'danger' ? 'bg-destructive/10 text-destructive' : type === 'safe' ? 'bg-emerald-500/10 text-emerald-500' : type === 'disputed' ? 'bg-amber-500/10 text-amber-500' : 'bg-amber-500/10 text-amber-400'}`}>
-                      <StatusIcon size={32} strokeWidth={2} />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-lg text-slate-200">
-                        {type === 'danger' ? 'Malicious Indicator' : type === 'safe' ? 'Clean / Not Listed' : type === 'disputed' ? 'Community Disputed' : 'Invalid Format'}
-                      </h3>
-                      <div className="text-sm font-mono mt-1 text-slate-400">{ip}</div>
-                    </div>
+              <div className="w-full max-w-4xl bg-slate-900/60 backdrop-blur-xl border border-slate-800 shadow-2xl rounded-2xl mx-auto overflow-hidden font-sans relative">
+                {/* Glow effect */}
+                <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                
+                {/* Header Section */}
+                <div className="p-5 md:p-6 border-b border-slate-800 bg-slate-900/40">
+                  <div className="flex items-center gap-3 mb-4">
+                    <img src={`${import.meta.env.BASE_URL}img/threatbase.png`} className="w-8 h-8 rounded-full shadow-sm border border-white/5" alt="Threatbase Logo" />
+                    <h3 className={`text-xl md:text-2xl font-bold tracking-tight ${type === 'danger' ? 'text-rose-400' : type === 'safe' ? 'text-primary' : 'text-orange-400'}`}>
+                      {ip} {type === 'danger' ? 'was found in our database' : type === 'safe' ? 'was not found in our database' : 'is currently disputed'}
+                    </h3>
                   </div>
-                  <div className="flex items-center gap-4">
-                    {(type === 'danger' || type === 'disputed') && !showDisputeForm && (
-                      <div className="flex flex-col items-end gap-1">
-                        <button
-                          onClick={() => {
-                            if (!user) {
-                              addToast('Please sign in to report a false positive.', 'error')
-                              return
-                            }
-                            setShowDisputeForm(true)
-                          }}
-                          className={`px-4 py-1.5 rounded-lg text-xs font-bold border transition-all ${
-                            user 
-                              ? 'text-slate-400 border-slate-700 hover:bg-slate-800 hover:text-white' 
-                              : 'text-slate-600 border-slate-800 cursor-not-allowed bg-transparent'
-                          }`}
-                        >
-                          Report False Positive
-                        </button>
-                        {!user && <span className="text-[9px] text-slate-500 font-medium">Sign in required</span>}
+
+                  {scanResult && (scanResult.isIP || scanResult.isIPv6 || scanResult.isDomain) && (
+                    <>
+                      <div className="flex items-center justify-between mt-2 text-sm font-semibold text-slate-400">
+                        <span>Confidence of Abuse is {type === 'danger' ? '100%' : '0%'}:</span>
+                        <span className="cursor-help font-bold text-slate-500 hover:text-slate-300 transition-colors bg-slate-800/50 rounded-full w-5 h-5 flex items-center justify-center text-xs" title="Confidence of Abuse score">?</span>
                       </div>
-                    )}
-                    <div className={`px-3 py-1.5 rounded-md text-[11px] font-bold uppercase tracking-widest border ${type === 'danger' ? 'bg-destructive/10 text-destructive border-destructive/20' : type === 'safe' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : type === 'disputed' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20'}`}>
-                      {type === 'danger' ? 'Threat Detected' : type === 'safe' ? 'Not Listed' : type === 'disputed' ? 'False Positive' : 'Warning'}
+                      <div className="w-full bg-slate-950/50 h-6 mt-3 flex items-center rounded-lg overflow-hidden border border-slate-800 shadow-inner">
+                        <div 
+                          className={`h-full ${type === 'danger' ? 'bg-rose-500' : 'bg-primary'} flex items-center px-3 transition-all duration-1000 relative`} 
+                          style={{ width: type === 'danger' ? '100%' : '10%' }}
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 pointer-events-none"></div>
+                          <span className="text-white text-xs font-bold drop-shadow-sm relative z-10">{type === 'danger' ? '100%' : '0%'}</span>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Threat Tags and Severity */}
+                  {type === 'danger' && (scanResult?.tags?.length > 0 || scanResult?.riskScore) && (
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-4 pt-4 border-t border-slate-800/50">
+                      {scanResult?.riskScore && scanResult.riskScore !== 'Low' && (
+                        <div className="flex items-center gap-2">
+                          <span className="text-slate-500 font-bold uppercase text-[10px] tracking-wider">Severity:</span>
+                          <span className={`px-2.5 py-0.5 rounded text-xs font-bold shadow-sm ${
+                            scanResult.riskScore.toLowerCase() === 'high' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' :
+                            scanResult.riskScore.toLowerCase() === 'medium' ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30' :
+                            'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                          }`}>
+                            {scanResult.riskScore}
+                          </span>
+                        </div>
+                      )}
+                      
+                      {scanResult?.tags && scanResult.tags.length > 0 && (
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-slate-500 font-bold uppercase text-[10px] tracking-wider">Known Threats:</span>
+                          {scanResult.tags.map((tag: string) => (
+                            <span key={tag} className="bg-slate-800 border border-slate-700 text-slate-300 px-2 py-0.5 rounded text-xs font-bold shadow-sm flex items-center gap-1.5">
+                              <img src={getCategoryIconPath(tag)} className="w-3.5 h-3.5 object-contain opacity-90" alt="Threat Icon" />
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  </div>
+                  )}
                 </div>
 
-                {/* Body */}
-                <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-3 gap-12">
-                  <div className="md:col-span-2">
-                    <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">Assessment</h4>
-                    {type === 'danger' ? (
-                      <div className="space-y-3">
-                        <p className="text-slate-300 leading-relaxed text-sm">
-                          The indicator <code className="px-1.5 py-0.5 rounded bg-slate-950 border border-slate-800 font-mono text-destructive">{ip}</code> has been positively identified as malicious by the
-                          Threatbase global sensor network. It is currently active in our threat intelligence blocklists.
-                        </p>
-                        {scanResult?.tags && scanResult.tags.length > 0 && (
-                          <div className="flex flex-wrap items-center gap-2 pt-1">
-                            <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mr-1">Known Threats:</span>
-                            {scanResult.tags.map((tag: string) => (
-                               <span key={tag} className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-bold tracking-wider ${getCategoryColor(tag)}`}>
-                                 <img src={getCategoryIconPath(tag)} alt={tag} className="w-3 h-3 object-contain drop-shadow-sm" />
-                                 {tag}
-                               </span>
-                            ))}
-                          </div>
+                {/* Body / Table Section */}
+                {scanResult && (scanResult.isIP || scanResult.isIPv6 || scanResult.isDomain) && (
+                  <div className="bg-transparent">
+                    <table className="w-full text-sm text-left border-collapse">
+                      <tbody className="divide-y divide-slate-800/50">
+                        {scanResult.isDomain ? (
+                          <tr className="hover:bg-slate-800/20 transition-colors">
+                            <td className="py-3.5 px-5 md:px-6 font-bold text-slate-400 w-[35%] bg-slate-900/20 border-r border-slate-800/50">Domain Name</td>
+                            <td className="py-3.5 px-5 md:px-6 text-slate-200 font-medium">{ip}</td>
+                          </tr>
+                        ) : (
+                          <>
+                            {(loadingIpInfo || ipInfo?.isp) && (
+                              <tr className="hover:bg-slate-800/20 transition-colors">
+                                <td className="py-3.5 px-5 md:px-6 font-bold text-slate-400 w-[35%] bg-slate-900/20 border-r border-slate-800/50">ISP</td>
+                                <td className="py-3.5 px-5 md:px-6 text-slate-200 font-medium">{loadingIpInfo ? 'Loading...' : ipInfo.isp}</td>
+                              </tr>
+                            )}
+                            {(loadingIpInfo || ipInfo?.asn) && (
+                              <tr className="hover:bg-slate-800/20 transition-colors">
+                                <td className="py-3.5 px-5 md:px-6 font-bold text-slate-400 w-[35%] bg-slate-900/20 border-r border-slate-800/50">ASN</td>
+                                <td className="py-3.5 px-5 md:px-6 text-slate-200 font-mono text-xs">{loadingIpInfo ? 'Loading...' : ipInfo.asn}</td>
+                              </tr>
+                            )}
+                            {(loadingIpInfo || ipInfo?.country) && (
+                              <tr className="hover:bg-slate-800/20 transition-colors">
+                                <td className="py-3.5 px-5 md:px-6 font-bold text-slate-400 w-[35%] bg-slate-900/20 border-r border-slate-800/50">Country</td>
+                                <td className="py-3.5 px-5 md:px-6 text-slate-200 font-medium flex items-center gap-2.5">
+                                  {ipInfo?.country_flag && <img src={ipInfo.country_flag} className="w-5 shadow-sm rounded-sm object-cover border border-white/10" alt="Flag" />}
+                                  {loadingIpInfo ? 'Loading...' : ipInfo.country}
+                                </td>
+                              </tr>
+                            )}
+                            {(loadingIpInfo || ipInfo?.city) && (
+                              <tr className="hover:bg-slate-800/20 transition-colors">
+                                <td className="py-3.5 px-5 md:px-6 font-bold text-slate-400 w-[35%] bg-slate-900/20 border-r border-slate-800/50">City</td>
+                                <td className="py-3.5 px-5 md:px-6 text-slate-200 font-medium">{loadingIpInfo ? 'Loading...' : ipInfo.city}</td>
+                              </tr>
+                            )}
+                          </>
                         )}
-                      </div>
-                    ) : type === 'safe' ? (
-                      <p className="text-slate-300 leading-relaxed text-sm">
-                        The indicator <code className="px-1.5 py-0.5 rounded bg-slate-950 border border-slate-800 font-mono text-emerald-500">{ip}</code> is <strong>not currently listed</strong> in the active
-                        Threatbase threat database.
-                      </p>
-                    ) : type === 'disputed' ? (
-                      <p className="text-slate-300 leading-relaxed text-sm">
-                        The indicator <code className="px-1.5 py-0.5 rounded bg-slate-950 border border-slate-800 font-mono text-amber-400">{ip}</code> was originally flagged by threat intelligence feeds, but has been <strong>marked as a False Positive</strong> by the Threatbase community.
-                      </p>
-                    ) : (
-                      <p className="text-slate-300 leading-relaxed text-sm">Please enter a valid IPv4 address, Domain, SHA-256 Hash, or URL.</p>
-                    )}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
 
-                    {showDisputeForm && (
-                      <motion.div initial={{opacity:0, height:0}} animate={{opacity:1, height:'auto'}} className="mt-6 p-4 rounded-xl border border-slate-800 bg-slate-950 overflow-hidden">
-                        <h5 className="text-sm font-semibold text-slate-300 mb-2">Why is this a false positive? <span className="text-destructive">*</span></h5>
-                        <textarea
-                          value={disputeReason}
-                          onChange={e => setDisputeReason(e.target.value)}
-                          className="w-full bg-slate-900 border border-slate-800 rounded-lg p-3 text-sm text-slate-300 focus:outline-none focus:border-slate-700 resize-none"
-                          rows={3}
-                          placeholder="Please provide details (e.g. 'This is a public DNS resolver', 'Internal proxy')..."
-                        ></textarea>
-                        <div className="flex items-center gap-3 mt-3 justify-end">
-                          <button onClick={() => setShowDisputeForm(false)} className="px-4 py-1.5 text-xs font-medium text-slate-400 hover:text-white transition-colors">Cancel</button>
-                          <button onClick={handleDispute} disabled={isDisputing} className="px-4 py-1.5 rounded-lg text-xs font-bold bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 transition-colors border border-amber-500/30 disabled:opacity-50">
-                            {isDisputing ? 'Submitting...' : 'Submit Dispute'}
-                          </button>
-                        </div>
-                      </motion.div>
-                    )}
+                {/* Footer Section */}
+                <div className="p-5 md:p-6 bg-slate-900/60 border-t border-slate-800">
+                  {scanResult && (scanResult.isIP || scanResult.isIPv6) && (
+                    <p className="text-xs text-slate-500 italic mb-5 font-medium tracking-wide">
+                      IP info including ISP, Usage Type, and Location provided by Threatbase. Updated weekly.
+                    </p>
+                  )}
+                  {scanResult && scanResult.isDomain && (
+                    <p className="text-xs text-slate-500 italic mb-5 font-medium tracking-wide">
+                      Domain information provided by Threatbase.
+                    </p>
+                  )}
 
-                    {scanResult && (scanResult.isIP || scanResult.isIPv6) && (
-                      <div className="mt-8">
-                        <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">IP Information</h4>
-                        <div className="bg-slate-950 rounded-xl p-4 md:p-5 border border-slate-800">
-                          {loadingIpInfo ? (
-                            <div className="flex justify-center py-4">
-                              <div className="h-4 w-4 rounded-full border-2 border-slate-600 border-t-primary animate-spin"></div>
-                            </div>
-                          ) : ipInfo ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                              <div className="flex flex-col gap-1">
-                                <span className="text-[10px] uppercase tracking-wider font-bold text-slate-500">Location</span>
-                                <span className="text-sm text-slate-300 font-medium flex items-center gap-2">
-                                  {ipInfo.country_flag && <img src={ipInfo.country_flag} alt="" className="w-4 h-3 object-cover rounded-[2px]" />}
-                                  <span className="truncate" title={ipInfo.city ? `${ipInfo.city}, ${ipInfo.country}` : ipInfo.country || 'Unknown'}>
-                                    {ipInfo.city ? `${ipInfo.city}, ` : ''}{ipInfo.country || 'Unknown'}
-                                  </span>
-                                </span>
-                              </div>
-                              <div className="flex flex-col gap-1">
-                                <span className="text-[10px] uppercase tracking-wider font-bold text-slate-500">ISP / Organization</span>
-                                <span className="text-sm text-slate-300 font-medium truncate" title={ipInfo.isp || 'Unknown'}>
-                                  {ipInfo.isp || 'Unknown'}
-                                </span>
-                              </div>
-                              <div className="flex flex-col gap-1">
-                                <span className="text-[10px] uppercase tracking-wider font-bold text-slate-500">ASN</span>
-                                <span className="text-sm text-slate-300 font-medium font-mono">
-                                  {ipInfo.asn || 'Unknown'}
-                                </span>
-                              </div>
-                            </div>
-                          ) : (
-                            <p className="text-xs text-slate-500 italic">No information available.</p>
-                          )}
-                        </div>
-                      </div>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <button 
+                      onClick={() => setShowDisputeForm(true)}
+                      className="flex-1 bg-slate-800/50 hover:bg-slate-800 text-slate-300 hover:text-white font-bold text-sm py-3 px-4 rounded-xl transition-all shadow-sm uppercase tracking-wider border border-slate-700/50 hover:border-slate-600"
+                    >
+                      REPORT FALSE POSITIVE
+                    </button>
+                    {showAbuse && (
+                      <a 
+                        href={abuseHref} 
+                        target="_blank" 
+                        rel="noopener" 
+                        className="flex-1 bg-white/10 hover:bg-white/15 text-white font-bold text-sm py-3 px-4 rounded-xl transition-all shadow-sm uppercase tracking-wider text-center border border-white/5 hover:border-white/10"
+                      >
+                        WHOIS {ip}
+                      </a>
                     )}
                   </div>
 
-                  <div>
-                    <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">External Intelligence</h4>
-                    
-
-
-                    <div className="flex flex-col">
-                      {showAbuse && (
-                        <a href={abuseHref} target="_blank" rel="noopener" className="group flex items-center justify-between py-3 border-b border-slate-800 hover:bg-slate-800/50 px-3 -mx-3 rounded-lg transition-colors">
-                          <div className="flex items-center gap-3">
-                            <AlertOctagon size={16} className="text-slate-400 group-hover:text-destructive transition-colors" />
-                            <span className="font-medium text-sm text-slate-300 group-hover:text-white transition-colors">AbuseIPDB</span>
-                          </div>
-                          <ChevronRight size={16} className="text-slate-600 group-hover:text-slate-300 transition-colors" />
-                        </a>
-                      )}
-                      {!showAbuse && (
-                        <p className="text-sm text-slate-500 italic">No external links available.</p>
-                      )}
-                    </div>
-                  </div>
+                  {/* Dispute Form */}
+                  {showDisputeForm && (
+                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="mt-5 pt-5 border-t border-slate-800 overflow-hidden">
+                      <h5 className="text-sm font-bold text-slate-300 mb-3">Why is this a false positive? <span className="text-rose-400">*</span></h5>
+                      <textarea
+                        value={disputeReason}
+                        onChange={e => setDisputeReason(e.target.value)}
+                        className="w-full bg-slate-950/50 border border-slate-700 rounded-xl p-4 text-sm text-slate-300 focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500 resize-none transition-all shadow-inner"
+                        rows={3}
+                        placeholder="Please provide details (e.g. 'This is a public DNS resolver', 'Internal proxy')..."
+                      ></textarea>
+                      <div className="flex items-center gap-3 mt-4 justify-end">
+                        <button onClick={() => setShowDisputeForm(false)} className="px-4 py-2 text-xs font-bold text-slate-500 hover:text-slate-300 transition-colors uppercase tracking-wider rounded-lg hover:bg-slate-800/50">Cancel</button>
+                        <button onClick={handleDispute} disabled={isDisputing} className="px-5 py-2.5 rounded-lg text-xs font-bold bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-sm disabled:opacity-50 uppercase tracking-wider">
+                          {isDisputing ? 'Submitting...' : 'Submit Dispute'}
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
                 </div>
               </div>
 
               {loadingReports ? (
-                <div 
+                <div
                   className="w-full flex flex-col items-center justify-center py-20 bg-slate-900 rounded-2xl border border-slate-800"
                 >
                   <div className="relative h-8 w-8 mb-4">
@@ -343,7 +361,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                       Community Reports for <span className="bg-gradient-to-r from-primary/80 to-primary bg-clip-text text-transparent font-mono">{ip}</span>
                     </h3>
                     <p className="text-xs md:text-sm text-slate-400 leading-relaxed font-medium">
-                      This IP address has been reported <span className="text-white font-bold">{reports.length.toLocaleString()}</span> times. First reported on <span className="text-slate-300 font-medium">{new Date(reports[reports.length - 1].created_at || Date.now()).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric'})}</span>, with the most recent report from <span className="text-slate-300 font-medium">{timeAgo(reports[0].created_at || new Date().toISOString())}</span>.
+                      This IP address has been reported <span className="text-white font-bold">{reports.length.toLocaleString()}</span> times. First reported on <span className="text-slate-300 font-medium">{new Date(reports[reports.length - 1].created_at || Date.now()).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}</span>, with the most recent report from <span className="text-slate-300 font-medium">{timeAgo(reports[0].created_at || new Date().toISOString())}</span>.
                     </p>
                   </div>
 
@@ -364,7 +382,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                             <th className="px-6 py-5 w-[20%]">Reporter</th>
                             <th className="px-6 py-5 w-[25%]">
                               <div className="flex items-center gap-1.5">
-                                IoA Timestamp (UTC) 
+                                IoA Timestamp (UTC)
                                 <span className="text-primary text-[9px] font-bold bg-primary/10 rounded-full w-3.5 h-3.5 inline-flex items-center justify-center cursor-help" title="Indicator of Attack timestamp">?</span>
                               </div>
                             </th>
@@ -378,7 +396,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                             const reporter = row.reporter_alias || 'Anonymous';
                             const comment = row.comment || 'No context provided.';
                             const categories = (row.category || 'Other').split(', ');
-                            
+
                             return (
                               <tr key={idx} className="block md:table-row bg-slate-950 md:bg-transparent hover:bg-slate-800/50 transition-colors group border border-slate-800 md:border-0 rounded-xl md:rounded-none p-4 md:p-0">
                                 <td className="block md:table-cell px-0 py-1 md:px-6 md:py-4 whitespace-nowrap">

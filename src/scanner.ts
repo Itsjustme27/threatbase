@@ -115,15 +115,13 @@ export async function scanIndicatorLogic(rawInput, feedVersion) {
 
     if (result) {
       isMalicious = true
-      if (isIP) {
-        const parts = result.split(',')
-        if (parts.length >= 3) {
-          feedCount = parts[1]
-          riskScore = parts[2]
-        }
-        if (parts.length >= 4) {
-          tags = parts[3].split('|').filter(t => t.trim() !== '' && t !== 'Mixed')
-        }
+      const parts = result.split(',')
+      if (parts.length >= 3) {
+        feedCount = parts[1]
+        riskScore = parts[2]
+      }
+      if (parts.length >= 4) {
+        tags = parts[3].split('|').filter(t => t.trim() !== '' && t !== 'Mixed')
       }
 
       if (supabaseClient) {

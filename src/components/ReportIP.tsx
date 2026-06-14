@@ -45,6 +45,7 @@ const DNS_WHITELIST_CIDRS = [
   "4.2.2.0/24",       // Level3 DNS
   "94.140.14.0/24",   // AdGuard DNS
   "94.140.15.0/24",   // AdGuard DNS
+  "192.195.233.204/32", // User False Positive
 ]
 
 // RFC 1918, loopback, multicast, link-local and reserved IPv4 CIDRs

@@ -190,6 +190,7 @@ _WHITELIST_CIDRS = [
     "4.2.2.0/24",       # Level3 DNS
     "94.140.14.0/24",   # AdGuard DNS
     "94.140.15.0/24",   # AdGuard DNS
+    "192.195.233.204/32", # User False Positive
 ]
 
 PARSED_WHITELIST_CIDRS = [ipaddress.ip_network(cidr) for cidr in _WHITELIST_CIDRS]
@@ -316,7 +317,10 @@ def load_existing_iocs() -> dict:
                         line = line.strip()
                         if not line or line.startswith(('#', '//')):
                             continue
-                        result[key].add(line)
+                        if key == "ips":
+                            result[key].add(line.split(',')[0])
+                        else:
+                            result[key].add(line)
             except Exception as e:
                 log.error(f"Failed to load existing IOCs from {filepath}: {e}")
                 
@@ -742,10 +746,10 @@ def filter_ips(ip_sources, custom_ips, existing_ips):
         if "HIGH" in tiers:
             filtered_ip_info[ip] = {"count": num_sources, "score": "HIGH", "tags": sorted(list(tags))}
         elif "MEDIUM" in tiers:
-            if num_sources >= 2:
+            if num_sources >= 3: # Increased from 2 to 3 to reduce false positives
                 filtered_ip_info[ip] = {"count": num_sources, "score": "MEDIUM", "tags": sorted(list(tags))}
         else:
-            if num_sources >= 3:
+            if num_sources >= 5: # Increased from 3 to 5 to heavily filter noisy LOW tier feeds
                 filtered_ip_info[ip] = {"count": num_sources, "score": "LOW", "tags": sorted(list(tags))}
                 
     return filtered_ip_info
