@@ -28,10 +28,10 @@ export default function Stats({ statsData }: any) {
               const diff = cur - prev
               if (diff > 0) {
                 el.textContent = `↑ +${fmt(diff)}`
-                el.className = 'font-semibold px-2 py-0.5 rounded bg-red-500/10 border border-red-500/20 text-red-400 shadow-sm group-hover:bg-red-500/20 transition-colors duration-200 text-xs'
+                el.className = 'font-semibold px-2 py-0.5 rounded bg-destructive/10 border border-destructive/20 text-destructive shadow-sm group-hover:bg-destructive/20 transition-colors duration-200 text-xs'
               } else if (diff < 0) {
                 el.textContent = `↓ ${fmt(diff)}`
-                el.className = 'font-semibold px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 shadow-sm group-hover:bg-emerald-500/20 transition-colors duration-200 text-xs'
+                el.className = 'font-semibold px-2 py-0.5 rounded bg-primary/10 border border-primary/20 text-primary shadow-sm group-hover:bg-primary/20 transition-colors duration-200 text-xs'
               } else {
                 el.textContent = '— 0'
                 el.className = 'font-semibold px-2 py-0.5 rounded bg-slate-500/10 border border-slate-500/20 text-slate-400 shadow-sm group-hover:bg-slate-500/20 transition-colors duration-200 text-xs'
@@ -60,7 +60,7 @@ export default function Stats({ statsData }: any) {
           <StatCard
             label="Malicious IPs"
             icon={<img src={`${import.meta.env.BASE_URL}img/ipv4icon.png`} alt="IPv4" className="w-8 h-8 object-contain invert opacity-80" />}
-            iconColorClass="text-red-400 bg-red-950/30 border-red-500/20 group-hover:border-red-500/40"
+            iconColorClass="text-destructive bg-red-950/30 border-destructive/20 group-hover:border-destructive/40"
             valueId="n-total"
             sub="Active IPv4 addresses"
             trendId="trend-ips"
@@ -100,7 +100,7 @@ export default function Stats({ statsData }: any) {
           <StatCard
             label="CIDR Blocks"
             icon={<img src={`${import.meta.env.BASE_URL}img/cidrs.png`} alt="CIDR" className="w-8 h-8 object-contain drop-shadow-sm" />}
-            iconColorClass="text-red-500 bg-red-950/30 border-red-500/20 group-hover:border-red-500/40"
+            iconColorClass="text-destructive bg-red-950/30 border-destructive/20 group-hover:border-destructive/40"
             valueId="n-cidrs"
             sub="Malicious subnets"
             trendId="trend-cidrs"

@@ -36,14 +36,14 @@ export function HeroSection({ scanInput, setScanInput, handleScan, statsData }: 
                                             <input 
                                                 type="text" 
                                                 placeholder="Scan IP, Domain, Hash..." 
-                                                className="h-14 w-full rounded-full border border-white/10 bg-slate-900/60 backdrop-blur-xl pl-12 pr-28 text-sm text-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-cyan-500/50 focus-visible:ring-1 focus-visible:ring-cyan-500/50 transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)]"
+                                                className="h-14 w-full rounded-full border border-white/10 bg-slate-900/60 backdrop-blur-xl pl-12 pr-28 text-sm text-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-cyan-500/50 transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)]"
                                                 value={scanInput}
                                                 onChange={(e) => setScanInput(e.target.value)}
                                                 onKeyDown={(e) => e.key === 'Enter' && handleScan()}
                                             />
                                             <Button
                                                 size="sm"
-                                                className="absolute right-1.5 top-1.5 bottom-1.5 h-11 rounded-full px-5 sm:px-7 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold shadow-[0_0_15px_rgba(34,211,238,0.3)] hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] transition-all border border-cyan-400/20"
+                                                className="absolute right-1.5 top-1.5 bottom-1.5 h-11 rounded-full px-5 sm:px-7 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold shadow-[0_0_15px_rgba(34,211,238,0.3)] hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] transition-all border border-primary/20"
                                                 onClick={handleScan}
                                             >
                                                 Scan

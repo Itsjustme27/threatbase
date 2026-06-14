@@ -67,11 +67,50 @@ export function getAvatarForName(name) {
 export function getCategoryIconPath(label) {
   if (!label) return `${import.meta.env.BASE_URL}img/other.png`
   const l = label.toLowerCase()
-  if (l.includes('malware')) return `${import.meta.env.BASE_URL}img/malware.png`
-  if (l.includes('phish')) return `${import.meta.env.BASE_URL}img/phishing.png`
+  if (l.includes('malware') || l.includes('exploit') || l.includes('zero-day')) return `${import.meta.env.BASE_URL}img/malware.png`
+  if (l.includes('phish') || l.includes('harvest')) return `${import.meta.env.BASE_URL}img/phishing.png`
   if (l.includes('spam')) return `${import.meta.env.BASE_URL}img/spam.png`
   if (l.includes('ddos')) return `${import.meta.env.BASE_URL}img/DDoS.png`
   if (l.includes('brute')) return `${import.meta.env.BASE_URL}img/bruteforce.png`
-  if (l.includes('botnet')) return `${import.meta.env.BASE_URL}img/botnet.png`
+  if (l.includes('botnet') || l.includes('c2')) return `${import.meta.env.BASE_URL}img/botnet.png`
   return `${import.meta.env.BASE_URL}img/other.png`
+}
+
+/** Normalize, clean, and deduplicate tags from external intelligence sources */
+export function normalizeTags(tags: string[]): string[] {
+  if (!tags) return [];
+  
+  const noiseList = [
+    'tpot', 'cowrie', 'suricata', 'dionaea', 'honeytrap', 'p0f', 'fatt', 
+    'mailoney', 'tanner', 'sentrypeer', 'vultr', 'digital ocean', 'sensor-tagged',
+    'automated', 'threat intel', 'known attacker', 'tor', 'vpn', 'proxy'
+  ];
+
+  const standardized: Record<string, string> = {
+    'bruteforce': 'Brute-Force',
+    'ssh': 'SSH',
+    'portscan': 'Port Scan',
+    'scanners': 'Scanner',
+    'scanner': 'Scanner',
+    'nginx': 'Nginx',
+    'credential-harvesting': 'Credential Harvesting',
+    'env-hunting': 'ENV Hunting',
+    'web3': 'Web3',
+    'exploit': 'Exploit',
+    'vulnerability-exploitation': 'Exploit',
+    'zero-day': 'Zero-Day',
+    'c2': 'Command & Control',
+    'malware': 'Malware',
+    'phishing': 'Phishing',
+    'ddos': 'DDoS',
+    'botnet': 'Botnet',
+    'mirai': 'Mirai Botnet'
+  };
+
+  const cleanTags = tags
+    .map(t => t.toLowerCase().trim())
+    .filter(t => !noiseList.includes(t))
+    .map(t => standardized[t] || t.split('-').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')); // Capitalize unknown tags
+
+  return Array.from(new Set(cleanTags)).slice(0, 8); // Deduplicate and keep top 8
 }

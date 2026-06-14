@@ -155,13 +155,13 @@ export default function MfaSetup({ addToast }: { addToast: (msg: string, type: '
           <div>
             {isEnrolled ? (
               <div className="flex items-center gap-4">
-                <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+                <span className="flex items-center gap-1.5 text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full border border-primary/20">
                   <Shield size={14} /> Enabled
                 </span>
                 <Button
                   onClick={handleUnenroll}
                   variant="outline"
-                  className="border-red-500/20 text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded text-xs px-4"
+                  className="border-destructive/20 text-destructive hover:bg-destructive/10 hover:text-red-300 rounded text-xs px-4"
                   disabled={unenrolling}
                 >
                   {unenrolling ? 'Disabling...' : 'Disable'}

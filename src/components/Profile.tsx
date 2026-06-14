@@ -90,7 +90,7 @@ const getUserBadges = (profile: any, reportsCount: number, joinIndex: number | n
       id: 'pro',
       name: 'Pro',
       desc: 'Submitted 100+ threat reports',
-      style: 'from-cyan-500/20 to-blue-600/30 text-cyan-400 border-cyan-500/30 shadow-[0_0_15px_rgba(34,211,238,0.25)]',
+      style: 'from-cyan-500/20 to-blue-600/30 text-primary border-primary/30 shadow-[0_0_15px_rgba(34,211,238,0.25)]',
       icon: (
         <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="currentColor" fillOpacity="0.2" />
@@ -103,7 +103,7 @@ const getUserBadges = (profile: any, reportsCount: number, joinIndex: number | n
       id: 'defender',
       name: 'Defender',
       desc: 'Submitted 50+ threat reports',
-      style: 'from-emerald-500/20 to-teal-600/30 text-emerald-400 border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.25)]',
+      style: 'from-emerald-500/20 to-teal-600/30 text-primary border-primary/30 shadow-[0_0_15px_rgba(16,185,129,0.25)]',
       icon: (
         <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="currentColor" fillOpacity="0.2" />
@@ -428,10 +428,10 @@ export default function Profile({ addToast }: any) {
   const getCategoryColor = (cat: string) => {
     if (!cat) return 'text-slate-300'
     if (cat.includes('Brute')) return 'text-orange-400'
-    if (cat.includes('Malware')) return 'text-red-400'
+    if (cat.includes('Malware')) return 'text-destructive'
     if (cat.includes('DDoS')) return 'text-purple-400'
     if (cat.includes('Phish')) return 'text-blue-400'
-    if (cat.includes('Scan')) return 'text-cyan-400'
+    if (cat.includes('Scan')) return 'text-primary'
     if (cat.includes('Exploit')) return 'text-amber-400'
     return 'text-slate-300'
   }
@@ -706,11 +706,11 @@ export default function Profile({ addToast }: any) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="rounded-xl border border-red-500/10 bg-red-500/5 p-6 md:p-8"
+            className="rounded-xl border border-destructive/10 bg-destructive/5 p-6 md:p-8"
           >
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div className="space-y-1">
-                <h3 className="text-sm font-semibold text-red-400">
+                <h3 className="text-sm font-semibold text-destructive">
                   Delete Account
                 </h3>
                 <p className="text-xs text-slate-400 max-w-md">
@@ -721,7 +721,7 @@ export default function Profile({ addToast }: any) {
               <Button
                 onClick={() => setShowDeleteConfirm(true)}
                 variant="outline"
-                className="border-red-500/20 text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded text-xs"
+                className="border-destructive/20 text-destructive hover:bg-destructive/10 hover:text-red-300 rounded text-xs"
               >
                 Delete Account
               </Button>
@@ -765,7 +765,7 @@ export default function Profile({ addToast }: any) {
                     type="text"
                     value={deleteInput}
                     onChange={(e) => setDeleteInput(e.target.value)}
-                    className="w-full h-10 rounded-md border border-white/10 bg-transparent px-3 text-sm text-white focus:outline-none focus:border-red-500/50 transition-colors"
+                    className="w-full h-10 rounded-md border border-white/10 bg-transparent px-3 text-sm text-white focus:outline-none focus:border-destructive/50 transition-colors"
                   />
                 </div>
                 

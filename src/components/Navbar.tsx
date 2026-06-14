@@ -138,7 +138,7 @@ export default function Navbar() {
                                     className="border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20 hover:text-white rounded-full px-5 h-10 transition-all duration-300 hover:shadow-[0_0_15px_rgba(255,255,255,0.05)] gap-2 text-xs font-semibold"
                                     size="sm">
                                     <Link to="/thanks" onClick={() => setMenuState(false)}>
-                                        <Heart size={14} className="text-red-400 fill-red-400/20" />
+                                        <Heart size={14} className="text-destructive fill-red-400/20" />
                                         Thanks
                                     </Link>
                                 </Button>

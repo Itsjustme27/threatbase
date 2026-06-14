@@ -42,14 +42,14 @@ export default function PrivacyPage() {
             
             <section>
               <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                <span className="text-red-400">1.</span> Introduction
+                <span className="text-destructive">1.</span> Introduction
               </h3>
               <p>This Privacy Policy explains how we collect, use, and protect information when you visit Threatbase.</p>
             </section>
 
             <section>
               <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                <span className="text-red-400">2.</span> Information We Collect
+                <span className="text-destructive">2.</span> Information We Collect
               </h3>
               <ul className="list-disc list-inside space-y-2 ml-2">
                 <li><strong className="text-white">Automatically Collected Data</strong>: We (or our hosting provider) may collect standard server logs such as IP address, browser type, operating system, access times, and referring pages.</li>
@@ -61,7 +61,7 @@ export default function PrivacyPage() {
 
             <section>
               <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                <span className="text-red-400">3.</span> How We Use Information
+                <span className="text-destructive">3.</span> How We Use Information
               </h3>
               <ul className="list-disc list-inside space-y-2 ml-2">
                 <li>To operate, maintain, and improve the Service.</li>
@@ -72,14 +72,14 @@ export default function PrivacyPage() {
 
             <section>
               <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                <span className="text-red-400">4.</span> Cookies and Tracking
+                <span className="text-destructive">4.</span> Cookies and Tracking
               </h3>
               <p>The Site may use minimal cookies or local storage for basic functionality. We do not use extensive tracking or advertising cookies.</p>
             </section>
 
             <section>
               <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                <span className="text-red-400">5.</span> Data Sharing
+                <span className="text-destructive">5.</span> Data Sharing
               </h3>
               <ul className="list-disc list-inside space-y-2 ml-2">
                 <li>Data may be disclosed if required by law or to protect the Service.</li>
@@ -89,7 +89,7 @@ export default function PrivacyPage() {
 
             <section>
               <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                <span className="text-red-400">6.</span> Third-Party Services
+                <span className="text-destructive">6.</span> Third-Party Services
               </h3>
               <p>The Site may link to or rely on third-party services (e.g., GitHub, Supabase). Their privacy practices are governed by their own policies.</p>
             </section>

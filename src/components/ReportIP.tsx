@@ -319,10 +319,10 @@ export default function ReportIP({ addToast }: any) {
   const getCategoryColor = (cat: string) => {
     if (!cat) return 'bg-slate-500/10 text-slate-300 border border-slate-500/20'
     if (cat.includes('Brute') || cat.includes('Force')) return 'bg-orange-500/10 text-orange-400 border border-orange-500/20'
-    if (cat.includes('Malware')) return 'bg-red-500/10 text-red-400 border border-red-500/20'
+    if (cat.includes('Malware')) return 'bg-destructive/10 text-destructive border border-destructive/20'
     if (cat.includes('DDoS')) return 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
     if (cat.includes('Phish')) return 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
-    if (cat.includes('Scan')) return 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20'
+    if (cat.includes('Scan')) return 'bg-primary/10 text-primary border border-primary/20'
     return 'bg-slate-500/10 text-slate-300 border border-slate-500/20'
   }
 
@@ -355,7 +355,7 @@ export default function ReportIP({ addToast }: any) {
                   "identify malicious infrastructure.",
                 ]}
                 speed={60}
-                className="text-emerald-400 ml-1.5 font-medium"
+                className="text-primary ml-1.5 font-medium"
                 waitTime={2500}
                 deleteSpeed={30}
                 cursorChar={"_"}
@@ -368,7 +368,7 @@ export default function ReportIP({ addToast }: any) {
               <Card className="shadow-lg border-white/[0.05] bg-slate-950/40 backdrop-blur-md">
                 <CardHeader>
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-red-500/10 rounded-lg border border-red-500/20 shadow-[0_0_15px_rgba(239,68,68,0.1)]">
+                    <div className="p-2 bg-destructive/10 rounded-lg border border-destructive/20 shadow-[0_0_15px_rgba(239,68,68,0.1)]">
                       <img src={`${import.meta.env.BASE_URL}img/report.png`} alt="Report Icon" className="w-8 h-8 object-contain invert opacity-80" />
                     </div>
                     <div>
@@ -388,7 +388,7 @@ export default function ReportIP({ addToast }: any) {
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <div className="space-y-2">
                         <Label htmlFor="ipAddress" className="text-base font-medium text-slate-300">
-                          IP Address <span className="text-red-500">*</span>
+                          IP Address <span className="text-destructive">*</span>
                         </Label>
                         <Input
                           id="ipAddress"
@@ -398,7 +398,7 @@ export default function ReportIP({ addToast }: any) {
                           className="h-11 bg-black/20 border-white/10 text-white placeholder:text-slate-500"
                         />
                         {ipStatus.msg && ipStatus.type !== 'empty' && (
-                          <p className={`text-xs mt-1 font-medium ${ipStatus.type === 'valid_v4' || ipStatus.type === 'valid_v6' ? 'text-emerald-400' : 'text-red-400'}`}>
+                          <p className={`text-xs mt-1 font-medium ${ipStatus.type === 'valid_v4' || ipStatus.type === 'valid_v6' ? 'text-primary' : 'text-destructive'}`}>
                             {ipStatus.msg}
                           </p>
                         )}
@@ -406,7 +406,7 @@ export default function ReportIP({ addToast }: any) {
 
                       <div className="space-y-2">
                         <Label htmlFor="category" className="text-base font-medium text-slate-300">
-                          Threat Category <span className="text-red-500">*</span>
+                          Threat Category <span className="text-destructive">*</span>
                         </Label>
                         <Select value={category} onValueChange={setCategory}>
                           <SelectTrigger id="category" className="h-11 bg-black/20 border-white/10 text-white">
@@ -427,7 +427,7 @@ export default function ReportIP({ addToast }: any) {
 
                       <div className="space-y-2">
                         <Label htmlFor="comment" className="text-base font-medium text-slate-300">
-                          Description / Evidence <span className="text-red-500">*</span>
+                          Description / Evidence <span className="text-destructive">*</span>
                         </Label>
                         <Textarea
                           id="comment"
@@ -467,7 +467,7 @@ export default function ReportIP({ addToast }: any) {
                             </>
                           ) : submitSuccess ? (
                             <>
-                              <Check className="h-5 w-5 mr-2 text-emerald-500" />
+                              <Check className="h-5 w-5 mr-2 text-primary" />
                               Submitted Successfully!
                             </>
                           ) : (
@@ -480,7 +480,7 @@ export default function ReportIP({ addToast }: any) {
                           )}
                         </Button>
                         <p className="text-xs text-center text-slate-500">
-                          By submitting, you agree to our <button type="button" onClick={() => setShowPolicyModal(true)} className="text-cyan-400 hover:underline">reporting policy</button>.
+                          By submitting, you agree to our <button type="button" onClick={() => setShowPolicyModal(true)} className="text-primary hover:underline">reporting policy</button>.
                         </p>
                       </div>
                     </form>
@@ -494,8 +494,8 @@ export default function ReportIP({ addToast }: any) {
           <div className="relative mt-12 w-full group">
             {/* Aurora Background Orbs */}
             <div className="absolute -inset-1 opacity-40 group-hover:opacity-60 transition-opacity duration-700 blur-3xl pointer-events-none z-0">
-              <div className="absolute top-0 -left-10 w-72 h-72 bg-emerald-500/30 rounded-full mix-blend-screen filter blur-3xl animate-blob" />
-              <div className="absolute top-0 -right-10 w-72 h-72 bg-cyan-500/30 rounded-full mix-blend-screen filter blur-3xl animate-blob animation-delay-2000" />
+              <div className="absolute top-0 -left-10 w-72 h-72 bg-primary/30 rounded-full mix-blend-screen filter blur-3xl animate-blob" />
+              <div className="absolute top-0 -right-10 w-72 h-72 bg-primary/30 rounded-full mix-blend-screen filter blur-3xl animate-blob animation-delay-2000" />
               <div className="absolute -bottom-20 left-40 w-72 h-72 bg-purple-500/30 rounded-full mix-blend-screen filter blur-3xl animate-blob animation-delay-4000" />
             </div>
 
@@ -689,15 +689,15 @@ export default function ReportIP({ addToast }: any) {
                 </div>
                 <div className="text-xs text-slate-300 space-y-6 leading-relaxed overflow-y-auto pr-2 custom-scrollbar">
                   <div>
-                    <h4 className="font-bold text-white text-sm mb-2 border-l-2 border-red-500 pl-2">1. Target Integrity</h4>
+                    <h4 className="font-bold text-white text-sm mb-2 border-l-2 border-destructive pl-2">1. Target Integrity</h4>
                     <p className="text-slate-400">Only report public IP addresses demonstrating malicious activity. Do not report private networks (e.g., 192.168.x.x), loopback addresses, or legitimate DNS/infrastructure unless actively weaponized.</p>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white text-sm mb-2 border-l-2 border-red-500 pl-2">2. Accuracy and Evidence</h4>
+                    <h4 className="font-bold text-white text-sm mb-2 border-l-2 border-destructive pl-2">2. Accuracy and Evidence</h4>
                     <p className="text-slate-400">Provide clear and concise evidence or reasoning in your submission comment. Deliberately submitting false reports, false positives, or targeted harassment will result in a permanent account ban.</p>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white text-sm mb-2 border-l-2 border-red-500 pl-2">3. No Personal Information</h4>
+                    <h4 className="font-bold text-white text-sm mb-2 border-l-2 border-destructive pl-2">3. No Personal Information</h4>
                     <p className="text-slate-400">Do not include Personally Identifiable Information (PII) in your reports unless it is directly part of the threat indicators (e.g., a phishing email address used by an attacker).</p>
                   </div>
                 </div>

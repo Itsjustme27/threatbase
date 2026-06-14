@@ -124,7 +124,7 @@ export default function MfaChallengeModal() {
             </div>
             
             {error && (
-              <div className="w-full flex items-center gap-2 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-left">
+              <div className="w-full flex items-center gap-2 p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm text-left">
                 <AlertCircle size={16} className="shrink-0" />
                 <span>{error}</span>
               </div>

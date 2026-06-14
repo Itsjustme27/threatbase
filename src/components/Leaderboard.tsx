@@ -23,15 +23,15 @@ const getRankInfo = (count: number) => {
   if (count >= 100) {
     return {
       name: 'Pro',
-      style: 'bg-cyan-500/10 border-cyan-500/30 text-cyan-500 transition-all duration-500 group-hover:bg-cyan-500/20 group-hover:border-cyan-400/60 group-hover:text-cyan-400',
-      icon: <Star size={14} className="text-cyan-500 transition-all duration-500 group-hover:text-cyan-400" strokeWidth={2.5} />
+      style: 'bg-primary/10 border-primary/30 text-primary transition-all duration-500 group-hover:bg-primary/20 group-hover:border-primary/60 group-hover:text-primary',
+      icon: <Star size={14} className="text-primary transition-all duration-500 group-hover:text-primary" strokeWidth={2.5} />
     }
   }
   if (count >= 50) {
     return {
       name: 'Defender',
-      style: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500 transition-all duration-500 group-hover:bg-emerald-500/20 group-hover:border-emerald-400/60 group-hover:text-emerald-400',
-      icon: <Shield size={14} className="text-emerald-500 transition-all duration-500 group-hover:text-emerald-400" strokeWidth={2.5} />
+      style: 'bg-primary/10 border-primary/30 text-primary transition-all duration-500 group-hover:bg-primary/20 group-hover:border-primary/60 group-hover:text-primary',
+      icon: <Shield size={14} className="text-primary transition-all duration-500 group-hover:text-primary" strokeWidth={2.5} />
     }
   }
   return {
@@ -75,7 +75,7 @@ export default function Leaderboard() {
   if (loading && leaders.length === 0) {
     return (
       <div className="flex justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-500"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     )
   }

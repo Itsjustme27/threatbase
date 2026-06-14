@@ -9,7 +9,7 @@ const feeds = [
     desc: 'High-confidence malicious IPv4 addresses actively involved in cyber attacks, ready for firewall ingestion.',
     file: 'malicious_ips.txt',
     icon: <img src={`${BASE}img/ipv4icon.png`} alt="IPv4" className="w-8 h-8 object-contain invert opacity-80" />,
-    color: 'text-red-500 bg-red-500/10 border-red-500/20',
+    color: 'text-destructive bg-destructive/10 border-destructive/20',
     glow: 'group-hover:shadow-[0_0_30px_rgba(239,68,68,0.15)]',
   },
   {
@@ -63,7 +63,7 @@ export default function Feeds() {
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-12">
         <div className="mb-16 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-500/10 border border-red-500/20 text-xs font-bold text-red-500 uppercase tracking-widest mb-4 drop-shadow-sm">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-destructive/10 border border-destructive/20 text-xs font-bold text-destructive uppercase tracking-widest mb-4 drop-shadow-sm">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>

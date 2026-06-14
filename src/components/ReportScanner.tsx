@@ -2,18 +2,18 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Bug, ShieldCheck, AlertTriangle, AlertOctagon, ChevronRight, Search, Check, ShieldAlert } from 'lucide-react'
 import supabaseClient from '../supabaseClient'
-import { timeAgo, getCategoryIconPath } from '../utils'
+import { timeAgo, getCategoryIconPath, normalizeTags } from '../utils'
 import { useAuth } from '../AuthContext'
 
 const getCategoryColor = (cat: string) => {
   if (!cat) return 'bg-slate-500/10 text-slate-300 border border-slate-500/20'
   const c = cat.toLowerCase()
   if (c.includes('brute') || c.includes('force')) return 'bg-orange-500/10 text-orange-400 border border-orange-500/20'
-  if (c.includes('malware')) return 'bg-red-500/10 text-red-400 border border-red-500/20'
+  if (c.includes('malware') || c.includes('exploit') || c.includes('zero-day')) return 'bg-destructive/10 text-destructive border border-destructive/20'
   if (c.includes('ddos')) return 'bg-purple-500/10 text-purple-400 border border-purple-500/20'
-  if (c.includes('phish')) return 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
-  if (c.includes('scan')) return 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20'
-  if (c.includes('botnet')) return 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+  if (c.includes('phish') || c.includes('harvest')) return 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+  if (c.includes('scan') || c.includes('recon')) return 'bg-primary/10 text-primary border border-primary/20'
+  if (c.includes('botnet') || c.includes('c2')) return 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
   return 'bg-slate-500/10 text-slate-300 border border-slate-500/20'
 }
 
@@ -155,7 +155,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
     setIsDeepScanning(true);
     try {
       // Points to your deployed Cloudflare Worker
-      const workerUrl = 'https://api.threatbase.qzz.io/'; 
+      const workerUrl = 'https://threatbase-deepscan.sujallamichhane.workers.dev/'; 
       const res = await fetch(`${workerUrl}?ioc=${encodeURIComponent(ip)}`);
       
       if (!res.ok) throw new Error('Worker failed');
@@ -191,8 +191,8 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
             >
               <div className="relative flex items-center justify-center w-16 h-16 mb-6">
                 <div className="absolute inset-0 rounded-full border-2 border-slate-700/50"></div>
-                <div className="absolute inset-0 rounded-full border-2 border-cyan-500 border-t-transparent animate-spin"></div>
-                <Search className="text-cyan-400" size={20} />
+                <div className="absolute inset-0 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
+                <Search className="text-primary" size={20} />
               </div>
               <div className="text-sm font-medium text-slate-400 tracking-wide uppercase">Scanning target</div>
               <div className="mt-3 text-xl font-mono text-white">{ip}</div>
@@ -211,7 +211,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                 {/* Header */}
                 <div className="p-6 md:p-8 flex items-start justify-between border-b border-white/5 bg-white/[0.02]">
                   <div className="flex items-center gap-5">
-                    <div className={`p-3 rounded-xl ${type === 'danger' ? 'bg-red-500/10 text-red-400' : type === 'safe' ? 'bg-emerald-500/10 text-emerald-400' : type === 'disputed' ? 'bg-amber-500/10 text-amber-500' : 'bg-amber-500/10 text-amber-400'}`}>
+                    <div className={`p-3 rounded-xl ${type === 'danger' ? 'bg-destructive/10 text-destructive' : type === 'safe' ? 'bg-primary/10 text-primary' : type === 'disputed' ? 'bg-amber-500/10 text-amber-500' : 'bg-amber-500/10 text-amber-400'}`}>
                       <StatusIcon size={32} strokeWidth={2} />
                     </div>
                     <div>
@@ -243,7 +243,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                         {!user && <span className="text-[9px] text-slate-500 font-medium">Sign in required</span>}
                       </div>
                     )}
-                    <div className={`px-3 py-1.5 rounded-md text-[11px] font-bold uppercase tracking-widest border ${type === 'danger' ? 'bg-red-500/10 text-red-400 border-red-500/20' : type === 'safe' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : type === 'disputed' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20'}`}>
+                    <div className={`px-3 py-1.5 rounded-md text-[11px] font-bold uppercase tracking-widest border ${type === 'danger' ? 'bg-destructive/10 text-destructive border-destructive/20' : type === 'safe' ? 'bg-primary/10 text-primary border-primary/20' : type === 'disputed' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20'}`}>
                       {type === 'danger' ? 'Threat Detected' : type === 'safe' ? 'Not Listed' : type === 'disputed' ? 'False Positive' : 'Warning'}
                     </div>
                   </div>
@@ -256,7 +256,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                     {type === 'danger' ? (
                       <div className="space-y-3">
                         <p className="text-slate-300 leading-relaxed text-sm">
-                          The indicator <code className="px-1.5 py-0.5 rounded bg-slate-800 border border-white/5 font-mono text-red-400">{ip}</code> has been positively identified as malicious by the
+                          The indicator <code className="px-1.5 py-0.5 rounded bg-slate-800 border border-white/5 font-mono text-destructive">{ip}</code> has been positively identified as malicious by the
                           Threatbase global sensor network. It is currently active in our threat intelligence blocklists.
                         </p>
                         {scanResult?.tags && scanResult.tags.length > 0 && (
@@ -273,7 +273,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                       </div>
                     ) : type === 'safe' ? (
                       <p className="text-slate-300 leading-relaxed text-sm">
-                        The indicator <code className="px-1.5 py-0.5 rounded bg-slate-800 border border-white/5 font-mono text-emerald-400">{ip}</code> is <strong>not currently listed</strong> in the active
+                        The indicator <code className="px-1.5 py-0.5 rounded bg-slate-800 border border-white/5 font-mono text-primary">{ip}</code> is <strong>not currently listed</strong> in the active
                         Threatbase threat database.
                       </p>
                     ) : type === 'disputed' ? (
@@ -286,11 +286,11 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
 
                     {showDisputeForm && (
                       <motion.div initial={{opacity:0, height:0}} animate={{opacity:1, height:'auto'}} className="mt-6 p-4 rounded-xl border border-white/10 bg-black/20 overflow-hidden">
-                        <h5 className="text-sm font-semibold text-slate-300 mb-2">Why is this a false positive? <span className="text-red-500">*</span></h5>
+                        <h5 className="text-sm font-semibold text-slate-300 mb-2">Why is this a false positive? <span className="text-destructive">*</span></h5>
                         <textarea
                           value={disputeReason}
                           onChange={e => setDisputeReason(e.target.value)}
-                          className="w-full bg-slate-900/50 border border-white/10 rounded-lg p-3 text-sm text-slate-300 focus:outline-none focus:border-cyan-500/50 resize-none"
+                          className="w-full bg-slate-900/50 border border-white/10 rounded-lg p-3 text-sm text-slate-300 focus:outline-none focus:border-primary/50 resize-none"
                           rows={3}
                           placeholder="Please provide details (e.g. 'This is a public DNS resolver', 'Internal proxy')..."
                         ></textarea>
@@ -309,7 +309,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                         <div className="bg-slate-900/40 rounded-xl p-4 md:p-5 border border-white/5 shadow-inner">
                           {loadingIpInfo ? (
                             <div className="flex justify-center py-4">
-                              <div className="h-4 w-4 rounded-full border-2 border-slate-600 border-t-cyan-500 animate-spin"></div>
+                              <div className="h-4 w-4 rounded-full border-2 border-slate-600 border-t-primary animate-spin"></div>
                             </div>
                           ) : ipInfo ? (
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -349,14 +349,14 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                     {/* Deep Scan Button */}
                     <div className="mb-6 bg-slate-900/40 rounded-xl p-4 border border-white/5 shadow-inner">
                       <div className="flex items-center justify-between mb-3">
-                        <span className="text-xs font-bold text-slate-300">Live API Lookup</span>
+                        <span className="text-xs font-bold text-slate-300">Deep Scan</span>
                         <button 
                           onClick={handleDeepScan}
                           disabled={isDeepScanning}
-                          className="px-3 py-1.5 rounded-lg text-[10px] font-bold tracking-wider uppercase bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 hover:bg-cyan-500/20 transition-colors disabled:opacity-50 flex items-center gap-2"
+                          className="px-3 py-1.5 rounded-lg text-[10px] font-bold tracking-wider uppercase bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors disabled:opacity-50 flex items-center gap-2"
                         >
                           {isDeepScanning ? (
-                            <><div className="w-3 h-3 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div> Scanning</>
+                            <><div className="w-3 h-3 border-2 border-primary border-t-transparent rounded-full animate-spin"></div> Scanning</>
                           ) : 'Deep Scan'}
                         </button>
                       </div>
@@ -366,16 +366,13 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                           {deepScanData.malware && (
                             <div className="text-xs">
                               <span className="text-slate-500 font-semibold mr-2">Family:</span>
-                              <span className="text-red-400 font-bold">{deepScanData.malware}</span>
+                              <span className="text-destructive font-bold">{deepScanData.malware}</span>
                             </div>
                           )}
                           {deepScanData.tags && deepScanData.tags.length > 0 ? (
-                            <div className="flex flex-wrap gap-1.5 mt-2">
-                              {deepScanData.tags.map((tag: string) => (
-                                <span key={tag} className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[9px] font-bold tracking-wider ${getCategoryColor(tag)}`}>
-                                  {tag}
-                                </span>
-                              ))}
+                            <div className="text-xs text-slate-300 leading-relaxed mt-2">
+                              <span className="font-semibold text-slate-500 mr-2">Associated with:</span>
+                              {normalizeTags(deepScanData.tags).join(', ')}
                             </div>
                           ) : (
                             <div className="text-[10px] text-slate-500 italic">No live tags found for this indicator.</div>
@@ -401,7 +398,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                       {showAbuse && (
                         <a href={abuseHref} target="_blank" rel="noopener" className="group flex items-center justify-between py-3 border-b border-white/5 hover:bg-white/[0.02] px-3 -mx-3 rounded-lg transition-colors">
                           <div className="flex items-center gap-3">
-                            <AlertOctagon size={16} className="text-slate-400 group-hover:text-red-400 transition-colors" />
+                            <AlertOctagon size={16} className="text-slate-400 group-hover:text-destructive transition-colors" />
                             <span className="font-medium text-sm text-slate-300 group-hover:text-white transition-colors">AbuseIPDB</span>
                           </div>
                           <ChevronRight size={16} className="text-slate-600 group-hover:text-slate-300 transition-colors" />
@@ -429,7 +426,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                 <div className="w-full space-y-6">
                   <div>
                     <h3 className="text-xl md:text-2xl font-black text-white tracking-tight mb-2">
-                      Community Reports for <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent font-mono">{ip}</span>
+                      Community Reports for <span className="bg-gradient-to-r from-primary/80 to-primary bg-clip-text text-transparent font-mono">{ip}</span>
                     </h3>
                     <p className="text-xs md:text-sm text-slate-400 leading-relaxed font-medium">
                       This IP address has been reported <span className="text-white font-bold">{reports.length.toLocaleString()}</span> times. First reported on <span className="text-slate-300 font-medium">{new Date(reports[reports.length - 1].created_at || Date.now()).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric'})}</span>, with the most recent report from <span className="text-slate-300 font-medium">{timeAgo(reports[0].created_at || new Date().toISOString())}</span>.
@@ -455,7 +452,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                             <th className="px-6 py-5 w-[25%]">
                               <div className="flex items-center gap-1.5">
                                 IoA Timestamp (UTC) 
-                                <span className="text-cyan-400 text-[9px] font-bold bg-cyan-400/10 rounded-full w-3.5 h-3.5 inline-flex items-center justify-center cursor-help" title="Indicator of Attack timestamp">?</span>
+                                <span className="text-primary text-[9px] font-bold bg-primary/10 rounded-full w-3.5 h-3.5 inline-flex items-center justify-center cursor-help" title="Indicator of Attack timestamp">?</span>
                               </div>
                             </th>
                             <th className="px-6 py-5 w-[35%]">Comment</th>
@@ -473,7 +470,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                               <tr key={idx} className="block md:table-row bg-slate-900/50 md:bg-transparent hover:bg-white/[0.015] transition-colors group border border-white/10 md:border-0 rounded-xl md:rounded-none p-4 md:p-0">
                                 <td className="block md:table-cell px-0 py-1 md:px-6 md:py-4 whitespace-nowrap">
                                   <div className="flex items-center gap-2">
-                                    <Check size={14} className="text-emerald-400 shrink-0" strokeWidth={2.5} />
+                                    <Check size={14} className="text-primary shrink-0" strokeWidth={2.5} />
                                     <span className="font-bold text-slate-300">@{reporter}</span>
                                   </div>
                                 </td>

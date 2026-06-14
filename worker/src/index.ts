@@ -1,4 +1,6 @@
 export interface Env {
+	THREATFOX_API_KEY?: string;
+	OTX_API_KEY?: string;
 }
 
 const corsHeaders = {
@@ -32,15 +34,24 @@ export default {
 				query: 'search_ioc',
 				search_term: ioc
 			};
+			const tfHeaders: Record<string, string> = { 'Content-Type': 'application/json' };
+			if (env.THREATFOX_API_KEY) {
+				tfHeaders['API-KEY'] = env.THREATFOX_API_KEY;
+			}
 			const tfPromise = fetch('https://threatfox-api.abuse.ch/api/v1/', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: tfHeaders,
 				body: JSON.stringify(threatFoxRequest)
 			}).then(res => res.json());
 
 			// 2. Prepare AlienVault OTX Request
-			const otxPromise = fetch(`https://otx.alienvault.com/api/v1/indicators/IPv4/${ioc}/general`)
-				.then(res => res.json());
+			const otxHeaders: Record<string, string> = {};
+			if (env.OTX_API_KEY) {
+				otxHeaders['X-OTX-API-KEY'] = env.OTX_API_KEY;
+			}
+			const otxPromise = fetch(`https://otx.alienvault.com/api/v1/indicators/IPv4/${ioc}/general`, {
+				headers: otxHeaders
+			}).then(res => res.json());
 
 			// Execute concurrently
 			const [tfResult, otxResult] = await Promise.allSettled([tfPromise, otxPromise]);

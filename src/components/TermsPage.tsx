@@ -42,21 +42,21 @@ export default function TermsPage() {
             
             <section>
               <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                <span className="text-red-400">1.</span> Acceptance of Terms
+                <span className="text-destructive">1.</span> Acceptance of Terms
               </h3>
               <p>By accessing or using Threatbase, you agree to be bound by these Terms and Conditions. If you do not agree, you must not use the Service.</p>
             </section>
 
             <section>
               <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                <span className="text-red-400">2.</span> Description of Service
+                <span className="text-destructive">2.</span> Description of Service
               </h3>
               <p>Threatbase is a free threat intelligence platform providing access to threat feeds, indicators of compromise (IOCs), and related security data. The Service is provided "as is" for informational, research, and defensive security purposes only.</p>
             </section>
 
             <section>
               <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                <span className="text-red-400">3.</span> User Responsibilities
+                <span className="text-destructive">3.</span> User Responsibilities
               </h3>
               <ul className="list-disc list-inside space-y-2 ml-2">
                 <li>You must comply with all applicable laws and regulations.</li>
@@ -68,14 +68,14 @@ export default function TermsPage() {
 
             <section>
               <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                <span className="text-red-400">4.</span> Intellectual Property
+                <span className="text-destructive">4.</span> Intellectual Property
               </h3>
               <p>All content on the Site, unless otherwise noted, belongs to or is licensed to the operator of Threatbase. You may use the data feeds for personal, research, or internal security purposes, provided you give appropriate attribution where required and respect any source-specific licenses.</p>
             </section>
 
             <section>
               <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                <span className="text-red-400">5.</span> Disclaimers and Limitation of Liability
+                <span className="text-destructive">5.</span> Disclaimers and Limitation of Liability
               </h3>
               <ul className="list-disc list-inside space-y-2 ml-2">
                 <li>The Service is provided <strong className="text-white">"AS IS"</strong> without any warranties.</li>
@@ -87,7 +87,7 @@ export default function TermsPage() {
 
             <section>
               <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                <span className="text-red-400">6.</span> Termination
+                <span className="text-destructive">6.</span> Termination
               </h3>
               <p>We reserve the right to restrict or block access to the Service at any time, without notice, for any reason.</p>
             </section>

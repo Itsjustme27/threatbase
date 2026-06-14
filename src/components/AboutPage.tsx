@@ -12,7 +12,7 @@ export default function AboutPage() {
   const features = [
     {
       icon: <img src={`${import.meta.env.BASE_URL}img/database.png`} alt="Database" className="w-8 h-8 object-contain drop-shadow-sm" />,
-      iconColorClass: "text-red-400 bg-red-950/30 border-red-500/20 group-hover:border-red-500/40",
+      iconColorClass: "text-destructive bg-red-950/30 border-destructive/20 group-hover:border-destructive/40",
       title: "Discover IOCs",
       desc: "Access verified indicators of compromise to proactively defend networks."
     },
@@ -51,7 +51,7 @@ export default function AboutPage() {
           transition={{ duration: 0.6 }}
           className="max-w-4xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/80 border border-white/10 backdrop-blur-xl shadow-2xl text-xs font-bold uppercase tracking-widest mb-6 text-red-400">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/80 border border-white/10 backdrop-blur-xl shadow-2xl text-xs font-bold uppercase tracking-widest mb-6 text-destructive">
             About ThreatBase
           </div>
           
@@ -69,7 +69,7 @@ export default function AboutPage() {
           <div className="inline-block p-[1px] rounded-2xl bg-gradient-to-r from-red-500/40 to-blue-500/40 mb-20 shadow-2xl">
             <div className="px-8 py-4 rounded-2xl bg-slate-950/80 backdrop-blur-xl">
               <span className="font-mono text-lg text-slate-200 tracking-wide">
-                <span className="text-red-400">&gt;</span> Curiosity fuels discovery.
+                <span className="text-destructive">&gt;</span> Curiosity fuels discovery.
               </span>
             </div>
           </div>
