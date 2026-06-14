@@ -156,7 +156,8 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
     try {
       // Points to your deployed Cloudflare Worker
       const workerUrl = 'https://threatbase-deepscan.sujallamichhane.workers.dev/'; 
-      const res = await fetch(`${workerUrl}?ioc=${encodeURIComponent(ip)}`);
+      const iocType = scanResult?.isDomain ? 'domain' : scanResult?.isURL ? 'url' : scanResult?.isHash ? 'hash' : scanResult?.isIPv6 ? 'IPv6' : 'IPv4';
+      const res = await fetch(`${workerUrl}?ioc=${encodeURIComponent(ip)}&type=${iocType}`);
       
       if (!res.ok) throw new Error('Worker failed');
       const data = await res.json();
@@ -211,7 +212,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                 {/* Header */}
                 <div className="p-6 md:p-8 flex items-start justify-between border-b border-white/5 bg-white/[0.02]">
                   <div className="flex items-center gap-5">
-                    <div className={`p-3 rounded-xl ${type === 'danger' ? 'bg-destructive/10 text-destructive' : type === 'safe' ? 'bg-primary/10 text-primary' : type === 'disputed' ? 'bg-amber-500/10 text-amber-500' : 'bg-amber-500/10 text-amber-400'}`}>
+                    <div className={`p-3 rounded-xl ${type === 'danger' ? 'bg-destructive/10 text-destructive' : type === 'safe' ? 'bg-emerald-500/10 text-emerald-500' : type === 'disputed' ? 'bg-amber-500/10 text-amber-500' : 'bg-amber-500/10 text-amber-400'}`}>
                       <StatusIcon size={32} strokeWidth={2} />
                     </div>
                     <div>
@@ -243,7 +244,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                         {!user && <span className="text-[9px] text-slate-500 font-medium">Sign in required</span>}
                       </div>
                     )}
-                    <div className={`px-3 py-1.5 rounded-md text-[11px] font-bold uppercase tracking-widest border ${type === 'danger' ? 'bg-destructive/10 text-destructive border-destructive/20' : type === 'safe' ? 'bg-primary/10 text-primary border-primary/20' : type === 'disputed' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20'}`}>
+                    <div className={`px-3 py-1.5 rounded-md text-[11px] font-bold uppercase tracking-widest border ${type === 'danger' ? 'bg-destructive/10 text-destructive border-destructive/20' : type === 'safe' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : type === 'disputed' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20'}`}>
                       {type === 'danger' ? 'Threat Detected' : type === 'safe' ? 'Not Listed' : type === 'disputed' ? 'False Positive' : 'Warning'}
                     </div>
                   </div>
@@ -273,7 +274,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                       </div>
                     ) : type === 'safe' ? (
                       <p className="text-slate-300 leading-relaxed text-sm">
-                        The indicator <code className="px-1.5 py-0.5 rounded bg-slate-800 border border-white/5 font-mono text-primary">{ip}</code> is <strong>not currently listed</strong> in the active
+                        The indicator <code className="px-1.5 py-0.5 rounded bg-slate-800 border border-white/5 font-mono text-emerald-500">{ip}</code> is <strong>not currently listed</strong> in the active
                         Threatbase threat database.
                       </p>
                     ) : type === 'disputed' ? (

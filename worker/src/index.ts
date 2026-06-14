@@ -17,6 +17,7 @@ export default {
 		
 		const url = new URL(request.url);
 		const ioc = url.searchParams.get('ioc') || url.searchParams.get('ip');
+		const type = url.searchParams.get('type') || 'IPv4'; // e.g., IPv4, domain, URL, file
 		
 		if (!ioc) {
 			return new Response(JSON.stringify({ error: 'Missing IOC parameter' }), { 
@@ -28,30 +29,51 @@ export default {
 		try {
 			const tags = new Set<string>();
 			let malwarePrintable = '';
+			const errors: string[] = [];
 
 			// 1. Prepare ThreatFox Request
 			const threatFoxRequest = {
 				query: 'search_ioc',
 				search_term: ioc
 			};
-			const tfHeaders: Record<string, string> = { 'Content-Type': 'application/json' };
+			const tfHeaders: Record<string, string> = { 
+				'Content-Type': 'application/json',
+				'User-Agent': 'Threatbase/1.0'
+			};
 			if (env.THREATFOX_API_KEY) {
-				tfHeaders['API-KEY'] = env.THREATFOX_API_KEY;
+				tfHeaders['Auth-Key'] = env.THREATFOX_API_KEY;
 			}
 			const tfPromise = fetch('https://threatfox-api.abuse.ch/api/v1/', {
 				method: 'POST',
 				headers: tfHeaders,
 				body: JSON.stringify(threatFoxRequest)
-			}).then(res => res.json());
+			}).then(async res => {
+				if (!res.ok) throw new Error(`HTTP ${res.status}`);
+				return res.json();
+			});
 
 			// 2. Prepare AlienVault OTX Request
-			const otxHeaders: Record<string, string> = {};
+			const otxHeaders: Record<string, string> = {
+				'User-Agent': 'Threatbase/1.0'
+			};
 			if (env.OTX_API_KEY) {
 				otxHeaders['X-OTX-API-KEY'] = env.OTX_API_KEY;
 			}
-			const otxPromise = fetch(`https://otx.alienvault.com/api/v1/indicators/IPv4/${ioc}/general`, {
+			
+			// Map general type string to AlienVault expected types
+			let otxType = type;
+			if (type === 'hash' || type === 'file') otxType = 'file';
+			else if (type === 'URL') otxType = 'url';
+			
+			const otxPromise = fetch(`https://otx.alienvault.com/api/v1/indicators/${otxType}/${encodeURIComponent(ioc)}/general`, {
 				headers: otxHeaders
-			}).then(res => res.json());
+			}).then(async res => {
+				if (!res.ok) {
+					if (res.status === 404) return { pulse_info: { pulses: [] } }; // OTX returns 404 if not found
+					throw new Error(`HTTP ${res.status}`);
+				}
+				return res.json();
+			});
 
 			// Execute concurrently
 			const [tfResult, otxResult] = await Promise.allSettled([tfPromise, otxPromise]);
@@ -68,6 +90,8 @@ export default {
 						}
 					}
 				}
+			} else {
+				errors.push(`ThreatFox: ${tfResult.reason}`);
 			}
 
 			// Process AlienVault OTX Data
@@ -78,12 +102,15 @@ export default {
 						if (pulse.tags) pulse.tags.forEach((t: string) => tags.add(t));
 					}
 				}
+			} else {
+				errors.push(`OTX: ${otxResult.reason}`);
 			}
 
 			return new Response(JSON.stringify({
 				success: true,
 				tags: Array.from(tags),
-				malware: malwarePrintable || null
+				malware: malwarePrintable || null,
+				errors: errors.length > 0 ? errors : undefined
 			}), {
 				headers: {
 					'Content-Type': 'application/json',
