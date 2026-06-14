@@ -598,11 +598,15 @@ export default function ReportIP({ addToast }: any) {
                   </thead>
                   <tbody className="block md:table-row-group space-y-4 md:space-y-0 p-4 md:p-0">
                     <AnimatePresence>
-                      {reports.map((row, idx) => {
+                      {reports.reduce((acc: any[], row) => {
+                        const isDuplicate = acc.some(r => r.ip === row.ip && r.reporter_alias === row.reporter_alias);
+                        if (!isDuplicate) acc.push(row);
+                        return acc;
+                      }, []).map((row: any, idx: number, arr: any[]) => {
                         const dateObj = new Date(row.created_at);
                         const fullDate = dateObj.toISOString().replace('T', ' ').substring(0, 19);
                         const categories = (row.category || 'Other').split(', ');
-                        const showIp = idx === 0 || reports[idx - 1].ip !== row.ip;
+                        const showIp = idx === 0 || arr[idx - 1].ip !== row.ip;
                         
                         return (
                           <motion.tr
