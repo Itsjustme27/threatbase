@@ -1,6 +1,6 @@
 "use client";
 
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import {
   Card,
@@ -70,7 +70,6 @@ export default function AnimatedHighlightedAreaChart({ feedVersion }: { feedVers
         <CardHeader>
             <CardTitle className="text-xl font-extrabold flex items-center gap-2 text-white tracking-tight">
               Threat Landscape Trends
-              <img src={`${import.meta.env.BASE_URL}img/trending.png`} alt="Trending" className="h-6 object-contain ml-2 drop-shadow-sm" />
             </CardTitle>
           <CardDescription className="text-slate-400 font-medium mt-1">
             Tracking malicious IPv4 and Domains activity over time
@@ -92,19 +91,15 @@ export default function AnimatedHighlightedAreaChart({ feedVersion }: { feedVers
               tickMargin={8}
               tick={{ fill: "#64748b" }}
             />
+            <YAxis 
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tick={{ fill: "#64748b" }}
+              width={40}
+            />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <defs>
-              <linearGradient
-                id="animated-highlighted-mask-grad"
-                x1="0"
-                y1="0"
-                x2="1"
-                y2="0"
-              >
-                <stop offset="0%" stopColor="transparent" />
-                <stop offset="50%" stopColor="white" />
-                <stop offset="100%" stopColor="transparent" />
-              </linearGradient>
               <linearGradient
                 id="animated-highlighted-grad-ipv4"
                 x1="0"
@@ -141,37 +136,22 @@ export default function AnimatedHighlightedAreaChart({ feedVersion }: { feedVers
                   stopOpacity={0}
                 />
               </linearGradient>
-              {xAxis && (
-                <mask id="animated-highlighted-mask">
-                  <rect
-                    x={xAxis - animationConfig.glowWidth / 2}
-                    y={0}
-                    width={animationConfig.glowWidth}
-                    height="100%"
-                    fill="url(#animated-highlighted-mask-grad)"
-                  />
-                </mask>
-              )}
             </defs>
             <Area
               dataKey="domains"
-              type="natural"
+              type="monotone"
               fill={"url(#animated-highlighted-grad-domains)"}
-              fillOpacity={0.4}
+              fillOpacity={1}
               stroke="#3b82f6"
-              stackId="a"
-              strokeWidth={0.8}
-              mask="url(#animated-highlighted-mask)"
+              strokeWidth={2}
             />
             <Area
               dataKey="ipv4"
-              type="natural"
+              type="monotone"
               fill={"url(#animated-highlighted-grad-ipv4)"}
-              fillOpacity={0.4}
+              fillOpacity={1}
               stroke="#ef4444"
-              stackId="a"
-              strokeWidth={0.8}
-              mask="url(#animated-highlighted-mask)"
+              strokeWidth={2}
             />
           </AreaChart>
         </ChartContainer>
