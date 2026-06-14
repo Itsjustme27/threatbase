@@ -155,7 +155,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
     setIsDeepScanning(true);
     try {
       // Points to your deployed Cloudflare Worker
-      const workerUrl = 'https://threatbase.sujallamichhane.workers.dev/'; 
+      const workerUrl = 'https://api.threatbase.qzz.io/'; 
       const res = await fetch(`${workerUrl}?ioc=${encodeURIComponent(ip)}`);
       
       if (!res.ok) throw new Error('Worker failed');
