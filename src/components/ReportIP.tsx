@@ -559,6 +559,7 @@ export default function ReportIP({ addToast }: any) {
                         const dateObj = new Date(row.created_at);
                         const fullDate = dateObj.toISOString().replace('T', ' ').substring(0, 19);
                         const categories = (row.category || 'Other').split(', ');
+                        const showIp = idx === 0 || reports[idx - 1].ip !== row.ip;
                         
                         return (
                           <motion.tr
@@ -570,9 +571,13 @@ export default function ReportIP({ addToast }: any) {
                           >
                             {/* IP Address */}
                             <td className="block md:table-cell px-0 py-1.5 md:px-4 md:py-3 align-top whitespace-nowrap">
-                              <span className="text-slate-300 font-mono text-[15px] md:text-[13px] font-bold md:font-medium">
-                                {row.ip}
-                              </span>
+                              {showIp ? (
+                                <span className="text-slate-300 font-mono text-[15px] md:text-[13px] font-bold md:font-medium">
+                                  {row.ip}
+                                </span>
+                              ) : (
+                                <span className="hidden md:inline-block text-slate-500/30 select-none text-xs" title="Same as above">...</span>
+                              )}
                             </td>
 
                             {/* Reporter */}
