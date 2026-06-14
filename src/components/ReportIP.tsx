@@ -143,6 +143,11 @@ export default function ReportIP({ addToast }: any) {
   const [loading, setLoading] = useState(true)
   const [isEmpty, setIsEmpty] = useState(false)
   const [copiedIp, setCopiedIp] = useState<string | null>(null)
+  
+  // Edit State
+  const [editingRowId, setEditingRowId] = useState<number | null>(null)
+  const [editComment, setEditComment] = useState('')
+  const [isSavingEdit, setIsSavingEdit] = useState(false)
 
   const totalPages = Math.ceil(reportCount / REPORT_PAGE_SIZE)
 
@@ -286,6 +291,18 @@ export default function ReportIP({ addToast }: any) {
     const safeAlias = DOMPurify.sanitize(rawAlias)
 
     try {
+      const { data: existingReport } = await supabaseClient
+        .from('reported_ips')
+        .select('id')
+        .eq('ip', raw)
+        .eq('reporter_alias', safeAlias || '')
+        .maybeSingle()
+
+      if (existingReport) {
+        setSubmitting(false)
+        return addToast('You have already reported this IP. You can edit your existing report in the feed below.', 'error')
+      }
+
       const { error } = await supabaseClient
         .from('reported_ips')
         .insert([{ ip: raw, category: catLabel, comment: safeComment, reporter_alias: safeAlias || null }])
@@ -306,6 +323,32 @@ export default function ReportIP({ addToast }: any) {
       addToast('Submission failed: ' + (err.message || 'Unknown error'), 'error')
     } finally {
       setSubmitting(false)
+    }
+  }
+
+  const handleSaveEdit = async (id: number) => {
+    if (!supabaseClient) return addToast('Supabase connection unavailable', 'error')
+    if (!editComment.trim()) return addToast('Comment cannot be empty', 'error')
+    if (editComment.trim().length > 1000) return addToast('Comment is too long (max 1000 characters)', 'error')
+
+    setIsSavingEdit(true)
+    try {
+      const safeComment = DOMPurify.sanitize(editComment.trim())
+      const { error } = await supabaseClient
+        .from('reported_ips')
+        .update({ comment: safeComment })
+        .eq('id', id)
+        .eq('reporter_alias', alias || '')
+        
+      if (error) throw error
+      
+      addToast('Comment updated successfully!', 'success')
+      setEditingRowId(null)
+      loadReportedIPs(page)
+    } catch (err: any) {
+      addToast('Failed to update comment: ' + (err.message || 'Unknown error'), 'error')
+    } finally {
+      setIsSavingEdit(false)
     }
   }
 
@@ -606,7 +649,34 @@ export default function ReportIP({ addToast }: any) {
 
                             {/* Comment */}
                             <td className="block md:table-cell px-0 py-3 md:px-4 md:py-3 align-top border-t border-b border-white/5 md:border-0 my-3 md:my-0">
-                              <CommentCell comment={row.comment} />
+                              {editingRowId === row.id ? (
+                                <div className="flex flex-col gap-2 relative z-20">
+                                  <Textarea
+                                    value={editComment}
+                                    onChange={(e) => setEditComment(e.target.value)}
+                                    className="min-h-[80px] resize-none bg-black/40 border-white/20 text-white placeholder:text-slate-500 text-[12px] p-2"
+                                  />
+                                  <div className="flex gap-2 justify-end">
+                                    <Button variant="ghost" size="sm" onClick={() => setEditingRowId(null)} disabled={isSavingEdit} className="h-7 text-xs px-2 text-slate-300 hover:text-white">Cancel</Button>
+                                    <Button size="sm" onClick={() => handleSaveEdit(row.id)} disabled={isSavingEdit} className="h-7 text-xs px-3 bg-primary text-black hover:bg-primary/90">
+                                      {isSavingEdit ? 'Saving...' : 'Save'}
+                                    </Button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className="group relative pr-8">
+                                  <CommentCell comment={row.comment} />
+                                  {alias && row.reporter_alias === alias && (
+                                    <button 
+                                      onClick={() => { setEditingRowId(row.id); setEditComment(row.comment); }}
+                                      className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity p-1.5 text-slate-400 hover:text-white bg-slate-800 rounded-md shadow-sm"
+                                      title="Edit your comment"
+                                    >
+                                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                    </button>
+                                  )}
+                                </div>
+                              )}
                             </td>
 
                             {/* Categories */}
