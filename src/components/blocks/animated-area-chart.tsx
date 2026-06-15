@@ -110,7 +110,12 @@ export default function AnimatedHighlightedAreaChart({ feedVersion }: { feedVers
               axisLine={false}
               tickMargin={8}
               tick={{ fill: "#64748b" }}
-              width={40}
+              width={50}
+              tickFormatter={(value) => {
+                if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`
+                if (value >= 1000) return `${(value / 1000).toFixed(0)}k`
+                return value
+              }}
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <defs>
