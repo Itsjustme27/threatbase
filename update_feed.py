@@ -968,12 +968,10 @@ def filter_ips(ip_sources, custom_ips, existing_ips):
             else:
                 filtered_ip_info[ip] = {"count": num_sources, "score": "HIGH", "tags": sorted(list(tags))}
         elif "MEDIUM" in tiers:
-            # FP-FIX: raised from 2 → 3 to reduce MEDIUM noise
-            if num_sources >= 3:
+            if num_sources >= 1:
                 filtered_ip_info[ip] = {"count": num_sources, "score": "MEDIUM", "tags": sorted(list(tags))}
         else:
-            # FP-FIX: raised from 5 → 7 — ipsum/firehol/romainmarcoux are very noisy
-            if num_sources >= 7:
+            if num_sources >= 1:
                 filtered_ip_info[ip] = {"count": num_sources, "score": "LOW", "tags": sorted(list(tags))}
                 
     return filtered_ip_info
