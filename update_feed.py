@@ -454,36 +454,6 @@ async def fetch_threatfox_async(session: aiohttp.ClientSession, name: str, url: 
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Uploads
-# ─────────────────────────────────────────────────────────────────────────────
-def upload_to_supabase(file_path: str, object_name: str):
-    access_key = os.environ.get("SUPABASE_S3_ACCESS_KEY")
-    secret_key = os.environ.get("SUPABASE_S3_SECRET_KEY")
-    bucket_name = "threatbase-ioc"
-    endpoint_url = "https://fybwjibrvwqwnspgswtp.storage.supabase.co/storage/v1/s3"
-    
-    if not access_key or not secret_key:
-        log.warning(f"Supabase S3 credentials not found. Skipping upload for {file_path}")
-        return
-        
-    try:
-        s3 = boto3.client(
-            's3',
-            endpoint_url=endpoint_url,
-            aws_access_key_id=access_key,
-            aws_secret_access_key=secret_key,
-            region_name='us-east-1',
-            config=Config(signature_version='s3v4')
-        )
-        
-        log.info(f"  ☁ Uploading {file_path} to Supabase bucket '{bucket_name}'...")
-        s3.upload_file(file_path, bucket_name, object_name)
-        log.info(f"  ✓ Successfully uploaded {object_name}.")
-    except Exception as e:
-        log.error(f"  ✗ Failed to upload {file_path} to Supabase: {e}")
-
-
-# ─────────────────────────────────────────────────────────────────────────────
 # Trust Tier & Tag Processing
 # ─────────────────────────────────────────────────────────────────────────────
 FEED_TRUST_TIERS = {
@@ -691,17 +661,6 @@ async def run_async_collector():
     with open("ioc/stats.json", "w", encoding="utf-8") as f:
         json.dump(stats, f)
         
-    # S3 Upload Phase Disabled
-    log.info("Skipping Supabase S3 Uploads as requested...")
-    # upload_to_supabase(txt_output_path, "threatbase-ip.txt")
-    # upload_to_supabase(json_output_path, "threatbase-ip.json")
-    # upload_to_supabase("ioc/threatbase-domain.txt", "threatbase-domain.txt")
-    # upload_to_supabase("ioc/threatbase-hash.txt", "threatbase-hash.txt")
-    # upload_to_supabase("ioc/threatbase-url.txt", "threatbase-url.txt")
-    # upload_to_supabase("ioc/threatbase-ipv6.txt", "threatbase-ipv6.txt")
-    # upload_to_supabase("ioc/threatbase-cidr.txt", "threatbase-cidr.txt")
-    # upload_to_supabase("ioc/stats.json", "stats.json")
-    
     elapsed = time.time() - t_start
     log.info("═" * 55)
     log.info(f"  Finished gracefully in {elapsed:.1f}s")
