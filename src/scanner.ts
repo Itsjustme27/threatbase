@@ -154,31 +154,18 @@ export async function scanIndicatorLogic(rawInput, feedVersion) {
     let compareFn = stringCompare
 
     if (isIP) {
-      const p = ip.split('.')[0]
-      const prefix = /^\d+$/.test(p) ? p : 'other'
-      textData = await fetchAndCacheFeedText(RAW, `malicious_ips_${prefix}.txt`, feedVersion)
+      textData = await fetchAndCacheFeedText(RAW, 'threatbase-ip.txt', feedVersion)
       compareFn = ipCsvCompare
     } else if (isIPv6) {
-      textData = await fetchAndCacheFeedText(RAW, 'malicious_ipv6.txt', feedVersion)
+      textData = await fetchAndCacheFeedText(RAW, 'threatbase-ipv6.txt', feedVersion)
     } else if (isCIDR) {
-      textData = await fetchAndCacheFeedText(RAW, 'malicious_cidrs.txt', feedVersion)
+      textData = await fetchAndCacheFeedText(RAW, 'threatbase-cidr.txt', feedVersion)
     } else if (isDomain) {
-      const c = ip[0].toLowerCase()
-      const prefix = /^[a-z0-9]$/.test(c) ? c : 'other'
-      textData = await fetchAndCacheFeedText(RAW, `malicious_domains_${prefix}.txt`, feedVersion)
+      textData = await fetchAndCacheFeedText(RAW, 'threatbase-domain.txt', feedVersion)
     } else if (isHash) {
-      const c = ip[0].toLowerCase()
-      const prefix = /^[0-9a-f]$/.test(c) ? c : 'other'
-      textData = await fetchAndCacheFeedText(RAW, `malicious_hashes_${prefix}.txt`, feedVersion)
+      textData = await fetchAndCacheFeedText(RAW, 'threatbase-hash.txt', feedVersion)
     } else if (isURL) {
-      try {
-        const clean = ip.split("://")[1]
-        const c = clean[0].toLowerCase()
-        const prefix = /^[a-z0-9]$/.test(c) ? c : 'other'
-        textData = await fetchAndCacheFeedText(RAW, `malicious_urls_${prefix}.txt`, feedVersion)
-      } catch (e) {
-        textData = await fetchAndCacheFeedText(RAW, 'malicious_urls_other.txt', feedVersion)
-      }
+      textData = await fetchAndCacheFeedText(RAW, 'threatbase-url.txt', feedVersion)
     }
 
     const result = binarySearchString(textData, ip, compareFn)
