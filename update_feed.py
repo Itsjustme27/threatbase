@@ -528,22 +528,19 @@ def process_ip_metadata(ip_sources: Dict[str, Set[int]], false_positives: set) -
         num_sources = len(sources)
         tiers = [FEED_TRUST_TIERS.get(s, "LOW") for s in sources]
         
-        score = None
+        score = "LOW"
         if "HIGH" in tiers:
             score = "HIGH"
-        elif "MEDIUM" in tiers and num_sources >= 3:
+        elif "MEDIUM" in tiers:
             score = "MEDIUM"
-        elif "LOW" in tiers and num_sources >= 5:
-            score = "LOW"
             
-        if score:
-            filtered[ip] = {
-                "ip": int_to_ip(ip),
-                "count": num_sources,
-                "score": score,
-                "tags": sorted(list(data["tags"])) if data["tags"] else ["Mixed"],
-                "sources": list(sources)
-            }
+        filtered[ip] = {
+            "ip": int_to_ip(ip),
+            "count": num_sources,
+            "score": score,
+            "tags": sorted(list(data["tags"])) if data["tags"] else ["Mixed"],
+            "sources": list(sources)
+        }
     return filtered
 
 
