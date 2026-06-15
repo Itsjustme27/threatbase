@@ -1524,6 +1524,7 @@ http://111.59.254.165:8084/19000101/AV.scr
 http://111.59.254.165:8084/19000101/Photo.lnk
 http://111.59.254.165:8084/19000101/Video.lnk
 http://111.59.254.165:8084/19000101/Video.scr
+http://111.59.254.165:8084/20140730/AV.scr
 http://111.59.254.165:8084/20140730/Photo.lnk
 http://111.59.254.165:8084/20140730/Photo.scr
 http://111.59.254.165:8084/20140730/Video.scr
@@ -2189,6 +2190,7 @@ http://115.50.205.116:58583/i
 http://115.50.220.230:50692/bin.sh
 http://115.50.220.230:50692/i
 http://115.50.223.200:52634/bin.sh
+http://115.50.223.200:52634/i
 http://115.50.26.21:36567/bin.sh
 http://115.50.26.21:36567/i
 http://115.50.27.110:57026/bin.sh
@@ -2818,6 +2820,7 @@ http://115.63.80.68:60739/bin.sh
 http://115.63.80.68:60739/i
 http://115.63.87.126:58482/bin.sh
 http://115.63.87.126:58482/i
+http://115.63.97.139:41724/i
 http://116.10.132.101:44553/bin.sh
 http://116.10.132.101:44553/i
 http://116.10.132.3:34005/i
@@ -8030,6 +8033,7 @@ http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000324/Con
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000324/Consulta%20Geral/2025-05-23/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000324/Consulta%20Geral/2025-05-24/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000324/Consulta%20Geral/2025-05-26/info.zip
+http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000324/Consulta%20Geral/2025-05-27/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000324/Consulta%20Geral/2025-05-28/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000324/Consulta%20Geral/2025-05-29/info.zip
 http://177.70.102.228:8070/TmpFTP/CT-e/Distribui%C3%A7%C3%A3o/02589791000324/Consulta%20Geral/2025-05-30/info.zip
@@ -9194,6 +9198,7 @@ http://178.174.153.10:502/i
 http://178.174.153.10:503/i
 http://178.176.107.122:60094/bin.sh
 http://178.176.107.122:60094/i
+http://178.176.204.240:84//sshd
 http://178.176.204.240:84/sshd
 http://178.176.204.250:83/sshd
 http://178.176.204.250:84//sshd
@@ -12056,6 +12061,7 @@ http://212.225.203.24:40864/.i
 http://212.225.248.26:18373/.i
 http://212.225.248.26:18373/i
 http://212.237.112.109:54692/.i
+http://212.237.112.109:54692/i
 http://212.27.26.206:90/AV.lnk
 http://212.27.26.206:90/Photo.lnk
 http://212.27.26.206:90/Photo.scr
@@ -13915,6 +13921,7 @@ http://42.224.149.206:34198/bin.sh
 http://42.224.149.206:34198/i
 http://42.224.151.20:49727/i
 http://42.224.159.216:48120/i
+http://42.224.171.172:48679/i
 http://42.224.171.91:58164/bin.sh
 http://42.224.171.91:58164/i
 http://42.224.184.31:36040/bin.sh
@@ -21136,7 +21143,6 @@ https://adclick.g.doubleclick.net/pcs/click?adurl=https://posicionamientonatural
 https://adclick.g.doubleclick.net/pcs/click?adurl=https://redeamazoniaazul.org/
 https://adclick.g.doubleclick.net/pcs/click?adurl=https://streammobs.com/
 https://adclick.g.doubleclick.net/pcs/click?adurl=https://synergyconsulting.us
-https://adclick.g.doubleclick.net/pcs/click?adurl=https://wegrowcoaching.com/
 https://addeg.quranmohagegin.shop/b6e5f7fe-ac21-4fef-b7ed-e8ea43269d4c
 https://admin.byte.in.ua/agenzia/
 https://admin.byte.in.ua/connect/
