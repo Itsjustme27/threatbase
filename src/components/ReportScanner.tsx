@@ -188,12 +188,16 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                 
                 {/* Header Section */}
                 <div className="p-5 md:p-6 border-b border-slate-800 bg-slate-900/40">
-                  <div className="flex items-center gap-3 mb-4">
-                    <img src={`${import.meta.env.BASE_URL}img/threatbase.png`} className="w-8 h-8 rounded-full shadow-sm border border-white/5" alt="Threatbase Logo" />
-                    <h3 className={`text-xl md:text-2xl font-bold tracking-tight ${type === 'danger' ? 'text-rose-400' : type === 'safe' ? 'text-primary' : 'text-orange-400'}`}>
-                      <span className="break-all">{ip}</span>{' '}
-                      <span className="inline-block">{type === 'danger' ? 'was found in our database' : type === 'safe' ? 'was not found in our database' : 'is currently disputed'}</span>
-                    </h3>
+                  <div className="flex items-start gap-4 mb-4">
+                    <img src={`${import.meta.env.BASE_URL}img/threatbase.png`} className="w-10 h-10 rounded-full shadow-sm border border-white/5 shrink-0" alt="Threatbase Logo" />
+                    <div>
+                      <h3 className={`text-xl md:text-2xl font-bold tracking-tight mb-3 ${type === 'danger' ? 'text-rose-400' : type === 'safe' ? 'text-primary' : 'text-orange-400'}`}>
+                        {type === 'danger' ? 'Threat found in our database' : type === 'safe' ? 'No threat found in our database' : 'This indicator is currently disputed'}
+                      </h3>
+                      <div className="inline-block bg-slate-950/80 border border-white/5 rounded-xl px-4 py-2.5 font-mono text-sm md:text-base text-slate-300 break-all shadow-inner relative overflow-hidden">
+                        {ip}
+                      </div>
+                    </div>
                   </div>
 
                   {scanResult && (scanResult.isIP || scanResult.isIPv6 || scanResult.isDomain) && (
@@ -292,57 +296,61 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                 )}
 
                 {/* Footer Section */}
-                <div className="p-5 md:p-6 bg-slate-900/60 border-t border-slate-800">
-                  {scanResult && (scanResult.isIP || scanResult.isIPv6) && (
-                    <p className="text-xs text-slate-500 italic mb-5 font-medium tracking-wide">
-                      IP info including ISP, Usage Type, and Location provided by Threatbase. Updated weekly.
-                    </p>
-                  )}
-                  {scanResult && scanResult.isDomain && (
-                    <p className="text-xs text-slate-500 italic mb-5 font-medium tracking-wide">
-                      Domain information provided by Threatbase.
-                    </p>
-                  )}
+                {((scanResult && (scanResult.isIP || scanResult.isIPv6 || scanResult.isDomain)) || (!scanResult?.isHash || showAbuse)) && (
+                  <div className="p-5 md:p-6 bg-slate-900/60 border-t border-slate-800">
+                    {scanResult && (scanResult.isIP || scanResult.isIPv6) && (
+                      <p className="text-xs text-slate-500 italic mb-5 font-medium tracking-wide">
+                        IP info including ISP, Usage Type, and Location provided by Threatbase. Updated weekly.
+                      </p>
+                    )}
+                    {scanResult && scanResult.isDomain && (
+                      <p className="text-xs text-slate-500 italic mb-5 font-medium tracking-wide">
+                        Domain information provided by Threatbase.
+                      </p>
+                    )}
 
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <button 
-                      onClick={() => setShowDisputeForm(true)}
-                      className="flex-1 bg-slate-800/50 hover:bg-slate-800 text-slate-300 hover:text-white font-bold text-sm py-3 px-4 rounded-xl transition-all shadow-sm uppercase tracking-wider border border-slate-700/50 hover:border-slate-600"
-                    >
-                      REPORT FALSE POSITIVE
-                    </button>
-                    {showAbuse && (
-                      <a 
-                        href={abuseHref} 
-                        target="_blank" 
-                        rel="noopener" 
-                        className="flex-1 bg-white/10 hover:bg-white/15 text-white font-bold text-sm py-3 px-4 rounded-xl transition-all shadow-sm uppercase tracking-wider text-center border border-white/5 hover:border-white/10"
-                      >
-                        WHOIS {ip}
-                      </a>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      {!scanResult?.isHash && (
+                        <button 
+                          onClick={() => setShowDisputeForm(true)}
+                          className="flex-1 bg-slate-800/50 hover:bg-slate-800 text-slate-300 hover:text-white font-bold text-sm py-3 px-4 rounded-xl transition-all shadow-sm uppercase tracking-wider border border-slate-700/50 hover:border-slate-600"
+                        >
+                          REPORT FALSE POSITIVE
+                        </button>
+                      )}
+                      {showAbuse && (
+                        <a 
+                          href={abuseHref} 
+                          target="_blank" 
+                          rel="noopener" 
+                          className="flex-1 bg-white/10 hover:bg-white/15 text-white font-bold text-sm py-3 px-4 rounded-xl transition-all shadow-sm uppercase tracking-wider text-center border border-white/5 hover:border-white/10"
+                        >
+                          WHOIS {ip}
+                        </a>
+                      )}
+                    </div>
+
+                    {/* Dispute Form */}
+                    {showDisputeForm && (
+                      <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="mt-5 pt-5 border-t border-slate-800 overflow-hidden">
+                        <h5 className="text-sm font-bold text-slate-300 mb-3">Why is this a false positive? <span className="text-rose-400">*</span></h5>
+                        <textarea
+                          value={disputeReason}
+                          onChange={e => setDisputeReason(e.target.value)}
+                          className="w-full bg-slate-950/50 border border-slate-700 rounded-xl p-4 text-sm text-slate-300 focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500 resize-none transition-all shadow-inner"
+                          rows={3}
+                          placeholder="Please provide details (e.g. 'This is a public DNS resolver', 'Internal proxy')..."
+                        ></textarea>
+                        <div className="flex items-center gap-3 mt-4 justify-end">
+                          <button onClick={() => setShowDisputeForm(false)} className="px-4 py-2 text-xs font-bold text-slate-500 hover:text-slate-300 transition-colors uppercase tracking-wider rounded-lg hover:bg-slate-800/50">Cancel</button>
+                          <button onClick={handleDispute} disabled={isDisputing} className="px-5 py-2.5 rounded-lg text-xs font-bold bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-sm disabled:opacity-50 uppercase tracking-wider">
+                            {isDisputing ? 'Submitting...' : 'Submit Dispute'}
+                          </button>
+                        </div>
+                      </motion.div>
                     )}
                   </div>
-
-                  {/* Dispute Form */}
-                  {showDisputeForm && (
-                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="mt-5 pt-5 border-t border-slate-800 overflow-hidden">
-                      <h5 className="text-sm font-bold text-slate-300 mb-3">Why is this a false positive? <span className="text-rose-400">*</span></h5>
-                      <textarea
-                        value={disputeReason}
-                        onChange={e => setDisputeReason(e.target.value)}
-                        className="w-full bg-slate-950/50 border border-slate-700 rounded-xl p-4 text-sm text-slate-300 focus:outline-none focus:border-slate-500 focus:ring-1 focus:ring-slate-500 resize-none transition-all shadow-inner"
-                        rows={3}
-                        placeholder="Please provide details (e.g. 'This is a public DNS resolver', 'Internal proxy')..."
-                      ></textarea>
-                      <div className="flex items-center gap-3 mt-4 justify-end">
-                        <button onClick={() => setShowDisputeForm(false)} className="px-4 py-2 text-xs font-bold text-slate-500 hover:text-slate-300 transition-colors uppercase tracking-wider rounded-lg hover:bg-slate-800/50">Cancel</button>
-                        <button onClick={handleDispute} disabled={isDisputing} className="px-5 py-2.5 rounded-lg text-xs font-bold bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-sm disabled:opacity-50 uppercase tracking-wider">
-                          {isDisputing ? 'Submitting...' : 'Submit Dispute'}
-                        </button>
-                      </div>
-                    </motion.div>
-                  )}
-                </div>
+                )}
               </div>
 
               {loadingReports ? (
