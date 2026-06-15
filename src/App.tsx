@@ -108,6 +108,8 @@ export default function App() {
   // Boot: fetch stats.json
   useEffect(() => {
     const RAW = getBaseUrl()
+    const GITHUB_RAW = 'https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/'
+    
     fetch(RAW + 'stats.json?_=' + Date.now())
       .then((r) => {
         if (!r.ok) throw new Error('HTTP ' + r.status)
@@ -119,8 +121,21 @@ export default function App() {
         setSyncTime(formatSyncTime(d.last_updated))
       })
       .catch((err) => {
-        console.warn('stats.json unavailable:', err.message)
-        setSyncTime('Live Mode')
+        console.warn('stats.json unavailable on Supabase, trying GitHub Raw:', err.message)
+        fetch(GITHUB_RAW + 'stats.json?_=' + Date.now())
+          .then((r) => {
+            if (!r.ok) throw new Error('HTTP ' + r.status)
+            return r.json()
+          })
+          .then((d) => {
+            setStatsData(d)
+            setFeedVersion(d.last_updated || Date.now())
+            setSyncTime(formatSyncTime(d.last_updated))
+          })
+          .catch((githubErr) => {
+            console.error('stats.json unavailable on both Supabase and GitHub Raw:', githubErr.message)
+            setSyncTime('Live Mode')
+          })
       })
   }, [])
 

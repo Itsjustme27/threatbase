@@ -2,18 +2,19 @@ import { getBaseUrl } from './utils'
 import supabaseClient from './supabaseClient'
 
 const feedCache = {}
-let statsCache = null
+const statsCache = {}
 
 async function getStats(rawBaseUrl) {
-  if (statsCache) return statsCache
+  if (statsCache[rawBaseUrl]) return statsCache[rawBaseUrl]
   try {
     const r = await fetch(rawBaseUrl + 'stats.json?_=' + Date.now())
     if (r.ok) {
-      statsCache = await r.json()
-      return statsCache
+      const data = await r.json()
+      statsCache[rawBaseUrl] = data
+      return data
     }
   } catch (e) {
-    console.error('Failed to fetch stats for chunks:', e)
+    console.error('Failed to fetch stats:', rawBaseUrl, e)
   }
   return null
 }
@@ -22,18 +23,27 @@ async function fetchAndCacheFeed(baseUrl, filename, feedVersion) {
   const cacheKey = `${filename}?v=${feedVersion}`
   if (feedCache[cacheKey]) return feedCache[cacheKey]
   
-  const stats = await getStats(baseUrl)
+  let stats = await getStats(baseUrl)
+  const GITHUB_RAW = 'https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/'
+  
+  if (!stats) {
+    stats = await getStats(GITHUB_RAW)
+  }
+  
   let filesToFetch = [filename]
   if (stats && stats.chunk_files && stats.chunk_files[filename]) {
     filesToFetch = stats.chunk_files[filename]
   }
   
-  const allLines = []
+  let allLines = []
+  let success = false
+  
+  // Try Supabase Storage first
   try {
     const fetchPromises = filesToFetch.map(async (file) => {
       const url = `${baseUrl}${file}?v=${feedVersion}`
       const r = await fetch(url)
-      if (!r.ok) return []
+      if (!r.ok) throw new Error(`Supabase fetch error: ${r.status}`)
       const text = await r.text()
       return text
         .split('\n')
@@ -45,13 +55,43 @@ async function fetchAndCacheFeed(baseUrl, filename, feedVersion) {
     for (const lines of results) {
       allLines.push(...lines)
     }
-    
-    feedCache[cacheKey] = allLines
-    return allLines
+    success = true
   } catch (e) {
-    console.error('Failed to fetch feed chunks:', filename, e)
-    return []
+    console.warn(`Supabase Storage fetch failed for ${filename}, falling back to GitHub Raw:`, e)
   }
+  
+  // Fallback to GitHub Raw if Supabase failed or returned empty
+  if (!success || allLines.length === 0) {
+    let githubFiles = [filename]
+    const githubStats = await getStats(GITHUB_RAW)
+    if (githubStats && githubStats.chunk_files && githubStats.chunk_files[filename]) {
+      githubFiles = githubStats.chunk_files[filename]
+    }
+    
+    try {
+      const fetchPromises = githubFiles.map(async (file) => {
+        const url = `${GITHUB_RAW}${file}?v=${feedVersion}`
+        const r = await fetch(url)
+        if (!r.ok) return []
+        const text = await r.text()
+        return text
+          .split('\n')
+          .map((l) => l.trim())
+          .filter((l) => l.length > 0 && !l.startsWith('#') && !l.startsWith('ip,'))
+      })
+      
+      const results = await Promise.all(fetchPromises)
+      allLines = []
+      for (const lines of results) {
+        allLines.push(...lines)
+      }
+    } catch (e) {
+      console.error('GitHub Raw fallback fetch failed:', e)
+    }
+  }
+  
+  feedCache[cacheKey] = allLines
+  return allLines
 }
 
 function ipCsvCompare(query, line) {
