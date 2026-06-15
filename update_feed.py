@@ -691,16 +691,16 @@ async def run_async_collector():
     with open("ioc/stats.json", "w", encoding="utf-8") as f:
         json.dump(stats, f)
         
-    # S3 Upload Phase
-    log.info("Initiating Supabase S3 Uploads...")
-    upload_to_supabase(txt_output_path, "threatbase-ip.txt")
-    upload_to_supabase(json_output_path, "threatbase-ip.json")
-    upload_to_supabase("ioc/threatbase-domain.txt", "threatbase-domain.txt")
-    upload_to_supabase("ioc/threatbase-hash.txt", "threatbase-hash.txt")
-    upload_to_supabase("ioc/threatbase-url.txt", "threatbase-url.txt")
-    upload_to_supabase("ioc/threatbase-ipv6.txt", "threatbase-ipv6.txt")
-    upload_to_supabase("ioc/threatbase-cidr.txt", "threatbase-cidr.txt")
-    upload_to_supabase("ioc/stats.json", "stats.json")
+    # S3 Upload Phase Disabled
+    log.info("Skipping Supabase S3 Uploads as requested...")
+    # upload_to_supabase(txt_output_path, "threatbase-ip.txt")
+    # upload_to_supabase(json_output_path, "threatbase-ip.json")
+    # upload_to_supabase("ioc/threatbase-domain.txt", "threatbase-domain.txt")
+    # upload_to_supabase("ioc/threatbase-hash.txt", "threatbase-hash.txt")
+    # upload_to_supabase("ioc/threatbase-url.txt", "threatbase-url.txt")
+    # upload_to_supabase("ioc/threatbase-ipv6.txt", "threatbase-ipv6.txt")
+    # upload_to_supabase("ioc/threatbase-cidr.txt", "threatbase-cidr.txt")
+    # upload_to_supabase("ioc/stats.json", "stats.json")
     
     elapsed = time.time() - t_start
     log.info("═" * 55)
