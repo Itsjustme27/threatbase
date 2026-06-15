@@ -4,7 +4,7 @@ Threatbase — Threat Intelligence Feed Aggregator (v4)
 =====================================================
 Collects malicious IPv4 addresses, Domains, Hashes, and URLs from public feeds.
 Highly optimized: fully asynchronous I/O with streaming, C-level fast IP validation.
-Outputs CSV, JSON, TXT, and automatically uploads to Supabase S3 storage.
+Outputs CSV, JSON, TXT.
 """
 
 import asyncio
@@ -41,11 +41,7 @@ FEEDS: Dict[str, str] = {
     "feodo_tracker": "https://feodotracker.abuse.ch/downloads/ipblocklist.txt",
     "feodo_tracker_aggressive": "https://feodotracker.abuse.ch/downloads/ipblocklist_aggressive.txt",
     "bbcan177_ms1": "https://gist.githubusercontent.com/BBcan177/bf29d47ea04391cb3eb0/raw/",
-    "ipsum": "https://raw.githubusercontent.com/stamparm/ipsum/master/levels/1.txt",
-    "ipsum_level2": "https://raw.githubusercontent.com/stamparm/ipsum/master/levels/2.txt",
-    "ipsum_level3": "https://raw.githubusercontent.com/stamparm/ipsum/master/levels/3.txt",
-    "ipsum_level4": "https://raw.githubusercontent.com/stamparm/ipsum/master/levels/4.txt",
-    "ipsum_level5": "https://raw.githubusercontent.com/stamparm/ipsum/master/levels/5.txt",
+    "ipsum": "https://raw.githubusercontent.com/stamparm/ipsum/master/ipsum.txt",
     "blackbook": "https://raw.githubusercontent.com/stamparm/blackbook/master/blackbook.txt",
     "firehol_level1": "https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level1.netset",
     "firehol_level2": "https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level2.netset",
@@ -89,10 +85,6 @@ FEED_CATEGORIES: Dict[str, str] = {
     "feodo_tracker_aggressive": "C2",
     "bbcan177_ms1": "Malware",
     "ipsum": "Mixed",
-    "ipsum_level2": "Mixed",
-    "ipsum_level3": "Mixed",
-    "ipsum_level4": "Mixed",
-    "ipsum_level5": "Mixed",
     "blackbook": "Mixed",
     "firehol_level1": "Mixed",
     "firehol_level2": "Mixed",
@@ -508,8 +500,7 @@ FEED_TRUST_TIERS = {
     "dataplane_sshpwauth": "MEDIUM", "dataplane_vnclogin": "MEDIUM",
     
     "firehol_level1": "LOW", "firehol_level2": "LOW", "ipsum": "LOW",
-    "ipsum_level2": "LOW", "ipsum_level3": "LOW", "ipsum_level4": "LOW",
-    "ipsum_level5": "LOW", "blackbook": "LOW", "romainmarcoux_outgoing_40k": "LOW",
+    "blackbook": "LOW", "romainmarcoux_outgoing_40k": "LOW",
     "romainmarcoux_outgoing_aa": "LOW", "romainmarcoux_outgoing_ab": "LOW",
     "firehol_level3": "LOW",
 }
@@ -563,7 +554,7 @@ def process_ip_metadata(ip_sources: Dict[str, Set[int]], false_positives: set) -
 async def run_async_collector():
     t_start = time.time()
     log.info("═" * 55)
-    log.info("  Threatbase v4 — Async Threat Aggregator (S3 + JSON Tagging)")
+    log.info("  Threatbase v4 — Async Threat Aggregator (JSON Tagging)")
     log.info("═" * 55)
     
     os.makedirs("ioc", exist_ok=True)

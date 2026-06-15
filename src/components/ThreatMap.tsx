@@ -48,7 +48,7 @@ export default function ThreatMap() {
     let explosions: Explosion[] = []
     let width = 0
     let height = 0
-    let dots: {x: number, y: number}[] = []
+    let dots: { x: number, y: number }[] = []
 
     const resize = () => {
       const parent = canvas.parentElement
@@ -67,7 +67,7 @@ export default function ThreatMap() {
       .then(r => r.json())
       .then(world => {
         const land = topojson.feature(world, world.objects.countries)
-        
+
         // Setup D3 Projection
         const projection = d3.geoEquirectangular()
           .fitSize([width, height * 1.4], land as any) // Scale slightly larger
@@ -102,7 +102,7 @@ export default function ThreatMap() {
             }
           }
         }
-        
+
         // Cache map dots to an offscreen canvas for extreme performance
         const dotCanvas = document.createElement('canvas')
         dotCanvas.width = width
@@ -150,7 +150,7 @@ export default function ThreatMap() {
         const render = () => {
           // Clear the canvas completely every frame for crisp 60fps (no smudging)
           ctx.clearRect(0, 0, width, height)
-          
+
           // Draw cached background map
           ctx.drawImage(dotCanvas, 0, 0)
 
@@ -186,7 +186,7 @@ export default function ThreatMap() {
             // Procedurally draw the comet tail (20 trailing segments)
             const tailLength = 0.15 // Length of the tail relative to the curve
             const segments = 20
-            
+
             for (let j = 0; j < segments; j++) {
               const pointT = a.progress - (tailLength * (j / segments))
               if (pointT < 0) continue
@@ -197,11 +197,11 @@ export default function ThreatMap() {
 
               const opacity = 1 - (j / segments)
               const radius = 2.5 * opacity
-              
+
               ctx.beginPath()
               ctx.arc(px, py, radius, 0, Math.PI * 2)
               ctx.fillStyle = `rgba(${hexToRgb(a.color)}, ${opacity})`
-              
+
               // Only the head of the comet glows intensely
               if (j === 0) {
                 ctx.shadowBlur = 15
@@ -209,7 +209,7 @@ export default function ThreatMap() {
               } else {
                 ctx.shadowBlur = 0
               }
-              
+
               ctx.fill()
               ctx.shadowBlur = 0
             }
@@ -235,13 +235,13 @@ export default function ThreatMap() {
             ctx.shadowBlur = 12
             ctx.shadowColor = e.color
             ctx.stroke()
-            
+
             // Inner core blast
             ctx.beginPath()
             ctx.arc(e.x, e.y, radius * 0.4, 0, Math.PI * 2)
             ctx.fillStyle = `rgba(${hexToRgb(e.color)}, ${opacity * 0.6})`
             ctx.fill()
-            
+
             ctx.shadowBlur = 0
           }
 
@@ -272,7 +272,7 @@ export default function ThreatMap() {
 
 function hexToRgb(hex: string) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? 
-    `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` 
+  return result ?
+    `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
     : '255, 255, 255';
 }

@@ -13,7 +13,7 @@ import GradientBarsBackground from '@/components/ui/gradient-bars-background'
 export function HeroSection({ scanInput, setScanInput, handleScan, statsData }: any) {
     return (
         <>
-            <div 
+            <div
                 className="relative overflow-hidden w-full min-h-[90vh] bg-[#0B0F19]"
             >
                 <ThreatMap />
@@ -33,9 +33,9 @@ export function HeroSection({ scanInput, setScanInput, handleScan, statsData }: 
                                     <div className="mt-8 sm:mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start w-full">
                                         <div className="relative w-full max-w-md flex items-center">
                                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                                            <input 
-                                                type="text" 
-                                                placeholder="Scan IP, Domain, Hash..." 
+                                            <input
+                                                type="text"
+                                                placeholder="Scan IP, Domain, Hash..."
                                                 className="h-14 w-full rounded-full border border-white/10 bg-slate-900/60 backdrop-blur-xl pl-12 pr-28 text-sm text-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-cyan-500/50 transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)]"
                                                 value={scanInput}
                                                 onChange={(e) => setScanInput(e.target.value)}
@@ -49,11 +49,11 @@ export function HeroSection({ scanInput, setScanInput, handleScan, statsData }: 
                                                 Scan
                                             </Button>
                                         </div>
-                                            <Button
-                                                variant="outline"
-                                                size="lg"
-                                                className="h-14 rounded-full px-8 text-base border-white/10 bg-black/50 backdrop-blur-md text-slate-200 hover:bg-white/10 hover:text-white hover:border-white/20 transition-all duration-300"
-                                                asChild
+                                        <Button
+                                            variant="outline"
+                                            size="lg"
+                                            className="h-14 rounded-full px-8 text-base border-white/10 bg-black/50 backdrop-blur-md text-slate-200 hover:bg-white/10 hover:text-white hover:border-white/20 transition-all duration-300"
+                                            asChild
                                         >
                                             <a href="#feeds">Browse Feeds</a>
                                         </Button>
