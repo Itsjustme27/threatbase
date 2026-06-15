@@ -40,16 +40,30 @@ export default function AnimatedHighlightedAreaChart({ feedVersion }: { feedVers
 
   useEffect(() => {
     const RAW = getBaseUrl()
+    const GITHUB_RAW = 'https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/'
+    
     fetch(RAW + 'history.json?v=' + (feedVersion || Date.now()))
       .then((r) => {
-        if (!r.ok) return null
+        if (!r.ok) throw new Error('HTTP ' + r.status)
         return r.json()
       })
       .then((data) => {
         if (!data || data.length === 0) return
         setHistory(data)
       })
-      .catch((e) => console.warn('history.json unavailable', e))
+      .catch((err) => {
+        console.warn('history.json unavailable on Supabase, trying GitHub Raw:', err.message)
+        fetch(GITHUB_RAW + 'history.json?v=' + (feedVersion || Date.now()))
+          .then((r) => {
+            if (!r.ok) throw new Error('HTTP ' + r.status)
+            return r.json()
+          })
+          .then((data) => {
+            if (!data || data.length === 0) return
+            setHistory(data)
+          })
+          .catch((githubErr) => console.error('history.json unavailable on both Supabase and GitHub Raw:', githubErr.message))
+      })
   }, [feedVersion])
 
   const chartData = history.length > 0 ? history.map((h) => {

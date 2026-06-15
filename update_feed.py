@@ -197,98 +197,6 @@ _WHITELIST_CIDRS = [
     "4.2.2.0/24",       # Level3 DNS
     "94.140.14.0/24",   # AdGuard DNS
     "94.140.15.0/24",   # AdGuard DNS
-    # Cloudflare CDN
-    "104.16.0.0/13",
-    "104.24.0.0/14",
-    "172.64.0.0/13",
-    "162.158.0.0/15",
-    "198.41.128.0/17",
-    "197.234.240.0/22",
-    "190.93.240.0/20",
-    "188.114.96.0/20",
-    "185.221.0.0/22",
-    # Fastly CDN
-    "23.235.32.0/20",
-    "43.249.72.0/22",
-    "103.244.50.0/24",
-    "103.245.222.0/23",
-    "103.245.224.0/24",
-    "104.156.80.0/20",
-    "140.248.64.0/18",
-    "140.248.128.0/17",
-    "150.101.128.0/17",
-    "151.101.0.0/16",
-    "157.52.64.0/18",
-    "167.82.0.0/17",
-    "167.82.128.0/20",
-    "167.82.160.0/20",
-    "167.82.224.0/20",
-    "172.111.64.0/18",
-    "185.31.16.0/22",
-    "199.27.72.0/21",
-    "199.232.0.0/16",
-    # AWS CloudFront
-    "13.32.0.0/15",
-    "13.35.0.0/16",
-    "52.46.0.0/18",
-    "52.84.0.0/15",
-    "54.182.0.0/16",
-    "54.192.0.0/16",
-    "54.230.0.0/16",
-    "54.239.128.0/18",
-    "54.239.192.0/19",
-    "64.252.64.0/18",
-    "64.252.128.0/18",
-    "70.132.0.0/18",
-    "71.152.0.0/17",
-    "99.84.0.0/16",
-    "204.246.164.0/22",
-    "204.246.168.0/22",
-    "204.246.174.0/23",
-    "204.246.176.0/20",
-    "205.251.192.0/19",
-    "205.251.249.0/24",
-    "205.251.250.0/23",
-    "205.251.252.0/23",
-    "205.251.254.0/24",
-    "216.137.32.0/19",
-    # Azure (main ranges — full list at aka.ms/azureipranges)
-    "13.64.0.0/11",
-    "13.96.0.0/13",
-    "13.104.0.0/14",
-    "20.36.0.0/14",
-    "20.40.0.0/13",
-    "20.48.0.0/12",
-    "40.64.0.0/10",
-    "40.74.0.0/15",
-    "40.76.0.0/14",
-    "40.80.0.0/12",
-    "40.96.0.0/12",
-    "40.112.0.0/13",
-    "40.120.0.0/14",
-    "40.124.0.0/16",
-    "40.125.0.0/17",
-    # GCP
-    "34.0.0.0/9",
-    "34.128.0.0/10",
-    "35.184.0.0/13",
-    "35.192.0.0/14",
-    "35.196.0.0/15",
-    "35.198.0.0/16",
-    "35.199.0.0/17",
-    "35.199.128.0/18",
-    "35.200.0.0/13",
-    "35.208.0.0/12",
-    "35.224.0.0/12",
-    "35.240.0.0/13",
-    # Akamai
-    "23.32.0.0/11",
-    "23.64.0.0/14",
-    "23.72.0.0/13",
-    "104.64.0.0/10",
-    "184.24.0.0/13",
-    "184.50.0.0/15",
-    "184.84.0.0/14",
     # User manual FP
     "192.195.233.204/32",
 ]
@@ -554,7 +462,7 @@ def load_existing_iocs(max_age_days: int = HISTORICAL_MAX_AGE_DAYS) -> dict:
     """Load historical IOCs. IPs file is skipped if older than max_age_days —
     prevents stale IPs accumulating indefinitely at HIGH trust.
     """
-    result = {"ips": set(), "ipv6": set(), "cidrs": set(), "domains": set(), "hashes": set(), "urls": set()}
+    result = {"ips": {}, "ipv6": set(), "cidrs": set(), "domains": set(), "hashes": set(), "urls": set()}
 
     ip_file = "ioc/malicious_ips.txt"
     if os.path.exists(ip_file):
@@ -578,7 +486,22 @@ def load_existing_iocs(max_age_days: int = HISTORICAL_MAX_AGE_DAYS) -> dict:
                                 line = line.strip()
                                 if not line or line.startswith(('#', '//')):
                                     continue
-                                result["ips"].add(line.split(',')[0])
+                                parts = line.split(',')
+                                if parts:
+                                    ip = parts[0]
+                                    count = 1
+                                    score = "LOW"
+                                    tags = []
+                                    if len(parts) > 1:
+                                        try:
+                                            count = int(parts[1])
+                                        except ValueError:
+                                            pass
+                                    if len(parts) > 2:
+                                        score = parts[2]
+                                    if len(parts) > 3:
+                                        tags = parts[3].split('|')
+                                    result["ips"][ip] = {"count": count, "score": score, "tags": tags}
                     except Exception as e:
                         log.error(f"Failed to load existing IPs from {fpath}: {e}")
         else:
@@ -973,9 +896,8 @@ def filter_ips(ip_sources, custom_ips, existing_ips):
             
     FEED_TRUST_TIERS = {
         "custom": "HIGH",
-        # FP-FIX: historical demoted HIGH→MEDIUM.
-        # Stale IPs no longer auto-pass without live corroboration.
-        "historical": "MEDIUM",
+        # FP-FIX: restored historical to HIGH so they enter the main high trust path, but aging is applied to historical-only IPs
+        "historical": "HIGH",
         "feodo_tracker": "HIGH",
         "feodo_tracker_aggressive": "HIGH",
         "abuseipdb": "HIGH",
@@ -1024,6 +946,11 @@ def filter_ips(ip_sources, custom_ips, existing_ips):
             if cat and cat != "Mixed":
                 tags.add(cat)
 
+        if ip in existing_ips:
+            for t in existing_ips[ip].get("tags", []):
+                if t and t != "Mixed":
+                    tags.add(t)
+
         live_feeds = feeds - {"historical"}
         has_live_high = any(FEED_TRUST_TIERS.get(f) == "HIGH" for f in live_feeds)
                 
@@ -1031,9 +958,13 @@ def filter_ips(ip_sources, custom_ips, existing_ips):
             # FP-FIX: historical-only HIGH IPs (no live feed) need MEDIUM corroboration.
             # Prevents "seen once 6 months ago, never again" IPs surviving forever.
             if feeds == {"historical"}:
-                # Only historical, no live feed — apply MEDIUM rules
-                if num_sources >= 2:
-                    filtered_ip_info[ip] = {"count": num_sources, "score": "MEDIUM", "tags": sorted(list(tags))}
+                # Only historical, no live feed — apply aging rules
+                hist_info = existing_ips[ip]
+                hist_count = hist_info["count"]
+                hist_score = hist_info["score"]
+                if hist_count >= 2:
+                    new_score = "MEDIUM" if hist_score == "HIGH" else hist_score
+                    filtered_ip_info[ip] = {"count": 1, "score": new_score, "tags": sorted(list(tags))}
             else:
                 filtered_ip_info[ip] = {"count": num_sources, "score": "HIGH", "tags": sorted(list(tags))}
         elif "MEDIUM" in tiers:
@@ -1214,7 +1145,7 @@ def main():
             all_cidrs.discard(fp)
             
             custom_iocs["ips"].discard(fp)
-            existing_iocs["ips"].discard(fp)
+            existing_iocs["ips"].pop(fp, None)
             
             for h in list(hash_sources.keys()):
                 hash_sources[h].discard(fp)

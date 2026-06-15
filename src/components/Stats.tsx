@@ -16,39 +16,58 @@ export default function Stats({ statsData }: any) {
       // Fetch history to show daily deltas
       const fetchHistory = async () => {
         try {
-          const res = await fetch(`${getBaseUrl()}history.json?v=${Date.now()}`)
-          const data = await res.json()
-          if (data && data.length >= 2) {
-            const today = data[data.length - 1]
-            const yday = data[data.length - 2]
-            
-            const updateTrend = (id: string, cur: number, prev: number) => {
-              const el = document.getElementById(id)
-              if (!el || typeof cur !== 'number' || typeof prev !== 'number') return
-              const diff = cur - prev
-              if (diff > 0) {
-                el.textContent = `↑ +${fmt(diff)}`
-                el.className = 'font-semibold px-2 py-0.5 rounded bg-destructive/10 border border-destructive/20 text-destructive shadow-sm group-hover:bg-destructive/20 transition-colors duration-200 text-xs'
-              } else if (diff < 0) {
-                el.textContent = `↓ ${fmt(diff)}`
-                el.className = 'font-semibold px-2 py-0.5 rounded bg-primary/10 border border-primary/20 text-primary shadow-sm group-hover:bg-primary/20 transition-colors duration-200 text-xs'
-              } else {
-                el.textContent = '— 0'
-                el.className = 'font-semibold px-2 py-0.5 rounded bg-slate-500/10 border border-slate-500/20 text-slate-400 shadow-sm group-hover:bg-slate-500/20 transition-colors duration-200 text-xs'
-              }
-            }
-            
-            updateTrend('trend-ips', today.total_unique_ips, yday.total_unique_ips)
-            updateTrend('trend-domains', today.total_unique_domains, yday.total_unique_domains)
-            updateTrend('trend-hashes', today.total_unique_hashes, yday.total_unique_hashes)
-            updateTrend('trend-urls', today.total_unique_urls, yday.total_unique_urls)
-            updateTrend('trend-ipv6', today.total_unique_ipv6 || 0, yday.total_unique_ipv6 || 0)
-            updateTrend('trend-cidrs', today.total_unique_cidrs || 0, yday.total_unique_cidrs || 0)
+          let res = await fetch(`${getBaseUrl()}history.json?v=${Date.now()}`)
+          if (!res.ok) throw new Error('HTTP ' + res.status)
+          let data = await res.json()
+          
+          if (!data || data.length === 0) {
+            throw new Error('Empty data from Supabase')
           }
+          processHistoryData(data)
         } catch (e) {
-          console.error("Failed to load history for trends", e)
+          console.warn("Failed to load history from Supabase, trying GitHub Raw:", e)
+          try {
+            const GITHUB_RAW = 'https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/'
+            const res = await fetch(`${GITHUB_RAW}history.json?v=${Date.now()}`)
+            if (!res.ok) throw new Error('HTTP ' + res.status)
+            const data = await res.json()
+            processHistoryData(data)
+          } catch (githubErr) {
+            console.error("Failed to load history from both Supabase and GitHub Raw:", githubErr)
+          }
         }
       }
+
+      const processHistoryData = (data: any) => {
+        if (data && data.length >= 2) {
+          const today = data[data.length - 1]
+          const yday = data[data.length - 2]
+          
+          const updateTrend = (id: string, cur: number, prev: number) => {
+            const el = document.getElementById(id)
+            if (!el || typeof cur !== 'number' || typeof prev !== 'number') return
+            const diff = cur - prev
+            if (diff > 0) {
+              el.textContent = `↑ +${fmt(diff)}`
+              el.className = 'font-semibold px-2 py-0.5 rounded bg-destructive/10 border border-destructive/20 text-destructive shadow-sm group-hover:bg-destructive/20 transition-colors duration-200 text-xs'
+            } else if (diff < 0) {
+              el.textContent = `↓ ${fmt(diff)}`
+              el.className = 'font-semibold px-2 py-0.5 rounded bg-primary/10 border border-primary/20 text-primary shadow-sm group-hover:bg-primary/20 transition-colors duration-200 text-xs'
+            } else {
+              el.textContent = '— 0'
+              el.className = 'font-semibold px-2 py-0.5 rounded bg-slate-500/10 border border-slate-500/20 text-slate-400 shadow-sm group-hover:bg-slate-500/20 transition-colors duration-200 text-xs'
+            }
+          }
+          
+          updateTrend('trend-ips', today.total_unique_ips, yday.total_unique_ips)
+          updateTrend('trend-domains', today.total_unique_domains, yday.total_unique_domains)
+          updateTrend('trend-hashes', today.total_unique_hashes, yday.total_unique_hashes)
+          updateTrend('trend-urls', today.total_unique_urls, yday.total_unique_urls)
+          updateTrend('trend-ipv6', today.total_unique_ipv6 || 0, yday.total_unique_ipv6 || 0)
+          updateTrend('trend-cidrs', today.total_unique_cidrs || 0, yday.total_unique_cidrs || 0)
+        }
+      }
+
       fetchHistory()
     }
   }, [statsData])
