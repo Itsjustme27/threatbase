@@ -7362,7 +7362,6 @@ http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2022-09-29/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2022-10-06/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2022-11-01/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2022-11-07/info.zip
-http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2022-11-24/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2022-11-28/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2022-12-06/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Cancelamento/2022-12-08/info.zip
@@ -7593,7 +7592,6 @@ http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2025-06-12/
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2025-06-13/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Carta%20de%20Corre%C3%A7%C3%A3o/2025-06-25/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Consulta/2019-03-13/info.zip
-http://177.70.102.228:8070/TmpFTP/01/Consulta/2019-04-02/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Consulta/2019-04-30/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Consulta/2019-05-27/info.zip
 http://177.70.102.228:8070/TmpFTP/01/Consulta/2019-06-24/info.zip
@@ -17095,6 +17093,7 @@ http://69.46.43.35/pty1
 http://69.46.43.35/pty10
 http://69.46.43.35/pty2
 http://69.46.43.35/pty3
+http://69.46.43.35/pty4
 http://69.48.143.20/
 http://69.75.168.226:8007//sshd
 http://69.75.168.226:8007/sshd
@@ -25441,6 +25440,7 @@ https://nblvwres.stgsolar.hu/?ublib=044148fa-e522-4250-85a3-8806814165d4
 https://nbyap.danestanihavarzeshi.com/6b62de9f-b31c-44cd-b520-8560ad73ec56
 https://ncgxk.visszateritok.hu/78a66a83-9e77-43d1-897e-9522a5165e0a
 https://ncom2n7n.jetbetkade.com/?ublib=1090d905-000b-48dc-9070-2aa14e39cc7d
+https://ncpzdseh.usoleamoozesh.xyz/3e2e3095-d3e0-46ed-9ff8-4946a6da363c
 https://ndotkgyl.tasisathosseini.shop/1b1b9b3e-b426-4d13-ac37-5acd9c852c32
 https://ne6nzi7r.1shart.bet/?ublib=ab0b8ce8-9e1f-44ae-99ff-a8717c3b1b9b
 https://nebulaclient.store/nebulaclient462773-4b.jar

@@ -247,18 +247,52 @@ def extract_domain(text: str) -> Optional[str]:
         return text
     return None
 
-def load_false_positives(filename="ioc/false_positives.txt") -> set:
-    result = set()
-    if os.path.exists(filename):
+class FalsePositivesSet(set):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.cidrs = []
+        
+    def add_item(self, item):
+        self.add(item)
+        if "/" in item:
+            try:
+                net = ipaddress.ip_network(item, strict=False)
+                self.cidrs.append((int(net.network_address), int(net.broadcast_address)))
+            except ValueError:
+                pass
+                
+    def check_int(self, ip_int: int) -> bool:
+        for start, end in self.cidrs:
+            if start <= ip_int <= end:
+                return True
+        return False
+
+def load_false_positives() -> FalsePositivesSet:
+    result = FalsePositivesSet()
+    
+    # Load dynamic community false positives
+    if os.path.exists("ioc/false_positives.txt"):
         try:
-            with open(filename, "r", encoding="utf-8") as f:
+            with open("ioc/false_positives.txt", "r", encoding="utf-8") as f:
                 for line in f:
                     line = line.strip()
                     if line and not line.startswith(('#', '//')):
-                        result.add(line)
-            log.info(f"Loaded {len(result)} false positives")
+                        result.add_item(line)
         except Exception as e:
-            log.error(f"Failed to load {filename}: {e}")
+            log.error(f"Failed to load ioc/false_positives.txt: {e}")
+            
+    # Load static manual whitelist
+    if os.path.exists("whitelist.txt"):
+        try:
+            with open("whitelist.txt", "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith(('#', '//')):
+                        result.add_item(line)
+        except Exception as e:
+            log.error(f"Failed to load whitelist.txt: {e}")
+            
+    log.info(f"Loaded {len(result)} false positives (including {len(result.cidrs)} CIDRs)")
     return result
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -486,7 +520,14 @@ def process_ip_metadata(ip_sources: Dict[str, Set[int]], false_positives: set) -
         cat = FEED_CATEGORIES.get(src, "Mixed")
         for ip in ips:
             ip_str = int_to_ip(ip) if isinstance(ip, int) else ip
-            if ip_str in false_positives: continue
+            
+            is_fp = False
+            if ip_str in false_positives:
+                is_fp = True
+            elif isinstance(ip, int) and hasattr(false_positives, "check_int"):
+                is_fp = false_positives.check_int(ip)
+                
+            if is_fp: continue
             
             ip_metadata[ip]["sources"].add(src)
             if cat != "Mixed":
