@@ -9,6 +9,7 @@ Optimized for speed: all feeds fetched in parallel, single-pass GeoIP sweep.
 """
 
 import bisect
+import collections
 import gzip
 import heapq
 import ipaddress
@@ -123,8 +124,8 @@ DOMAIN_FEEDS: Dict[str, str] = {
 }
 
 HASH_FEEDS: Dict[str, str] = {
-    "malwarebazaar_recent": "https://bazaar.abuse.ch/export/txt/sha256/recent/",
-    "malwarebazaar_full": "https://bazaar.abuse.ch/export/txt/sha256/full/",
+    "malwarebazaar_recent": "https://bazaar.abuse.ch/export/csv/recent/",
+    "malwarebazaar_full": "https://bazaar.abuse.ch/export/csv/full/",
 }
 
 URL_FEEDS: Dict[str, str] = {
@@ -388,8 +389,9 @@ def write_prefix_split_files(filepath: str, header_lines: List[str], data_lines:
             for line in lines:
                 current_file.write(line + "\n")
                 
+    normalized_written = set(os.path.normpath(w) for w in written_files)
     for old_f in old_files:
-        if old_f not in written_files:
+        if os.path.normpath(old_f) not in normalized_written:
             try:
                 os.remove(old_f)
                 log.info(f"Removed orphaned old chunk file: {old_f}")
@@ -760,8 +762,9 @@ def fetch_url_feed(name: str, url: str) -> Set[str]:
 def fetch_threatfox(name: str, url: str) -> dict:
     """
     Fetch from ThreatFox — returns dict with keys: ips, domains, hashes, urls.
+    Also returns dicts mapping ioc to set of tags.
     """
-    result = {"ips": set(), "ipv6": set(), "cidrs": set(), "domains": set(), "hashes": set(), "urls": set()}
+    result = {"ips": set(), "ipv6": set(), "cidrs": set(), "domains": set(), "hashes": set(), "urls": set(), "ip_tags": collections.defaultdict(set), "domain_tags": collections.defaultdict(set), "hash_tags": collections.defaultdict(set), "url_tags": collections.defaultdict(set)}
     try:
         r = global_session.get(url, timeout=60,
                                headers={"User-Agent": "Threatbase-Aggregator/3.0"})
@@ -783,23 +786,81 @@ def fetch_threatfox(name: str, url: str) -> dict:
                 continue
             ioc = entry.get("ioc_value", "").strip()
             ioc_type = entry.get("ioc_type", "").lower()
+            tags = entry.get("tags", [])
+            if not isinstance(tags, list):
+                tags = []
+            valid_tags = {t.strip() for t in tags if t.strip() and t.lower() != "none"}
+
             if not ioc:
                 continue
             if "ip" in ioc_type:
                 ip_part = ioc.split(":")[0]
                 if is_valid_ipv4(ip_part):
                     result["ips"].add(ip_part)
+                    result["ip_tags"][ip_part].update(valid_tags)
             elif "domain" in ioc_type:
                 d = extract_domain(ioc)
                 if d:
                     result["domains"].add(d)
+                    result["domain_tags"][d].update(valid_tags)
             elif "sha256" in ioc_type and _SHA256_PATTERN.match(ioc):
-                result["hashes"].add(ioc.lower())
+                ioc_lower = ioc.lower()
+                result["hashes"].add(ioc_lower)
+                result["hash_tags"][ioc_lower].update(valid_tags)
+            elif "md5" in ioc_type and _MD5_PATTERN.match(ioc):
+                ioc_lower = ioc.lower()
+                result["hashes"].add(ioc_lower)
+                result["hash_tags"][ioc_lower].update(valid_tags)
             elif "url" in ioc_type and _URL_PATTERN.match(ioc):
                 result["urls"].add(ioc)
+                result["url_tags"][ioc].update(valid_tags)
         log.info(f"  ✓ ThreatFox {name}: {len(result['ips'])} IPs, {len(result['domains'])} domains, {len(result['hashes'])} hashes, {len(result['urls'])} URLs")
     except Exception as e:
         log.error(f"  ✗ ThreatFox {name} failed: {e}")
+    return result
+
+def fetch_malwarebazaar_csv(name: str, url: str) -> dict:
+    """Fetch MalwareBazaar CSV feeds, handling ZIP or plaintext appropriately."""
+    result = {"hashes": set(), "hash_tags": collections.defaultdict(set)}
+    try:
+        r = global_session.get(url, timeout=REQUEST_TIMEOUT)
+        r.raise_for_status()
+        import csv
+        
+        content_type = r.headers.get('Content-Type', '')
+        if 'application/zip' in content_type or url.endswith('.zip'):
+            with zipfile.ZipFile(io.BytesIO(r.content)) as z:
+                for filename in z.namelist():
+                    if filename.endswith('.csv'):
+                        with z.open(filename) as f:
+                            text_f = io.TextIOWrapper(f, encoding='utf-8', errors='ignore')
+                            reader = csv.reader(text_f, delimiter=",", quotechar='"', skipinitialspace=True)
+                            for row in reader:
+                                if not row or row[0].startswith('#'):
+                                    continue
+                                if len(row) >= 9:
+                                    sha256 = row[1].replace('"', '').strip()
+                                    if _SHA256_PATTERN.match(sha256):
+                                        sha256 = sha256.lower()
+                                        result["hashes"].add(sha256)
+                                        signature = row[8].replace('"', '').strip()
+                                        if signature and signature.lower() not in ["n/a", "none"]:
+                                            result["hash_tags"][sha256].add(signature)
+        else:
+            lines = [line for line in r.text.splitlines() if not line.startswith("#")]
+            reader = csv.reader(lines, delimiter=",", quotechar='\"', skipinitialspace=True)
+            for row in reader:
+                if len(row) >= 9:
+                    sha256 = row[1].replace('"', '').strip()
+                    if _SHA256_PATTERN.match(sha256):
+                        sha256 = sha256.lower()
+                        result["hashes"].add(sha256)
+                        signature = row[8].replace('"', '').strip()
+                        if signature and signature.lower() not in ["n/a", "none"]:
+                            result["hash_tags"][sha256].add(signature)
+        log.info(f"  ✓ MalwareBazaar {name}: {len(result['hashes'])} hashes parsed with tags")
+    except Exception as e:
+        log.error(f"  ✗ MalwareBazaar {name} failed: {e}")
     return result
 
 
@@ -808,21 +869,41 @@ def fetch_threatfox(name: str, url: str) -> dict:
 # ─────────────────────────────────────────────────────────────────────────────
 
 
-def write_hashes(hash_sources: Dict[str, Set[str]]) -> tuple:
+def write_hashes(hash_sources: Dict[str, Set[str]], global_hash_tags: dict) -> tuple:
     """Write malicious_hashes.txt and return (all_hashes_set, filenames_list)."""
+    # Count occurrences
+    from collections import Counter
+    hash_count = Counter()
+    for source, hashes in hash_sources.items():
+        if source != "historical":
+            for h in hashes:
+                hash_count[h] += 1
+                
     all_hashes = sorted(set(h for hashes in hash_sources.values() for h in hashes))
     timestamp = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
     header = [
         "# Threatbase Threat Intelligence Feed - Hashes",
         "# (https://github.com/kalidada18/threatbase)",
+        "# Format: Hash,FeedCount,RiskScore,Tags",
         "#",
         f"# Last update: {timestamp}",
         "#"
     ]
-    def get_hash_prefix(h):
-        c = h[0].lower()
+    
+    hash_lines = []
+    for h in all_hashes:
+        count = hash_count.get(h, 1)
+        tags = global_hash_tags.get(h, set())
+        tags_str = "|".join(sorted(tags)) if tags else "Mixed"
+        # Hashes are typically High risk if found in feeds like MalwareBazaar
+        score = "HIGH"
+        hash_lines.append(f"{h},{count},{score},{tags_str}")
+
+    def get_hash_prefix(h_line):
+        c = h_line[0].lower()
         return c if c in "0123456789abcdef" else "other"
-    written = write_prefix_split_files("ioc/malicious_hashes.txt", header, all_hashes, get_hash_prefix)
+        
+    written = write_prefix_split_files("ioc/malicious_hashes.txt", header, hash_lines, get_hash_prefix)
     log.info(f"  Wrote malicious_hashes.txt chunks ({len(all_hashes)} hashes)")
     return set(all_hashes), [os.path.basename(f) for f in written]
 
@@ -1054,12 +1135,13 @@ def main():
     url_sources = {}
     tf_results = {}
     failed = []
+    global_hash_tags = collections.defaultdict(set)
 
     executor = ThreadPoolExecutor(max_workers=MAX_WORKERS)
     # Submit all feed types at once
     ip_futures = {executor.submit(fetch_feed, n, u): ("ip", n) for n, u in FEEDS.items()}
     domain_futures = {executor.submit(fetch_domain_feed, n, u): ("domain", n) for n, u in DOMAIN_FEEDS.items()}
-    hash_futures = {executor.submit(fetch_hash_feed, n, u): ("hash", n) for n, u in HASH_FEEDS.items()}
+    hash_futures = {executor.submit(fetch_malwarebazaar_csv, n, u): ("hash", n) for n, u in HASH_FEEDS.items()}
     url_futures = {executor.submit(fetch_url_feed, n, u): ("url", n) for n, u in URL_FEEDS.items()}
     tf_futures = {executor.submit(fetch_threatfox, n, u): ("tf", n) for n, u in THREATFOX_FEEDS.items()}
 
@@ -1071,7 +1153,7 @@ def main():
     all_futures.update(tf_futures)
 
     pending = set(all_futures.keys())
-    max_waits = 6
+    max_waits = 30
     waits = 0
     while pending and waits < max_waits:
         done, pending = concurrent.futures.wait(pending, timeout=10)
@@ -1093,7 +1175,9 @@ def main():
                         failed.append(name)
                 elif feed_type == "hash":
                     if result:
-                        hash_sources[name] = result
+                        hash_sources[name] = result["hashes"]
+                        for h, tags in result["hash_tags"].items():
+                            global_hash_tags[h].update(tags)
                     else:
                         failed.append(name)
                 elif feed_type == "url":
@@ -1103,6 +1187,9 @@ def main():
                         failed.append(name)
                 elif feed_type == "tf":
                     tf_results[name] = result
+                    if "hash_tags" in result:
+                        for h, tags in result["hash_tags"].items():
+                            global_hash_tags[h].update(tags)
             except Exception as e:
                 log.error(f"  ✗ {name} raised exception: {e}")
                 failed.append(name)
@@ -1213,7 +1300,7 @@ def main():
     chunk_files = {}
     all_written_files = ["ioc/stats.json", "ioc/history.json"]
 
-    all_hashes, hash_chunks = write_hashes(hash_sources)
+    all_hashes, hash_chunks = write_hashes(hash_sources, global_hash_tags)
     chunk_files["malicious_hashes.txt"] = hash_chunks
     for chunk in hash_chunks:
         all_written_files.append(f"ioc/{chunk}")

@@ -1,0 +1,30 @@
+# Threatbase Threat Intelligence Feed - URLs
+# (https://github.com/kalidada18/threatbase)
+#
+# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+#
+http://0000153.0000255.0000011.0000125/httpswww.tcs.comwhat-we-doindustriespublic-servicessolutiontcs-sovereignsecure-cloudness.php
+http://0022a601.pphost.net/threatsim/doc/46cad0e0ca3b2d6d9d3ce691ca2887b18abc80acf0e81799fbb290cce104c8eb.doc
+http://0022a601.pphost.net/threatsim/doc/774d0427cd607b1c09131cc277a68c9edd7cf01499d356bcb1ef4a08e6fc322a.doc
+http://0022a601.pphost.net/threatsim/exe/640.exe
+http://0022a601.pphost.net/threatsim/exe/njrat.exe
+http://0022a601.pphost.net/threatsim/exe/order_pdf.exe
+http://0022a601.pphost.net/threatsim/exe/pdf.exe
+http://0022a601.pphost.net/threatsim/exe/xerox01_pdf.exe
+https://015bj63k.parspoker90.com/?ublib=870158c5-5d05-485a-adbb-5bec80adaa52
+https://02y48l3v.asibshenasiyahya.shop/?ublib=c486cbe8-7fd5-4b2c-a94a-b746aa4a81ba
+https://04gzr1uh.alternatifdekorasyon.com/?ublib=c95ea92c-fd4c-42a5-acb8-0325b411a4d3
+https://09ddpfx9.parspoker.casino/?ublib=3e69f766-07e6-4e99-ae17-d092feccd26d
+https://0fqk0ho2.mrbet90.com/?ublib=1356cba2-f652-4725-9bbd-7613eb73acad
+https://0frduisp.cloud-meridian.digital/?ublib=92fa774c-a9f6-4cd1-ab4e-b18058e58bb4
+https://0gmqmb12.orbitaldockingmodule.digital/?ublib=f16cb78f-d6de-4a34-89b1-ab6feb3ae80a
+https://0gtutd.yandex-file.lat/download
+https://0h5smwzp.network-forge.digital/?ublib=1a53cb6a-e65f-4b16-aa88-705ca0f267bc
+https://0i2th72t.system-horizon.digital/?ublib=5d9c0e3e-94c4-491c-90c9-d40ee3cc5396
+https://0nwfyg62.onja1bet.com/?ublib=3b493422-bbc9-4d54-b8d8-7dfc8ea5b545
+https://0q9bvoqh.telemetry-vault.digital/?ublib=de2bc0b7-8ca4-4458-b702-78f4667e88f1
+https://0saw15fk.activereading.xyz/?ublib=ee0ca37b-5e14-45e7-8a50-168fe4838e8b
+https://0u9irsk6.luxerabet10.com/?ublib=61af3067-6872-4384-9d74-35ac44f9bdf3
+https://0xln2imp.yekbetiran.com/?ublib=d00a3c77-6835-47c0-8ee5-51319a66cb45
+https://0z0kmkwn.anodaz.tv/?ublib=7586e2cc-cd8e-492f-9526-1d195bb92af2
+https://0zfu07h8.audioattenuatorschematic.digital/?ublib=2897a368-da61-44b7-a104-12985a052ff6
