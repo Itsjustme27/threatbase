@@ -428,8 +428,8 @@ async def fetch_threatfox_async(session: aiohttp.ClientSession, name: str, url: 
 # Uploads
 # ─────────────────────────────────────────────────────────────────────────────
 def upload_to_supabase(file_path: str, object_name: str):
-    access_key = os.environ.get("SUPABASE_ACCESS_KEY_ID")
-    secret_key = os.environ.get("SUPABASE_SECRET_ACCESS_KEY")
+    access_key = os.environ.get("SUPABASE_S3_ACCESS_KEY")
+    secret_key = os.environ.get("SUPABASE_S3_SECRET_KEY")
     bucket_name = "threatbase-ioc"
     endpoint_url = "https://fybwjibrvwqwnspgswtp.storage.supabase.co/storage/v1/s3"
     
