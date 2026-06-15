@@ -24,6 +24,7 @@ from typing import Dict, List, Optional, Set, Tuple
 
 import aiohttp
 import boto3
+from botocore.client import Config
 import ipaddress
 
 logging.basicConfig(
@@ -471,7 +472,8 @@ def upload_to_supabase(file_path: str, object_name: str):
             endpoint_url=endpoint_url,
             aws_access_key_id=access_key,
             aws_secret_access_key=secret_key,
-            region_name='us-east-1'
+            region_name='us-east-1',
+            config=Config(signature_version='s3v4')
         )
         
         log.info(f"  ☁ Uploading {file_path} to Supabase bucket '{bucket_name}'...")

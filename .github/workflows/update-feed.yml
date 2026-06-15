@@ -29,8 +29,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          # Ensure we have the full history for accurate diff detection
-          fetch-depth: 1
+          # Ensure we have the full history for accurate diff detection and rebasing
+          fetch-depth: 0
 
       # ── 2. Python setup ──────────────────────────────────────────────────────
       - name: Set up Python 3.11
@@ -132,9 +132,17 @@ jobs:
             git commit -m "Update: ${TIMESTAMP} — Added ${D_IP} IPs, ${D_IPV6} IPv6, ${D_CIDR} CIDRs, ${D_DOMAIN} Domains, ${D_HASH} Hashes, ${D_URL} URLs" -m "Total: ${IP_COUNT} IPs, ${IPV6_COUNT} IPv6, ${CIDR_COUNT} CIDRs, ${DOMAIN_COUNT} domains, ${HASH_COUNT} hashes, ${URL_COUNT} URLs"
 
             # Pull with rebase, resolving conflicts by preferring our freshly generated files ('theirs' during rebase)
-            git pull --rebase -X theirs --autostash --quiet origin "${GITHUB_REF_NAME:-main}"
-            git push origin "${GITHUB_REF_NAME:-main}"
-            echo "✓ Feed pushed successfully (${IP_COUNT} IPs, ${DOMAIN_COUNT} Domains, ${HASH_COUNT} Hashes, ${URL_COUNT} URLs)."
+            # Retry pushing up to 5 times in case of concurrent pushes from other workflows
+            max_retries=5
+            for i in $(seq 1 $max_retries); do
+              git pull --rebase -X theirs --autostash --quiet origin "${GITHUB_REF_NAME:-main}"
+              if git push origin "${GITHUB_REF_NAME:-main}"; then
+                echo "✓ Feed pushed successfully (${IP_COUNT} IPs, ${DOMAIN_COUNT} Domains, ${HASH_COUNT} Hashes, ${URL_COUNT} URLs)."
+                break
+              fi
+              echo "Push failed, retrying ($i/$max_retries) in a few seconds..."
+              sleep $((RANDOM % 5 + 5))
+            done
           fi
 
       # ── 7. Create Daily Archive Release ───────────────────────────────────────
