@@ -15,7 +15,7 @@ export function animateValue(el, end, dur = 1600) {
 
 /** Get the base URL for IOC data files */
 export function getBaseUrl() {
-  return 'https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/'
+  return 'https://fybwjibrvwqwnspgswtp.supabase.co/storage/v1/object/public/threatbase-ioc/'
 }
 
 /** Format a sync timestamp for display */

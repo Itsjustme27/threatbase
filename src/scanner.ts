@@ -2,21 +2,54 @@ import { getBaseUrl } from './utils'
 import supabaseClient from './supabaseClient'
 
 const feedCache = {}
+let statsCache = null
 
-async function fetchAndCacheFeed(url) {
-  if (feedCache[url]) return feedCache[url]
+async function getStats(rawBaseUrl) {
+  if (statsCache) return statsCache
   try {
-    const r = await fetch(url)
-    if (!r.ok) return []
-    const text = await r.text()
-    const lines = text
-      .split('\n')
-      .map((l) => l.trim())
-      .filter((l) => l.length > 0 && !l.startsWith('#') && !l.startsWith('ip,'))
-    feedCache[url] = lines
-    return lines
+    const r = await fetch(rawBaseUrl + 'stats.json?_=' + Date.now())
+    if (r.ok) {
+      statsCache = await r.json()
+      return statsCache
+    }
   } catch (e) {
-    console.error('Failed to fetch feed:', e)
+    console.error('Failed to fetch stats for chunks:', e)
+  }
+  return null
+}
+
+async function fetchAndCacheFeed(baseUrl, filename, feedVersion) {
+  const cacheKey = `${filename}?v=${feedVersion}`
+  if (feedCache[cacheKey]) return feedCache[cacheKey]
+  
+  const stats = await getStats(baseUrl)
+  let filesToFetch = [filename]
+  if (stats && stats.chunk_files && stats.chunk_files[filename]) {
+    filesToFetch = stats.chunk_files[filename]
+  }
+  
+  const allLines = []
+  try {
+    const fetchPromises = filesToFetch.map(async (file) => {
+      const url = `${baseUrl}${file}?v=${feedVersion}`
+      const r = await fetch(url)
+      if (!r.ok) return []
+      const text = await r.text()
+      return text
+        .split('\n')
+        .map((l) => l.trim())
+        .filter((l) => l.length > 0 && !l.startsWith('#') && !l.startsWith('ip,'))
+    })
+    
+    const results = await Promise.all(fetchPromises)
+    for (const lines of results) {
+      allLines.push(...lines)
+    }
+    
+    feedCache[cacheKey] = allLines
+    return allLines
+  } catch (e) {
+    console.error('Failed to fetch feed chunks:', filename, e)
     return []
   }
 }
@@ -97,18 +130,18 @@ export async function scanIndicatorLogic(rawInput, feedVersion) {
     let compareFn = stringCompare
 
     if (isIP) {
-      list = await fetchAndCacheFeed(RAW + 'malicious_ips.txt?v=' + feedVersion)
+      list = await fetchAndCacheFeed(RAW, 'malicious_ips.txt', feedVersion)
       compareFn = ipCsvCompare
     } else if (isIPv6) {
-      list = await fetchAndCacheFeed(RAW + 'malicious_ipv6.txt?v=' + feedVersion)
+      list = await fetchAndCacheFeed(RAW, 'malicious_ipv6.txt', feedVersion)
     } else if (isCIDR) {
-      list = await fetchAndCacheFeed(RAW + 'malicious_cidrs.txt?v=' + feedVersion)
+      list = await fetchAndCacheFeed(RAW, 'malicious_cidrs.txt', feedVersion)
     } else if (isDomain) {
-      list = await fetchAndCacheFeed(RAW + 'malicious_domains.txt?v=' + feedVersion)
+      list = await fetchAndCacheFeed(RAW, 'malicious_domains.txt', feedVersion)
     } else if (isHash) {
-      list = await fetchAndCacheFeed(RAW + 'malicious_hashes.txt?v=' + feedVersion)
+      list = await fetchAndCacheFeed(RAW, 'malicious_hashes.txt', feedVersion)
     } else if (isURL) {
-      list = await fetchAndCacheFeed(RAW + 'malicious_urls.txt?v=' + feedVersion)
+      list = await fetchAndCacheFeed(RAW, 'malicious_urls.txt', feedVersion)
     }
 
     const result = binarySearchArray(list, ip, compareFn)

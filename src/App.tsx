@@ -183,7 +183,7 @@ export default function App() {
               transition={{ delay: 0.4, duration: 0.6, staggerChildren: 0.2 }}
             >
               <Stats statsData={statsData} />
-              <Feeds />
+              <Feeds statsData={statsData} />
               <Analytics statsData={statsData} feedVersion={feedVersion} />
             </motion.div>
           </main>

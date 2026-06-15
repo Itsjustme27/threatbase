@@ -54,7 +54,14 @@ const feeds = [
   },
 ]
 
-export default function Feeds() {
+export default function Feeds({ statsData }: { statsData?: any }) {
+  const getChunks = (filename: string) => {
+    if (statsData && statsData.chunk_files && statsData.chunk_files[filename]) {
+      return statsData.chunk_files[filename]
+    }
+    return [filename]
+  }
+
   return (
     <section className="relative py-16 md:py-28 overflow-hidden scroll-mt-24" id="feeds">
       {/* Background decorations */}
@@ -80,38 +87,63 @@ export default function Feeds() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {feeds.map((f, i) => (
-            <motion.div
-              className={`group flex flex-col justify-between overflow-hidden rounded-3xl border border-white/5 bg-slate-900/40 backdrop-blur-xl p-8 shadow-xl transition-all duration-500 hover:bg-slate-800/50 hover:border-white/10 hover:-translate-y-1.5 ${f.glow}`}
-              key={f.file}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ delay: i * 0.1, duration: 0.5, ease: "easeOut" }}
-            >
-              <div>
-                <div className="flex items-center gap-4 mb-6">
-                  <div className={`p-3.5 rounded-2xl border transition-all duration-500 shadow-inner group-hover:scale-110 ${f.color}`}>
-                    {f.icon}
-                  </div>
-                  <h3 className="text-xl font-bold text-white tracking-tight">{f.name}</h3>
-                </div>
-                <p className="text-slate-400 text-sm mb-8 leading-relaxed font-medium group-hover:text-slate-300 transition-colors">
-                  {f.desc}
-                </p>
-              </div>
-              <a
-                href={`https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/${f.file}`}
-                className="inline-flex items-center justify-center gap-2 w-full px-5 py-3.5 text-sm font-bold transition-all duration-300 border border-white/10 rounded-2xl bg-white/5 text-white hover:bg-white/10 hover:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-slate-900 shadow-sm overflow-hidden relative"
-                target="_blank"
-                rel="noopener noreferrer"
+          {feeds.map((f, i) => {
+            const chunks = getChunks(f.file)
+            return (
+              <motion.div
+                className={`group flex flex-col justify-between overflow-hidden rounded-3xl border border-white/5 bg-slate-900/40 backdrop-blur-xl p-8 shadow-xl transition-all duration-500 hover:bg-slate-800/50 hover:border-white/10 hover:-translate-y-1.5 ${f.glow}`}
+                key={f.file}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: i * 0.1, duration: 0.5, ease: "easeOut" }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-                <Download size={16} className="transition-transform group-hover:-translate-y-0.5" /> 
-                <span>Download <span className="font-mono text-xs text-slate-300 ml-1">{f.file}</span></span>
-              </a>
-            </motion.div>
-          ))}
+                <div>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className={`p-3.5 rounded-2xl border transition-all duration-500 shadow-inner group-hover:scale-110 ${f.color}`}>
+                      {f.icon}
+                    </div>
+                    <h3 className="text-xl font-bold text-white tracking-tight">{f.name}</h3>
+                  </div>
+                  <p className="text-slate-400 text-sm mb-8 leading-relaxed font-medium group-hover:text-slate-300 transition-colors">
+                    {f.desc}
+                  </p>
+                </div>
+                {chunks.length > 1 ? (
+                  <div className="flex flex-col gap-2.5 w-full">
+                    <span className="text-[11px] text-slate-400 text-center font-bold tracking-wider uppercase mb-1">
+                      Split Feed ({chunks.length} Parts)
+                    </span>
+                    <div className="grid grid-cols-2 gap-2 w-full">
+                      {chunks.map((chunk, idx) => (
+                        <a
+                          key={chunk}
+                          href={`https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/${chunk}`}
+                          className="inline-flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold transition-all duration-300 border border-white/10 rounded-xl bg-white/5 text-white hover:bg-white/10 hover:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-sm overflow-hidden relative group/chunk"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Download size={12} className="transition-transform group-hover/chunk:-translate-y-0.5" />
+                          <span>Part {idx + 1}</span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <a
+                    href={`https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/${f.file}`}
+                    className="inline-flex items-center justify-center gap-2 w-full px-5 py-3.5 text-sm font-bold transition-all duration-300 border border-white/10 rounded-2xl bg-white/5 text-white hover:bg-white/10 hover:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-slate-900 shadow-sm overflow-hidden relative"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                    <Download size={16} className="transition-transform group-hover:-translate-y-0.5" /> 
+                    <span>Download <span className="font-mono text-xs text-slate-300 ml-1">{f.file}</span></span>
+                  </a>
+                )}
+              </motion.div>
+            )
+          })}
         </div>
       </div>
     </section>

@@ -146,6 +146,10 @@ if ABUSEIPDB_API_KEY:
 REQUEST_TIMEOUT = (5, 10)
 MAX_WORKERS = 12  # Increased — all feed types now share one pool
 
+# FP-FIX: Historical IOC staleness threshold (days).
+# IPs not seen by live feeds within this window get demoted/dropped on next run.
+HISTORICAL_MAX_AGE_DAYS = 30
+
 
 def get_session():
     session = requests.Session()
@@ -176,7 +180,10 @@ _URL_PATTERN = re.compile(r'^https?://.+')
 
 
 
+# FP-FIX: Expanded whitelist — added major CDN + cloud provider ranges.
+# These ranges host legitimate infra that appears in noisy feeds (firehol/ipsum/romainmarcoux).
 _WHITELIST_CIDRS = [
+    # DNS resolvers
     "1.0.0.0/24",       # Cloudflare DNS
     "1.1.1.0/24",       # Cloudflare DNS
     "8.8.8.0/24",       # Google DNS
@@ -190,7 +197,100 @@ _WHITELIST_CIDRS = [
     "4.2.2.0/24",       # Level3 DNS
     "94.140.14.0/24",   # AdGuard DNS
     "94.140.15.0/24",   # AdGuard DNS
-    "192.195.233.204/32", # User False Positive
+    # Cloudflare CDN
+    "104.16.0.0/13",
+    "104.24.0.0/14",
+    "172.64.0.0/13",
+    "162.158.0.0/15",
+    "198.41.128.0/17",
+    "197.234.240.0/22",
+    "190.93.240.0/20",
+    "188.114.96.0/20",
+    "185.221.0.0/22",
+    # Fastly CDN
+    "23.235.32.0/20",
+    "43.249.72.0/22",
+    "103.244.50.0/24",
+    "103.245.222.0/23",
+    "103.245.224.0/24",
+    "104.156.80.0/20",
+    "140.248.64.0/18",
+    "140.248.128.0/17",
+    "150.101.128.0/17",
+    "151.101.0.0/16",
+    "157.52.64.0/18",
+    "167.82.0.0/17",
+    "167.82.128.0/20",
+    "167.82.160.0/20",
+    "167.82.224.0/20",
+    "172.111.64.0/18",
+    "185.31.16.0/22",
+    "199.27.72.0/21",
+    "199.232.0.0/16",
+    # AWS CloudFront
+    "13.32.0.0/15",
+    "13.35.0.0/16",
+    "52.46.0.0/18",
+    "52.84.0.0/15",
+    "54.182.0.0/16",
+    "54.192.0.0/16",
+    "54.230.0.0/16",
+    "54.239.128.0/18",
+    "54.239.192.0/19",
+    "64.252.64.0/18",
+    "64.252.128.0/18",
+    "70.132.0.0/18",
+    "71.152.0.0/17",
+    "99.84.0.0/16",
+    "204.246.164.0/22",
+    "204.246.168.0/22",
+    "204.246.174.0/23",
+    "204.246.176.0/20",
+    "205.251.192.0/19",
+    "205.251.249.0/24",
+    "205.251.250.0/23",
+    "205.251.252.0/23",
+    "205.251.254.0/24",
+    "216.137.32.0/19",
+    # Azure (main ranges — full list at aka.ms/azureipranges)
+    "13.64.0.0/11",
+    "13.96.0.0/13",
+    "13.104.0.0/14",
+    "20.36.0.0/14",
+    "20.40.0.0/13",
+    "20.48.0.0/12",
+    "40.64.0.0/10",
+    "40.74.0.0/15",
+    "40.76.0.0/14",
+    "40.80.0.0/12",
+    "40.96.0.0/12",
+    "40.112.0.0/13",
+    "40.120.0.0/14",
+    "40.124.0.0/16",
+    "40.125.0.0/17",
+    # GCP
+    "34.0.0.0/9",
+    "34.128.0.0/10",
+    "35.184.0.0/13",
+    "35.192.0.0/14",
+    "35.196.0.0/15",
+    "35.198.0.0/16",
+    "35.199.0.0/17",
+    "35.199.128.0/18",
+    "35.200.0.0/13",
+    "35.208.0.0/12",
+    "35.224.0.0/12",
+    "35.240.0.0/13",
+    # Akamai
+    "23.32.0.0/11",
+    "23.64.0.0/14",
+    "23.72.0.0/13",
+    "104.64.0.0/10",
+    "184.24.0.0/13",
+    "184.50.0.0/15",
+    "184.84.0.0/14",
+    # User manual FP
+    "192.195.233.204/32",
 ]
 
 PARSED_WHITELIST_CIDRS = [ipaddress.ip_network(cidr) for cidr in _WHITELIST_CIDRS]
@@ -296,35 +396,225 @@ def load_custom_iocs(filename="custom_iocs.txt") -> dict:
     return result
 
 
-def load_existing_iocs() -> dict:
-    """Load historical IOCs so the feed keeps past items forever and only grows."""
-    result = {"ips": set(), "ipv6": set(), "cidrs": set(), "domains": set(), "hashes": set(), "urls": set()}
+def write_split_file(filepath: str, header_lines: List[str], data_lines: List[str], max_size_bytes: int = 45 * 1024 * 1024) -> List[str]:
+    """
+    Writes data_lines to filepath. If the file size exceeds max_size_bytes, 
+    splits the remaining data into filepath_2.txt, filepath_3.txt, etc.
+    Returns the list of actual filenames written.
+    """
+    base_no_ext, ext = os.path.splitext(filepath)
     
-    file_map = {
-        "ioc/malicious_ips.txt": "ips",
+    # Find all previously existing chunk files to clean up later
+    old_files = set()
+    if os.path.exists(filepath):
+        old_files.add(filepath)
+    for p in glob.glob(f"{base_no_ext}_[0-9]*{ext}"):
+        old_files.add(p)
+        
+    written_files = []
+    header_content = "\n".join(header_lines) + "\n" if header_lines else ""
+    header_bytes = len(header_content.encode('utf-8'))
+    
+    current_file_idx = 1
+    current_filepath = filepath
+    
+    current_file = open(current_filepath, "w", encoding="utf-8", buffering=1<<16)
+    written_files.append(current_filepath)
+    current_file.write(header_content)
+    current_size = header_bytes
+    
+    for line in data_lines:
+        line_str = line + "\n"
+        line_bytes = len(line_str.encode('utf-8'))
+        
+        if current_size + line_bytes > max_size_bytes:
+            current_file.close()
+            current_file_idx += 1
+            current_filepath = f"{base_no_ext}_{current_file_idx}{ext}"
+            current_file = open(current_filepath, "w", encoding="utf-8", buffering=1<<16)
+            written_files.append(current_filepath)
+            current_file.write(header_content)
+            current_size = header_bytes
+            
+        current_file.write(line_str)
+        current_size += line_bytes
+        
+    current_file.close()
+    
+    # Clean up any old files that were not overwritten
+    for old_f in old_files:
+        if old_f not in written_files:
+            try:
+                os.remove(old_f)
+                log.info(f"Removed orphaned old chunk file: {old_f}")
+            except Exception as e:
+                log.error(f"Failed to remove orphaned file {old_f}: {e}")
+                
+    log.info(f"Wrote {len(written_files)} files for {filepath}")
+    return written_files
+
+
+def upload_to_supabase_storage(filepath: str, bucket: str = "threatbase-ioc") -> bool:
+    """Uploads a file to Supabase Storage using S3 protocol if keys are set, otherwise REST API."""
+    s3_access_key = os.environ.get("SUPABASE_S3_ACCESS_KEY", "").strip()
+    s3_secret_key = os.environ.get("SUPABASE_S3_SECRET_KEY", "").strip()
+    
+    if s3_access_key and s3_secret_key:
+        endpoint_url = os.environ.get(
+            "SUPABASE_S3_ENDPOINT", 
+            "https://fybwjibrvwqwnspgswtp.storage.supabase.co/storage/v1/s3"
+        ).strip()
+        filename = os.path.basename(filepath)
+        try:
+            import boto3
+            from botocore.client import Config
+            
+            s3 = boto3.client(
+                's3',
+                endpoint_url=endpoint_url,
+                aws_access_key_id=s3_access_key,
+                aws_secret_access_key=s3_secret_key,
+                config=Config(signature_version='s3v4'),
+                region_name='us-east-1'
+            )
+            
+            content_type = "application/octet-stream"
+            if filepath.endswith(".json"):
+                content_type = "application/json"
+            elif filepath.endswith(".txt"):
+                content_type = "text/plain; charset=utf-8"
+                
+            s3.upload_file(
+                filepath,
+                bucket,
+                filename,
+                ExtraArgs={'ContentType': content_type}
+            )
+            log.info(f"  ✓ Uploaded {filename} to Supabase Storage via S3 ({bucket})")
+            return True
+        except Exception as e:
+            log.error(f"  ✗ S3 Upload failed for {filename}: {e}")
+            return False
+            
+    # Fallback to REST API
+    supabase_url = os.environ.get("SUPABASE_URL", "").strip()
+    supabase_key = os.environ.get("SUPABASE_SERVICE_KEY", "").strip()
+    
+    if not supabase_url or not supabase_key:
+        log.warning("Supabase S3 and REST credentials not configured. Skipping upload.")
+        return False
+        
+    filename = os.path.basename(filepath)
+    url = f"{supabase_url}/storage/v1/object/{bucket}/{filename}"
+    
+    headers = {
+        "apikey": supabase_key,
+        "Authorization": f"Bearer {supabase_key}",
+        "x-upsert": "true",
+    }
+    
+    if filepath.endswith(".json"):
+        headers["Content-Type"] = "application/json"
+    elif filepath.endswith(".txt"):
+        headers["Content-Type"] = "text/plain; charset=utf-8"
+    else:
+        headers["Content-Type"] = "application/octet-stream"
+        
+    try:
+        with open(filepath, "rb") as f:
+            data = f.read()
+            
+        r = global_session.post(url, headers=headers, data=data, timeout=60)
+        if r.status_code == 200:
+            log.info(f"  ✓ Uploaded {filename} to Supabase Storage via REST ({bucket})")
+            return True
+        else:
+            log.error(f"  ✗ REST upload failed for {filename}: {r.status_code} - {r.text}")
+            return False
+    except Exception as e:
+        log.error(f"  ✗ Exception during REST upload for {filename}: {e}")
+        return False
+
+
+def _parse_file_timestamp(filepath: str) -> Optional[datetime]:
+    """Parse '# Last update: ...' header from IOC file. Returns UTC datetime or None."""
+    try:
+        with open(filepath, "r", encoding="utf-8") as f:
+            for line in f:
+                if line.startswith("# Last update:"):
+                    ts_str = line.split(":", 1)[1].strip()
+                    # Format: "Mon, 16 Jun 2025 12:00:00 +0000"
+                    return datetime.strptime(ts_str, "%a, %d %b %Y %H:%M:%S %z")
+    except Exception:
+        pass
+    return None
+
+
+def load_existing_iocs(max_age_days: int = HISTORICAL_MAX_AGE_DAYS) -> dict:
+    """Load historical IOCs. IPs file is skipped if older than max_age_days —
+    prevents stale IPs accumulating indefinitely at HIGH trust.
+    """
+    result = {"ips": set(), "ipv6": set(), "cidrs": set(), "domains": set(), "hashes": set(), "urls": set()}
+
+    ip_file = "ioc/malicious_ips.txt"
+    if os.path.exists(ip_file):
+        file_ts = _parse_file_timestamp(ip_file)
+        now_utc = datetime.now(timezone.utc)
+        if file_ts:
+            age_days = (now_utc - file_ts).days
+            if age_days > max_age_days:
+                log.warning(
+                    f"Historical IPs skipped — file is {age_days}d old (threshold={max_age_days}d). "
+                    "Live feeds will repopulate."
+                )
+            else:
+                log.info(f"Historical IPs file is {age_days}d old — loading.")
+                base_no_ext, ext = os.path.splitext(ip_file)
+                ip_files = [ip_file] + glob.glob(f"{base_no_ext}_[0-9]*{ext}")
+                for fpath in ip_files:
+                    try:
+                        with open(fpath, "r", encoding="utf-8") as f:
+                            for line in f:
+                                line = line.strip()
+                                if not line or line.startswith(('#', '//')):
+                                    continue
+                                result["ips"].add(line.split(',')[0])
+                    except Exception as e:
+                        log.error(f"Failed to load existing IPs from {fpath}: {e}")
+        else:
+            log.warning("Historical IPs file has no timestamp header — skipping (cannot verify age).")
+    
+    non_ip_files = {
         "ioc/malicious_ipv6.txt": "ipv6",
         "ioc/malicious_cidrs.txt": "cidrs",
         "ioc/malicious_domains.txt": "domains",
         "ioc/malicious_hashes.txt": "hashes",
-        "ioc/malicious_urls.txt": "urls"
+        "ioc/malicious_urls.txt": "urls",
     }
-    
-    for filepath, key in file_map.items():
+    for filepath, key in non_ip_files.items():
+        base_no_ext, ext = os.path.splitext(filepath)
+        matching_files = []
         if os.path.exists(filepath):
+            matching_files.append(filepath)
+        for chunk in glob.glob(f"{base_no_ext}_[0-9]*{ext}"):
+            matching_files.append(chunk)
+            
+        for fpath in matching_files:
             try:
-                with open(filepath, "r", encoding="utf-8") as f:
+                with open(fpath, "r", encoding="utf-8") as f:
                     for line in f:
                         line = line.strip()
                         if not line or line.startswith(('#', '//')):
                             continue
-                        if key == "ips":
-                            result[key].add(line.split(',')[0])
-                        else:
-                            result[key].add(line)
+                        result[key].add(line)
             except Exception as e:
-                log.error(f"Failed to load existing IOCs from {filepath}: {e}")
-                
-    log.info(f"Loaded existing IOCs: {len(result['ips'])} IPs, {len(result['ipv6'])} IPv6, {len(result['cidrs'])} CIDRs, {len(result['domains'])} domains, {len(result['hashes'])} hashes, {len(result['urls'])} URLs")
+                log.error(f"Failed to load existing IOCs from {fpath}: {e}")
+
+    log.info(
+        f"Loaded existing IOCs: {len(result['ips'])} IPs, {len(result['ipv6'])} IPv6, "
+        f"{len(result['cidrs'])} CIDRs, {len(result['domains'])} domains, "
+        f"{len(result['hashes'])} hashes, {len(result['urls'])} URLs"
+    )
     return result
 
 
@@ -408,9 +698,6 @@ def fetch_feed(name: str, url: str) -> dict:
     return {'ipv4': set(), 'ipv6': set(), 'cidrs': set()}
 
 
-
-
-
 def fetch_domain_feed(name: str, url: str) -> Set[str]:
     try:
         r = global_session.get(url, timeout=REQUEST_TIMEOUT,
@@ -445,7 +732,6 @@ def fetch_domain_feed(name: str, url: str) -> Set[str]:
 def fetch_hash_feed(name: str, url: str) -> Set[str]:
     """Fetch SHA256 hashes from feeds."""
     try:
-        # Increased timeout for large feeds like the full hash list
         r = global_session.get(url, timeout=60,
                                headers={"User-Agent": "Threatbase-Aggregator/3.0"})
         r.raise_for_status()
@@ -556,52 +842,44 @@ def fetch_threatfox(name: str, url: str) -> dict:
     return result
 
 
-
 # ─────────────────────────────────────────────────────────────────────────────
 # Exporters
 # ─────────────────────────────────────────────────────────────────────────────
 
 
-def write_hashes(hash_sources: Dict[str, Set[str]]) -> set:
-    """Write malicious_hashes.txt."""
+def write_hashes(hash_sources: Dict[str, Set[str]]) -> tuple:
+    """Write malicious_hashes.txt and return (all_hashes_set, filenames_list)."""
     all_hashes = sorted(set(h for hashes in hash_sources.values() for h in hashes))
-
-    # Write TXT
-    with open("ioc/malicious_hashes.txt", "w", encoding="utf-8", buffering=1 << 16) as f:
-        timestamp = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
-        f.write("# Threatbase Threat Intelligence Feed - Hashes\n")
-        f.write("# (https://github.com/kalidada18/threatbase)\n")
-        f.write("#\n")
-        f.write(f"# Last update: {timestamp}\n")
-        f.write("#\n")
-        for h in all_hashes:
-            f.write(h)
-            f.write('\n')
-
-    log.info(f"  Wrote malicious_hashes.txt ({len(all_hashes)} hashes)")
-    return all_hashes
+    timestamp = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
+    header = [
+        "# Threatbase Threat Intelligence Feed - Hashes",
+        "# (https://github.com/kalidada18/threatbase)",
+        "#",
+        f"# Last update: {timestamp}",
+        "#"
+    ]
+    written = write_split_file("ioc/malicious_hashes.txt", header, all_hashes)
+    log.info(f"  Wrote malicious_hashes.txt chunks ({len(all_hashes)} hashes)")
+    return set(all_hashes), [os.path.basename(f) for f in written]
 
 
-def write_urls(url_map: Dict[str, Set[str]]) -> set:
-    """Write malicious_urls.txt."""
+def write_urls(url_map: Dict[str, Set[str]]) -> tuple:
+    """Write malicious_urls.txt and return (all_urls_set, filenames_list)."""
     all_urls = sorted(set(u for urls in url_map.values() for u in urls))
-
-    with open("ioc/malicious_urls.txt", "w", encoding="utf-8", buffering=1 << 16) as f:
-        timestamp = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
-        f.write("# Threatbase Threat Intelligence Feed - URLs\n")
-        f.write("# (https://github.com/kalidada18/threatbase)\n")
-        f.write("#\n")
-        f.write(f"# Last update: {timestamp}\n")
-        f.write("#\n")
-        for u in all_urls:
-            f.write(u)
-            f.write('\n')
-
-    log.info(f"  Wrote malicious_urls.txt ({len(all_urls)} URLs)")
-    return all_urls
+    timestamp = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
+    header = [
+        "# Threatbase Threat Intelligence Feed - URLs",
+        "# (https://github.com/kalidada18/threatbase)",
+        "#",
+        f"# Last update: {timestamp}",
+        "#"
+    ]
+    written = write_split_file("ioc/malicious_urls.txt", header, all_urls)
+    log.info(f"  Wrote malicious_urls.txt chunks ({len(all_urls)} URLs)")
+    return set(all_urls), [os.path.basename(f) for f in written]
 
 
-def build_stats(ip_count, ip_sources, failed, ts, all_domains, hashes=None, urls=None, all_ipv6=None, all_cidrs=None, custom_iocs=None, existing_iocs=None):
+def build_stats(ip_count, ip_sources, failed, ts, all_domains, hashes=None, urls=None, all_ipv6=None, all_cidrs=None, custom_iocs=None, existing_iocs=None, chunk_files=None):
     hashes = hashes or set()
     urls = urls or set()
     all_ipv6 = all_ipv6 or set()
@@ -638,6 +916,7 @@ def build_stats(ip_count, ip_sources, failed, ts, all_domains, hashes=None, urls
         "failed_feeds": failed,
         "ips_per_source": ips_per_source,
         "category_counts": category_counts,
+        "chunk_files": chunk_files or {}
     }
 
 
@@ -694,7 +973,9 @@ def filter_ips(ip_sources, custom_ips, existing_ips):
             
     FEED_TRUST_TIERS = {
         "custom": "HIGH",
-        "historical": "HIGH",
+        # FP-FIX: historical demoted HIGH→MEDIUM.
+        # Stale IPs no longer auto-pass without live corroboration.
+        "historical": "MEDIUM",
         "feodo_tracker": "HIGH",
         "feodo_tracker_aggressive": "HIGH",
         "abuseipdb": "HIGH",
@@ -742,14 +1023,26 @@ def filter_ips(ip_sources, custom_ips, existing_ips):
             cat = FEED_CATEGORIES.get(f)
             if cat and cat != "Mixed":
                 tags.add(cat)
+
+        live_feeds = feeds - {"historical"}
+        has_live_high = any(FEED_TRUST_TIERS.get(f) == "HIGH" for f in live_feeds)
                 
         if "HIGH" in tiers:
-            filtered_ip_info[ip] = {"count": num_sources, "score": "HIGH", "tags": sorted(list(tags))}
+            # FP-FIX: historical-only HIGH IPs (no live feed) need MEDIUM corroboration.
+            # Prevents "seen once 6 months ago, never again" IPs surviving forever.
+            if feeds == {"historical"}:
+                # Only historical, no live feed — apply MEDIUM rules
+                if num_sources >= 2:
+                    filtered_ip_info[ip] = {"count": num_sources, "score": "MEDIUM", "tags": sorted(list(tags))}
+            else:
+                filtered_ip_info[ip] = {"count": num_sources, "score": "HIGH", "tags": sorted(list(tags))}
         elif "MEDIUM" in tiers:
-            if num_sources >= 3: # Increased from 2 to 3 to reduce false positives
+            # FP-FIX: raised from 2 → 3 to reduce MEDIUM noise
+            if num_sources >= 3:
                 filtered_ip_info[ip] = {"count": num_sources, "score": "MEDIUM", "tags": sorted(list(tags))}
         else:
-            if num_sources >= 5: # Increased from 3 to 5 to heavily filter noisy LOW tier feeds
+            # FP-FIX: raised from 5 → 7 — ipsum/firehol/romainmarcoux are very noisy
+            if num_sources >= 7:
                 filtered_ip_info[ip] = {"count": num_sources, "score": "LOW", "tags": sorted(list(tags))}
                 
     return filtered_ip_info
@@ -940,12 +1233,87 @@ def main():
     sys.stderr.flush()
     t0 = time.time()
 
-    all_hashes = write_hashes(hash_sources)
-    all_urls = write_urls(url_sources)
+    chunk_files = {}
+    all_written_files = ["ioc/stats.json", "ioc/history.json"]
+
+    all_hashes, hash_chunks = write_hashes(hash_sources)
+    chunk_files["malicious_hashes.txt"] = hash_chunks
+    for chunk in hash_chunks:
+        all_written_files.append(f"ioc/{chunk}")
+
+    all_urls, url_chunks = write_urls(url_sources)
+    chunk_files["malicious_urls.txt"] = url_chunks
+    for chunk in url_chunks:
+        all_written_files.append(f"ioc/{chunk}")
+
+    # Plain text IP list
+    log.info("Saving malicious_ips.txt...")
+    sys.stderr.flush()
+    ip_lines = []
+    for ip in sorted_ips:
+        info = filtered_ip_info[ip]
+        tags_str = "|".join(info["tags"]) if info["tags"] else "Mixed"
+        ip_lines.append(f"{ip},{info['count']},{info['score']},{tags_str}")
+
+    timestamp = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
+    header_ips = [
+        "# Threatbase Threat Intelligence Feed - IPs",
+        "# (https://github.com/kalidada18/threatbase)",
+        "# Format: IP,FeedCount,RiskScore,Tags",
+        "#",
+        f"# Last update: {timestamp}",
+        "#"
+    ]
+    written_ips = write_split_file("ioc/malicious_ips.txt", header_ips, ip_lines)
+    chunk_files["malicious_ips.txt"] = [os.path.basename(f) for f in written_ips]
+    for chunk in chunk_files["malicious_ips.txt"]:
+        all_written_files.append(f"ioc/{chunk}")
+
+    # Plain text domain list
+    log.info("Sorting and saving malicious_domains.txt...")
+    sys.stderr.flush()
+    sorted_domains = sorted(all_domains)
+    header_domains = [
+        "# Threatbase Threat Intelligence Feed - Domains",
+        "# (https://github.com/kalidada18/threatbase)",
+        "#",
+        f"# Last update: {timestamp}",
+        "#"
+    ]
+    written_domains = write_split_file("ioc/malicious_domains.txt", header_domains, sorted_domains)
+    chunk_files["malicious_domains.txt"] = [os.path.basename(f) for f in written_domains]
+    for chunk in chunk_files["malicious_domains.txt"]:
+        all_written_files.append(f"ioc/{chunk}")
+
+    # Write IPv6
+    log.info("Sorting and saving malicious_ipv6.txt...")
+    sys.stderr.flush()
+    sorted_ipv6 = sorted(all_ipv6)
+    header_ipv6 = [
+        "# Threatbase Threat Intelligence Feed - IPv6",
+        f"# Last update: {timestamp}"
+    ]
+    written_ipv6 = write_split_file("ioc/malicious_ipv6.txt", header_ipv6, sorted_ipv6)
+    chunk_files["malicious_ipv6.txt"] = [os.path.basename(f) for f in written_ipv6]
+    for chunk in chunk_files["malicious_ipv6.txt"]:
+        all_written_files.append(f"ioc/{chunk}")
+            
+    # Write CIDRs
+    log.info("Sorting and saving malicious_cidrs.txt...")
+    sys.stderr.flush()
+    sorted_cidrs = sorted(all_cidrs)
+    header_cidrs = [
+        "# Threatbase Threat Intelligence Feed - CIDRs",
+        f"# Last update: {timestamp}"
+    ]
+    written_cidrs = write_split_file("ioc/malicious_cidrs.txt", header_cidrs, sorted_cidrs)
+    chunk_files["malicious_cidrs.txt"] = [os.path.basename(f) for f in written_cidrs]
+    for chunk in chunk_files["malicious_cidrs.txt"]:
+        all_written_files.append(f"ioc/{chunk}")
 
     log.info("Building stats...")
     sys.stderr.flush()
-    stats = build_stats(ip_count, ip_sources, failed, ts, all_domains, all_hashes, all_urls, all_ipv6, all_cidrs, custom_iocs, existing_iocs)
+    stats = build_stats(ip_count, ip_sources, failed, ts, all_domains, all_hashes, all_urls, all_ipv6, all_cidrs, custom_iocs, existing_iocs, chunk_files)
     
     log.info("Saving stats.json...")
     sys.stderr.flush()
@@ -953,60 +1321,14 @@ def main():
     with open("ioc/stats.json", "w", encoding="utf-8") as f:
         json.dump(stats, f, indent=2)
 
-    # Plain text IP list
-    log.info("Saving malicious_ips.txt...")
-    sys.stderr.flush()
-    with open("ioc/malicious_ips.txt", "w", encoding="utf-8", buffering=1 << 16) as f:
-        timestamp = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
-        f.write("# Threatbase Threat Intelligence Feed - IPs\n")
-        f.write("# (https://github.com/kalidada18/threatbase)\n")
-        f.write("# Format: IP,FeedCount,RiskScore,Tags\n")
-        f.write("#\n")
-        f.write(f"# Last update: {timestamp}\n")
-        f.write("#\n")
-        for ip in sorted_ips:
-            info = filtered_ip_info[ip]
-            tags_str = "|".join(info["tags"]) if info["tags"] else "Mixed"
-            f.write(f"{ip},{info['count']},{info['score']},{tags_str}\n")
-
-    # Plain text domain list
-    log.info("Sorting and saving malicious_domains.txt...")
-    sys.stderr.flush()
-    sorted_domains = sorted(all_domains)
-    with open("ioc/malicious_domains.txt", "w", encoding="utf-8", buffering=1 << 16) as f:
-        timestamp = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
-        f.write("# Threatbase Threat Intelligence Feed - Domains\n")
-        f.write("# (https://github.com/kalidada18/threatbase)\n")
-        f.write("#\n")
-        f.write(f"# Last update: {timestamp}\n")
-        f.write("#\n")
-        for d in sorted_domains:
-            f.write(d)
-            f.write('\n')
-
-    # Write IPv6
-    log.info("Sorting and saving malicious_ipv6.txt...")
-    sys.stderr.flush()
-    sorted_ipv6 = sorted(all_ipv6)
-    with open("ioc/malicious_ipv6.txt", "w", encoding="utf-8", buffering=1 << 16) as f:
-        f.write("# Threatbase Threat Intelligence Feed - IPv6\n")
-        f.write(f"# Last update: {timestamp}\n")
-        for ip in sorted_ipv6:
-            f.write(ip + '\n')
-            
-    # Write CIDRs
-    log.info("Sorting and saving malicious_cidrs.txt...")
-    sys.stderr.flush()
-    sorted_cidrs = sorted(all_cidrs)
-    with open("ioc/malicious_cidrs.txt", "w", encoding="utf-8", buffering=1 << 16) as f:
-        f.write("# Threatbase Threat Intelligence Feed - CIDRs\n")
-        f.write(f"# Last update: {timestamp}\n")
-        for c in sorted_cidrs:
-            f.write(c + '\n')
-
     log.info("Writing history.json...")
     sys.stderr.flush()
     write_history(stats)
+
+    # ── Upload all written files to Supabase Storage ──────────────────────────
+    log.info("Uploading database files to Supabase Storage...")
+    for filepath in all_written_files:
+        upload_to_supabase_storage(filepath, "threatbase-ioc")
 
     elapsed = time.time() - t_start
     log.info(f"═" * 55)

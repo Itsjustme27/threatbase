@@ -73,6 +73,8 @@ jobs:
         env:
           ABUSEIPDB_API_KEY: ${{ secrets.ABUSEIPDB_API_KEY }}
           OTX_API_KEY: ${{ secrets.OTX_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           PYTHONUNBUFFERED: '1'
         run: python update_feed.py
 
@@ -87,30 +89,29 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Stage all generated output files (including dashboard data + community reports)
-          git add ioc/malicious_ips.txt ioc/malicious_ipv6.txt ioc/malicious_cidrs.txt ioc/stats.json ioc/history.json ioc/malicious_domains.txt ioc/malicious_hashes.txt ioc/malicious_urls.txt
-          git add -f ioc/community_reports.json 2>/dev/null || true
+          # Stage all generated output files (including stats, history, and split chunks)
+          git add ioc/
           git add -f custom_iocs.txt 2>/dev/null || true
 
           # Check whether any staged file actually changed
           if git diff --staged --quiet; then
             echo "✓ No changes detected — feed is already up-to-date. Skipping commit."
           else
-            # Get current counts
-            IP_COUNT=$(grep -cE '^[0-9]' ioc/malicious_ips.txt 2>/dev/null || echo "0")
-            IPV6_COUNT=$(grep -cvE '^$|^#' ioc/malicious_ipv6.txt 2>/dev/null || echo "0")
-            CIDR_COUNT=$(grep -cvE '^$|^#' ioc/malicious_cidrs.txt 2>/dev/null || echo "0")
-            DOMAIN_COUNT=$(grep -cvE '^$|^#' ioc/malicious_domains.txt 2>/dev/null || echo "0")
-            HASH_COUNT=$(wc -l < ioc/malicious_hashes.txt 2>/dev/null || echo "0")
-            URL_COUNT=$(wc -l < ioc/malicious_urls.txt 2>/dev/null || echo "0")
+            # Get current counts from stats.json
+            IP_COUNT=$(jq -r '.total_unique_ips' ioc/stats.json 2>/dev/null || echo "0")
+            IPV6_COUNT=$(jq -r '.total_unique_ipv6' ioc/stats.json 2>/dev/null || echo "0")
+            CIDR_COUNT=$(jq -r '.total_unique_cidrs' ioc/stats.json 2>/dev/null || echo "0")
+            DOMAIN_COUNT=$(jq -r '.total_unique_domains' ioc/stats.json 2>/dev/null || echo "0")
+            HASH_COUNT=$(jq -r '.total_unique_hashes' ioc/stats.json 2>/dev/null || echo "0")
+            URL_COUNT=$(jq -r '.total_unique_urls' ioc/stats.json 2>/dev/null || echo "0")
             
             # Get previous counts from HEAD
-            PREV_IP=$(git show HEAD:ioc/malicious_ips.txt 2>/dev/null | grep -cE '^[0-9]' || echo "0")
-            PREV_IPV6=$(git show HEAD:ioc/malicious_ipv6.txt 2>/dev/null | grep -cvE '^$|^#' || echo "0")
-            PREV_CIDR=$(git show HEAD:ioc/malicious_cidrs.txt 2>/dev/null | grep -cvE '^$|^#' || echo "0")
-            PREV_DOMAIN=$(git show HEAD:ioc/malicious_domains.txt 2>/dev/null | grep -cvE '^$|^#' || echo "0")
-            PREV_HASH=$(git show HEAD:ioc/malicious_hashes.txt 2>/dev/null | wc -l || echo "0")
-            PREV_URL=$(git show HEAD:ioc/malicious_urls.txt 2>/dev/null | wc -l || echo "0")
+            PREV_IP=$(git show HEAD:ioc/stats.json 2>/dev/null | jq -r '.total_unique_ips' 2>/dev/null || echo "0")
+            PREV_IPV6=$(git show HEAD:ioc/stats.json 2>/dev/null | jq -r '.total_unique_ipv6' 2>/dev/null || echo "0")
+            PREV_CIDR=$(git show HEAD:ioc/stats.json 2>/dev/null | jq -r '.total_unique_cidrs' 2>/dev/null || echo "0")
+            PREV_DOMAIN=$(git show HEAD:ioc/stats.json 2>/dev/null | jq -r '.total_unique_domains' 2>/dev/null || echo "0")
+            PREV_HASH=$(git show HEAD:ioc/stats.json 2>/dev/null | jq -r '.total_unique_hashes' 2>/dev/null || echo "0")
+            PREV_URL=$(git show HEAD:ioc/stats.json 2>/dev/null | jq -r '.total_unique_urls' 2>/dev/null || echo "0")
             
             # Calculate deltas
             fmt_diff() {
@@ -134,20 +135,20 @@ jobs:
             echo "✓ Feed pushed successfully (${IP_COUNT} IPs, ${DOMAIN_COUNT} Domains, ${HASH_COUNT} Hashes, ${URL_COUNT} URLs)."
           fi
 
-      # ── 6. Create Daily Archive Release ───────────────────────────────────────
+      # ── 7. Create Daily Archive Release ───────────────────────────────────────
       - name: Set Archive Date & Prepare Zip
         run: |
           DATE_DASH=$(date -u +'%Y-%m-%d')
           DATE_DOT=$(date -u +'%Y.%m.%d')
           echo "ARCHIVE_DATE=${DATE_DASH}" >> $GITHUB_ENV
-          zip -j threatbase-archive-${DATE_DOT}.zip ioc/malicious_ips.txt ioc/malicious_ipv6.txt ioc/malicious_cidrs.txt ioc/malicious_domains.txt ioc/malicious_hashes.txt ioc/malicious_urls.txt
+          zip -j threatbase-archive-${DATE_DOT}.zip ioc/malicious_ips*.txt ioc/malicious_ipv6*.txt ioc/malicious_cidrs*.txt ioc/malicious_domains*.txt ioc/malicious_hashes*.txt ioc/malicious_urls*.txt
 
       - name: Create Daily Archive Release
         uses: ncipollo/release-action@v1
         with:
           tag: archive-${{ env.ARCHIVE_DATE }}
           name: Daily Feed Archive - ${{ env.ARCHIVE_DATE }}
-          artifacts: "ioc/malicious_ips.txt,ioc/malicious_ipv6.txt,ioc/malicious_cidrs.txt,ioc/malicious_domains.txt,ioc/malicious_hashes.txt,ioc/malicious_urls.txt,ioc/stats.json,threatbase-archive-*.zip"
+          artifacts: "ioc/malicious_ips*.txt,ioc/malicious_ipv6*.txt,ioc/malicious_cidrs*.txt,ioc/malicious_domains*.txt,ioc/malicious_hashes*.txt,ioc/malicious_urls*.txt,ioc/stats.json,threatbase-archive-*.zip"
           allowUpdates: true
           replacesArtifacts: true
           body: "Automated daily archive of the Threatbase threat intelligence database."
