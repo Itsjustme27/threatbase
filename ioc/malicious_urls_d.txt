@@ -1,7 +1,7 @@
 # Threatbase Threat Intelligence Feed - URLs
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:07 +0000
 #
 http://d.14yaa.com/yx/dts/sqft/904576/yx_dts.exe
 http://d.kpzip.com/kzxiaopeng2/KuaiZip_Setup_-808202126_xiaopeng2_001.exe
@@ -93,13 +93,11 @@ http://de.cloud.dxang.com/manji.sh4
 http://de.cloud.dxang.com/manji.spc
 http://de.cloud.dxang.com/manji.x86
 http://de.cloud.dxang.com/w.sh
-http://detierra.cl/blog/vodka.zip
 http://dev1-revitavive.com:8080/file/setup.msi
 http://dev1-revitavive.com:8080/files/candidates-guide.pdf.lnk
 http://dev1-trucksdirectuk.com:8080/file/setup.pdf
 http://dev1-trucksdirectuk.com:8080/files/Technical_Specifications.pdf.lnk
 http://dhnconstrucciones.com.ar/wp-admin/Sm02ZsVDYWdoTb7rqL/
-http://digitalonline.cl/purple/rain.zip
 http://disk.accord1key.cn/txdown_disk/%E8%BD%AF%E4%BB%B6%E4%BD%BF%E7%94%A8/%E7%BC%BA%E5%A4%B1%E4%B8%8B%E8%BD%BD/plugin.dll
 http://disrupt.anondns.net/arc
 http://disrupt.anondns.net/arm
@@ -139,13 +137,10 @@ http://down.fwqlt.com/DXL_Win_Tool_v9.4.iso
 http://down.pcclear.com/active/PCclear_Eng_mini.exe
 http://down.qqfarmer.com.cn/QQHelper_1540.exe
 http://down.ruanmei.com/mytime/files/3.3.7.0/mytime.exe
-http://down10d.zol.com.cn/zoldownload/
 http://down10d.zol.com.cn/zoldownload/foobar2000_v1.6.7_beta_17@1704_129472.exe
 http://download.caihong.com/gamewd/yhdl.exe
 http://download.doumaibiji.cn/doumai/fmt/v1.0.1.11/fmt_01.exe
-http://download.doumaibiji.cn/doumai/news2/v1.0.7.01/news2_01.exe
 http://download.doumaibiji.cn/doumai/tips/v1.0.1.11/tips_01.exe
-http://download.haozip.com/haozip.100021.exe
 http://download.haozip.com/haozip.convertimg.exe
 http://download.haozip.com/uniondown/haozip_tiny.201805.exe
 http://download.kaobeitu.com/kaobeitu/mini/v1.0.7.16/mini_04.exe
@@ -154,9 +149,7 @@ http://download.pdf00.cn/kszip/mini/v1.0.7.31/mini_04.exe
 http://download.pdf00.cn/kszip/news2/v1.0.7.31/news2_02.exe
 http://download.pdf00.com/pc/pdfconvert/
 http://download.pdf00.com/pc/pdfconvert/PDFConverter_P2W154-zx-666.exe
-http://download.suxiazai.com/for_down/2013/new/dlls/rse/rsreport.exe
 http://dpsradars.shop/download
-http://dusttv.com/data/box.bin
 http://dweixin.cn/gttu/xOfSL/
 http://dzdi.serendipityhub.space/
 http://dzodu.sparklingideas.space
@@ -201,8 +194,6 @@ https://device-iso.com/app/webroot/script/2026_passcode6_login/
 https://device-iso.com/script/2026_passcode6_login
 https://devltd.us/flomos1.zip
 https://devltl.top/flomotg4.zip
-https://dexios.co.za/Brkopsluth.emz
-https://dexios.co.za/SfyHmsQLeXRtjEtIQyDOG74.bin
 https://dezcom.com/about/lm/5oj0ss1de/
 https://dfjdzmq.penality.bet/79cabd37-7db6-45f5-90e2-137ad5591c8b
 https://dfuvstc.mrvapora.pk/679ab62e-e928-4214-a141-b468c947d557
@@ -242,6 +233,7 @@ https://dkhgk.zaszlorudbolt.hu/6458715c-380a-49d1-b680-4621ee8bc4b0
 https://dkrbvhs.jamjahani.site/89feb712-a453-42cc-b6f8-a803be54d631
 https://dl.2345.com/haozip/haozip_v6.5.2.11245.exe
 https://dl.dropboxusercontent.com/scl/fi/8gwqsgp3ywwsus51500y0/IMG_DE00290100_001000_26_05_2026.vbe?rlkey=bh347g667knqo2j2vu8677zft&st=97hjftn7&dl=1
+https://dl.ijinshan.com/safe/setup_smart.exe
 https://dlacbhw.nonamejustsoul.com/5032e3d7-eed4-4a97-8ddf-91e1befb53cf
 https://dlkcsdq.hotbet90app.com/82728660-32b7-415c-a77f-fc0e14afa762
 https://dlklyo.jamjahani2026.football/33101bcd-fd90-48ef-a8bd-f1b5429658e1
@@ -478,6 +470,7 @@ https://drive.google.com/uc?export=download&id=1yRMkzXF4RMy9utrIkbh6RGVSOkehBmeo
 https://drive.google.com/uc?export=download&id=1ybVeXgfiBpzEUwaR8f-jxNjlJj9tJubu
 https://drive.google.com/uc?export=download&id=1z_o0dyBE-ElCt5XejBcobF38AXt8XLwt
 https://drive.google.com/uc?export=download&id=1zqzIvoxid6wgVjstzD0lG2vxNpNC-puf
+https://drive.google.com/uc?id=1YDCOOw9TkyO5_QFbdZcaqKD9hZDoUg7O
 https://drive.usercontent.google.com/download?id=1HpPBdsSH6fEdU5tClfYs1760Jq9d0FvC&export=download
 https://drive.usercontent.google.com/download?id=1gymMK_eYcqZjgpMjEwMPUnAFxWHkjLnw&export=download&authuser=0
 https://drive.usercontent.google.com/download?id=1m9UjCRueLa6f-MvxjmznSktxDbeF-Ryv&export=download&authuser=0

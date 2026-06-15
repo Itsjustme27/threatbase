@@ -1,7 +1,7 @@
 # Threatbase Threat Intelligence Feed - Domains
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:08 +0000
 #
 5-0taxi.com
 5-144-128-147.static.hostiran.name
@@ -213,6 +213,7 @@
 502cefe43db1ab93de005c08979b54e1.safeframe.googlesyndication.com
 502eb4dc1f2d1d58fbe7a10682055ea7.safeframe.googlesyndication.com
 502l2awvh7ne913z8ujqgowgimbvt1779205894.uaid.nmrodam.com
+50303.cfd
 503135e5837e604bf0a3915754432a21.safeframe.googlesyndication.com
 50337618e1a15ae43f97314c5d56826f.safeframe.googlesyndication.com
 5034131.fls.doubleclick.net
@@ -230,6 +231,7 @@
 503f39274f.cc33b86bbf.com
 504-zyk-173.mktoresp.com
 5041452add8ce7ed3edea535a5160807.safeframe.googlesyndication.com
+5041f9039486d488ff3cec0d4a3cf4db.safeframe.googlesyndication.com
 5042339.fls.doubleclick.net
 5045610.fls.doubleclick.net
 504644d351327035a1458f9b2b870b7a.safeframe.googlesyndication.com
@@ -288,6 +290,7 @@
 50730.aibet789.com
 507340f398.730fcb332f.com
 5073f4b4d14247071d6cda871e00f13f.safeframe.googlesyndication.com
+5074931.fls.doubleclick.net
 5075586-36.chat.api.drift.com
 50763.com
 5076c1fc3ce1ae68c02de7a6e36c97c1.safeframe.googlesyndication.com
@@ -402,6 +405,7 @@
 50eaa1d8d4.2d86bbe43f.com
 50ee6d7e7604.org
 50ee796a6a7954d58b3d276d907d6655.safeframe.googlesyndication.com
+50eef27936fa6acf.com
 50efa6486f1ef.skydivesolutions.be
 50efb4efb98bb2372f9aa05ad0362a9d.safeframe.googlesyndication.com
 50engineersroad.com
@@ -529,6 +533,7 @@
 51134.cfd
 51139651.kbh-services.fr
 5114166.notify6.com
+511453.cfd
 5114eead63445156b2292f9e58602ccd.safeframe.googlesyndication.com
 51156434.swh.strato-hosting.eu
 51162317cc50136e3bd148f6c3ff22b5.safeframe.googlesyndication.com
@@ -541,6 +546,7 @@
 5116c9dc581e84d011a3dd04a5d1cbb6.redinuid.imrworldwide.com
 51175.cfd
 5118014.fls.doubleclick.net
+51181.cfd
 5118100.fls.doubleclick.net
 5118104713534548.latestpromotions.club
 51184.cfd
@@ -561,6 +567,7 @@
 51233138.com
 51240.com
 5124182a3206066822af166d0a22d762.safeframe.googlesyndication.com
+512516.cfd
 51256.cfd
 51262a843045cc5676a31875ccf8b769.safeframe.googlesyndication.com
 51264.cfd
@@ -642,6 +649,7 @@
 5142s6mlcm.top
 51457642.de.strato-hosting.eu
 5146097dc268.top
+51469.cfd
 51484dfdf904573641df788728f2128e.safeframe.googlesyndication.com
 5148cdb50f6bcd3ba22d3327745b2eed.safeframe.googlesyndication.com
 51497c26fe6983c0f8cced6073fbc3f2.safeframe.googlesyndication.com
@@ -728,6 +736,7 @@
 51704.cfd
 5170a80f9db7c4c2027eae749101c14a.safeframe.googlesyndication.com
 517123.com
+51717.cfd
 5172182141501d18e01890b2d93a4490.safeframe.googlesyndication.com
 51736c51c22319f75fcb090058949b97.safeframe.googlesyndication.com
 5173d1510334c5216de70564e9a44df5.safeframe.googlesyndication.com
@@ -735,6 +744,8 @@
 5174ac49fcd079a21e01225a95db6f1d.safeframe.googlesyndication.com
 517509b59a6d1c807e45e2ed6edf2f64.safeframe.googlesyndication.com
 5175656d4c6572c9476179.sbs
+517623-coinbase.com
+517693-coinbase.com
 517768.cfd
 5178309127076417.latestpromotions.club
 5178424.com
@@ -766,6 +777,7 @@
 5186246.notify6.com
 51868.cfd
 5187.jp
+5187189a07fd6413ec34a3e11426fe6e.safeframe.googlesyndication.com
 51878d99225ee786bfa48deb7e1dadfd.safeframe.googlesyndication.com
 518869.com
 5188901.fls.doubleclick.net
@@ -778,6 +790,7 @@
 518tone.com
 519-iiy-869.mktoresp.com
 519-ynm-008.mktoresp.com
+51900.cfd
 51920.cfd
 51934e1af0af36a6b10037ee72bd4156.safeframe.googlesyndication.com
 51939812.de.strato-hosting.eu
@@ -802,6 +815,7 @@
 519f086cbd16739587642d4510df0695.safeframe.googlesyndication.com
 519fa5be1d.com
 51a00a84fe191036b2dba1db43f0e44e.safeframe.googlesyndication.com
+51a3d0bafa76333edcf1d992a6fe3581.safeframe.googlesyndication.com
 51a8b5190de4d31f.com
 51aa41d6b72c35f85360fc65174e96f0.safeframe.googlesyndication.com
 51ac31b3bfb1.top
@@ -970,6 +984,7 @@
 51xjb.top
 51xuex.com.cn
 51y5.net
+51ybm.top
 51yes.com
 51yhzp.com
 51ympuu7y.com
@@ -1008,6 +1023,7 @@
 5200681.fls.doubleclick.net
 520125.net
 52019.cfd
+52037.cfd
 52048.cfd
 5204e764dc909b787c7434f0edcab216.safeframe.googlesyndication.com
 52063.cfd
@@ -1062,6 +1078,7 @@
 52225e335b2a7543c5e89739907e6a8b.safeframe.googlesyndication.com
 5222888xgmh.com
 52256874715a2997.top
+52285f0f35d47444f5741278bb673f4c.safeframe.googlesyndication.com
 5228cdb54ee41193.com
 52299.cfd
 522ba235490c0f074488195dec219d41.safeframe.googlesyndication.com
@@ -1159,6 +1176,7 @@
 5265387445688.usercash.com
 5265575606841.usercash.com
 52664.cfd
+52672.cfd
 52684.cfd
 52689.cfd
 5269232.fls.doubleclick.net
@@ -1171,6 +1189,7 @@
 5270667.fls.doubleclick.net
 5270729.fls.doubleclick.net
 5270803.fls.doubleclick.net
+5270894.fls.doubleclick.net
 5270aeb5-8288-4559-b081-6e6bd2d34b17.distil.ninja
 5271924edee372612df4699860b18e69.safeframe.googlesyndication.com
 5272288097cf03ae.com
@@ -1186,6 +1205,7 @@
 52764.cfd
 52766.cfd
 5276648.notify6.com
+5276gsef1263.click
 5277560.fls.doubleclick.net
 5277654.rest
 5278010.fls.doubleclick.net
@@ -1280,6 +1300,7 @@
 52b4ddcbbc355849c6c1cdea89c696df.safeframe.googlesyndication.com
 52b5a99e016dead5.com
 52b92e63cfe48a064741ab40d5bf22cb.safeframe.googlesyndication.com
+52b9e6a3bbf985965f82e594a4112487.safeframe.googlesyndication.com
 52ba0d5a04fec4f81d70809e5e1efea5.safeframe.googlesyndication.com
 52bad58bb76201b264fe29be1967bd8a.safeframe.googlesyndication.com
 52be49dc7a58e430be15511a86e45754.safeframe.googlesyndication.com
@@ -1333,6 +1354,7 @@
 52f66f62b21199b7e9784e75d48400b4.safeframe.googlesyndication.com
 52f77f2465c49d7602adbc0655d753e4.safeframe.googlesyndication.com
 52f80wrrr88wcu7kr96dp4qne7.hop.clickbank.net
+52fa940331cbc7301f324cd8dbe24843.safeframe.googlesyndication.com
 52fcb862de27.top
 52fd3ea167905344eeaaf04382eb8b36.safeframe.googlesyndication.com
 52fe98f5da4bb4b4a3ecf7eaf3781414.safeframe.googlesyndication.com
@@ -1787,6 +1809,7 @@
 5322225.fls.doubleclick.net
 5322910.fls.doubleclick.net
 53229de00c41609ce.com
+53235.cfd
 53240.cfd
 532411.ms.dzen.ru
 532436.com
@@ -1836,6 +1859,7 @@
 5341704.fls.doubleclick.net
 5341923.fls.doubleclick.net
 534271ecf59eebd2.top
+53434.cfd
 5344a5f5-3c02-4edc-823c-8794ec7197ed.prmutv.co
 5345090e71.65ae01603e.com
 5345538d52eb5c56e7f57960f666ca7a.safeframe.googlesyndication.com
@@ -1849,6 +1873,7 @@
 534aad2a3a.beaf5f1f17.com
 534d4698f3f599da885b8b248a53367d.safeframe.googlesyndication.com
 5352434.fls.doubleclick.net
+53525.cfd
 5352640.fls.doubleclick.net
 5353486e06f0364f267128f280d252b2.safeframe.googlesyndication.com
 53535.cfd
@@ -1858,8 +1883,10 @@
 53561.cfd
 5356217.fls.doubleclick.net
 5356a1d9db.b14ae1c233.com
+53572.cfd
 535890.com
 535917.cfd
+5359e76c53e21811f8c844144cf1fb59.safeframe.googlesyndication.com
 535a899b.flatrate.dk
 535a9147.flatrate.dk
 535a9279.flatrate.dk
@@ -1873,6 +1900,7 @@
 536001645.collect.igodigital.com
 536004373.collect.igodigital.com
 536006306.collect.igodigital.com
+5360a26aaa267c10ceadcc83b5183913.safeframe.googlesyndication.com
 5360bbcb0393635fa0675392ebf518bcc368dc8106d25fc33b32062e.com
 5360f9e7352f496b773adc252f2911ab.safeframe.googlesyndication.com
 53611.cfd
@@ -1889,6 +1917,7 @@
 536530-google.com
 5365fbe6c04f4bc306a41a9f9e9b33bc.safeframe.googlesyndication.com
 5366353.fls.doubleclick.net
+53676.cfd
 5367b69f7c07.blog
 5368208.fls.doubleclick.net
 536832101.teveo.com
@@ -1906,6 +1935,7 @@
 53728.cfd
 537285b91ce7004db2eaaf16a9eec057.safeframe.googlesyndication.com
 537412b1109e950fe054a8c30679ea2f.safeframe.googlesyndication.com
+53744.cfd
 53744c36015cb74f12d4f6aa08af500d.safeframe.googlesyndication.com
 53748.cfd
 53756db4bd9909d19153ae093fa449ee.safeframe.googlesyndication.com
@@ -1914,6 +1944,7 @@
 53780dbf58738e9586de1ffcbc63f432.safeframe.googlesyndication.com
 5378a011af9b652aec4c97d2f78a050d.safeframe.googlesyndication.com
 537aee1039f3fbba.com
+537b523266ac060a9a796b41b28265d3.safeframe.googlesyndication.com
 537f039b8f1beba416ced362ce4522b6.safeframe.googlesyndication.com
 5384mka.skin
 5385285cfe9429ea.com
@@ -1921,6 +1952,7 @@
 5385752.fls.doubleclick.net
 5385bc64391354502a16fbf0ed7b14ef.safeframe.googlesyndication.com
 5386844.fls.doubleclick.net
+53870.cfd
 53879.cfd
 5387a15cbd770b51.com
 538830bd7f1362de8754c4b7174fadf4.safeframe.googlesyndication.com
@@ -2295,6 +2327,7 @@
 5415393.cc
 54154.global.siteimproveanalytics.io
 54157a9e63b54354.com
+54171.cfd
 5417304.fls.doubleclick.net
 54177513.de.ioam.de
 5417a910a7eec5fb.com
@@ -2311,6 +2344,7 @@
 542411.ms.dzen.ru
 5424312.fls.doubleclick.net
 542446d.000webhostapp.com
+54254.cfd
 54264.cfd
 54268ddeef1283f3fff3b6fbc7fc5323.safeframe.googlesyndication.com
 54272e136667705260f87121c622d82a.safeframe.googlesyndication.com
@@ -2333,6 +2367,7 @@
 543695ab4150eefbc15e242d1d8eface.safeframe.googlesyndication.com
 54380.cfd
 54383.cfd
+54384.cfd
 543874163.ddns.net
 5439204.fls.doubleclick.net
 5439a0cbefeb07d5e2047c2285815615.safeframe.googlesyndication.com
@@ -2391,9 +2426,11 @@
 546013694.collect.igodigital.com
 546015171.collect.igodigital.com
 54604.cfd
+54609.cfd
 5460a963f1b0321990aa72bfa4420a66.safeframe.googlesyndication.com
 54615ea6cf82d88fd4c2fb24fc6f2c1e.safeframe.googlesyndication.com
 5461xwp.skin
+54639.cfd
 5463cacf0214c85c4bf33330e063a7d9.safeframe.googlesyndication.com
 5463d3f805f459ffe02bab389005f38e.safeframe.googlesyndication.com
 5464a1d517e500edb76d8b55452a1bb3.safeframe.googlesyndication.com
@@ -2488,12 +2525,14 @@
 54a35dd8.de.ioam.de
 54a45f92032f01c4.com
 54a582225c.666f69c8bb.com
+54a5b13150e5fd282c300a834cf2c46b.safeframe.googlesyndication.com
 54a73dbcb6.com
 54a9893c0234fc0e4bb480876d11a446.safeframe.googlesyndication.com
 54a9aa66e19c25cb40bc8f78bd41fea3.safeframe.googlesyndication.com
 54aaaa5f0a220e260637647ae49d210b.safeframe.googlesyndication.com
 54ac0181aa9f6fd4.com
 54ac926a189e4a26bda82e4af6c9a179.js.ubembed.com
+54ad2f4268fcd0f97b5e11754cce747a.safeframe.googlesyndication.com
 54ad9942c4264dc9638d6c1c7248871b.safeframe.googlesyndication.com
 54ads.com
 54af37fb954af196c054d8c16e833241.safeframe.googlesyndication.com
@@ -2624,6 +2663,7 @@
 55069f263d2bb2fd.com
 550709.top
 550744.global.siteimproveanalytics.io
+55076.cfd
 5507d2cabd77a6ab51d9c366caf4eb14.safeframe.googlesyndication.com
 5508cbf559347bb3a9450ecd963423b6.safeframe.googlesyndication.com
 5509280.com
@@ -2683,6 +2723,7 @@
 553-health.com-cst.net
 553137cf75f8db9669285606279826f6.safeframe.googlesyndication.com
 55320.cfd
+55322.cfd
 55325e875983467021beedc1de2af73f.safeframe.googlesyndication.com
 5532f4f7f53c06fb.com
 5533133.cfd
@@ -2873,6 +2914,7 @@
 55876dcb80bf9aa9db6a52ffc835f53d.safeframe.googlesyndication.com
 5587c72a165c5115cf7b91242f554c9a.safeframe.googlesyndication.com
 5588-google.com
+55880.cfd
 55880.cn
 55884.cfd
 55889.cfd
@@ -2890,6 +2932,7 @@
 559421252c3447ab.darnuid.imrworldwide.com
 5594d3e6a99b29ce64137a7c45052fc9.safeframe.googlesyndication.com
 559500518cc3f621c388dce28a7aac22.safeframe.googlesyndication.com
+55954.cfd
 55956.cfd
 5598w5.com
 5599226.fls.doubleclick.net
@@ -2944,6 +2987,7 @@
 55cafacce0cf997f28ddc3e2650335be.safeframe.googlesyndication.com
 55cb5b40.de.ioam.de
 55cbb8f7f539fda5.com
+55cc45eb3ceef921be442458dbfd6600.safeframe.googlesyndication.com
 55cfbf849c447e3f834add209789e7b6ce02119a7b956ad5b66f55d960f9eb7.us-east-1.prod.service.minerva.devices.a2z.com
 55communitiesinflorida.org
 55d0263097f10e88acb3cc3d06da3cdb.safeframe.googlesyndication.com
@@ -3009,6 +3053,7 @@
 55tools.com
 55tupro.com
 55ww-com1.com
+55xfp.top
 55xfr.top
 55xhpcdzvh26yxlqpo9qt6szsulvy1773055172.uaid.nmrodam.com
 55xjq.top
@@ -3087,6 +3132,7 @@
 562bc05c774c634a16b4dd0631c7d637.safeframe.googlesyndication.com
 562bcd71dbed3b5baddca0b7169a2e0a.safeframe.googlesyndication.com
 562cb786-235a-4aec-8b45-75140a84acb5.collector.p.analitik.bik.gov.tr
+562cc1b52a123b9b.com
 562f311aff41.top
 562f53b7909b9fa5576f29b987e63104.safeframe.googlesyndication.com
 562f98efe6e7233a.com
@@ -3111,6 +3157,7 @@
 563437fe.rev.stofanet.dk
 56343c6a.rev.stofanet.dk
 56343f86.rev.stofanet.dk
+56344.cfd
 56348.cfd
 563481fb.rev.stofanet.dk
 56348705.rev.stofanet.dk
@@ -3180,6 +3227,7 @@
 56600.cfd
 566029630301d746a5e419a6673b829b.safeframe.googlesyndication.com
 5660d1c9506d95181252abef.c00.adobe.com
+56622.cfd
 56623.cfd
 5662537.fls.doubleclick.net
 56627959e352ac52f61fa9a52c9e93a3.safeframe.googlesyndication.com
@@ -3202,6 +3250,7 @@
 56713138.com
 56713c1e2c53.top
 567140.com
+5673111.fls.doubleclick.net
 56733a.ltd
 56733d.ltd
 56733h.ltd
@@ -3217,6 +3266,7 @@
 56753556ashoxl9e674dcp7gtov4p1777911514.uaid.nmrodam.com
 56757f7055a722ff22cabe7b2ced425a.safeframe.googlesyndication.com
 56763138.com
+56767.cfd
 5676908.fls.doubleclick.net
 56771y7wwez1mi2jpitgcg7v4m.hop.clickbank.net
 56773.cfd
@@ -3335,6 +3385,7 @@
 56d26gxz4bw61v12ke1n-h5123.hop.clickbank.net
 56d61aeb78a8a22eca6511ff10669796.safeframe.googlesyndication.com
 56d71e472e0168e3.com
+56d820222f74b746be11a9c49c3d991e.safeframe.googlesyndication.com
 56d967f32b31a07.webcam
 56de9f5179c227db.com
 56dede13ca8170f0.com
@@ -3345,6 +3396,7 @@
 56f1a72c0b5f.top
 56f1d98509.7934ed29d8.com
 56f440655751698bddf6b2aadd065d79.safeframe.googlesyndication.com
+56f4a4364961a854bbc8037885b13b80.safeframe.googlesyndication.com
 56f54ac756eff5fbd80f9390f687643a.safeframe.googlesyndication.com
 56faaaf25daea9e1b77fe03fb4257c4b.safeframe.googlesyndication.com
 56fba.cn
@@ -3434,6 +3486,7 @@
 5716131c7495382ad8f0de5f2e64023b25963aa0c69e15dee06b31324b20c14.link
 571658fdc8959e2b7cce3475a42847c2.safeframe.googlesyndication.com
 57186b6e8401efad39e7bd585b34dec1.safeframe.googlesyndication.com
+57189.cfd
 571944coinbase.com
 571bd84abf.756048c1ae.com
 571bf.com
@@ -3454,6 +3507,7 @@
 5725871.fls.doubleclick.net
 5725edbce7b5112b7b1a335e49d3a2fe.safeframe.googlesyndication.com
 5726.bapi.adsafeprotected.com
+572613d6343aaa0aaf7c60fae84031a2.safeframe.googlesyndication.com
 57267128bf130a3b83c2213b805b28b8.safeframe.googlesyndication.com
 572840863ba33c70.com
 5728fb11687509f1bdcaac09d13f9e03.safeframe.googlesyndication.com
@@ -3530,6 +3584,7 @@
 5756990.fls.doubleclick.net
 575734da19be7d3c2bd98bb257b2e3ad.safeframe.googlesyndication.com
 57573zubo36833.com
+57578.cfd
 57579.cfd
 57581.cz
 57587d2521a2f136.com
@@ -3572,6 +3627,7 @@
 57795.cfd
 577970557.app-ads-txt.org
 57797a20715354fa089aefaa247f47f4.safeframe.googlesyndication.com
+57798.cfd
 577a3cfb8b.f014b13156.com
 577bde63.ngrok.io
 577d4bf8e9227333.com
@@ -3604,6 +3660,7 @@
 5791be10f707863f8b4c48034646cafa.safeframe.googlesyndication.com
 579204ddf1741c647d1a54b970017054.safeframe.googlesyndication.com
 5793346.fls.doubleclick.net
+57938.cfd
 57946.cfd
 57964.cfd
 579649fe224a74b2fc96e0ee20f3c6f9.safeframe.googlesyndication.com
@@ -3639,6 +3696,7 @@
 57bbe74e.de.ioam.de
 57bd6ec5c100091e5dc4d04493d8c31b.safeframe.googlesyndication.com
 57c42402d83b.cdn4.forter.com
+57c6428e12428f00f9638fcf45a09966.safeframe.googlesyndication.com
 57c7d4af16e78bfdda5d22b42d47ac70.safeframe.googlesyndication.com
 57c8c6c3cc682064f2f4c82a9dbe8014.safeframe.googlesyndication.com
 57c93ed9715d51db05d1b60acff875a3.safeframe.googlesyndication.com
@@ -3648,6 +3706,7 @@
 57ce90056c9a6700.com
 57cff0f0ca.782c161d89.com
 57co1uoyh5.top
+57cyr1q6gff0zgfw3pnef3jo0wzb41781438734.uaid.nmrodam.com
 57d1.850671.com
 57d1e62ebaa077fd4d690d2c9e102ead0250c2e7b87615dee374639c2d9d3c6.us-east-1.prod.service.minerva.devices.a2z.com
 57d2.850671.com
@@ -3717,6 +3776,8 @@
 57vgcash.com
 57vgcashcasino.com
 57wjx.top
+57xfg.top
+57xfp.top
 57xjn.top
 57xs.com
 57zyazmk.jp
@@ -3830,6 +3891,7 @@
 5832432.shop
 5832a17ab357ff5aed0db7bfc7a530e6.safeframe.googlesyndication.com
 5833812629804.usercash.com
+5834778.fls.doubleclick.net
 5834785.fls.doubleclick.net
 5835131.fls.doubleclick.net
 5836301.fls.doubleclick.net
@@ -3900,6 +3962,7 @@
 5862915.fls.doubleclick.net
 586402f120179cb2f733042627abb372.safeframe.googlesyndication.com
 58647.cfd
+586492073cb1f9d1eaab37e341bf80a6.safeframe.googlesyndication.com
 5864a578437ff6fb13e367d057ecb682.safeframe.googlesyndication.com
 5865076.cfd
 5865257628727.usercash.com
@@ -3934,6 +3997,7 @@
 5877472.fls.doubleclick.net
 5877637.fls.doubleclick.net
 5878462.fls.doubleclick.net
+58790.cfd
 587912eb.de.ioam.de
 58791988s.lat
 58792.cfd
@@ -3982,6 +4046,7 @@
 588jlgcash.com
 588jlgcashcasino.com
 5890476997c0467389c47c656535aa17.safeframe.googlesyndication.com
+58908.cfd
 5891616153530.usercash.com
 5891e85ca3abeb556c378216bd76fa7b.safeframe.googlesyndication.com
 58922.cfd
@@ -4060,6 +4125,7 @@
 58ecb0b5eb255fcb5ec7b227b0fff34f.safeframe.googlesyndication.com
 58ef6hrjup4l8ufyp3xi9ycqda.hop.clickbank.net
 58ejh.top
+58f2755012a0105df522e3807cac1ec6.safeframe.googlesyndication.com
 58f5f19ba47a3141.com
 58f8daa991ba72e130da5c210359f0a6.safeframe.googlesyndication.com
 58f951d0e86568542cef4631636b73f3.safeframe.googlesyndication.com
@@ -4088,6 +4154,9 @@
 58wyx.com
 58x13x239x201.ap58.ftth.ucom.ne.jp
 58x159x21x200.ap58.ftth.ucom.ne.jp
+58xfc.top
+58xfj.top
+58xfr.top
 58xja.top
 58xjb.top
 58xjr.top
@@ -4127,6 +4196,7 @@
 5904275b1a1efd5d87155bb4aba766e3.org
 59045.cfd
 5904654.fls.doubleclick.net
+59047.cfd
 5904bc0601cb6d6c3df39c39ff6c1da4.redinuid.imrworldwide.com
 590578zugbr8.com
 59063643f7aafbac47985f6249c97453.safeframe.googlesyndication.com
@@ -4187,10 +4257,12 @@
 592wg.cc
 593-health.com-oo4.net
 593250067d12d4bd98772f90a971f5c9.safeframe.googlesyndication.com
+59326.cfd
 5933305.fls.doubleclick.net
 59349.cfd
 593549.com
 593582.surfingbird.ru
+59362.cfd
 5937af79bc3df26af1d1561f236a6855.safeframe.googlesyndication.com
 5937f586847827b3294f8e3d5e460f54.safeframe.googlesyndication.com
 5938402.fls.doubleclick.net
@@ -4207,6 +4279,8 @@
 594111.com
 5942083.fls.doubleclick.net
 5942f4c84c5ed7aa345c080edc0999a5.safeframe.googlesyndication.com
+59441.cfd
+5944274.fls.doubleclick.net
 5944d031151c.cdn4.forter.com
 5946d74b592289ddb833fa812596e197.safeframe.googlesyndication.com
 594785-ledger.com
@@ -4345,6 +4419,7 @@
 59c8d67496f902e2dcdb208003ecde96.safeframe.googlesyndication.com
 59c9647fb124166d.top
 59cbcd6bd20e42b02961314b7e8b7ab9.safeframe.googlesyndication.com
+59ccb25feda35578ad47da768bd1c2b1.safeframe.googlesyndication.com
 59cd6dabebc07a853e7c8076d68fe6c8.safeframe.googlesyndication.com
 59ce16067caa6cdc.com
 59ce4292efe7e10bffebf1c8bbd56ec6.safeframe.googlesyndication.com
@@ -4353,6 +4428,7 @@
 59clouou2n4jmm8xc.cfd
 59cn.cn
 59cn7.com
+59d066199224872bbaf623c5ad66b3ef.safeframe.googlesyndication.com
 59d2916197195620c81d80a3438800d2.safeframe.googlesyndication.com
 59d2d89b12c677247b46a2ca88e413de.safeframe.googlesyndication.com
 59d3c06bd088d06d71dfd2b831555c20.safeframe.googlesyndication.com
@@ -4378,6 +4454,7 @@
 59fa87d89bdec9f77ee90811888f72d7.safeframe.googlesyndication.com
 59ftyesy.vercel.app
 59gfm38j21ohoq8ugl831hrltiibq.cfd
+59gt.cn
 59haloar.net
 59hotelperekrestok.ru
 59hotmail.fr
@@ -4400,6 +4477,9 @@
 59tpm6unh3fygbubpm3m1t7pmj27w1777918478.uaid.nmrodam.com
 59vjh.top
 59xc01jnmr4kom70k4jh5p42t1ggs1774783872.uaid.nmrodam.com
+59xfc.top
+59xfs.top
+59xfv.top
 59xfw.top
 59xjp.top
 59xx2yr9i.com
@@ -4433,6 +4513,7 @@
 5a1fee6a4c22e9b41c7022e4839af6fb.safeframe.googlesyndication.com
 5a200959e0ca24de7edda3e513d26acb.safeframe.googlesyndication.com
 5a20ed583726a2151e26d1e7d71a2a45db5a119ea68512b896f6bc6bdcf3ed5.us-east-1.prod.service.minerva.devices.a2z.com
+5a265d1dd0195fe5d5746714773514e5.safeframe.googlesyndication.com
 5a273e83d38cab650f950ed0390dabc3.safeframe.googlesyndication.com
 5a2bcdd3c5f9cc07118ef9da17224fed.safeframe.googlesyndication.com
 5a2c06fe9b7aacbe29836edb05ad8e52.safeframe.googlesyndication.com
@@ -4466,6 +4547,7 @@
 5a50486c641dd00e690d7ee3f1117b3a.safeframe.googlesyndication.com
 5a513d58e6c2527d.com
 5a51c26b7e04b1db0da945966400c429.safeframe.googlesyndication.com
+5a5472ef7110e1ace204b15909f51f35.safeframe.googlesyndication.com
 5a5751fd6a.com
 5a598e64c3c2ea3c.com
 5a5eea0a5da129a6361c446c3ed875a1.safeframe.googlesyndication.com
@@ -4565,6 +4647,7 @@
 5amers.com.au
 5ant.com
 5ao8zmazxfmic9x0sm3xfccze5yj81777738400.darnuid.imrworldwide.com
+5ap2t2rhvpjg9twtadaqczorptrpt1781435152.nuid.imrworldwide.com
 5apspxvnh7hkxe82ehruujqnrbv8v1778820906.uaid.nmrodam.com
 5apublicrelations-dot-yamm-track.appspot.com
 5aqpfkkao9kxy6iordtcu08nqscoq1776183915.uaid.nmrodam.com
@@ -4625,6 +4708,7 @@
 5b3bd9z4z5od2gynkg-fo2sr20.hop.clickbank.net
 5b3c937000.com
 5b3d35b3af00c19d5bec153f5f4f5601.safeframe.googlesyndication.com
+5b3d83fae227a18ebd981b01a530dde8.safeframe.googlesyndication.com
 5b3f9c64eda5eb71a2e88d7ea6a2298a.safeframe.googlesyndication.com
 5b40bfd5b527e5132d90ed39e4a29cfa.safeframe.googlesyndication.com
 5b425941ba630a1bf1ee664b887eef63.safeframe.googlesyndication.com
@@ -4632,6 +4716,7 @@
 5b48e11729475ee156b111a6b8c3dcf7.safeframe.googlesyndication.com
 5b48fed878803ea3.com
 5b49f4c33786da5dd869a2b0d57bdc6c.safeframe.googlesyndication.com
+5b4bf785a31bdbee8e949832838e4ead.safeframe.googlesyndication.com
 5b4c971817.com
 5b58c7a32dfb3006d3e20cc190d481d6.safeframe.googlesyndication.com
 5b593ba88e5ec119d8cf43f87c6f0b67.safeframe.googlesyndication.com
@@ -4640,6 +4725,7 @@
 5b5f9dccd4bb077c6ee4c4b66745f980.safeframe.googlesyndication.com
 5b62e0dfb553f79bfec4e98441a0b901.safeframe.googlesyndication.com
 5b64956cbe08ebdec354f3b3cb5fbd8d.safeframe.googlesyndication.com
+5b65fd517e2e4df966212df936e40d8e.safeframe.googlesyndication.com
 5b6629429e33a0b935330f663393c286.safeframe.googlesyndication.com
 5b66297a90610804651b6f20e3ce6b7d.safeframe.googlesyndication.com
 5b6640e48e3a3215aba725490f05bbd5.safeframe.googlesyndication.com
@@ -4681,6 +4767,7 @@
 5b959810a79f05bd5318a2bd2cbf9df4.safeframe.googlesyndication.com
 5b96165a96208d4928d00eb895045f19.safeframe.googlesyndication.com
 5b98ba44e5ea564d.com
+5b993843a9495d31f2c891b53170e195.safeframe.googlesyndication.com
 5b995433ea3a27f2.com
 5b9aaf9e9f2fd7364f045dbd43ff69e9.safeframe.googlesyndication.com
 5b9ca108.de.ioam.de
@@ -4856,6 +4943,7 @@
 5c6ea1543b7e4588727878ca718504b2.safeframe.googlesyndication.com
 5c6f1d210a5f255639c57857336bf32c.safeframe.googlesyndication.com
 5c6f364a65decc6189d678c13c36472b.safeframe.googlesyndication.com
+5c6f747ae721485a194aea6d47f4d08d.safeframe.googlesyndication.com
 5c6fa77ad216e96c.com
 5c72d4c701f57a9cde117d9808e6bdfe.safeframe.googlesyndication.com
 5c733d90854a398932bf6f3459e19fb54cebe0cf400fc8e914e9d34f1393a96.us-east-1.prod.service.minerva.devices.a2z.com
@@ -4998,6 +5086,7 @@
 5d26433f33f2c27add49f77130bfb428.safeframe.googlesyndication.com
 5d266c3e99db2f4df5966ce9b9880359.safeframe.googlesyndication.com
 5d269987363a2ab38e5539714bb038a4.safeframe.googlesyndication.com
+5d27d991b41e794c0858dd7b98082075.safeframe.googlesyndication.com
 5d29129ca44d369477d1ab86269c4fb4.safeframe.googlesyndication.com
 5d2a673e42.com
 5d2aac6388bc408a993ea50bbc52339a.js.ubembed.com
@@ -5023,6 +5112,7 @@
 5d425.v.fwmrm.net
 5d45f18f30b8899ecf6810f19debfd7c.safeframe.googlesyndication.com
 5d45fb7d2caa6b44e43ed83b199b18f2.safeframe.googlesyndication.com
+5d46e80fff2bc2412a5fa154c1ed4f66.safeframe.googlesyndication.com
 5d4a1.v.fwmrm.net
 5d4acc23d8ec4d603155fecf3755c80b.safeframe.googlesyndication.com
 5d4af710da328a826490e6f0f7fef943.safeframe.googlesyndication.com
@@ -5066,6 +5156,7 @@
 5d851b359adc3fb4.com
 5d88604daa2cc0ca.com
 5d8873231f8b9d69f0791c1416d676d7.safeframe.googlesyndication.com
+5d8a7-686f8.api.pushwoosh.com
 5d8aa6ef1a452b66.top
 5d8e009348e22fd22e957395d94bbbb0.safeframe.googlesyndication.com
 5d933b554e6108b2afc5af114d452ee5.safeframe.googlesyndication.com
@@ -5147,6 +5238,7 @@
 5dgja.com
 5dhjzjz.fr
 5dhnv8.ru
+5di4mnkp7x1mixxtdet4trw8rzexw1781476792.nuid.nmrodam.com
 5dimes.com
 5dimessports.com
 5dja3oqs9uh13b1i9qbpk30z4h2gj1767705793.uaid.nmrodam.com
@@ -5165,6 +5257,7 @@
 5dpnls1xzebpbq631sw2pc5ldi1tv1779695549.uaid.nmrodam.com
 5dr221kry4.top
 5dr2u.fifth.pw
+5dwdk8ov40v1g1z66mqucmwmr5m1t1781428433.nuid.nmrodam.com
 5dwpessecuritycrash404errorreport.xyz
 5dxn8hg1np61afhtdge9osuxv5lb91779998564.uaid.nmrodam.com
 5dycay3rr.com
@@ -5244,6 +5337,7 @@
 5e6d4f246af9b6956cbbb335ad72b9a6.safeframe.googlesyndication.com
 5e6znj.launches.appsflyersdk.com
 5e74aef7bdc4f11e60ffc52ccaf6433b.safeframe.googlesyndication.com
+5e765c99e8a172e0bb13b1020e12cc04.safeframe.googlesyndication.com
 5e767e9643a40be5142d33c6ec0a623d.safeframe.googlesyndication.com
 5e77a8206c7b334a.com
 5e7ac5fcc7bcd691b14a64f325105ccb.safeframe.googlesyndication.com
@@ -5279,6 +5373,7 @@
 5eb77297751ae5d667a1633550a281ab.safeframe.googlesyndication.com
 5eb91cb67450e702205.stream
 5eb9701d160ed12ac336d1d95136f846.safeframe.googlesyndication.com
+5eba3f845575438ff779f28fbc0edcf3.safeframe.googlesyndication.com
 5ebb6fb0c66c.top
 5ebd2d3383ed70f1f049c5dc436eca2e.safeframe.googlesyndication.com
 5ebe516400a06a1fe704d9a3d7af96eb.safeframe.googlesyndication.com
@@ -5652,6 +5747,7 @@
 5imb7txjw2cjxbioxjm8uu2djeqio1780860325.nuid.nmrodam.com
 5imixqcagkofwui5zt3b8aedoa8uz1779208171.uaid.nmrodam.com
 5in8.com
+5infdg.launches.appsflyersdk.com
 5inr51y7bjhb2tvbo3kb6mr93hh291780303360.uaid.nmrodam.com
 5inv.biz
 5ipaypal.cn
@@ -5740,6 +5836,7 @@
 5leosgto.xyz
 5lf5cujc5.com
 5lgx5w5cgs9pyyu8u.ay.delivery
+5li0dyze5sl95i10nv3dzuzuuidr71781428535.nuid.nmrodam.com
 5licfbo4p7k4hmcti5j.cfd
 5lj3ag2o1kae1jmmrt47885xahqh01777833804.uaid.nmrodam.com
 5lkdnjvbycalling.tk
@@ -5833,11 +5930,13 @@
 5o3a7e.share-na3.hsforms.com
 5o49npfx5kwsnc69iy1ixiawmmkai1778685245.uaid.nmrodam.com
 5o6.xo.authorizeddns.net
+5o7b2a.cdn-settings.appsflyersdk.com
 5o7ga09a.xyz
 5o8aj5nt.de
 5odd5zsn.xyz
 5oex5ok13ujv5c93c42uubyn25c4k1780302216.uaid.nmrodam.com
 5ogbdhuj0oalpm61ggg254g82phwq1778281238.uaid.nmrodam.com
+5ohsv9mos5venewk35qitmbr07sjd1781470628.uaid.nmrodam.com
 5oijhr54.skin
 5oipoicalls.tk
 5oisr4ahq4qbclv863l38hypfcn431780393845.uaid.nmrodam.com
@@ -5857,6 +5956,7 @@
 5owjdo5rvd.top
 5oyuigiveajingl.tk
 5p35xkp1p.com
+5p9cah7yjn6ooxhm793avm9uww3nr1781474609.uaid.nmrodam.com
 5pdva7xvgel38oofvsvsiza9b6w981779396462.uaid.nmrodam.com
 5per-cent.tk
 5peuegwzpymut6tjdf1msp6qi5poe1765967240.uaid.nmrodam.com
@@ -5887,6 +5987,7 @@
 5qahca.cdn-settings.appsflyersdk.com
 5qahca.inapps.appsflyersdk.com
 5qahca.launches.appsflyersdk.com
+5qivrqemdp7qg0rcgvxhhnm4bb7tc1781419426.nuid.nmrodam.com
 5qjspf2c.xyz
 5qmhdbm75x32sa43risiah4dkz7nn1780770139.uaid.nmrodam.com
 5qmob1jxfw2wruvkynp7wyd2b3ot51780586712.nuid.nmrodam.com
@@ -5900,6 +6001,7 @@
 5qsjix-cdn-settings.appsflyersdk.com
 5qskin2.skin
 5qv0e85oa6iin8s5yv77w9eqckd491780779250.uaid.nmrodam.com
+5qvjw9kq4lb5tevv26g.cfd
 5qw7-wvha-uyc7.wakajeje-aol-com-s-account.workers.dev
 5qydruuv3bqqpk1zym66uqa9fecjr1779622037.nuid.nmrodam.com
 5qz72.com
@@ -5978,6 +6080,7 @@
 5t5e5h4rv2.top
 5t5ooy5wyzae2lo034ylt5pfgcyvb1779045592.uaid.nmrodam.com
 5t5z6augl3.com
+5t6cn2eiw8jtvcubyinsvhwslgune1781467325.nuid.imrworldwide.com
 5t7g.spitclothingco.com
 5t7r8r84l99vdnrpuxrlfjtgakegn1779385699.uaid.nmrodam.com
 5tahlmjpwmtmytptn48mzq8dc8afm1780612040.darnuid.imrworldwide.com
@@ -6053,6 +6156,7 @@
 5v5l9b.inapps.appsflyersdk.com
 5v5l9b.launches.appsflyersdk.com
 5v6uaxt6gipp9efx8if3rao5mvbtx1778166618.uaid.nmrodam.com
+5v9yze.launches.appsflyersdk.com
 5vbs96dea.com
 5vd12a.ru
 5vep1wfucqejen6opdtjpae8d6ags1780785595.uaid.nmrodam.com
@@ -6143,6 +6247,7 @@
 5yc8ui0n3j.com
 5yf.net
 5yfi7sy.com
+5ygp2i.cdn-settings.appsflyersdk.com
 5yingyuan8.com
 5yingyuan8.net
 5yjviwbwhmzuzoonfqn68etwbqfbk1772137649.nuid.imrworldwide.com
@@ -6177,6 +6282,7 @@
 5zdutjxl7okt6aflh46wfi5vwqvaw1770925641.uaid.nmrodam.com
 5zimeby0tt3q8h3hm9gm34vyloorr1778443983.uaid.nmrodam.com
 5zj.leakof.shop
+5zk5z2vzxh9e1fwh1h55275nxcx.cfd
 5zkv22dnr05wruaxu2pi6mdg8rry71775723291.uaid.nmrodam.com
 5znn89xlcsinpiux4vn51rnt88pun1780947663.darnuid.imrworldwide.com
 5zp3hguhgg.data.adobedc.net

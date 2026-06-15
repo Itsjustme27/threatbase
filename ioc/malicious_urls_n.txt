@@ -1,7 +1,7 @@
 # Threatbase Threat Intelligence Feed - URLs
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:07 +0000
 #
 http://n.vs108.com/down/laizi_wzzdh.apk
 http://ncxps.com/wp-includes/4LD2g8W3RRmhtGVVVPeq2OrlCqm71yyXVERIW5rZiTVIi3/
@@ -207,6 +207,7 @@ https://npukpk.fodraszoktatas.eu/03ace386-a37f-41e7-a367-df0d30df34a5
 https://nqbecrh.one1x.bet/b6181c88-838a-4f09-93e1-0b270cb3f5d8
 https://nqsaymjr.betyek.net/5a45f861-3bfb-455f-9180-2b001d170a89
 https://nqvfew.flybuilt.eu/977d4603-4081-4280-8ea6-62ecfcc84f05
+https://nrqyn3ip.garatequran.xyz/?ublib=aaafc769-ed3f-4200-a620-48a9d9e7a3f3
 https://nspbcu.krokodilpince.hu/e6e4c43a-4f02-4079-be26-ecf4f46d68e2
 https://ntm4xnw3.renaissancefrescorestoration.digital/?ublib=074378f2-badc-4a74-b9e0-91ff2a40745c
 https://numqi.wilhelmglobal.com/907234c0-4026-4109-ba8e-59e373bb7159

@@ -1,7 +1,7 @@
 # Threatbase Threat Intelligence Feed - Domains
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:08 +0000
 #
 j-0-09g-9bh-h-ggf-1324992141.cos.ap-bangkok.myqcloud.com
 j-a-net.jp
@@ -482,22 +482,27 @@ j42jx.top
 j42qx.top
 j42xg.top
 j43dx.top
+j43gh.top
 j43jx.top
 j43nh.top
 j43xc.top
 j43xf.top
 j43xu.top
+j44bh.top
 j44fh.top
 j44n2.sa072.com
 j44ph.top
+j44vh.top
 j44vx.top
 j44xk.top
 j45bx.top
 j45hh.top
+j45kh.top
 j45xv.top
 j46akdayqi5jjhx0vxi3btqbya4pd1778092694.nuid.nmrodam.com
 j46bh.top
 j46j4vxwbh64vg0yqrokjphjqb8bd1777443406.nuid.imrworldwide.com
+j46sh.top
 j47040570.app-ads-txt.com
 j47qh.top
 j47xg.top
@@ -616,6 +621,7 @@ j5gqzb.inapps.appsflyersdk.com
 j5gqzb.launches.appsflyersdk.com
 j5h4f9b6.com
 j5hh4akpez7cp36j.beer
+j5hskb.fit
 j5jx.top
 j5k.18e.myftpupload.com
 j5kus2yo6n9ukyvd9i21ck2htudax1763292929.uaid.nmrodam.com
@@ -701,6 +707,7 @@ j6mmgq6oxskullawghxc1njosuku01778744679.nuid.imrworldwide.com
 j6mn99mr0m2n.com
 j6q9h.top
 j6rddowr28ajvsezy814urzet07yv1773173400.nuid.imrworldwide.com
+j6rexvht243f1evp4pqci19lkkzku1781496163.uaid.nmrodam.com
 j6wc9hjr4lqjcbnaujakydppxy1as1780761001.nuid.nmrodam.com
 j6xi94453pjc84qengv1w466yf5c7ovq7l5zl7.cfd
 j6xn563zcqvt53turh96frrhg9tcf1778047922.uaid.nmrodam.com
@@ -763,6 +770,7 @@ j7eqft73jmurkjx7sierawen9u2yq1780732959.nuid.nmrodam.com
 j7gvaliq.cricket
 j7gx.top
 j7jeercjrt92on59lel1vwkbf49az1777391169.nuid.nmrodam.com
+j7jkxp5sq8nsaym8b1ajixrbpuzyz1781448338.nuid.nmrodam.com
 j7kh.top
 j7kv55pr70.com
 j7le7metdm5as5enpjef8vmib695w1775053579.uaid.nmrodam.com
@@ -974,6 +982,7 @@ j9kor9rewyint1ulckhmxps3ixilq1780213097.nuid.nmrodam.com
 j9m3g6vclq.lat
 j9mpzjk9x7tfopg1dxskrkjvytwlr1780082950.nuid.nmrodam.com
 j9mu9y070cq8d9t.afn.cc
+j9njgefhvur4yxy2eft4kr1zq59f91781438734.uaid.nmrodam.com
 j9o39fokzcm682a41kiad8kb94gmj1779863530.uaid.nmrodam.com
 j9q8dmk6.com
 j9qbs671u8z1obv2yw098j1hishw21780775407.uaid.nmrodam.com
@@ -1121,6 +1130,7 @@ jabu.ru
 jabuk.us
 jaburrey.com
 jabuticabaconteudo.com.br
+jabutoi.com
 jabuy.ru
 jacabcolrta.com
 jacadi-outlet.fr
@@ -1337,6 +1347,7 @@ jacobeachhotel.sitey.me
 jacobephrem.com
 jacobgambino.com
 jacobgwynn.com
+jacobhaust.com
 jacobinical-conditi.000webhostapp.com
 jacobkrumnow.com
 jacoblanderville.myjino.ru
@@ -1451,6 +1462,7 @@ jadema.com.py
 jadeporch.eu
 jadereal.com
 jadergeneroso.com.br
+jadescript.utopivision.com
 jadesprings.in
 jadetravelsydney.com
 jadghanem.com
@@ -1464,6 +1476,7 @@ jadimocreations.com
 jadizayo.com
 jadjkuofzwad.com
 jadlogix.cjt1.net
+jadlojistik.com
 jadns.com
 jadorelesredirections.fr
 jadoremecandleco.com
@@ -1521,6 +1534,7 @@ jaffha.myvnc.com
 jaffnahindu.org
 jafglvsrelents.review
 jafgtpuvxajoj.site
+jafijiu.pro
 jafjgadfsssss.cf
 jafjgadfsssss.ga
 jafjgadfsssss.gq
@@ -1900,11 +1914,13 @@ james.notifysrv.com
 james042william.000webhostapp.com
 james2kool.5gbfree.com
 jamesadams.com.au
+jamesangell.shop
 jamesappleyard.com
 jamesautomobile.online
 jamesavery-us.attn.tv
 jamesbond.bookonline.com.cn
 jamesbondwiki.com
+jamesboorer.shop
 jamesborden.com
 jamesbrownpharma.com
 jamesburg.cf
@@ -1976,6 +1992,7 @@ jamiattalibat.org
 jamie-lee-curtis-keto-gummies-get.company.site
 jamie.c.shortest-route.com
 jamie.h.shortest-route.com
+jamieamban.cfd
 jamieannonline.com
 jamieatkins.org
 jamiehorne.net
@@ -2173,6 +2190,7 @@ janinekacoudiagou.ci
 janinekavery.com
 janiproclean.com
 janis.cjt1.net
+janislikansis.com
 janitasaels.blogspot.com
 janitorgracing.cyou
 janitorialservice.sitey.me
@@ -2408,6 +2426,7 @@ jardin180.com
 jardinagemsobreda.pt
 jardinandalue.cl
 jardinarcoiris.cl
+jardinclarity.com
 jardindeeventoslindavista.com
 jardindesmerve.com
 jardine.com.sg
@@ -2440,6 +2459,7 @@ jargonneedy.host
 jargonthugconfessed.com
 jargveurtocja.world
 jarhayhanbas.com
+jarhive.com
 jari-jitu.hstn.me
 jaridisecurity.com
 jarielymaycol.com
@@ -2539,6 +2559,7 @@ jask.com
 jaskhuczzexoh.site
 jaskirankaur.com
 jaskjka.ga
+jaskolski.biz
 jasmartlinks.com
 jasmiinakorhonen.000webhostapp.com
 jasmin-cams-live.com
@@ -2565,6 +2586,7 @@ jasmjins.stream
 jasmoneriprap.com
 jasmyns.com
 jasnastefan.com
+jasny-bitnex-platform.com
 jasoiuuydealo.zapto.org
 jasoliciiteeiix.s3.us-east-005.backblazeb2.com
 jason.pl
@@ -2725,6 +2747,7 @@ java.gg
 java.newrelic.com
 java.vucoota.sa.com
 java24.tk
+java8.xyz
 javabien.fr
 javaboys.ddns.net
 javacenter.pl
@@ -2881,6 +2904,7 @@ jaxxliberty.wixstudio.com
 jaxxon-us.attn.tv
 jay-experience.de
 jay-lallen.myjino.ru
+jay-no.work
 jay.anunciosgeral2016.org
 jay.arvixe.com
 jay.brauerei-egg.at
@@ -3064,6 +3088,7 @@ jb.xylenolshivahs.com
 jb18h.top
 jb19h.top
 jb1gs.omen19.shop
+jb1ymz.cdn-settings.appsflyersdk.com
 jb21x.top
 jb28h.top
 jb30d29da.app-ads-txt.com
@@ -3207,6 +3232,7 @@ jblefxyswished.review
 jblgermany.shop
 jblian.top
 jbliwa.ae
+jblmusicsmall.shop
 jblogics.com
 jblpromotion.shop
 jblpulse3.org
@@ -3378,6 +3404,7 @@ jc3k.cn
 jc3web.com
 jc3wuh.qpon
 jc42h.top
+jc46h.top
 jc4h.top
 jc4ngkruqhicwn1k.cfd
 jc4sav321.ddns.net
@@ -3828,6 +3855,7 @@ jcwhintey.com
 jcwhitey.com
 jcwhitney.112.2o7.net
 jcwhitneysplittest.112.2o7.net
+jcwjs.com
 jcwqs259.site
 jcwsnywmm.com
 jcwylmuatiaqv.store
@@ -3847,6 +3875,7 @@ jcxnwlwjigrjr.online
 jcxrqy3me8wurlc53isx2zxh4kept1778307074.uaid.nmrodam.com
 jcyabxevvwbrn.icu
 jcyjj3fcpq1xr4evsuew9042010sp1775078835.nuid.imrworldwide.com
+jcyjly.com
 jcypfmgqpkkhosm.com
 jcypvnhlu85q7k5n7dwngur79xrox1778225266.uaid.nmrodam.com
 jcytzfvrm.bid
@@ -4078,6 +4107,7 @@ jdrdiatool.com
 jdrlnicvn.com
 jdrpl.com
 jdrtu.com
+jdrwy.com
 jds4i5gcfv.com
 jds4twti5tbrgvbazidrojwnc4jxs1776994446.nuid.nmrodam.com
 jdsemnan.ac.ir
@@ -4176,6 +4206,7 @@ je29h.top
 je32h.top
 je37h.top
 je3zdrcua.com
+je44h.top
 je4y15ji.xyz
 je53x.top
 je5708192.app-ads-txt.com
@@ -4233,6 +4264,7 @@ jeanneinnocenceagitated.com
 jeannenowhere.com
 jeanneodds.com
 jeannette.gq
+jeannettebodnar.com
 jeannettevandervliet.nl
 jeanniehall.shop
 jeannoir.ucoz.ru
@@ -4242,6 +4274,7 @@ jeans-fashion.com
 jeans-store.cz
 jeansasia.ir
 jeansassine.shop
+jeanscap.top
 jeansdespair.com
 jeansetbottines.fr
 jeansfirmalari.com
@@ -4249,7 +4282,6 @@ jeansnedegar.com
 jeansowghbqq.com
 jeansowghsqq.com
 jeansowghtqq.com
-jeansporter.xyz
 jeansquad.com
 jeansvixens.com
 jeanswest.su
@@ -4287,6 +4319,7 @@ jebzg.yolasite.com
 jec-com.tk
 jec-test.work
 jec93df0b.app-ads-txt.com
+jecaxuo.com
 jecbbkrnfn.com
 jecfni6y2ycm4h85q72nebkwxynh41772486935.uaid.nmrodam.com
 jecherchedieu.fr
@@ -4315,6 +4348,7 @@ jedemenageaveclaposte.fr
 jedesgo.com.gh
 jedget.tyler-joyce.com
 jedi.org
+jediezwd.shop
 jediff.com
 jedisstationery.com
 jediwebservices.com
@@ -4423,6 +4457,7 @@ jeffnoffsinger.net
 jeffor.com
 jeffphoto.net
 jeffragan.com
+jeffrey-fuller.com
 jeffrey-wq.github.io
 jeffreybcam.net
 jeffreybrittain.com
@@ -4466,6 +4501,7 @@ jegrbkenarvan.website
 jegsivke.ysawyhuao.fastsize.ru
 jegtdzjo.parsbet90.com
 jehad.stream
+jehan-serien.com
 jehan.sabzgostar.org
 jehansen.dk
 jehbdjhvuhvuq.jspcdn.cn
@@ -4632,6 +4668,7 @@ jenima829.github.io
 jenis9q.dx.am
 jenisegreggcouture.com
 jenitalaesthetic.com
+jenivoo.pro
 jenkai.com
 jenkinkuttab.com
 jenkins-engineering.com
@@ -4641,6 +4678,7 @@ jenkins.platform.dev.nuxeo.com
 jenkins.webui.dev.nuxeo.com
 jenkins.younetmedia.com
 jenkinscom05.dev.r.myoas.net.obs.cn-north-1.myhuaweicloud.com
+jenkinsisaac.shop
 jenkrollphotography.com
 jenksranchandrescue.org
 jenlaird.com
@@ -4708,6 +4746,7 @@ jennycraig.112.2o7.net
 jennyk.ucoz.ru
 jennyloopnfljerseys.ru
 jennymovers.com
+jennysand.shop
 jennysjerkchicken.co.uk
 jennysonthespot.com
 jennyspalletworks.com
@@ -4721,6 +4760,7 @@ jenoss.ga
 jenrobin.com
 jens-ersfeld.de
 jens-sehm-furniture.com
+jens.quest
 jensalwholesale.com
 jensenautomotive.com.au
 jensenbowers-my.sharepoint.com
@@ -4774,6 +4814,7 @@ jeqpqqqqwkmxk.store
 jequipit-my.sharepoint.com
 jer.be
 jerabel.net
+jeraicage.com
 jeraldbaroro.xyz
 jeraldsilva.com
 jeramaxdata.biz
@@ -4800,6 +4841,7 @@ jeremyhatcher.co
 jeremyjamesosteopath.co.uk
 jeremykarl.com
 jeremylindh.com
+jeremymathew.com
 jeremymccoy.net
 jeremypauchard.fr
 jeremyrooks.com
@@ -4946,6 +4988,7 @@ jessedigitalrfpdocs-dpgcy2fje2tm.edgeone.dev
 jessedouglascollins.com
 jessedylanpictures.com
 jessegoldencentral.ourtoolbar.com
+jessegue.com
 jessejamesacademy.com
 jessejoeboy.myradiotoolbar.com
 jessekanclerz.com
@@ -4973,6 +5016,7 @@ jessicahoffman.me
 jessicajorogers.com
 jessicakarp.com
 jessicalinden.net
+jessicapark.shop
 jessicaparmar.com
 jessicasampa.webcindario.com
 jessicasarkadi.weebly.com
@@ -5023,6 +5067,7 @@ jesuscenter.tk
 jesuscentrechurch.org
 jesuschristblessme.duckdns.org
 jesuschristwins.com
+jesuscome.org
 jesusembassymz.org
 jesusempauta.com.br
 jesusenter.xxxxxxxx.jp
@@ -5047,9 +5092,7 @@ jet-bireysel-hizmetler.online
 jet-eservis-hizmetlerin.online
 jet.kjukenhi.in
 jet.zbp.ru
-jet2.com.data.adobedc.net
 jet2.quantummetric.com
-jet2holidays.com.data.adobedc.net
 jeta-yunding.com.cn
 jetafrica.co.ke
 jetaimesweets.com
@@ -5368,6 +5411,7 @@ jf-simazaki.jp
 jf.hl.cn
 jf.outgushthickly.life
 jf.revolvermaps.com
+jf1.gp5wvr.top
 jf13899mvm4gkj67qb98nybxg88611781000002.uaid.nmrodam.com
 jf13h.top
 jf14x.top
@@ -5382,6 +5426,7 @@ jf365.boc.cn
 jf40h.top
 jf41h.top
 jf42h.top
+jf43h.top
 jf4pfgrk0spdhzztuyzf.ukhs.edu.bd
 jf54h.top
 jf55x.top
@@ -5474,6 +5519,7 @@ jfilter.vespymedia.com
 jfiswz.com
 jfja-vy75-607y.elaine-titotiberti-com-s-account.workers.dev
 jfjdgb.loan
+jfjdit55i5kfm5fir4p466ofcmf.fwh.is
 jfjekdkixzxa02zfyufmv6bdazp1e1780666342.uaid.nmrodam.com
 jfjfgn.loan
 jfjfjfjfjfjfjjf.weebly.com
@@ -5637,6 +5683,7 @@ jgcfrb.blogspot.fr
 jgchq.com
 jgctsami0dyhgyhg0cvbfsfwjdfeq1774204708.nuid.nmrodam.com
 jgcwxpytgracious.review
+jgd9rw-cdn-settings.appsflyersdk.com
 jgdar.com
 jgdbgriiv5rbetye8zrmsill513te1777874209.nuid.nmrodam.com
 jgdjgd.000webhostapp.com
@@ -6279,6 +6326,7 @@ jhnrdx.blogspot.sg
 jhnteodwqtk.com
 jhnvbkjsdnbv.tk
 jhnwr.com
+jhobn.com
 jhojz.killstar.com
 jhomitevd2abj3fk.onion.to
 jhon32op.beget.tech
@@ -6311,7 +6359,6 @@ jhpgrmboknxjyy.xyz
 jhpirob.cc
 jhpmfaaefxlozjqulxq6vvut7hxz31778945815.nuid.nmrodam.com
 jhpo6buzz.tk
-jhpolq.cdn-settings.appsflyersdk.com
 jhpolq.inapps.appsflyersdk.com
 jhpolq.launches.appsflyersdk.com
 jhpqntyyeezpds.com
@@ -6499,6 +6546,7 @@ ji88.com
 jia183d6v.com
 jiaauto.in
 jiaboo.bid
+jiadexin.com
 jiagu.360.cn
 jiagui.net
 jiahaosujiao.com
@@ -6621,6 +6669,7 @@ jidy0ehlbllema8trt0zbt42rp9vd1778173650.nuid.imrworldwide.com
 jieanguoji.com
 jiedai5.com
 jiedll.wiki
+jiedu89.com
 jieefiaic.s.maxgrowth.ru
 jieem.com
 jiefm7j5rqhyjzmwkv6rkvdcqw6ki1777140814.nuid.imrworldwide.com
@@ -6697,6 +6746,7 @@ jigz.org
 jigzone.com
 jihadalasadi.com
 jihan.30maps.com
+jihan88.top
 jihanekama.ddns.net
 jihaxrndufelb.online
 jihehuaban.com.cn
@@ -7232,6 +7282,7 @@ jisighyckywu.it.gg
 jisihc6gmp2cuzfibhwiglsz0hmga1779291508.nuid.nmrodam.com
 jisk.cn
 jiskajobhimali.com
+jiskragainex-software.com
 jismiggo.ca6a8b74-32ac-45ea-84f0-fb607b8789ab.click
 jisrcenter.com
 jistbase.ga
@@ -7308,6 +7359,7 @@ jiusnansss.com
 jiuwert.online
 jiuxconsultant.com
 jiuxuexia.top
+jiuymkwnzk.weeknedzoff.com
 jiuyouheadline.com.cn
 jiuyouyulevip.com
 jiv.mybluehost.me
@@ -7370,6 +7422,7 @@ jiz-ingenieria.com
 jizeeb.xamir9el.lat
 jizelleteves.com
 jizhang666.com
+jizhb2-cdn-settings.appsflyersdk.com
 jizhb2-launches.appsflyersdk.com
 jizhimobi.com
 jizhouit.com
@@ -7638,6 +7691,7 @@ jjwitnosyew.bid
 jjwksjvvucjehgxz2t6pjsg3n40tl1777444612.nuid.imrworldwide.com
 jjwlgscgtvuvo.space
 jjwomen.com
+jjx13z.launches.appsflyersdk.com
 jjx30.top
 jjx47.top
 jjx52.top
@@ -7867,7 +7921,6 @@ jkmurray.com
 jkn05300loi.com
 jkn05310loi.com
 jkn05311loi.com
-jknarp.kakaku.com
 jkndmcbj.weebly.com
 jknewsservice.in
 jknjemunpox.com
@@ -7962,6 +8015,9 @@ jkzwyd.inapps.appsflyersdk.com
 jkzwyd.launches.appsflyersdk.com
 jl-mag.de
 jl-np-whatsapp.com.cn
+jl-pqr.com
+jl-pqr.fit
+jl-pqr.net
 jl-tf.com
 jl.brasquebourse.com
 jl.chura.pl
@@ -8071,6 +8127,7 @@ jlhkumsptbwuz.site
 jlhmxduyftkae.site
 jlhoefzaqqbsz.online
 jlhoustonco.com
+jli-eduid0873032-pola9-38773skjafwdww.lambiasericambisrl.com
 jlifxqln.100free.com
 jlifxqln.atw.hu
 jlijten.nl
@@ -8086,6 +8143,7 @@ jlisting.jp
 jliunwjezey.net
 jlixy3c7uyd9n2aw6u0zfqti5w1121774209163.uaid.nmrodam.com
 jliynaht0efekcqpuxgoxudjgiv741779295121.nuid.nmrodam.com
+jljb.eu.org
 jljbgy.loan
 jljcgd.loan
 jljcgt.loan
@@ -8222,6 +8280,7 @@ jm-ad-lgsmartad-com.aws-prd.net
 jm-angel.com
 jm-fetichistes.com
 jm-telegram.com.cn
+jm-xyz.net
 jm.4biz.fr
 jm.57883.net
 jm.ad.lgsmartad.com
@@ -8308,6 +8367,7 @@ jmcustomscreenprinting.com
 jmd-be.com
 jmd.tsbbnk.com
 jmdde.com
+jmdeauqr.com
 jmdfjj.ltd
 jmdigitaltech.com
 jmdlifespace.co.in
@@ -8322,10 +8382,12 @@ jmdsolutions.yolasite.com
 jmdsystem.in
 jmebwpbpvofcx.online
 jmeconstruction.co.za
+jmedalternativesolutions.com
 jmediabuy1.cjt1.net
 jmediabuyad.cjt1.net
 jmedw.cn
 jmemwbkpj.bid
+jmenibitrow-software.com
 jment.aioeventos.com
 jmeoyypc.net
 jmesmd.com
@@ -8371,6 +8433,7 @@ jmioksd.ddns.net
 jmipmxwkol.com
 jmir.altmetric.com
 jmitadvice-dot-yamm-track.appspot.com
+jmizgril.shop
 jmjayurveda.com
 jmjbgc.loan
 jmjbgh.loan
@@ -8386,6 +8449,7 @@ jmjtechnology.biz
 jmjtgw.loan
 jmjuivzcp.com
 jmjwgy.loan
+jmkiol.com
 jmkitservices.com
 jmkjgv.myscriptcase.com
 jmkladoihjrsa.space
@@ -8460,7 +8524,6 @@ jmslightingconcepts.com
 jmsln.org
 jmsn.cjt1.net
 jmspujpagmazvm.xn--9i1b01onwqqzd.xn
-jmsssm-cdn-settings.appsflyersdk.com
 jmsssm-inapps.appsflyersdk.com
 jmsyap.112.2o7.net
 jmszyl8.com
@@ -8522,6 +8585,7 @@ jmzqkqm9mevfrctybj31mbglthduk1778956848.nuid.nmrodam.com
 jmzw.orangehave.shop
 jn-accounting.com
 jn-car.ru
+jn-def.net
 jn.bacistorus.com
 jn.cpcempower.com
 jn.cutchermaxixe.com
@@ -8584,6 +8648,7 @@ jndclagxkvpn.com
 jndexpertservices.com
 jndgxn.yourdatefan.com
 jndhy.com
+jndlr.com
 jndmsm.com
 jndshit.com
 jndszs.com
@@ -8757,6 +8822,8 @@ jnzlw.prodiglousdate.com
 jnzzd.com
 jo-ad-lgsmartad-com.aws-prd.net
 jo-blanc-fils.com
+jo-ijk.com
+jo-ijk.net
 jo-paris.fr
 jo-shop.pl
 jo-trgovina.top
@@ -8811,6 +8878,7 @@ joannegenzone.com
 joanneguest.com
 joannehorne.shop
 joannekleynhans.com
+joannfuller.com
 joannsfabric.com
 joannshop.com
 joannsstevens.com
@@ -9009,6 +9077,7 @@ jobmist.com
 jobmkewkzwbkq.top
 jobmkewkzwklw.top
 jobmkewkzwrkb.top
+jobmulla.com
 jobmuslim.com
 jobnames.us
 jobnewsalerts.com
@@ -9195,6 +9264,7 @@ jodhpurfindit.com
 jodhpurhandicrafthouse.com
 jodhpurs.us
 jodiemcneill.com
+jodiemetcalfeco.com
 jodiepeterkin.com
 jodon.com
 jodseeck.net
@@ -9219,6 +9289,7 @@ joe.ziraat-helpdesk.com
 joe0li-cdn-settings.appsflyersdk.com
 joe0li-inapps.appsflyersdk.com
 joe0li-launches.appsflyersdk.com
+joe0li-register.appsflyersdk.com
 joe9099.byethost7.com
 joeadex08.wixsite.com
 joeamenta.com
@@ -9240,6 +9311,7 @@ joedonbaker.atspace.com
 joeemagaraci.000webhostapp.com
 joefortune89.com
 joefq3-adrevenue.appsflyersdk.com
+joefq3-cdn-settings.appsflyersdk.com
 joefq3-gcdsdk.appsflyersdk.com
 joefq3-inapps.appsflyersdk.com
 joefq3-launches.appsflyersdk.com
@@ -9280,6 +9352,7 @@ joelscarbrough.com
 joelws.cf
 joelyward.co.uk
 joemaddv.com
+joemazza.photography
 joemcfadden.com
 joemessinaiii.com
 joemillen.com
@@ -9305,6 +9378,7 @@ joesbaitshop.com
 joesboardandtimberonline.com
 joesboardshop.com
 joesgunshop.com
+joeshop.de
 joeshowdoc.com
 joesliquorsavon.com
 joesosnowski.com
@@ -9328,6 +9402,7 @@ joey.transmatico.com
 joeybecker.gmxhome.de
 joeydiaz.bid
 joeyhicklin.com
+joeyhustle.com
 joeykiss.twtexpose.hop.clickbank.net
 joeymerchant.com
 joeynizuk.com
@@ -9390,6 +9465,7 @@ jogrgddvb.com
 jogryvgycqjph.store
 jogueaquihazzar.blogspot.com
 jogxnkcfhgq.com
+joh-ku.work
 johact.org.au
 johanbrekka.no
 johannamannikko.com
@@ -9630,6 +9706,7 @@ join.clonecashsystem.com
 join.coedslovebigdicks.com
 join.cumbrushers.com
 join.exitfuel.com
+join.faceit-hub.com
 join.filmlush.com
 join.filthydatez.com
 join.flixaddict.com
@@ -9888,6 +9965,7 @@ jokiplay.com
 jokiwly.us
 jokokrimpen.nl
 jokowi12.000webhostapp.com
+joksopin.com
 jokulhid.cyou
 joldinaremaslone.com
 jolecyclist.com
@@ -9939,10 +10017,12 @@ jolodielmusic.com
 jolosangeles2028.fr
 jolrfeqxyavvj.site
 jolshiriabashon.com
+jolt-3a-altair.s3.ap-northeast-2.amazonaws.com
 jolt.pbphgwbr.in
 jolted.vip
 joltid.com
 joltiest.us
+joltmiami.com
 joltwashington.com
 jolty-liver.000webhostapp.com
 jolu.kohlsic.net
@@ -10084,6 +10164,7 @@ jonesroadus.shop
 jonesrus.com
 jonesrusticsigns.com
 jonety.tk
+jonfreebook.com
 jongewolf.nl
 jonglpan.it
 jongtang.com
@@ -10195,6 +10276,7 @@ joox-affiliate.sanook.com
 joox388-online.com
 jooz.jobsgpt.ru.com
 joozmfyrmspbnm.com
+jop-ku.work
 jop1byuho70uq43xujjswoent0qpz1780952035.uaid.nmrodam.com
 jop2024.fr
 jopa.cz
@@ -10213,6 +10295,7 @@ joqowqymkrywy.top
 joqpatxugyug.com
 joqpqwdsbjkpr.com
 joqxeeboje.info
+joqyxyi.com
 jor.tgivgoae.fastsize.ru
 jorah-mormont.info
 joralan.es
@@ -10248,7 +10331,6 @@ jordankopf.com
 jordanmcmakin.com
 jordanmfowler.com
 jordanretro11.us.com
-jordanretro4.com
 jordanse-resume.tiiny.site
 jordanser.blogger.hu
 jordansfireworks.cfd
@@ -10278,6 +10360,7 @@ jorgeherreraimoveis.com.br
 jorgelizaur.com.ar
 jorgensenco.dk
 jorgeomar.com
+jorgepaulos.pt
 jorgerealestatemedia.com
 jorgereboloilustrador.com
 jorgerocha.com.br
@@ -10320,6 +10403,7 @@ jorudan-d.openx.net
 jorumroxane.qpon
 jorvelitaq.info
 joryalbandar.com
+jorytay.pro
 joryvztqojsig.space
 josamuel.shop
 josbet77.com
@@ -10350,6 +10434,7 @@ josegrossinho.com
 joseirun.com
 joseitesuppled.shop
 josejesusxicotencatl1772779194537.1370269.misitiohostgator.com
+josejimenezjr.com
 josejoaomeiavia.pt
 joselarios1.github.io
 joseluiscasal.com
@@ -10500,6 +10585,7 @@ josymedeiros.com.br
 josymedeiroscalcados.com.br
 jota.com
 jotaortega.com
+jotash.com
 jotasix.stream
 jotbot.com
 jotechnology.net
@@ -10594,6 +10680,8 @@ jour5723576.pro
 jour5724510.pro
 jour5724533.pro
 jour5724556.pro
+jour5725510.pro
+jour5725533.pro
 jour5726510.pro
 jour5726533.pro
 jour5726556.pro
@@ -10674,6 +10762,7 @@ journ5724502.pro
 journ5724525.pro
 journ5724548.pro
 journ5725548.pro
+journ5725567.pro
 journ5726502.pro
 journ5726548.pro
 journ691056.pro
@@ -10769,6 +10858,7 @@ journey-tracker.appcabinet.com
 journey.travel2days.com
 journey.vandentop.nl
 journeydirectsubmarine.com
+journeygl.digital
 journeyjp.live
 journeylula.com
 journeyman.tv
@@ -10812,6 +10902,7 @@ jova.lt
 jovan.soldatovic.org
 jovanakdesign.000webhostapp.com
 jovanaobradovic.com
+jovani-k07283lightblue.com
 jove.org.uk
 jove0910.pw
 jovelec.cl
@@ -10871,6 +10962,7 @@ joxefktrc.com
 joxirtech.com
 joxocqrbxe.bid
 joxoreko.cdnfree.org
+joxvfmhete03nner3njdhl61on3651781452512.uaid.nmrodam.com
 joy-box.pl
 joy-casino.fr
 joy-keto-acv-gummies-order.company.site
@@ -10910,6 +11002,7 @@ joyclasses.eu
 joycreatorheader.com
 joydent.de
 joydetergent.com
+joydistracted.phoenixlodge144.com
 joydorado.com
 joydownload.com
 joydownload.com.br
@@ -10951,6 +11044,7 @@ joyfulventures.net
 joyfulvibe.com
 joyfulxx.com
 joygames.com
+joyindi.com
 joyjak.st
 joykrishnaengn.com
 joylink.nku.cn
@@ -11068,6 +11162,7 @@ jp-v10.events.data.microsoft.com
 jp-v10c.events.data.microsoft.com
 jp-v20.events.data.microsoft.com
 jp-web.track.appier.net
+jp.102.112.2o7.net
 jp.1m7y6g5je.baby
 jp.2o1l2qrup.baby
 jp.3jprbnnd5.baby
@@ -11229,6 +11324,7 @@ jp3h.top
 jp40h.top
 jp40x.top
 jp43h.top
+jp44h.top
 jp4j.asso7tunexpl.in.net
 jp532fdo5.com
 jp54x.top
@@ -11446,6 +11542,7 @@ jpnj.hotpornfile.org
 jpnnvhdityxha.online
 jpnooylvub7ov3cjoecqaktp7tdxt1771510721.nuid.imrworldwide.com
 jpnpp.info
+jpnshousebooks.com
 jpnudjqejbpx.bid
 jpobrien.com.au
 jpocqznuqyimajk.nut.cc
@@ -11606,6 +11703,7 @@ jpts1.top
 jptybcinnamonic.review
 jpuiehmiadfly.com
 jpuiucicqwan.com
+jpuret.collingwoodtickets.com
 jpusa.org
 jpush.bntrace.com
 jpush.cn
@@ -12062,6 +12160,7 @@ jrjrgq.loan
 jrjvyn.download
 jrjxgd.loan
 jrjxgr.loan
+jrjxsb.com
 jrjygy.loan
 jrk3nxqb9cv5nnwcqsc9zngmzlbei1775066848.darnuid.imrworldwide.com
 jrkab.cc
@@ -12617,6 +12716,7 @@ js4-script.norxelium.in.net
 js4.clickzs.com
 js4.ringrevenue.com
 js432.com
+js44h.top
 js44x.top
 js48h.top
 js4h.top
@@ -12940,6 +13040,7 @@ jsonpost.xyz
 jsonstore.io
 jsoon.digitiminimi.com
 jsooor.com
+jsooxo.com
 jsotpyjprlcaz.website
 jsouth.net
 jsouzizcu.com
@@ -12955,6 +13056,7 @@ jspcdn.cn
 jspersode.com
 jsphp.sapo.pt
 jspigments.com
+jspipelines.com
 jspkgj.com
 jsplast.ru
 jsplivenews.com
@@ -12980,6 +13082,7 @@ jsrkhvjmbxlhy.xn--hk3b17f.xn
 jsrsports.com
 jsryre.traviscountydefenselawyer.com
 jss.pages.dev
+jssbuffalo.com
 jssckcpqylmzc.site
 jssdfs.com
 jssdk.beetv.net
@@ -13011,6 +13114,7 @@ jstas.dk
 jstdeuwell4.ml
 jsteksys.com
 jsth8899.com
+jsthermalcontrol.com
 jstoredirect.net
 jstqzfovctwms.com
 jstracker.com
@@ -13414,6 +13518,7 @@ jtq5.top
 jtq53.top
 jtq81.top
 jtq84.top
+jtqcx.com
 jtqfggxxk.bid
 jtr10.top
 jtr15.top
@@ -13642,6 +13747,7 @@ juan-vicini.com
 juan539.com
 juana.fun
 juana20.sexy-ladies-wantmeet.com
+juanacevedo.shop
 juanadearco.com.uy
 juanalovera.shop
 juancarlo.ph
@@ -13660,6 +13766,7 @@ juanledger.online
 juanmalopez.com
 juanmanuelpelaez.com
 juanmario.rey.en.eresmas.net
+juanmashots.com
 juanpablitozito.github.io
 juanpablo.co
 juanpabloii.edu.mx
@@ -13671,6 +13778,7 @@ juanssafrole.cyou
 juantabone.com
 juanthradio.com
 juanzamalea.de
+juanzuo.com
 juar620.net
 juarawin89.onyxlimoservice.com
 juausnanolbbs.space
@@ -13710,6 +13818,7 @@ jubilantvista.com
 jubilantwhisper.com
 jubileebread.com
 jubileehall.in
+jubileeinthesuncruise.com
 jubileereach.org
 jubileereligiousgifts.com
 jubilenovelle.shop
@@ -13795,6 +13904,7 @@ judicialleadingquiz.com
 judicialliquidators.com
 judicialphilosophical.com
 judicialreaphealth.com
+judiciary-tenders.org
 judicical.ml
 judicious-analyst.pro
 judicious-emergency.pro
@@ -13924,6 +14034,7 @@ jugsmithecology.com
 juguetesdamaso.es
 jugul.co.cc
 jugularesell.com
+jugularplate.top
 jugulars.us
 jugulate.us
 jugulawhiffed.life
@@ -14228,6 +14339,7 @@ julkkis.azontree.com
 jullyambery.net
 julmagoa.com
 julnew.com
+juloacava.shop
 juloavaxbxa.shop
 juloavsxs.shop
 julofficiel.fr
@@ -14437,6 +14549,8 @@ jungangi.com
 jungbauermodellbau.de
 jungbrasilia.com.br
 junge.wang
+jungelbels.pics
+jungemarkd.cyou
 jungererind.host
 junggomania.nefficient.co.kr
 jungle-beast-pro-male-growth-drops.company.site
@@ -14654,6 +14768,7 @@ juqzuljruojt.com
 jur.unn.ac.ru
 jurabek.uz
 juragan168.info
+juragankambingguling.com
 juragankurma.org
 juraganprediksi.club
 jurainvestments.com
@@ -14777,6 +14892,7 @@ just-foodcoffee.negocio.site
 just-for-anytho.com
 just-for-style.omur71.ru
 just-getaways.com
+just-good-enough.com
 just-hour.biz
 just-internet.support
 just-leanit.tk
@@ -14948,6 +15064,7 @@ justice-pour-lola.fr
 justice.linkpc.net
 justiceadalet.ooguy.com
 justicebro.linkpc.net
+justicecyberlegal.com
 justicefordanny.ie
 justicegouv.fr
 justicegouve.fr
@@ -15364,6 +15481,7 @@ jvhift.cn
 jvhosseini.000webhostapp.com
 jvhvfhooting.download
 jviaa.jp
+jvidzaixian.com
 jviot.com
 jvisunlxd.net
 jvive.com
@@ -15387,6 +15505,7 @@ jvmuayuilxn.com
 jvmusic.ca
 jvn.in
 jvnlg.doamore.com
+jvnrecdosnlnvorbt.com
 jvnt238nknr1kckwx3k53pnn39hl11779958290.uaid.nmrodam.com
 jvnubhidaev.bid
 jvnvvuveozfi.com
@@ -15518,6 +15637,7 @@ jwconstruction.home.pl
 jwcpgnlnwbukt.xyz
 jwcpqgfhlrt.com
 jwddvffzmyxgv2drg9wmkljqwfmhh1780771889.nuid.nmrodam.com
+jwdiy.com
 jwdrqw.datingflame2.com
 jwdtrees.com
 jwdvp.gekub.yi.org
@@ -15640,6 +15760,7 @@ jwwnqcopeck.review
 jwwotfckxcyv.bid
 jwwtoken1.pages.dev
 jwx.zgz.cn
+jwxgc.com
 jwxlupfcsmlkb.online
 jwyatt.ca
 jwyumnqueasily.download
@@ -15900,8 +16021,10 @@ jxcd.cf
 jxcizhuan.com
 jxcsteel.com
 jxcuocswkavpi.site
+jxcus.com
 jxcuywnprilwi.space
 jxcvmxobrtrackmen.download
+jxcyyl.com
 jxd14.top
 jxd20.top
 jxd39.top
@@ -15912,6 +16035,7 @@ jxd97.top
 jxdev.com
 jxdhhoawqpotents.review
 jxdown.com
+jxdrm.com
 jxdyk65ay.com
 jxe1.top
 jxe46.top
@@ -15984,6 +16108,7 @@ jxhokntphi.download
 jxhvdewyeshitted.review
 jxhytrgxvybqb.online
 jxiiwldewtdql.online
+jxinj8ytg6c1psrbsk7pd4rnl0xrp1781438923.uaid.nmrodam.com
 jxiqoaszcfxve.website
 jxiynicl.piaaif.maxgrowth.ru
 jxjfgx.loan
@@ -16046,6 +16171,7 @@ jxn94.top
 jxn97.top
 jxnbwgea.bid
 jxncmj.com
+jxncz.com
 jxnczoo.com
 jxndq12wsbqf88k3fnl1cgtbaltxi1781258251.uaid.nmrodam.com
 jxnlkrqrjytxy.com
@@ -16221,6 +16347,7 @@ jyczddycqnckw.store
 jycztv.royp.maxgrowth.ru
 jydbctzvbqrh.com
 jydfybandicoot.review
+jydj.gp5wvr.top
 jydloans.100free.com
 jydloans.atw.hu
 jydrxgqo.lengana.net
@@ -16289,6 +16416,7 @@ jynv.cn
 jynv.top
 jynwelconsulting.cn
 jyomqp.xt.pl
+jyonline.shop
 jyothirmai-09.github.io
 jyothishmathi.in
 jyothsnanagadurga123.github.io
@@ -16327,11 +16455,14 @@ jyrgraphics.com.ar
 jyrich.com
 jyrjjhdas.bid
 jyrmpezx.loan
+jyrylea.pro
 jyryxwvdjqobg.bid
 jys.jinlongjs.com
 jys.zcpay.vip
+jysk-bg.shop
 jysk-deal.top
 jysk-dksale.shop
+jysk-dkshop.com
 jysk-eufurniture.shop
 jysk-home.top
 jysk-hr.top
@@ -16340,12 +16471,17 @@ jysk-lx.top
 jysk-ly.top
 jysk-online.shop
 jysk-onlinestore.top
+jysk-outlet.top
 jysk-pl.xfishhusale.sbs
 jysk-poland.sbs
 jysk-poland.shop
 jysk-polishz.shop
 jysk-pt.shop
+jysk-pt.top
+jysk-sales.top
 jysk-salestore.top
+jysk-store.top
+jysk-up.top
 jysk.haldorado-outlet.shop
 jysk.livora.top
 jysk.pme-aafsfaaashopd-eu.sbs
@@ -16353,11 +16489,13 @@ jysk.serviceeu.top
 jysk.supermarkets.top
 jysk.yjcsgl.com
 jysk.zalando-online.sbs
+jysk2026eu.pro
 jyskax.shop
 jyskclearancesale.shop
 jyskdiscount.store
 jyskeu-furniture.sbs
 jyskeu.pro
+jyskeu2026.pro
 jyskeusalel.top
 jyskfurniturefb.top
 jyskfurnitureok.shop
@@ -16369,6 +16507,7 @@ jyskfurnituretksh0p.shop
 jyskfurnituretop.shop
 jyskfurnituretop.vip
 jyskhome-pl.shop
+jyskhomedirect.shop
 jyskjune.click
 jyskk.outletss.com
 jyskliving.top
@@ -16390,8 +16529,10 @@ jysksaleleu.top
 jysksales.cribf.com
 jyskss-pl.shop
 jyskss.marypaz.sbs
+jyskstore-dk.com
 jyskstyle.top
 jyskvindueskompani.dk
+jyskvipsaleeu.shop
 jyskvipsaleeur.shop
 jysleo.free.fr
 jystorage.shop
@@ -16432,6 +16573,7 @@ jyxckvhds.bid
 jyxdo.info
 jyxf.gumohib.yi.org
 jyxjgrod.com
+jyxz20ttspxlkzvhrk1d7pz4bw4ne1781465164.nuid.nmrodam.com
 jyxzaikrzaprd.site
 jyyndgmmfju5i8okrr9bjpg7lyfuk1778674378.darnuid.imrworldwide.com
 jyynuqchh.com
@@ -16572,7 +16714,6 @@ jzleekzaovoeb.top
 jzllgntkazui.com
 jzlzdnvvktcf.com
 jzlzp.com
-jzmcjj.launches.appsflyersdk.com
 jzmdfualkoyzn.online
 jzmgykztfsjwd.website
 jzmhlklzrpidvejr.xn--yq5b.xn
@@ -16628,7 +16769,6 @@ jzujwnkf.top
 jzurzhjqrp.com
 jzus3j.eskimotsutsik.in.net
 jzusapcriskalertd.club
-jzvikv-cdn-settings.appsflyersdk.com
 jzviwrt.officeair.xyz
 jzvln.famousfootwear.com
 jzvtb.com

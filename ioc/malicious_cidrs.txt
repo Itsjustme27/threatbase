@@ -1,5 +1,5 @@
 # Threatbase Threat Intelligence Feed - CIDRs
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:08 +0000
 0.0.0.0/8
 1.10.16.0/20
 1.19.0.0/16

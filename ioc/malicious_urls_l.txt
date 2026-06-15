@@ -1,7 +1,7 @@
 # Threatbase Threat Intelligence Feed - URLs
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:07 +0000
 #
 http://lawfirm.paperbirdtech.com/chimney.php
 http://lawfirm.paperbirdtech.com/philanthropic.php
@@ -13,7 +13,23 @@ http://learn-us-brridge-help.typedream.app/
 http://leindisncieamrocea-1341831283.cos.sa-saopaulo.myqcloud.com/colheita1.png
 http://leindisncieamrocea-1341831283.cos.sa-saopaulo.myqcloud.com/manga1.png
 http://leindisncieamrocea-1341831283.cos.sa-saopaulo.myqcloud.com/sena1.png
+http://libss.0x504.com/cccc.sh
+http://libss.0x504.com/linux_386
+http://libss.0x504.com/linux_aarch64
+http://libss.0x504.com/linux_amd64
+http://libss.0x504.com/linux_arm5
+http://libss.0x504.com/linux_arm6
+http://libss.0x504.com/linux_arm7
+http://libss.0x504.com/linux_mips64
+http://libss.0x504.com/linux_mips64el
+http://libss.0x504.com/linux_mips_hardfloat
+http://libss.0x504.com/linux_mips_softfloat
+http://libss.0x504.com/linux_mipsel_hardfloat
+http://libss.0x504.com/linux_mipsel_softfloat
+http://libss.0x504.com/linux_ppc64el
+http://libss.0x504.com/xlh/cccc.sh
 http://lindnerelektroanlagen.de/INVOICE/AOG-3515110/
+http://lmlawcorp.com/cache/rentfree.zip
 http://local-update.com/RawabiJob.hta
 http://lodge-pilot-node-vegetables.trycloudflare.com/obe/01473463829.js
 http://lodge-pilot-node-vegetables.trycloudflare.com/obe/1.js

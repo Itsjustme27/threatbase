@@ -1,7 +1,7 @@
 # Threatbase Threat Intelligence Feed - Domains
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:08 +0000
 #
 v--blackfriday--walmart.com
 v-39.net
@@ -200,6 +200,8 @@ v0lt-sync.dbuswet.surf
 v0phld4rh0wj9ve2oour4g3bao16l1778588888.uaid.nmrodam.com
 v0pxasn54x6fhf8wwezd2n0lm7vn31778360885.uaid.nmrodam.com
 v0r.org
+v0ranijecdslxrb.com
+v0s1g2.launches.appsflyersdk.com
 v0su9ogte.com
 v0uj3koj55shr53go840ptea1hbot1779206692.uaid.nmrodam.com
 v0vktimuz9leun3frfo7slmr9ofou1777923859.uaid.nmrodam.com
@@ -335,9 +337,12 @@ v1sriz1nsf8u24oka57u7h3a9tx7n1777653145.uaid.nmrodam.com
 v1t1.zu.trickip.net
 v1ta-plate.chi8nondanyl.surf
 v1tj.jiguangie.com
+v1v1d.net
+v1vdjg.lat
 v1vid-sync.qantuni.lat
 v1x.362.mytemp.website
 v1x4f8.lat
+v2-ad-fdl.ap4r.com
 v2-ad.video.yximgs.com
 v2-api-channel-launcher.hismarttv.com
 v2-api.mooo
@@ -464,8 +469,10 @@ v2cigs.com
 v2engineering.it
 v2gamers.cl
 v2gmupm7o4zihc3.xyz
+v2gqvv.lat
 v2ii.gdt.qq.com
 v2jon8s24pybz0o5m3o27j27vkg5w1780838952.uaid.nmrodam.com
+v2meor.ink
 v2mi.gdt.qq.com
 v2mlblack.biz
 v2mlyellow.com
@@ -509,6 +516,7 @@ v3.green-ads.net
 v3.identitypxl.app
 v3.img.360kuai.com
 v3.jiathis.com
+v3.log.schoolyear.app
 v3.mpsuadv.ru
 v3.pjstat.com
 v3.realtimestack.com
@@ -598,7 +606,6 @@ v46hj.top
 v46srf0vsq0710kpzqs0he1ds267k1781192620.uaid.nmrodam.com
 v46uj91gh.com
 v476.reporterherald.com
-v47e4385.fununetadris.shop
 v47jx.top
 v47m17r8.cerocarey.com
 v4a5vyzdz75hpvgdgzdx22rpz3qzo1779818456.nuid.nmrodam.com
@@ -614,9 +621,11 @@ v4in1-si.click4assistance.co.uk
 v4in1-ti.click4assistance.co.uk
 v4k0lnfdcnyyi7bbztwiz6s2vtlhs1779491113.nuid.nmrodam.com
 v4lle-route.silver-dock.in.net
+v4mtsn.fit
 v4nm29za.life
 v4only.vip.prod.criteo.com
 v4opczt5e7sk4zb1qvyhu4h466tsm1780107207.uaid.nmrodam.com
+v4owrn.fit
 v4ox630nia.com
 v4qkugc9lip6cuukzpwumawz3rdv21780472891.nuid.nmrodam.com
 v4qu8nnt.azmoondadrasi.xyz
@@ -624,6 +633,7 @@ v4r9z-3jgr1.ads.tremorhub.com
 v4r9z-fjydq.ads.tremorhub.com
 v4surv.voice-of-customers.com
 v4ugifts.com
+v4wdkn.yoga
 v4webcybersecurity.com
 v4yleins27hv.com
 v4yo7l6wsinnvjtjlaareclofeh361770166514.uaid.nmrodam.com
@@ -692,6 +702,7 @@ v6-adashx.ut.taobao.com
 v6-api-share.mob.com
 v6-be-pack.pglstatp-toutiao.com
 v6-daily-reading-ad.qznovelvod.com
+v6-oqr.fit
 v6-reading-ad.qznovelvod.com
 v6-reading-ad.qznovelvod.com-1.download.ks-cdn.com
 v6-widget.51.la
@@ -745,6 +756,7 @@ v6epkvvoczpppzt5v1tekzqtz2exv1771566066.nuid.imrworldwide.com
 v6f6d8952.app-ads-txt.com
 v6goqr.hair
 v6ittn.mom
+v6j3nzt5k8r791wpi9szwmwnlsaxb1781475583.uaid.nmrodam.com
 v6jp6ece7n6phsnzepnkvnsz0o4xy1781280276.nuid.nmrodam.com
 v6jx.top
 v6k9pmuacycebsjwypkoz8b4fgbop1780773865.uaid.nmrodam.com
@@ -752,6 +764,7 @@ v6ka3dqhxh2z1reeolumcysvjgx1m1775444344.nuid.nmrodam.com
 v6mkivskgmj5nlblnmqtuipouezmr1779116413.nuid.nmrodam.com
 v6pxna.fit
 v6rxv5coo5.com
+v6tmap.fit
 v6tmap.hair
 v6upsj.cdn-settings.appsflyersdk.com
 v7-okx.org
@@ -832,11 +845,14 @@ v8guincho.com.br
 v8h5n35o.t6riol5563pyzlbqvnpiq1j3cbbn.cfd
 v8j1rkai1.com
 v8nted.fr
+v8oaxs.fit
+v8oaxs.work
 v8plx.vip
 v8push.pinsightmedia.com
 v8tb0o.cdn-settings.appsflyersdk.com
 v8tb0o.inapps.appsflyersdk.com
 v8tb0o.launches.appsflyersdk.com
+v8tdna.fit
 v8trck.com
 v8u3x0nndjyciejofj2nxlu9vnkr91780337947.uaid.nmrodam.com
 v8uq327bic54hq.cfd
@@ -1036,6 +1052,7 @@ vacationinouterbanks.com
 vacationinpebblebeach.com
 vacationmonday.com
 vacationrentalbydisney.com
+vacationrentalsyourway.com
 vacationrentaltips.sitey.me
 vacations4lovers.com
 vacationsanitaryskip.com
@@ -1073,6 +1090,7 @@ vacicorpus.ye.vc
 vacikoye.tripod.com
 vacillate.pfdnlwyu.in
 vacillatory-defect.000webhostapp.com
+vacjou.pics
 vackradalen.se
 vackraord.com
 vaclaimsupportservices.com
@@ -1191,6 +1209,7 @@ vafrike.ru
 vafsearches.com
 vaftechoucmo.com
 vafuiek.com
+vafuwae.pro
 vafvbqptlwd2syghxutjlrwj9rkyw1779816734.nuid.nmrodam.com
 vafw.adsafeprotected.com
 vafwlb.adsafeprotected.com
@@ -1359,6 +1378,7 @@ vajqbbaehuri.com
 vajracreations.com
 vajramconstructions.com
 vajrammatrimony.com
+vak-me.fit
 vak.mondnr.ru
 vak345.com
 vaka.is
@@ -1436,6 +1456,7 @@ valdmir.noriysha.ru
 valdmuz.ucoz.ru
 valdorenax24.com
 valdtor.hopto.org
+vale-davvero.com
 vale-gra.prefixwag.in.net
 valeanc.capriccio-nephew.in.net
 valeandhome.eu
@@ -1464,6 +1485,7 @@ valenetinternet.com.br
 valennevot.com
 valenovo.shop
 valensnine.pw
+valenstram.cyou
 valent.hopto.org
 valente-kevin.github.io
 valenteconsulting.it
@@ -1516,6 +1538,7 @@ valerii.org
 valerim9.com
 valeriodeberardinis.com
 valeriotheunisz.com
+valeripuv.info
 valeriypimenov.ru
 valeriysan.ucoz.ru
 valeriyvoykovski.myjino.ru
@@ -1543,6 +1566,7 @@ valewoodgoods.eu
 valf.atm.cp31.ott.cibntv.net
 valfanto.com
 valfardssamhallet.se
+valfood.pics
 valfortecmantenimiento.com
 valfortunance.net
 valgo.top
@@ -1556,6 +1580,7 @@ vali-g1.cp31.ott.cibntv.net
 vali.cp31.ott.cibntv.net
 vali2104.iceiy.com
 valiacs.ru
+valiant-thoughts.com
 valiant.pbphgwbr.in
 valiantfive.pw
 valiantmarkets.info
@@ -1704,6 +1729,7 @@ validity.join1440.com
 validity.turtl.co
 validityapp.com
 validityfour.pw
+validlift.healthbrainer.com
 validlip.com
 validlogin.top
 validlytwo.pw
@@ -1819,6 +1845,7 @@ valoramedia.com
 valorantfantasy.com
 valorantgame.info
 valoras.top
+valore-fundexsystem.com
 valorfirellc.com
 valorgestencia.com
 valorian-guild.c0.pl
@@ -1874,6 +1901,7 @@ valtrex.7h.com
 valtrexkauf.populr.me
 valtrexkaufen.populr.me
 valtrionava24.com
+valtrionzaplatform.com
 valtriveniq.top
 valu-span.dredg8asman.in.net
 valuable-bowl.com
@@ -1881,6 +1909,7 @@ valuable-distance.com
 valuable-input-048452.framer.app
 valuable-race.pro
 valuable.ml
+valuablea.digital
 valuablef.top
 valuablemarch.com
 valuablenumber.com
@@ -2004,6 +2033,7 @@ vamosmallorca.info
 vamossomewhere.com
 vamostodosnessa.com.br
 vamountainhomes.com
+vamoxesfin-engine.com
 vampandfade-dot-yamm-track.appspot.com
 vampandstuff.com
 vampandvelvet.shop
@@ -2158,6 +2188,7 @@ vanguard.demdex.net
 vanguard.online.com.szerelvenybolt.us
 vanguardair.com
 vanguardatlantic.com
+vanguardbreakingnews.pro
 vanguardenergypartners-my.sharepoint.com
 vanguardmmorpg.com
 vanguardnewsfocus.pro
@@ -2483,16 +2514,20 @@ vardtorg.ru
 varechchokier.shop
 varedirego.sslblindado.com
 varelascarservice.gr
+vareno.xyz
 varentiaa.top
+varentolirax.top
 varentolixa.top
 varesepotreji.com
 varesh.us
 vareza.net
+varf-bitluxetech.com
 varfolomeev.ru
 vargigsi.ru
 vargirgousa.net
 vargvg-adrevenue.appsflyersdk.com
 vargvg-cdn-settings.appsflyersdk.com
+vargvg-conversions.appsflyersdk.com
 vargvg-launches.appsflyersdk.com
 vari.com.mx
 variabilityaviationmutiny.com
@@ -2517,6 +2552,7 @@ varicoloredacarpet.tk
 varicorin.pl
 varicozzdorov.com
 varied.stream
+variedthose.giridharvegrestaurant.com
 varieinvel.cyou
 varietiescountryrecognitions.org
 variety.ca
@@ -2640,6 +2676,7 @@ vasecuncon.site
 vasedroom.tk
 vaseerooma.tk
 vasek.com.au
+vasepojirecas.site
 vaser-track.vm5apis.com
 vaserig.vm5apis.com
 vaseropla.tk
@@ -2796,6 +2833,8 @@ vasiliya2011.ucoz.ru
 vasisrestaurant.com
 vaskultura.atw.hu
 vasloy.com
+vasomringa.cyou
+vasontrex-app.com
 vasoplasdert.tk
 vasopvewjkach.site
 vasroc.pt
@@ -2908,6 +2947,7 @@ vastera.it
 vasterasstadsmission.se
 vastevent.startappservice.com
 vastinessprotonema.surf
+vastkasnova-engine.com
 vastlogicnode.marinergridhub.garden
 vastlogicweb.orbitmeshunit.garden
 vastmillions.com
@@ -2936,6 +2976,7 @@ vastushastraspecialist.in
 vastusyale.shop
 vastuvedinfra.org
 vastveit.no
+vastwavenet.com
 vastwnmx.100free.com
 vastwnmx.atspace.com
 vastwnmx.atw.hu
@@ -2982,6 +3023,7 @@ vatlph.icu
 vatname.info
 vatonlinecalculator.co.uk
 vatradornei.net
+vatrass.xyz
 vatrobran.hr
 vatsalavasthi.com
 vatshalupadhyay.github.io
@@ -3159,6 +3201,7 @@ vaxqfygv.atspace.com
 vaxqfygv.atw.hu
 vaxx.co
 vaxxy.serveirc.com
+vayalinkal.com
 vayaviajes.net
 vayffjeecump.com
 vayh.msxf.com
@@ -3291,6 +3334,8 @@ vbhlohqt.thepharmacymart.ru
 vbi-cantonalbank.ch
 vbiakpu.icu
 vbiexports.duckdns.org
+vbikea.icu
+vbiod.albertabitcoins.com
 vbity.com
 vbiuobj5z3nx7vjnrqxfsjtxygrb81779558437.nuid.imrworldwide.com
 vbiwduboatbill.review
@@ -3329,6 +3374,7 @@ vbng.at.sohu.com
 vbnhrmbifhptp.com
 vbnhyui.com
 vbnmsilenitmanby.info
+vbnreocdspxwwed.com
 vbnvvzedvgx.com
 vboczolyurln.cpcbroker.com
 vbodpfnmidge.review
@@ -3654,6 +3700,7 @@ vcpool.videosz.com
 vcpsvblj.com
 vcpv3lyuy041xkl-rexelusa.siteintercept.qualtrics.com
 vcpxqngfyulqg.website
+vcrhb.com
 vcricket.tk
 vcrurwxldi.pw
 vcruut.info
@@ -3668,6 +3715,7 @@ vcsa.vmware.com
 vcsc.outbrain.com
 vcsc1fp2f.com
 vcsclicks.online
+vcsevsegfr.com
 vcsgit.com
 vcsgroup.sc
 vcslgntf42zkj4i6bvmig999hu2v01778519210.uaid.nmrodam.com
@@ -3688,6 +3736,7 @@ vcust.visitnwark.com
 vcutrgmaritage.review
 vcuwyfoocergpjx.fgppchg.fgpp.com
 vcvbogndkwheb.space
+vcvcxet34h56.lat
 vcvisowccsamlet.review
 vcvncewkfhtmp.website
 vcvnl.customers.edgetag.io
@@ -4280,7 +4329,6 @@ veganworld.in
 veganyumyum.com
 vegapino.com
 vegar.info
-vegas-client-log-gt7.s3.us-east-1.amazonaws.com
 vegas-days-casino.fr
 vegas-hero-appconnexion.fr
 vegas-hero-applogin.fr
@@ -4425,6 +4473,7 @@ vegrultaucoa.net
 vegslb.com
 vegsundvideo.com
 vegyajkt4f4ziac0emazrrjfcj3k41770811500.nuid.imrworldwide.com
+vehaje.icu
 vehb.chromeflack.in.net
 vehemenceoccupied.com
 vehemencepoint.com
@@ -4471,6 +4520,7 @@ veiloc.com.br
 veilstroooll.info
 veilsuccessfully.com
 veilsyndraxapp.com
+vein-app-cdn.gsafc.com
 veindiseaseclinic.com
 veineryhyoidal.cfd
 veinlet.smousedisomus.com
@@ -4551,6 +4601,7 @@ vel-tideal.currencysn0ut.pics
 vel-tideal.n1ghtridge.in.net
 vel-tideen.armeniansgrate.in.net
 vel-valeis.mist3briar.garden
+vel2xo.top
 vel8xo.cfd
 vela.groundtruth.com
 vela.iad-01.braze.com
@@ -4577,6 +4628,7 @@ velasportingclub.it
 velat59ooeroughed.info
 velatestubb.com
 velatoursrls.com
+velatraai-system.com
 velazquez-bustamante.com
 velcom.ca
 velcome-club.com
@@ -4599,6 +4651,7 @@ veleda.fr
 veledguse.ru
 velenledger.cyou
 velentledger.cyou
+velenzorix-platform.com
 velenzorix.net
 veleriasangiorgio.com
 velerosa.it
@@ -4613,9 +4666,11 @@ velflux0or.tockentrue.in.net
 velforgeex.storm-ink.in.net
 velfssiowmyos.com
 velg.deepoak.in.net
+velgencore-system.com
 velgo.ltd
 velhleejddigq.online
 velhoranzinza.com.br
+veliabraiome.shop
 velichko.ucoz.ru
 veliko-tarnovo.co.cc
 velinaboutiquewien.com
@@ -4660,15 +4715,19 @@ velmorafashion.site
 velmoragoodshoping.site
 velmoraine.shop
 velmoraxa.pro
+velmoria.pro
 velmorio.shop
 velmoxsledger.cyou
 velnador.com
+velnarot.com
 velnexor3.dark-hypnosis.in.net
 velnix-grid.com
 velnixx.shop
+velnoriq.xyz
 velnoritavo.com
 velnukoq.shop
 velo-bet.fr
+velo-opcionadorestech.com
 velo.qaubctgg.workers
 velo2.mon-application.com
 velo2max.com
@@ -4711,12 +4770,14 @@ velonaro.shop
 velonawarehouse.com
 velonirise.shop
 velontira.site
+veloopcionadores.net
 veloprokat1.nethouse.ru
 velora-clean.com
 velora-shine.com
 veloralabsnext.org
 veloraledger.com
 veloran.org
+veloranexensoftware.com
 velorant.info
 velorantivora24.com
 veloraptor.bg
@@ -4757,12 +4818,14 @@ velqorix.shop
 velqoru.shop
 velquon-sync.com
 velranelle.shop
+velratrion.top
 velravo.shop
 velrengtopitdown.info
 velro84.top
 velroza.shop
 velskoenyacjzzzz.download
 velspire3on.expans-homeland.in.net
+velstandpaynor-software.com
 veltepelew.net
 velti.com
 veltide4a.kymle1rax.in.net
@@ -4784,6 +4847,7 @@ veltraxauron-fr.fyi
 veltraxauron.com
 veltraxis.icu
 veltraxis.shop
+veltraxo.shop
 veltrionex365.pro
 veltrionexus.xyz
 veltrique.shop
@@ -4801,9 +4865,14 @@ velvale7on.vortaqen.in.net
 velvenor4.weplord.lat
 velvenor9.expans-homeland.in.net
 velvepastu.cloafade.in.net
+velvet-axiom.com
+velvet-district.com
 velvet-frame.vexon6ar.lat
 velvet-glide.com
 velvet-mode.store
+velvet-shade.com
+velvet-sprintable.com
+velvet-sylph.com
 velvet.com.br
 velvet.travel
 velvetallurex.com
@@ -4811,6 +4880,7 @@ velvetarrowhawk.com
 velvetautu.cinderbay.in.net
 velvetcalm.5toravex.lat
 velvetdock.com
+velvetglen.com
 velvetlayout.rosevale.garden
 velvetledger.buzz
 velvetledgercapital.com
@@ -4931,6 +5001,7 @@ vendorwhole.chuv2shfile.in.net
 vendrazimidgets.gq
 vendreniveaumine.tk
 vendretude.tk
+vendtechvending.link
 vendwatch.dreamhosters.com
 veneberg.ru
 venediktaciri.com
@@ -4946,6 +5017,7 @@ veneralhiring.cfd
 venerated-emotion.pro
 venerated-result.pro
 veneservers.com.ve
+venetesfluidly.shop
 venetia.iad.appboy.com
 venetian.evyy.net
 venetianbanquetcentre.com
@@ -5005,6 +5077,7 @@ venividivici.host
 venividivici.space
 venixortrader.net
 venixortrader29peak.com
+venixortraderpeak-app.com
 venixortraderpeak.com
 venkali.shop
 venkata-sreenivas.github.io
@@ -5016,6 +5089,7 @@ venkatsubramaniam.ga
 venketeshudyog.com
 venkindead.zone
 venkyb.com
+venkymaskot.com
 venminder.com
 venmjz2kjuwjcjay2ghcsccv8533r1779209134.uaid.nmrodam.com
 venmlog.info
@@ -5071,6 +5145,7 @@ ventanewbalance.com
 ventapublic.com
 ventaroo.com
 ventas.cpcempower.com
+ventascamporeal.com
 ventasdelocura.com.ve
 ventasenruta.mx
 ventasimpact.com
@@ -5093,6 +5168,7 @@ ventery.com
 ventes-privees-lacoste.fr
 ventes-privees-outlet.fr
 ventespriveesfrancaises.fr
+ventherapy.com
 ventilacionindustrial-amsare.com
 ventilatedsysrveit.download
 ventilatii-industriale.ro
@@ -5130,6 +5206,7 @@ ventrequmus.com
 ventricuncut.nfcfhosting.com
 ventrilo.cfd
 ventrilopy.com
+ventriloquistherapy.com
 ventro.info
 ventrosem.com
 ventrust.ro
@@ -5138,6 +5215,7 @@ ventsmagazine.co.uk
 ventsmagazine.com
 ventsorbruntgroostv.pro
 ventsorbrunthaav.pro
+ventsorbrunthaavgrelm.pro
 venttclrhkx.com
 ventu2016.blogspot.com
 ventupros.com.ve
@@ -5359,11 +5437,14 @@ vercel-vitals.axiom.co
 vercel1c7e346235f63d5a.vercel.app
 vercel21da7c9522ead969.vercel.app
 vercel3266cbda4916e9a3.vercel.app
+vercel7a4e3294dfa97ee3.vercel.app
 vercel7c0d7509f3a41bdd.vercel.app
 verdadeoculta.com.br
 verdaedevelopment.com
 verdant-gear.com
+verdant-guardian.com
 verdant-safari.com
+verdant-swell.com
 verdantanswer.com
 verdantbota.host
 verdantcore.life
@@ -5373,8 +5454,10 @@ verdantg.info
 verdantlabyrinth.com
 verdantloom.com
 verdantsculpture.com
+verdaro.shop
 verdasziokkhy.tk
 verdaszokyhgr.tk
+verdaxo.shop
 verdeamarelo.com.ar
 verdebs.com
 verdecasino-fr.fr
@@ -5406,14 +5489,29 @@ verdialebetcasino.fr
 verdict-rf.ru
 verdict.abc.go.com
 verdictx.tk
+verdienen-sie500-soft.com
+verdienen-sieapp.com
 verdier-creditmutuel.fr
 verdifica.com
 verdilugano.ch
 verdimoveis.net
 verdindungingsubsist.qpon
+verdixa.shop
+verdixa2.shop
+verdixa24.shop
+verdixo.shop
+verdixo24.shop
+verdizo.shop
+verdlix.shop
 verdmanque.com
+verdnoro.shop
 verdonk.org
+verdoro.shop
+verdqor.shop
 verdsequin.icu
+verduno.shop
+verdvex.shop
+verdzeno.shop
 vereb.com
 vereenigingtyres.co.za
 verefication.com
@@ -5516,6 +5614,8 @@ vericationinterac.com
 vericatioon2232.support20.cf
 verichts-datopsgestgt.fwh.is
 vericlick.com
+veridavaultsolution.com
+veridex-pulse.com
 veridfyssavc.b-cdn.net
 veridiang.info
 veridianv.info
@@ -7082,6 +7182,7 @@ veritasresults.com
 veritassignup.com
 veritasstream24.com
 veritasupdatesalerts.com
+veritatem.org
 veritatemloquiturest.com
 verite.pluto.ro
 verite1.com
@@ -7702,6 +7803,7 @@ vernonpitout.com
 vernonspurtrash.com
 vernonvintners.ca
 vernyomasgondok.hu
+vernytradex-system.com
 vero-henkiloasiakkaa.fi.marslugs.com
 veroabelos0.com
 verodsp.ml
@@ -7783,8 +7885,10 @@ versement.do.am
 versesofasong.tk
 versetime.com
 versi1.vst-production.com
+versiallow.embroideryenterprises.com
 versicherungsvermittlung.de
 versigerda.com
+versilabel.carmen-carmen.com
 versimag-relay.iocnt.net
 versinehopper.com
 version-ledger.live
@@ -7888,6 +7992,8 @@ vertebrate01.info
 vertelka.ru
 verteshell.cyou
 vertex-funds.com
+vertex-pulse-edge.com
+vertex-railcore-solution.com
 vertex-shop.ru
 vertex.cat
 vertex28.com
@@ -7895,6 +8001,8 @@ vertexai.goog
 vertexasset.com
 vertexcalcate.info
 vertexcascadeup.info
+vertexchainsoftware.com
+vertexcoinexistech.com
 vertexcraftless.info
 vertexechod.info
 vertexfireup.info
@@ -7908,6 +8016,7 @@ vertexmythd.info
 vertexomsk.ru
 vertexone.net
 vertexoty.info
+vertexpaycore-soft.com
 vertexpulseless.info
 vertexpulseup.info
 vertexridgeup.info
@@ -8137,6 +8246,7 @@ vestelli.it
 vestemoncler.top
 vestemonclerhommepascher.fr
 vesterinenyhtyeineen.fi
+vesterprofitsystem.com
 vestes-onstore.com
 vesthimmerland.dk
 vesti.azontree.com
@@ -8182,6 +8292,7 @@ vetaderin.gq
 vetbaudet.fr
 vetcheckveteriner.com
 vetchesthiever.com
+vetchnasco.cyou
 vetchsoda.org
 vetder.org
 vetealaverch.com
@@ -8243,6 +8354,7 @@ vetoplain.com
 vetordigital.com.br
 vetorfarma.com.br
 vetoshkin.pro
+vetotrazne.com
 vetranswgl.com
 vetree.org
 vetri.skillji.com
@@ -8292,6 +8404,7 @@ vevugginvtju8g.science
 vewerahagoti.000webhostapp.com
 vewikvuvrucdc.online
 vewjmqxssscr.com
+vewojyo.com
 vewpxodougmmt.site
 vewqmb.site
 vewrb.italisumo.at
@@ -8320,9 +8433,11 @@ vexmoviesorg.stream
 vexolinu.com
 vexoltd.com
 vexora.alwaysdata.net
+vexorafinplatform.com
 vexta.com.co
 vexton99.ddnsking.com
 vextras.com
+vextrazolplatform.com
 vextslows.com
 vexuinorali.info
 vexunorqati.xyz
@@ -8417,6 +8532,7 @@ vff6p.espclicks.appsflyer.com
 vffkhnbxpncce.site
 vffncubbivrcm.website
 vffnwjimkc.com
+vffrf.klenpare.com
 vffxm.cn
 vffyvridwaa.com
 vffzemb.tk
@@ -9240,6 +9356,7 @@ viawap.tk
 viaxxstauffacher.ga
 viaxxstauffacher.gq
 viay2m.112.2o7.net
+vib-zo.fit
 viba.org.pe
 vibackup.net
 vibada.com
@@ -9268,6 +9385,7 @@ vibegonet.site
 vibehouserecords.com
 vibeledger.click
 vibelinker.co.uk
+vibely.gifts
 vibeneeded.info
 vibenomics.com
 vibenotch.app
@@ -9320,6 +9438,7 @@ vibramsbuy.com
 vibrance-vitamin-cserum-au.company.site
 vibranceversus.ru
 vibrandz.in
+vibrant-harbor.com
 vibrant-help-732270.framer.app
 vibrant-life-keto-gummies-au.company.site
 vibrant-something-636728.framer.app
@@ -9486,6 +9605,7 @@ victor5926.realmaking.club
 victoralifts.com
 victorance.com
 victorandson.com
+victoravelinodg.com
 victorbailey.com
 victorc21.com
 victorcasino.com
@@ -9556,6 +9676,7 @@ victormovies.org
 victorpaint.cn
 victorpetrik.com
 victorpotapov.ru
+victorremy.shop
 victors357.github.io
 victorsanchezbeato.com
 victorsharov.com
@@ -9698,6 +9819,7 @@ vidaplaystation.com.br
 vidarbhabreakingnews.com
 vidarbhamitramandalboisar.com
 vidarnine.pw
+vidasana.thebundleco.com
 vidasmiass.z13.web.core.windows.net
 vidassets.terminus.services
 vidativa.org
@@ -9802,6 +9924,7 @@ video-dsp.pddpic.com
 video-dtp1405.sbs
 video-dtp1905.sbs
 video-dtp6.vercel.app
+video-err-log-1259242701.cos.ap-beijing.myqcloud.com
 video-events-trk-alb-398729061.eu-central-1.elb.amazonaws.com
 video-events.publishers.advertising.a2z.com
 video-files-24.cfd
@@ -9984,7 +10107,6 @@ videobaba.xyz
 videobabe.net
 videobay.com
 videobb.com
-videobiome.backyard.in.net
 videoblog.kilu.de
 videoblogrecording.com
 videobox.com
@@ -10038,10 +10160,10 @@ videocdnmetrika41.com
 videocdnmetrika42.com
 videocdnmetrika43.com
 videocdnmetrika44.com
-videocdnmetrika47.com
 videocdnmetrika48.com
 videocdnmetrika49.com
 videocdnmetrika5.com
+videocdnmetrika50.com
 videocdnmetrika6.com
 videocdnmetrika60.com
 videocdnmetrika61.com
@@ -10615,6 +10737,7 @@ view-desktop-us.wixstudio.com
 view-doc-g5mz.sandyroby1985.workers.dev
 view-doc.thaiengine.com
 view-doc939484.xyz
+view-dropbox.com
 view-eng-ndax---cdn--auth.webflow.io
 view-ettore-apps.wixstudio.com
 view-extnsions-pages.wixstudio.com
@@ -10726,6 +10849,7 @@ viewdpdfdocument.weebly.com
 viewdrivers.com
 vieweasy.net
 viewedfive.pw
+viewer-analytics.boxcast.com
 viewer-demo-themexpose.blogspot.com
 viewer.content.glympse.com
 viewernine.pw
@@ -10852,6 +10976,7 @@ viewworthwhile.com
 viewycaulds.shop
 viewytwo.pw
 viewzooskpics4.weebly.com
+vif-valtrix-software.com
 vif1us8fqkahtfgbdjdopmqnog8kk1772144225.nuid.imrworldwide.com
 vifgbakswritership.review
 vifjekjg.com
@@ -10960,6 +11085,7 @@ vigorousimprove.soulthreshold.com
 vigorouslygreed.com
 vigorouslymicrophone.com
 vigorouslyrutmonsieur.com
+vigorousm.pics
 vigorouspicture.pro
 vigorousshower.com
 vigorvita-male-gummies-reviews.company.site
@@ -11010,6 +11136,7 @@ viidah.com
 viidan.com
 viidedss.com
 viidihpwwzbbe.store
+viidle.net
 viidokvg.com
 viidsyej.com
 viifarareshareltd.ddns.net
@@ -11106,6 +11233,7 @@ vikaskanungo.in
 vikaspawar-dev.github.io
 vikaumar.github.io
 vikcg.igg.biz
+vikennorr-chain360app.com
 vikeybacki.usa.cc
 viki-s.com
 viki.biz
@@ -11135,6 +11263,7 @@ vikix.000webhostapp.com
 vikkemeister.com
 vikkers.net
 vikkuthecr.000webhostapp.com
+viklarskymail.com
 vikoli.000webhostapp.com
 vikont24.ru
 vikovcwud.com
@@ -11224,7 +11353,9 @@ vilidsss.com
 vilifer.pt
 vilifytwo.pw
 vilipendfour.pw
+vilipoy.com
 vilitram.com
+vilivi.xyz
 villa-azzurro.com
 villa-babin-ranc.com
 villa-du-golf-agadir.com
@@ -11382,6 +11513,8 @@ villepariis.fr
 villeperrosguirec.fr
 villepleneufvalandre.fr
 villepouguesleseaux.fr
+villeroy-bocheu.com
+villeroy-bochoutletshop.com
 villeroyat.fr
 villeroyboch-official.shop
 villesaintgalmier.fr
@@ -11547,6 +11680,7 @@ vincenzodellavecchia.xyz
 vinceoutlet.fr
 vincescanlo.wixstudio.com
 vincesnine.pw
+vincetile.com
 vincheck24.com
 vinchezmoi.com
 vinci-airports-sas.fr
@@ -11594,6 +11728,7 @@ vincopoker.com
 vinculatwo.pw
 vindanalytics.com
 vindemar-gadgets.ch
+vinderclub.com
 vindetect.cz
 vindexkor.eu
 vindexmental.icu
@@ -11751,6 +11886,7 @@ vinsight.de
 vinsportiataymo.com
 vinsremygruber.be
 vinstaller.com
+vinstcorebit-system.com
 vinstigo.com
 vinstoriainvrevo.com
 vinstraden.se
@@ -11828,12 +11964,25 @@ vinted.01289523rt.shop
 vinted.01384921634.shop
 vinted.0523892h-23.lat
 vinted.092810-oferta.shop
+vinted.15334265x2.sbs
+vinted.172579g7.lat
+vinted.1733276d45.sbs
+vinted.174257d5.sbs
+vinted.178352476v6.sbs
+vinted.18235278z6.sbs
+vinted.18256342x3.sbs
+vinted.1826346f7.sbs
+vinted.182652h2.sbs
+vinted.183528x56.sbs
+vinted.1974275r5.sbs
+vinted.23304.click
 vinted.2387428g923g2-f32.lat
 vinted.2834912oferi180.shop
 vinted.342879r2g312o.lat
 vinted.3675.help
 vinted.3928290h34.click
 vinted.432874128gorp230912.lat
+vinted.487579.icu
 vinted.4897.click
 vinted.5385.click
 vinted.552412214-apple-ipad-pro-11-m4-256gb.sbs
@@ -11856,8 +12005,10 @@ vinted.9017348916743.lat
 vinted.925389h451.shop
 vinted.94320324.click
 vinted.99282671000-oferta-apple-macbook-m3-16-512-gb.cfd
+vinted.99571.click
 vinted.account-securecheck.com
 vinted.accountverif-finalstep.click
+vinted.appguard17.sbs
 vinted.aukcj239058239023.bond
 vinted.aukcj82180-43h4.shop
 vinted.aukcj823549523012.lat
@@ -11867,6 +12018,7 @@ vinted.checkingline77.cfd
 vinted.clients-information.click
 vinted.clients-pages.click
 vinted.clients-verification.click
+vinted.confirmation-order9158629.cyou
 vinted.cu4yev.lol
 vinted.detailsaccess.icu
 vinted.form83613.cfd
@@ -11878,50 +12030,129 @@ vinted.guardianappsecure80.cfd
 vinted.guardianappsecure90.cfd
 vinted.iafer72437923-1243.lol
 vinted.iaukcj8321920-h345.lat
+vinted.id-5496032.cfd
 vinted.id-85402.cfd
+vinted.id39185.help
+vinted.id4653.cfd
 vinted.id5431.click
 vinted.id54932.sbs
 vinted.id5930.click
+vinted.id6481.click
+vinted.id68594.help
+vinted.id7213.com
 vinted.id7378.click
+vinted.id8379263.com
+vinted.id85132.help
 vinted.id854973.com
+vinted.ido389144.top
+vinted.ido468145.top
+vinted.ido468146.top
+vinted.ido476134.top
+vinted.ido485579.top
+vinted.ido485679.top
+vinted.ido485779.top
+vinted.ido568142.top
+vinted.ido568143.top
+vinted.ido576644.top
+vinted.ido578143.top
+vinted.ido578543.top
+vinted.ido578644.top
+vinted.ido766134.top
+vinted.ido766141.top
+vinted.ido766142.top
+vinted.ido789444.top
+vinted.ido789445.top
+vinted.ido789455.top
+vinted.ido984554.top
 vinted.idticket14467.cyou
 vinted.idticket17782.cyou
 vinted.info336785.com
 vinted.informationdirect.cfd
+vinted.l58235724.cfd
 vinted.myaccount-sprzedane-przedmioty.info
 vinted.oaikcj823012-340.lat
 vinted.ofe1924812034-yh345.shop
 vinted.ofert34592512-509.lat
 vinted.oferta-04058.shop
+vinted.oferta-1294-pl.shop
 vinted.oferta-1812907-apple-macbook-pro-14-m4.icu
+vinted.oferta-1982.top
+vinted.oferta-3743-pl.shop
+vinted.oferta-37484-pl.shop
+vinted.oferta-38121-pl.shop
+vinted.oferta-38433-pl.shop
+vinted.oferta-4490-pl.shop
+vinted.oferta-483002-pl.shop
+vinted.oferta-8473-pl.shop
+vinted.oferta-8499-pl.shop
+vinted.oferta-9488-pl.shop
+vinted.oferta-94952-pl.click
+vinted.oferta-9584-pl.shop
 vinted.oferta2948274939274827.shop
+vinted.oferta65422643.shop
+vinted.oferta87571321.click
 vinted.opo127349h34.shop
+vinted.order-id1839343.help
 vinted.order-id578912.com
 vinted.order-verification.xyz
+vinted.order52168-records.com
 vinted.orderconfirmation-verif.click
+vinted.ordine-120183.com
 vinted.pageinfodirect.cfd
 vinted.paribastransaction7683213.click
+vinted.pl-00459-oferta.shop
 vinted.pl-0051294-oferta.shop
 vinted.pl-0092625282vsgacsnjhw726252892bsvsghs.icu
+vinted.pl-018968981.lol
 vinted.pl-019273771bavasgefskk62522638ogloszenie.cfd
 vinted.pl-02827736nahsggamma11953gfdvn01638.sbs
 vinted.pl-03049-oferta.shop
 vinted.pl-03585-oferta.shop
 vinted.pl-03587-oferta.click
+vinted.pl-039401-oferta.shop
 vinted.pl-045803-oferta.shop
 vinted.pl-049049-oferta.shop
 vinted.pl-04931-oferta.shop
 vinted.pl-050902-oferta.shop
+vinted.pl-0956-oferta.shop
+vinted.pl-0958-oferta.shop
 vinted.pl-17625251512762agfafahh17363638fhsghs2.sbs
+vinted.pl-38843-oferta.shop
+vinted.pl-44329-oferta.shop
+vinted.pl-4774-oferta.shop
+vinted.pl-482002-oferta.shop
+vinted.pl-48919241455.lol
+vinted.pl-49384-oferta.shop
+vinted.pl-56901895.lol
+vinted.pl-5890184912.lol
+vinted.pl-58901879512.lol
+vinted.pl-58912412421.xyz
+vinted.pl-5891785122.lol
+vinted.pl-589178571.xyz
+vinted.pl-589178941.xyz
+vinted.pl-5891789581.lol
+vinted.pl-5891798124.lol
+vinted.pl-58918795212.lol
+vinted.pl-589198541.lol
+vinted.pl-599185798124.lol
+vinted.pl-635373625373.shop
 vinted.pl-662714331166keskahsgadj826255238f34.sbs
 vinted.pl-7162811hagahn1871233trrewey99116hwysga6.cfd
 vinted.pl-72625515262hagafsgjsj726252678gagag82762693.sbs
+vinted.pl-73841212-oferta.shop
+vinted.pl-79921-oferta.shop
 vinted.pl-8271555171717qhgafagba2726582gfssggg3.sbs
 vinted.pl-827262bwbgagsbs1762526bsbgsgsb2662526.cfd
 vinted.pl-82726516jshsgabjaj272662727bsbsgbz7162683.sbs
+vinted.pl-89179578124.lol
+vinted.pl-9340004-oferta.xyz
 vinted.pl-937265287bsggsnng725252sgsgj889902.sbs
+vinted.pl-9643265oferta.shop
+vinted.pl-994003-oferta.shop
 vinted.pl-kupteraz83421957.info
 vinted.pl-lllwhhsso01827633manssbddhsgg9029263lahehsbsnn56448544.sbs
+vinted.pl-oferta-0394.shop
+vinted.pl-oferta-88291.click
 vinted.pl-oferta-kategorie-polecane0293924.sbs
 vinted.pl-oferta-kategorie-polecane29099.sbs
 vinted.pl-oferta-kategorie-polecane292399.sbs
@@ -11929,9 +12160,11 @@ vinted.pl-oferta-kategorie-polecane293324285.sbs
 vinted.pl-oferta-kategorie-polecane2944040.sbs
 vinted.pl-oferta2198749-apple-macbook-pro-m4.digital
 vinted.pl-oferta4262-apple-watch-ultra-3.sbs
+vinted.pl-oferta4582753.lol
 vinted.pl-oferta47470-nowy-apple-watch-ultra-3.sbs
 vinted.pl-oferta5013582-apple-macbook-pro-m4-24gb.site
 vinted.pl-oferta53334-macbook-air-m2-8gb-256gb.shop
+vinted.pl-oferta543321.lol
 vinted.pl-oferta6442181-nowy-dron-dji-air-3-fly.sbs
 vinted.pl-oferta6871669-apple-watch-ultra-2-gps-cellular.sbs
 vinted.pl-oferta687185-apple-watch-ultra-2-gps-cellular.sbs
@@ -11939,9 +12172,16 @@ vinted.pl-oferta703359-apple-watch-ultra-2-gps-cellular.sbs
 vinted.pl-oferta7960703-sprzedam-macbook-air-m1.sbs
 vinted.pl-oferta832719.info
 vinted.pl-oferta90408-nowy-dron-dji-air-3-fly.sbs
+vinted.pl-oferta93625279.shop
 vinted.pl-oferta9651630-apple-macbook-pro-m4-24gb.pro
 vinted.pl-uwysgzbnn2684882ogloszenie33571622.cfd
 vinted.pl-vsgshdj397374839ogloszenie918373782.sbs
+vinted.pl44389494.shop
+vinted.pl53633894.shop
+vinted.pl62638394.shop
+vinted.pl63526289oferta.shop
+vinted.pl933686467oferta.shop
+vinted.pl946353738.shop
 vinted.plad2gsgaas17xk.icu
 vinted.plad2sshsgs12xk.icu
 vinted.plad2sshsgs18xk.icu
@@ -11966,6 +12206,7 @@ vinted.prywan5238729h-45.lat
 vinted.prywatn3527u19290123.lat
 vinted.prywatn83812034.bond
 vinted.prywatne53289012.shop
+vinted.purchase6495.com
 vinted.purchase9533.com
 vinted.quick-action1.com
 vinted.rtb.monetixads.com
@@ -11989,6 +12230,7 @@ vinted.smart239124039.cfd
 vinted.team-authentificatlon.com
 vinted.team-authentificatlon.pro
 vinted.team-veriflcation.com
+vinted.updatesform.com
 vinted.verification-accountsseller.click
 vinted.verification-confirmorder.click
 vinted.verification-saleraccount.click
@@ -11999,16 +12241,25 @@ vinted.veriforder-account.click
 vinted.verify-id.click
 vinted.verify-pay.cyou
 vinted.verify21304.work
+vinted.wiosna-2026-19350.sbs
+vinted.wiosna-2026-265932.click
+vinted.wiosna-2026-983742.click
+vinted.wiosna-2026-nr638942.sbs
+vinted.wiosna-2026-nr73921.click
 vinted0497.incomitsis.cam
 vinted1848.incomitsis.cam
 vinted3811.operations.vu
 vinted5953.operations.vu
 vinted8321.operations.vu
 vinted8699.sellon.help
+vintedbhkvv6b0ex.receive-payment.help
+vintede8av6p9bl1.receive-payment.help
 vinteditspancake.teconge.lat
 vintedpaiementsecurise.fr
+vintedqnmkxx3bno.receive-payment.help
 vintedreselling.eu
 vintedsupport.id-28923.help
+vintedth1o40zyyp.receive-payment.help
 vintee.fr
 vintef.fr
 vinten-uy.com
@@ -12179,6 +12430,7 @@ vip-double-profit.com
 vip-double-profit1.com
 vip-doubleprofit1.com
 vip-doubleprofit7.com
+vip-episz.waw.pl
 vip-flirt-here.com
 vip-flirt-here1.com
 vip-girl-dreams-now.com
@@ -12343,6 +12595,7 @@ vipdeit.com
 vipdente.com.br
 vipdesign.ba
 vipdine.space
+vipdiscountstore.com
 vipdn123.blackapplehost.com
 vipdoubleprofit11.com
 vipeakchina.com
@@ -12466,7 +12719,6 @@ vipon.fr
 viporalsurgery.com
 viportal.co
 viportesa.altervista.org
-vipozon.shop
 vippass.com.ve
 vippayqianbaoguanfangxiazaianzhuang.com.cn
 vippdevelopers.com
@@ -12551,6 +12803,7 @@ vipvoetbal.be
 vipvs.com
 vipwealthmanagement.net
 vipweb.com
+vipwin40.com
 vipwm.cc
 vipwojas.click
 vipwomans-zone.org
@@ -12567,6 +12820,7 @@ viqeievqdsac.co.uk
 viqfxgmgacxv.com
 viqmadjqndqkm.com
 viqsxigjk.fingerhi.net
+viquxeu.pro
 viqvdfsnow.download
 vir-payl-instant.fr
 vir-wer-xx.fr
@@ -12656,15 +12910,19 @@ virastribu.cyou
 virb.com
 virb.videoresourse.com
 virbyadvertising.com
+vircarts.com
 vircom.cz
 virdao.com
+vire-elvonfull-system.com
 virelairushiercurf.cfd
 virelaxonix.com
 vireline.shop
 virellaa.shop
+virellahome-eu.shop
 virellakrantrixavor.site
 virellanovix.site
 virelleshop.shop
+virellto.site
 virelon.com
 virelona.shop
 vireluo.com
@@ -12681,11 +12939,13 @@ virements-creditmutuel.fr
 virements-sepa.fr
 virements-sg.fr
 virementssepa.fr
+viremhowto.cyou
 virentcamused.qpon
 vireoledger.com
 virestone.shop
 virevogue.shop
 virewin.com
+virex-finance.com
 virex-valor-xl-profile.company.site
 virexbrin.cyou
 virexlico.cyou
@@ -12907,6 +13167,7 @@ virtualvincent.com
 virtualwebdata.com
 virtualwifirouter.com
 virtualworldcommunity.com
+virtue-gainlux-soft.com
 virtue.nu
 virtue.pfdnlwyu.in
 virtuedeadlock.com
@@ -13303,6 +13564,7 @@ visahousebangladesh.com
 visakhatravels.com
 visam.info
 visana.fr
+visanet-do.com
 visanicu.xyz
 visaoconsulting.com.br
 visaodigitalcftv.com.br
@@ -13340,6 +13602,7 @@ viscid-stencils.000webhostapp.com
 viscidcowpatspaneler.cfd
 viscircuskoning.nl
 viscofl.xyz
+viscortix-engine.com
 viscosimetro.com.br
 viscous-stomach.000webhostapp.com
 visdeal-nl.shop
@@ -13423,7 +13686,9 @@ visio6n.info
 visio7nn.info
 visio9nopt.info
 visiomob-relay.iocnt.net
+vision-amrix-pip.com
 vision-anime.com
+vision-axid-aisystem.com
 vision-group.co.in
 vision-hub.pl
 vision-i1-sync.primasfera.in.net
@@ -13463,6 +13728,7 @@ visionaryproperties.com
 visionaryrebelproductions.com
 visionarystartingups.net
 visionarytimeledger.digital
+visionavonexlab.net
 visionbahrain.com
 visionbg.com
 visionbits.net
@@ -13491,6 +13757,7 @@ visiongroupghana.com
 visiongroups.co.in
 visionhvac.in
 visioniconsulting.com
+visionkantrexx-system.com
 visionlasertech.com
 visionlat.com
 visionmemorable.com
@@ -13544,6 +13811,7 @@ visit-website.com
 visit-x.net
 visit.asb.co.nz
 visit.digidip.net
+visit.fd2gxl.top
 visit.homepagle.com
 visit.net-ce31.stream
 visit.news
@@ -13738,6 +14006,7 @@ visospect.fair-2sale.com
 visovativ-shop.de
 vispac.co.th
 visper.ite.tul.cz
+visporaseek-soft.com
 vispra.com
 vissale.vn
 visscurare.cfd
@@ -13774,6 +14043,7 @@ vistaprint-coupon-code.com
 vistaprinte.fr
 vistaproblems.com
 vistar.com.sg
+vistarahub.org
 vistarmedia.com
 vistarsagency.com
 vistas-update.com
@@ -14042,6 +14312,7 @@ vitalityxray.com
 vitalityy.shop
 vitalixy.gifts
 vitalknowledgedaily.com
+vitalkompass-de.com
 vitalkrumba.com
 vitallife.info
 vitalliimoveis.com
@@ -14242,6 +14513,7 @@ vittoriamall.com.br
 vittoriobeerbaum.com
 vittuone.leganord.org
 vitufuj.com
+vituprosin.cyou
 vitus.com
 vitvasconcelos.github.io
 vityas-helpers.ru
@@ -14315,6 +14587,7 @@ vivalu.com
 vivamob.net
 vivamoda.by
 vivamusica.sk
+vivanox.shop
 vivaochoro.com.br
 vivapays.com
 vivapremio.vercel.app
@@ -14369,6 +14642,7 @@ viveseguro.ec
 viveteria.com
 vivetivcuggz.com
 vivetool.com
+vivetucartastral.com
 vivezlinfo.fr
 vivgilance.fr
 vivi3-watch.mucus-rafter.in.net
@@ -14383,7 +14657,11 @@ vivid-clutch.com
 vivid-demand.pro
 vivid-funding.com
 vivid-ipad-wallpaper-news.blogspot.com
+vivid-manor.com
 vivid-markets.com
+vivid-mesh.com
+vivid-outings.com
+vivid-plot.com
 vivid-pond.com
 vivid-pool.com
 vivid-profit.com
@@ -14456,6 +14734,7 @@ vivmktg-dot-yamm-track.appspot.com
 vivnter.fr
 vivo-support.ru
 vivo.telemetry.eyeo.com
+vivo7.net
 vivobarefootbordeaux.fr
 vivobarefootmarseille.fr
 vivobarefootshoesparis.fr
@@ -14480,6 +14759,7 @@ vivosunshopus.com
 vivowoman.com
 vivowvmugsp.com
 vivozebra.pl
+vivra-power.com
 vivre-la-fleur.decoration-guadeloupe.info
 vivreavimoutiers.hol.es
 vivrefort.com
@@ -14506,6 +14786,7 @@ vixenalert.marisalago.com.ar
 vixenmuse.com
 vixentycckwtz.buzz
 vixeo.com
+vixgenai-app.com
 vixice.com
 vixii.co
 vixnixxer.com
@@ -14592,6 +14873,7 @@ vj30h.top
 vj33h.top
 vj3vu6gbc7.kameleoon.eu
 vj3x.top
+vj45h.top
 vj50x.top
 vj59x.top
 vj76h.top
@@ -14642,6 +14924,7 @@ vjh29.top
 vjh38.top
 vjh40.top
 vjh41.top
+vjh43.top
 vjh45.top
 vjh49.top
 vjh62.top
@@ -15175,6 +15458,7 @@ vktestings12.000webhostapp.com
 vktkpkqmlufmqwvvu.com
 vktoger.000webhostapp.com
 vktr073.net
+vktuwwrj.zm49c.com
 vkua1337228.000webhostapp.com
 vkujqdod.com
 vkumeiuxils.com
@@ -15219,6 +15503,7 @@ vl3j8n607w2pm5fywk2jjp6epp8r31779638575.uaid.nmrodam.com
 vl3kzllozqmpiljg9kqegwj1jkfv.cfd
 vl3rw9roj.com
 vl45xz19vt1toghq.kvzz68l2rppz93n.cyou
+vl88z5dmheefurnbhnxpmgvzdg1um1781428188.nuid.nmrodam.com
 vlaamseradio.tt.omtrdc.net
 vlabcop.com
 vlabddfdsgein.space
@@ -15373,6 +15658,7 @@ vlntage-myetherwallet.com
 vlnted.check22519.lat
 vlnted.check65921.lat
 vlnted.check99123.lat
+vlnted.offer28551.rest
 vlnted.page12649.lat
 vlnveqkifcpxdosizybusvjqkfmowoawoshlmcbittpoywblpe.com
 vlnybroybduxuyg.com
@@ -15395,6 +15681,7 @@ vlooylaw.atspace.com
 vlooylaw.atw.hu
 vloperang.ru
 vlopkjmlsefwc.site
+vlotlogic-app.web.app
 vloxhazxibons.website
 vlpq.cn
 vlpufjkwpmjhbn.com
@@ -15438,6 +15725,7 @@ vlwczgmsuz.com
 vlwix13ezmdvinml5xwbtbegqykdd1780212078.darnuid.imrworldwide.com
 vlwjbqqovvugf.site
 vlwqyhgnslfad.space
+vlwrp.com
 vlxambiental.com.br
 vlxctnusilgeh.site
 vlxg7elyw0su90b1noc8viypcnpjc1780966301.uaid.nmrodam.com
@@ -15464,7 +15752,6 @@ vm.fconvrootery.com
 vm.i-news.at
 vm.pallupolka.com
 vm.providesupport.com
-vm.questeracetum.cyou
 vm.target-video.com
 vm.ydstinkle.com
 vm0zfofkfv.fbgnd.cn
@@ -15498,7 +15785,6 @@ vmauuvpdxcre.com
 vmawhaylmkxpv.vip
 vmax-ads.fancode.com
 vmax.com
-vmax4-prod-tracker-lb-1539806324.ap-southeast-3.elb.amazonaws.com
 vmay.com
 vmb.mafel.guidegoods.net
 vmb.wvs.mybluehost.me
@@ -15553,6 +15839,7 @@ vmhadwuuj.com
 vmhrqjvddhnwp.site
 vmi.mybluehost.me
 vmi132226.contaboserver.net
+vmi2051610.contaboserver.net
 vmi2528869.contaboserver.net
 vmi2991553.contaboserver.net
 vmi3110855.contaboserver.net
@@ -15733,6 +16020,7 @@ vmweb.net
 vmwm5cw6lxtg0ebyru411c317zh8v1779212985.uaid.nmrodam.com
 vmwoxqroobncg.online
 vmwshnotexists32maccount.majesticbank.ru
+vmxamtjtu.com
 vmxckyomhbtcz.space
 vmxneqttwxhcv.site
 vmybgswhtrunkfish.review
@@ -15787,7 +16075,9 @@ vn500l.com
 vn5rme.sbs
 vn69store.weeblysite.com
 vn787.com
+vn7rpx.cdn-settings.appsflyersdk.com
 vn7rpx.inapps.appsflyersdk.com
+vn7rpx.launches.appsflyersdk.com
 vn838.com
 vn88.pro
 vn888tips.ukit.me
@@ -15811,6 +16101,8 @@ vnavtesfr.com
 vnaytmsucryispu.net
 vnazjr.promlnentdates.com
 vnbbfvgbeklnf.store
+vnbcsa.fit
+vnbcsa.work
 vnbig.tk
 vnbjam.strikingdates.com
 vnbongda.org
@@ -15818,6 +16110,7 @@ vnbrsteloser.review
 vnbtlatny-ca-netflix100.info
 vnc.cpcempower.com
 vnca.com
+vnchecker.site
 vnchmajdl.pro
 vnchospitality.com
 vnchy.sorix7en.surf
@@ -15960,6 +16253,7 @@ vntspark.top
 vntswabule.000webhostapp.com
 vntvft-launches.appsflyersdk.com
 vnu.eu-adcenter.net
+vnu6ci.launches.appsflyersdk.com
 vnuept.com
 vnufplcscoctg.online
 vnufxjwndhsfbj.com
@@ -16193,6 +16487,7 @@ vodafone-verify.com
 vodafone.client-00894271.nl
 vodafone.co.uk.ratdb.com
 vodafone.co.uk.ssl.d2.sc.omtrdc.net
+vodafone.cz.ssl.sc.omtrdc.net
 vodafone.d3.sc.omtrdc.net
 vodafone.de.ssl.d2.sc.omtrdc.net
 vodafone.sc.omtrdc.net
@@ -16321,6 +16616,7 @@ vogate.com
 vogatisports.com
 vogeeky.co.cc
 vogel.adspirit.de
+vogel.met.vgwort.de
 vogelpraxis.de
 vogelservices.122.2o7.net
 vogelwarte.skyperspective.de
@@ -16373,6 +16669,7 @@ voice.nextivi.us
 voice1-sync.p1aster-voice.in.net
 voiceads.cn
 voiceamp.velvet-dune.in.net
+voicebel.s-cream.com
 voicebomber.com
 voicebund.rentcad.in.net
 voicebydiana.com
@@ -16567,6 +16864,7 @@ volamvosong.com
 volamxmen.com
 volamxua.com
 voland-rocker.fatal.ru
+volanet.xyz
 volanosier.com
 volanstudio.net
 volanteoperu.com
@@ -16644,6 +16942,7 @@ volk.mk
 volkano.us
 volkanofset.com
 volkanpc.com
+volkrentrex-soft.com
 volksaddiction.nl
 volksbank-betrugshilfe.com
 volksbank-bo.com
@@ -16708,6 +17007,7 @@ volny.cz
 volny333445.weebly.com
 volny3334466.weebly.com
 volo-net.com
+voloatletica.com
 volocommerce.com
 volodaily.bid
 volodymyr-lviv.com
@@ -16717,6 +17017,7 @@ volojka.ucoz.ru
 volomarketing.com
 volomedia.com
 voloq.com
+volorixtrader2-ai-com.financecryptoworld.com
 voloskins.icu
 volov.com
 volovo.com
@@ -16725,6 +17026,7 @@ volparts.com.br
 volpefurniture.com
 vols7feed.com
 volsecure.com
+volsmail.xyz
 volsnmapks.online
 volsnmapks.site
 volstrenkida.info
@@ -16752,6 +17054,7 @@ voltageforums.com
 voltaic-horizon.com
 voltamos.site
 voltanakapt.vizvaz.com
+voltaraflextech.com
 voltaris-shore.com
 voltarise-peak.com
 voltastores.com
@@ -16767,11 +17070,13 @@ voltenergy.ru
 voltflowgate.com
 volthausgeraete.de
 voltina-arc.com
+voltix-move.com
 voltlithiumionforklif.educatorpages.com
 voltmediafix.com
 voltnet-reborn.ml
 voltor.info
 voltquarry.hearkenw2tman.in.net
+voltra-gale.com
 voltradbike.de
 voltrexcapitalmarkets.live
 voltrix.tv
@@ -16873,12 +17178,14 @@ vomitsix.pw
 vomitusmoments.com
 vomk.info
 vomwe.pro
+von-ma.net
 vonaco.fr
 vonage.com.ssl.d2.sc.omtrdc.net
 vonage.data.adobedc.net
 vonagemarketingllc.demdex.net
 vonailnco.com
 vonak.eu
+vonapay.pro
 vonauto.de
 voncreditinternational.com.94-130-69-230.cprapid.com
 vonderleirerkennels.net
@@ -16890,12 +17197,15 @@ vonenine.pw
 voner.eu
 vonertabox.si
 vones.000webhostapp.com
+vonetpay.net
 vong.info
 vongaiptim.net
 vongquaykimcuong79.com
+voninee.pro
 vonke.ga
 vonkil.com
 vonkol.com
+vonktradewise-engine.com
 vonlany.de
 vonlotushausdogs.com
 vonmaur.widget.custhelp.com
@@ -16920,6 +17230,7 @@ voobit.com
 vooculok.com
 voodoo-casino.fr
 voodoo.com
+voodooboost.com
 voodoocasino.fr
 voodoofiles.us.intellitxt.com
 voodoofollowers.com
@@ -17069,6 +17380,7 @@ vortello.shop
 vortex-collector.nexusmods.com
 vortex-comger.com
 vortex-dual.hulu.com
+vortex-reserve.com
 vortex-sandbox.data.microsoft.com
 vortex-win-sandbox.data.microsoft.com
 vortex-win.data.microsoft.com
@@ -17078,6 +17390,7 @@ vortex.fiverfle8ma.surf
 vortex.hulu.com
 vortex.hulu.com.akadns.net
 vortex.starlightnova.lat
+vortexa-stream.com
 vortexashop.net
 vortexfranceofficielle.fr
 vortexg.info
@@ -17090,11 +17403,13 @@ vortexly.life
 vortexmediagroup.com
 vortexofdeceit.com
 vortexsolutions.net
+vortexvalorengine.com
 vorthanelik.pro
 vorticalfive.pw
 vortide5ix.backeddown.in.net
 vortide7en.qen8vorel.lat
 vortideum.rax2liven.in.net
+vortumn.top
 voruftuiov.com
 vorvale7um.choreograpshrew.in.net
 vorvaleon3.sorix7en.surf
@@ -17199,6 +17514,7 @@ votara.5gbfree.com
 votarycogger.cfd
 votdengi.club
 votduhwjkhilf.com
+vote-1777988481.vercel.app
 vote-babylonlabs.com
 vote-chary-telegram.info
 vote-curvefinance.com
@@ -17390,6 +17706,7 @@ vousinvitons.gsclmosoudm.com
 voustymarkers.cyou
 vouwbqfi.yi.org
 vouwfietshl.shop
+vouzg.com
 vouzziyh5j.data.adobedc.net
 vov.is
 vova.artyomovitch.mysit.ru
@@ -17401,6 +17718,7 @@ vovchenko.kiev.ua
 vovchik14888.github.io
 vovhalrrqiowz.love
 vovheqed.dobayzega.maxgrowth.ru
+vovilixioapp.com
 vovkubcd.pouniao.fastsize.ru
 vovlacjs.cfd
 vovlacjs.cyou
@@ -17410,6 +17728,7 @@ vovsky.net
 vovud4.cdn-settings.appsflyersdk.com
 vovud4.inapps.appsflyersdk.com
 vovud4.launches.appsflyersdk.com
+vovuseu.pro
 vovwfhvfxb.com
 vow.foundation
 vowap.eu
@@ -17436,6 +17755,7 @@ vowyzam.com
 vowyzuk.com
 vox-casino.fr
 vox-kasino-online.de
+vox-ra.work
 vox-relay.iocnt.net
 vox.amp.permutive.com
 vox3l.000webhostapp.com
@@ -17452,6 +17772,7 @@ voxellab.com
 voxero7070.com
 voxfind.com
 voxhumana.org.pl
+voxigenai-system.com
 voxinghelt.com
 voxis11.com
 voxiva.com
@@ -17463,6 +17784,7 @@ voxprivatelabel.com
 voxsnap.com
 voxteststores.com
 voxtrade.net
+voxtrend-clarte-soft.com
 voxtrendputere.com
 voxtribune.com
 voxucaldgpicqh.com
@@ -17475,6 +17797,7 @@ voxvidint960547728228.s.moatpixel.com
 voxvision.net
 voxx.ws
 voxx1.mivon-hub.in.net
+voxyfoi.com
 voxygu.com
 voxyqjyc.ru
 voyadoanalytics.azurewebsites.net
@@ -17589,7 +17912,6 @@ vpcjijijkzhjv.space
 vpclda.pt
 vpconn.fit
 vpcorfu.com
-vpcpw6.cdn-settings.appsflyersdk.com
 vpcxpowqzvdz.com
 vpdcp.com
 vpdehpjxotemz.space
@@ -17809,6 +18131,7 @@ vps57503.lws-hosting.com
 vps58046.lws-hosting.com
 vps61404.lws-hosting.com
 vps615957.ovh.net
+vps73816.inmotionhosting.com
 vps7438.inmotionhosting.com
 vpsaust.com.au
 vpsbh1.cdn-settings.appsflyersdk.com
@@ -17886,12 +18209,12 @@ vpwnr.passeo.ru.com
 vpwnr.xinfos.ru.com
 vpwwrn00h98qgfgxmoje0l99tpmrb1772642308.nuid.nmrodam.com
 vpwwtzprrkcn.com
+vpx-ra.work
 vpx4fmj4z6.com
 vpxfmraxtbgsea.com
 vpxgsrd.cafede.shop
 vpxyw6rbv3.com
 vpykoil.com
-vpynmu.cdn-settings.appsflyersdk.com
 vpyzbp.cdn-settings.appsflyersdk.com
 vpyzbp.launches.appsflyersdk.com
 vpyzbp.skadsdkless.appsflyersdk.com
@@ -17976,6 +18299,7 @@ vqkofpqmft.com
 vqkseaalcr.kameleoon.io
 vqkusfxadcdll.website
 vqkyzuhyyswzt.space
+vqlbo5-launches.appsflyersdk.com
 vqlbo5.cdn-settings.appsflyersdk.com
 vqlbo5.inapps.appsflyersdk.com
 vqlbo5.launches.appsflyersdk.com
@@ -18019,6 +18343,7 @@ vqt9i1.c1.biz
 vqta.cn
 vqtjeddutdix.com
 vqtsht.inapps.appsflyersdk.com
+vqtsht.launches.appsflyersdk.com
 vqubwduhbsd.com
 vquf4tcdpt22px9l2jqqq.science
 vquhshiqyqudr.space
@@ -18077,6 +18402,7 @@ vr0jpt27.ltd
 vr0vf48fb6bzkzu7vve6p0dfizly91779385155.nuid.nmrodam.com
 vr1vuarohfpks8t1447pia1nslkk41771369208.uaid.nmrodam.com
 vr274nuztrm18r1c5h43igbpxrla51778185807.uaid.nmrodam.com
+vr2ilw.top
 vr360apple.com
 vr46.dxnt.net
 vr4znu7w87fnpojit7qptcbpz56t21777407484.nuid.imrworldwide.com
@@ -18123,6 +18449,7 @@ vrc9kq.cdn-settings.appsflyersdk.com
 vrc9kq.inapps.appsflyersdk.com
 vrc9kq.launches.appsflyersdk.com
 vrcarfinder.icu
+vrcholfundalis.com
 vrcjxjtco.bid
 vrcopiers.com
 vrcpluginhub.com
@@ -18160,6 +18487,7 @@ vrfdigitalcenter.com
 vrfeverwise.weebly.com
 vrfingmilsrvr.com.ng
 vrfkr4pascjs4myzoeyupox3ftlst1773239360.darnuid.imrworldwide.com
+vrfnqovtq5jgifigkefcuwefrsmzt1781473514.nuid.nmrodam.com
 vrfuckdolls.com
 vrfupfyu.com
 vrfy-acc.com
@@ -18178,6 +18506,7 @@ vrhcgm.launches.appsflyersdk.com
 vrhcxzc7kuvneo4ropmxz5x479hvy1779425501.uaid.nmrodam.com
 vrheads.com
 vrhgroups.xyz
+vrhsurncds.com
 vrhxycsnyr.com
 vriaj.com
 vriddhicroker.qpon
@@ -18203,10 +18532,12 @@ vritcsve.atw.hu
 vriutbq.com
 vriutupdtrqlo.online
 vrixon.com
+vriyycfl.com
 vrizead.com
 vrje.cn
 vrjw6paqsvftlxb7epjqyalxnxz6t1780264498.uaid.nmrodam.com
 vrjxj.773765574.cn
+vrkjnrjcwya.com
 vrkoc.eu
 vrkve.info
 vrl-eu-west-1-gcp.conviva.com
@@ -18262,6 +18593,8 @@ vrovhbwhvy.com
 vroxcsjt.bid
 vrpckcamsnkzbrdy.xyz
 vrpertain.icu
+vrpfhdne.net
+vrpiobomsbnm.com
 vrpkzrquqnhl.bid
 vrpnfrtnemmbb.space
 vrpornhub.vip
@@ -18311,6 +18644,7 @@ vrts.doublepimp.com
 vrtsmm.com
 vrtyvzarmbryaex7ru4olhlrg9szr1774978220.darnuid.imrworldwide.com
 vrtzads.com
+vruaqnhujtuz.in
 vruddhtkholk.com
 vrufe4ikql.com
 vrufvup20fceowa3j0hvmwdcsccgk1773390133.nuid.imrworldwide.com
@@ -18332,6 +18666,7 @@ vrwjvaxdqcu.com
 vrwqomr.com
 vrwsq9dbpq4zd6phm1qz22s4g8wce1778701637.darnuid.imrworldwide.com
 vrwzecqcyjfmy.site
+vrxghdcuitcnwwg.com
 vrxpert.in
 vrxyqoznjdq9a6v1nylss9btt2oao1777837628.nuid.nmrodam.com
 vry9.destinia.com
@@ -18342,7 +18677,6 @@ vrympoqs5ra34nfo.torhelper.pl
 vryoqcajw.com
 vryx2c6sv6mmagyg831oe9rp3se301779031838.uaid.nmrodam.com
 vryzapwc.com
-vrzmfy.fool.com
 vrznne.cdn-settings.appsflyersdk.com
 vrznne.launches.appsflyersdk.com
 vrzparvhipmo.com
@@ -18386,6 +18720,7 @@ vsa-updates.com
 vsack.homepage.t-online.de
 vsactivens.sbs
 vsadtech.com
+vsaiyiwviel.com
 vsalefirst.club
 vsama.com
 vsanalytics.visualsoft.co.uk
@@ -18395,6 +18730,7 @@ vsanos.online
 vsapartners.ru
 vsav42a.com
 vsavbpsnxdrgt.online
+vsb-zo.fit
 vsb.jinlongjs.com
 vsb.mybluehost.me
 vsb.reveance.nl
@@ -18404,6 +18740,7 @@ vsblobprodscussu5shard30.blob.core.windows.net
 vsblobprodscussu5shard44.blob.core.windows.net
 vsblobprodscussu5shard66.blob.core.windows.net
 vsblobprodscussu5shard82.blob.core.windows.net
+vsbpqwxdreiu.com
 vsc.send.microad.jp
 vscalara.truthnewswire.com
 vscan.best
@@ -18466,6 +18803,7 @@ vserver4free.de
 vsesdal.com
 vseseriozno.cn
 vseskidkitut.ru
+vsespjadfxzzs.com
 vsesumki.com
 vseteplo.by
 vseteplo.ru
@@ -18487,6 +18825,7 @@ vsgpxqdqk.com
 vsgril.japanlet.xyz
 vsgumkkc.bid
 vsguse.site
+vsgwolwqobhalt.com
 vsh.pp.ua
 vsh.visilabs.net
 vsha.cf
@@ -18520,6 +18859,7 @@ vsksoft.com
 vskt88fedrc3i8qpwxaxxb83uys711779732749.nuid.nmrodam.com
 vskwxa.cc
 vslashr.com
+vslcqsrpmhhne.net
 vslfbotg.com
 vslider.admedia.com
 vslivesports.com
@@ -18536,11 +18876,13 @@ vsmukx9izr.data.adobedc.net
 vsn-analytics.aparentmedia.com
 vsn8uhousbs8zcu2aaxeitx2a.stream
 vsncomtrade.com
+vsnidetzwh.com
 vsnis.com
 vsnotyke.icu
 vsnpvip.com
 vsnrc.com
 vsnsopv.winsportiran.com
+vsoexylody.com
 vsofglbfeiewy.site
 vsoftsolution.in
 vsoftverify.com
@@ -18649,8 +18991,10 @@ vswitchh.jamatulli.com
 vsworx.co.uk
 vswovsqq.cn
 vswwyy-cdn-settings.appsflyersdk.com
+vswwyy-conversions.appsflyersdk.com
 vswwyy-inapps.appsflyersdk.com
 vswwyy-launches.appsflyersdk.com
+vswwyy-register.appsflyersdk.com
 vsx.hotpornfile.org
 vsx597520u1cyucvee985bweylg2p1778885503.uaid.nmrodam.com
 vsxjjmyz.com
@@ -18700,6 +19044,7 @@ vtcuesjpqvies.website
 vtcwqv.xorg.pl
 vtcxhnri.com
 vtd.vontobel.com
+vtd3.com
 vtdbilisim.com
 vtdf.airmind.sbs
 vtdkhizargoldstick.review
@@ -18730,8 +19075,10 @@ vterkin659.temp.swtest.ru
 vtewggxzbrcv.bid
 vtex.relayto.com
 vtfjzqzivtvrf.space
+vtfktvqx.net
 vtfnyzqii.com
 vtfootballcamps.com
+vtfwwilv.com
 vtg.lol
 vtgdjgtwl.com
 vtghye.live
@@ -18745,6 +19092,7 @@ vthloans.atw.hu
 vthomespecialties.com
 vthqhk.info
 vtiger.kreativa-italia.com
+vtiguwlqm.com
 vtijuhpxlkoq.bid
 vtime.vitaleey.com
 vtiospbca.in
@@ -18763,6 +19111,7 @@ vtl.mybluehost.me
 vtlmpzowfabbtv.com
 vtlpkoshbpquo.online
 vtlsuites.com
+vtlvocfqqr.com
 vtmarkets.com
 vtmarkets.net
 vtmarketsfr.com
@@ -18798,6 +19147,7 @@ vtprovsi.000webhostapp.com
 vtpyvbwtldlvl.site
 vtq.toyauthor.xyz
 vtqdavdjsymt.com
+vtqddgntio.com
 vtqjke.1xbet1farsi.com
 vtqmlzprsunm.com
 vtqtaaqxnv.cn
@@ -18824,6 +19174,7 @@ vtruth.org
 vtrxzehn6.com
 vts-folientechnik.de
 vts.zohopublic.com
+vtscade.com
 vtscvn.tk
 vtspace.ch
 vtsuboxone.com
@@ -18871,12 +19222,14 @@ vu.ad.lgsmartad.com
 vu.adschoom.com
 vu.enhatcymatia.com
 vu.incrementxserv.com
+vu.lireairtime.shop
 vu.rabbinshoodlum.com
 vu.un.authorizeddns.net
 vu.vagancypearl.com
 vu.veoxa.com
 vu1n148pckwhitmksum3rzfx7fg381773041395.uaid.nmrodam.com
 vu2f8u35robtmseytvk4fwe84qitc1773751625.uaid.nmrodam.com
+vu357934kox.com
 vu3jqfr4s3nvn752qstbodqkct4wh1779798115.uaid.nmrodam.com
 vu76tfh45agrax3k7cmlxxa35qx0z1780413520.uaid.nmrodam.com
 vuabai9.com
@@ -18894,6 +19247,7 @@ vuason.vn
 vub10.charlotte5tereoph.in.net
 vub360.net
 vub53xpcd3qqocsphog5tviiy3sha1775417800.nuid.imrworldwide.com
+vubbank.com
 vuble.tv
 vubu.pl
 vucanmoywief.com
@@ -18902,6 +19256,7 @@ vucexports.com
 vuctutmsgicv.com
 vucwhuao.bid
 vucxfzsavoxdd.online
+vucxy.com
 vud.mybluehost.me
 vudbfsnvyzxo.com
 vudefo.com
@@ -18934,11 +19289,14 @@ vueltaboyaca.co.cc
 vues.laraffinerie.re
 vues3d.com
 vuesducap.fr
+vueukvyluxr.com
 vuevgiavjbplr.space
 vuex.vue.ai
+vufaurgoojoats.net
 vufnp9j47h4nouu3fqlgkv58pw3kv1778668099.uaid.nmrodam.com
 vufreepdf.site
 vufskqjnnhnjt.site
+vuftouks.com
 vugbxiqksrhzqtbzuvp24fub4qw7z1779998328.darnuid.imrworldwide.com
 vughisospin.cyou
 vugibiye.com
@@ -18966,6 +19324,7 @@ vuiebktuavkcc.online
 vuielmilg.com
 vuihihi.blogspot.com
 vuiizknwfmbbd.space
+vuisdj.shop
 vuittonswitzerland.info
 vuittontaschen.com
 vuittonu.com
@@ -18981,7 +19340,9 @@ vujqbcditgsqxe.fr
 vujs.bancochile.cl
 vujteo.orangefeel.shop
 vujtuhci.com
+vujuhugufueretesede.xyz
 vujypb.yxbqoy.maxgrowth.ru
+vujzkkz.cn
 vuk52ffla9orkz2bkoeex1um6fiei1777179990.nuid.imrworldwide.com
 vukasipolertyga.tk
 vukgurlqg.bid
@@ -18991,6 +19352,7 @@ vukkladovo.nasaskola.rs
 vukosug.com
 vukqsoyedcbzg.website
 vukrlistntcrl.online
+vukuckilexy.net
 vukwagdfhjzbz.club
 vukxljtb.cz.cc
 vul-sk.ucoz.ru
@@ -19111,6 +19473,7 @@ vulkanvegasfrance.fr
 vulkanvegaspl.com
 vulkanvegastop.com
 vulls.info
+vullxnvh.com
 vuln.su
 vuln.xssed.net
 vulnerabilities-report.com
@@ -19133,7 +19496,6 @@ vulvartarot.online
 vum3grid6d76dh3olvoh0lksp3uc21778736518.uaid.nmrodam.com
 vumart.ru
 vumavaluations.co.za
-vumihy-cdn-settings.appsflyersdk.com
 vuminhhuyen.com
 vumiwu.com
 vumkwueikvlxr.online
@@ -19143,6 +19505,7 @@ vumon-visionpro.com
 vumoo.stream
 vumx8wfw5uyq6zsdnr9iikl3qeuk41778672702.darnuid.imrworldwide.com
 vumzegtucxqmhl.bid
+vunbndgx.com
 vundovirusremoval.blogspot.com
 vungle-imp.aarki.net
 vungle.akadns.net
@@ -19150,6 +19513,7 @@ vungle.cn
 vungle.com
 vungle.com.edgekey.net
 vunklcwiwpn.com
+vuntara.com
 vunted.fr
 vunwzlxfsogj.com
 vuo2beaybjoy5w6xcbazunuwi1rzt1781038154.uaid.nmrodam.com
@@ -19157,6 +19521,8 @@ vuo2se.cdn-settings.appsflyersdk.com
 vuodeal.com
 vuoeadxd0joxrpaknlfsqssogxyed1767619260.nuid.imrworldwide.com
 vuokra-talli.fi
+vuolmlkombz.com
+vuolobnhqb.com
 vuonglaw.com
 vuongot.uni.cc
 vuongvietanh.vn
@@ -19180,11 +19546,14 @@ vupvuar8.grov9essa.garden
 vuqcql9sjqgxhjcuhw.trade
 vuqlnlkpndlh.com
 vuqosudo.ccname.org
+vuqtnlhxqgdolbf.com
 vuqyveh.cf
 vural-electronic.com
 vureality.ga
 vurefptti.cn
+vurfquyih.com
 vuri.clearsbranch.com
+vurinestaaisoftware.com
 vurlvblustring.review
 vurr.cn
 vurytree.100free.com
@@ -19194,10 +19563,10 @@ vuryua.ru
 vurzokli.site
 vus.vhvpybze.in
 vusatec.com
-vusawera.z1.web.core.windows.net
 vusert.accountant
 vusevapor.tt.omtrdc.net
 vusgqshx.xt.pl
+vushrbxroefmpe.xyz
 vusoli.ml
 vusra.com
 vustaq.com
@@ -19264,6 +19633,7 @@ vv.7vid.net
 vv.ai
 vv.cc
 vv.cpcempower.com
+vv.hl.cn
 vv.meegmfio.in
 vv.play.aiseet.atianqi.com
 vv.video.qq.com
@@ -19288,10 +19658,12 @@ vva5ult.info
 vvafcvgttodalisks.download
 vvagon-index.poorbet.lat
 vvaifu.fun
+vvajwiffoupz.com
 vvaln.com
 vvanadoo.fr
 vvatch9-array.nexusharbora.in.net
 vvave3-gate.starforge.in.net
+vvaywbqwuo.com
 vvb93165cn.temp.swtest.ru
 vvbackyardoptimuma.site
 vvbehuhw3mh6wdxwivzgnborhv9cd1779120547.uaid.nmrodam.com
@@ -19335,6 +19707,7 @@ vvhju.rezoni.com
 vvi.goqavat.yi.org
 vvi1d-line.di5honorman.in.net
 vvicabcp.ga
+vviijcwmudjyh.com
 vvij1sh6kja21v42cjealjbxoyarh1781191113.uaid.nmrodam.com
 vvind-frame.flamesre5ent.in.net
 vvind-point.embassyotolaryn.in.net
@@ -19349,6 +19722,7 @@ vvjacrtsivivq.online
 vvjlgcash.com
 vvjlgcashcasino.com
 vvk.temporary.site
+vvkbpshrzoy.com
 vvkholowfoeku.website
 vvkksdkkjfgnsdjlfgnbsdlffbvfflbvazldfbv.ru
 vvklvhpx.com
@@ -19365,6 +19739,7 @@ vvo138adoofoficnaszxoas.appspot.com
 vvo8uk7ubnjgvi0mi2xz9y40777f11778460235.uaid.nmrodam.com
 vvobyordqyq.com
 vvolnzdglprvf.store
+vvolyzmoborp.com
 vvood-forge.savor-woman.in.net
 vvoowcdnogp.com
 vvoplgpy.bet303.poker
@@ -19374,6 +19749,7 @@ vvos4fxpxzfzru9ysdgoafowtfrui1779995807.darnuid.imrworldwide.com
 vvpcriskalertus.club
 vvpf4h6s7ah7mckb8mt62ycfyhjyz1775066008.darnuid.imrworldwide.com
 vvpfsda.pasoor11.bet
+vvppbxdk.com
 vvps.ws
 vvpxqldescension.download
 vvqc95xhtx.com
@@ -19404,6 +19780,7 @@ vvt7japcy98icyyojak0amz1ybtyx1773665224.nuid.nmrodam.com
 vvtdmmlwxaikfrqjw.com
 vvtechsupport.com
 vvtgfunqxruwc.online
+vvtprtjcnshiwj.com
 vvtshyprijnwi.website
 vvttbn77z0046hlsam3b66rzmrutn1763307986.nuid.imrworldwide.com
 vvturau.com
@@ -19444,12 +19821,14 @@ vvwq.000webhostapp.com
 vvwrajbckvfng.website
 vvwskuuryf.com
 vvww-ledger.com
+vvww-roblox.com
 vvww-support.com
 vvww.vlabcip.pw
 vvxcqgv.jamjahani.world
 vvxvv.info
 vvxx564.weebly.com
 vvxxqpvylixke.store
+vvymhfdi.com
 vvzfcqiwzuswzbg.nut.cc
 vvziqyahhmq.bid
 vvzodbyyiwtaltzei7aee7gfgzmwv1780638003.nuid.nmrodam.com
@@ -19459,6 +19838,7 @@ vw-poczta.pl
 vw-stickerspro.fr
 vw.com.ssl.d2.sc.omtrdc.net
 vw.cpcempower.com
+vw.hl.cn
 vw.netmng.com
 vw.specierorippa.com
 vw.vrvm.com
@@ -19486,6 +19866,7 @@ vwbtt.info
 vwbvandbj.bid
 vwcart.esy.es
 vwcbazbnsbpng.site
+vwclbvgyqbkqh.com
 vwcmeebcmvgbq.website
 vwcsav.bond
 vwcsl.com
@@ -19533,6 +19914,7 @@ vwiza.thetimeafter.com
 vwj.temporary.site
 vwjsiywwgynud.online
 vwkrrwxbuvotg.space
+vwkundjxm.com
 vwkxlglibrettos.download
 vwkyuawm.com
 vwl7vw-cdn-settings.appsflyersdk.com
@@ -19541,6 +19923,7 @@ vwlauu.wixstudio.com
 vwlifestyle.co.za
 vwm.org.ng
 vwmdzetaikxvc.site
+vwmsynnsowu.com
 vwmtrauf.com
 vwmux7.com
 vwnjjfehgryri.space
@@ -19548,11 +19931,13 @@ vwnjzjy.limolp.web.fly-host.com
 vwo.com
 vwoalbekrhqam.online
 vwoamqat.com
+vwochim.megaparikade.com
 vwohegzvjaosz.site
 vwonwkaqvq-a.global.ssl.fastly.net
 vwoocnpq.com
 vworld.info
 vwowvu9ha.com
+vwpacz.pl
 vwparis.fr
 vwpascher.fr
 vwpowhxrpdlmtq.bid
@@ -19569,6 +19954,7 @@ vwr.demdex.net
 vwr1.hitbox.com
 vwreplique.fr
 vwretrofit.ro
+vwrrnekqrsxqb.com
 vws.vidcoin.com
 vws4brkfst.com
 vwsezpkqtgaez.site
@@ -19581,7 +19967,10 @@ vwtradecentre.com
 vwtxvolturbulence.review
 vwuern.com
 vwugfpktabed.com
+vwuhfevpolim.in
+vwutaq.com
 vwuudahnarh.com
+vwv5z3.cdn-settings.appsflyersdk.com
 vwvaddoet.com
 vwvcb.info
 vwvente.fr
@@ -19591,6 +19980,7 @@ vwvw-rcblox.com
 vww--norton.com
 vww-facebook.com.vn
 vww-robiox.com
+vww-roblox.com
 vww.24x7help.org
 vww.gytconitnental.peritmarkjohn.com
 vww.paaypal.com.supportaccountupdate743882.order-history.info
@@ -19604,6 +19994,7 @@ vwww-roblox.com.ru
 vwww.24x7help.org
 vwx-sougou.com.cn
 vwx-youdao.com.cn
+vwx-yz.fit
 vwxfxcamyhpqq.online
 vwxskpufgwww.com
 vwxwhbsqh0a4fg2mbhuf.littlematchagirl.com.au
@@ -19639,6 +20030,7 @@ vx2tbw9xin.com
 vx2vmoxd9x0cj7m3.pleasedonotblockme.com
 vx7qs4ib2na9o5c3gc77nvzo76jpr1777955949.uaid.nmrodam.com
 vx85czcixb.byggrakt.se
+vx88.online
 vx88m4com.lighthouseapp.com
 vx8shof0ze8qcu3eeun2zymzfo6c71779652556.uaid.nmrodam.com
 vxa-e.tlnk.io
@@ -19659,6 +20051,7 @@ vxcewh.cn
 vxcholycr.com
 vxcsh.me
 vxctr.com
+vxdbwupmm.com
 vxe82zyh69tvfslqpofijetofsh9e1777264391.nuid.nmrodam.com
 vxempire.pw
 vxeoucnel.r.maxgrowth.ru
@@ -19745,6 +20138,7 @@ vxwoeowswtbwc.site
 vxx6.com
 vxxdhcxtcy.net
 vxxgxicadjtia.space
+vxxojmkc.com
 vxxpifqgqlvnh.store
 vxxue4.com
 vxxyant.family-man.surf
@@ -19755,6 +20149,8 @@ vxyqsxeo.com
 vxzmrvmaugiuf.online
 vxzn5hfupivsqsp21ajg6e0nezh8z1778069766.uaid.nmrodam.com
 vy-ama.com
+vy-nop.fit
+vy-nop.net
 vy.eardropcurls.com
 vy.leszntoco.maxgrowth.ru
 vy.zaribaoutspan.com
@@ -19766,9 +20162,11 @@ vyabxutgyiidb.site
 vyadd.com
 vyalyccsbpuse.space
 vyandextaxi.com
+vyar221.net
 vyasabooks.com
 vyaselka.gorodgomel.by
 vyashi.com
+vyatka-host.ru
 vyazalochka.ucoz.ru
 vyazalochki.ucoz.ru
 vyazhem-sami.ucoz.ru
@@ -19779,6 +20177,7 @@ vyborexperta.ru
 vybory2018.top
 vybsiseapra.bid
 vybtyapaf.wakonjero.maxgrowth.ru
+vybxbtbdbks.com
 vybxf.life
 vybysyditak.tk
 vycbaqa.cn
@@ -19788,6 +20187,7 @@ vycyjuy.pro
 vycyqxnbrwz.com
 vyczp.cn
 vydavatelstvo-mps.sk
+vydfergcp.com
 vydjztqkiuuwg.site
 vydlqaxchmij.com
 vydox-male-virility-gummies.company.site
@@ -19820,6 +20220,7 @@ vykcbbytkklxp.com
 vyketqwd.atw.hu
 vyking.io
 vykingzaaaas.kancutbabik.com
+vykkvhyywtpvi.com
 vykqenhyehsnfjh.com
 vykqskymaiuybudr.com
 vykroceni.cz
@@ -19951,6 +20352,7 @@ vysakh-mec.github.io
 vysatec.com
 vysdpgndbzylf.bid
 vyselka.by
+vysffmyallvqx.space
 vyshnavichhetri22.github.io
 vyshuddphvxka.store
 vyshyvka.0fees.net
@@ -19977,6 +20379,7 @@ vyueglbpe.bid
 vyufgiaesxzib.site
 vyuhagyugbnc.ga
 vyuhylzzq.com
+vyumkugyuy.com
 vyura.net
 vyusrbjz.lucusvirtual.es
 vyuywery.tk
@@ -19994,7 +20397,9 @@ vywycfxgxqlv.com
 vywyvdtksc.yi.org
 vyxifgsrgihgr.online
 vyxkxg.site
+vyxmdiehyifwma.com
 vyxsgealwarnz.website
+vyxslmej.com
 vyxvuz.launches.appsflyersdk.com
 vyxw.cn
 vyxwtjsq.tk
@@ -20034,6 +20439,7 @@ vz41574tn.pub.tappx.com
 vz42943mtc.pub.tappx.com
 vz43433qlt.pub.tappx.com
 vz43764dmt.pub.tappx.com
+vz682.com
 vz7qxn.cfd
 vz95953ow5.com
 vz9cj9oc8w78s8zuv02fqltbh2mrd1778351745.uaid.nmrodam.com
@@ -20128,6 +20534,7 @@ vzt.com.cn
 vztformhlflsz.website
 vzu01697.jscrambler.com
 vzu34f0draprdzbu8tvqxmrimgvj51780639935.uaid.nmrodam.com
+vzuwjlpmx.com
 vzuzrrywyxrdl.online
 vzvao.com
 vzvbhxydn.com

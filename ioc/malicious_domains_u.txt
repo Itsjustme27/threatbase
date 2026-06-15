@@ -1,7 +1,7 @@
 # Threatbase Threat Intelligence Feed - Domains
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:08 +0000
 #
 u--bordeaux-montaigne.fr
 u--to-u.com
@@ -265,6 +265,7 @@ u1102.com
 u1144.com
 u11a98580.app-ads-txt.com
 u11dg.top
+u1299ti34839.lat
 u12qwsorotehxiu1uxhmpdf9vbp211773577375.uaid.nmrodam.com
 u13jlrr4lw9ycgssyjs734ivsdwre1780869638.uaid.nmrodam.com
 u15qj3agg31uv3mv8z3xv-support-netflix.info
@@ -280,6 +281,7 @@ u17l.top
 u17o.top
 u1817.16.spylog.com
 u1873872.ct.sendgrid.net
+u18958872.ct.sendgrid.net
 u18wiki1f120fsdr5ukg1v49zu17u1779208171.uaid.nmrodam.com
 u19.ru
 u1905740.ct.sendgrid.net
@@ -451,6 +453,7 @@ u3vw.shop
 u3y.ru
 u3y8v8u4.aucdn.net
 u3zeuqlmnjfduk2wpu1qxrha0vbm81777758753.nuid.nmrodam.com
+u4-pmx.site
 u4.aktivwebsitedesign.com
 u4.udesignvn.com
 u402557783.hostingerapp.com
@@ -540,6 +543,7 @@ u566.chron.com
 u56648376.ct.sendgrid.net
 u566iggx.plp7.ru
 u5687.48.spylog.com
+u56tt.top
 u57.muzikguide.com
 u574.07.spylog.com
 u576.koillis-savo.fi
@@ -551,6 +555,7 @@ u581.com
 u5875309.ct.sendgrid.net
 u594531.nvpn.so
 u595sebqih.com
+u5b5gtx6pzjfyn8kzogzbv0mpywun1781454184.nuid.nmrodam.com
 u5b878bp9gg6.3tcrzmb1pvwo86m.cfd
 u5cfzss4x8uf7ov282l8q30hc6c3v1781289320.uaid.nmrodam.com
 u5da4kgjsvbkr6bgnvatv4c9tfrkc1773067205.nuid.nmrodam.com
@@ -559,6 +564,7 @@ u5eguuk2n.com
 u5etryhgiirt6orrtk.hostingsiteforfree.com
 u5evn7.if1j0ytgkypa.tk
 u5g6d4rapj5uckfolwmzr7taotahl1765814274.nuid.nmrodam.com
+u5govi.casa
 u5ihbwnpoie6sssfweof7wxyfdfqf1778669553.nuid.imrworldwide.com
 u5ivoq-cdn-settings.appsflyersdk.com
 u5k4xbdabaxhgpxpfyuiffsxstzwc1773236297.darnuid.imrworldwide.com
@@ -632,6 +638,7 @@ u6wcqc1vzs7yje2sss5hl5r2qh4it1778963716.nuid.nmrodam.com
 u6xf0bxc4jywr2srahjg5sw00knn11778147265.uaid.nmrodam.com
 u6xrqmusfb1v31k1jaiw8om39k5tz1779953729.uaid.nmrodam.com
 u6y5sxlu0vopunuakgnnzydmwz0dn1779280663.darnuid.imrworldwide.com
+u6y6yv.cdn-settings.appsflyersdk.com
 u6y6yv.launches.appsflyersdk.com
 u6yzoru6u.com
 u6zsr2xn1.com
@@ -888,9 +895,11 @@ ua4bum-inapps.appsflyersdk.com
 ua5.hit.stat24.com
 ua524c840.app-ads-txt.com
 ua5c59135.app-ads-txt.com
+ua5eks.top
 ua7c7zkj6jwlc3x3w61ugv0hjq4dn1778051315.nuid.imrworldwide.com
 ua7ca7conr535q9bui0oqtns5i8d41779035461.uaid.nmrodam.com
 ua9taztlshwzw5s2x1qtprdwlwqlk1778047508.nuid.nmrodam.com
+uaa-ecm.infinite.pl
 uaa9d09c5.app-ads-txt.com
 uaadcodedsp.rontar.com
 uaadi.com
@@ -1108,6 +1117,7 @@ uavsupport.com
 uawgf.ml
 uawuopec.lyltgfiy.fastsize.ru
 uawwydy3qas6ykv.xyz
+uaxcagap.shop
 uaxcuqmfdjcks.space
 uaxdkesuxtvu.com
 uaxezwpfaghym.store
@@ -1276,6 +1286,7 @@ ubezpieczenia-legionowo.eu
 ubezpieczeniabieganscy.pl
 ubezpieczeniakittner.pl
 ubezpieczenie-pojazdu-oc8hh05fzp7ooxuzxgl.motorpromo.de
+ubezpieczenie-pojazdu-ocx8hh05fzp7ooxuzxg.motorpromo.eu
 ubezpieczenie-zautomatyzowane-oczekiwanie.labuonanovella.it
 ubezpieczenie.nl
 ubf-af-fnanzmiuwbgewlkaflpwbdewf-um-lyart.vercel.app
@@ -1395,6 +1406,7 @@ ubqnvqrjaxlso.space
 ubqyo5zjb8jpgwcwexzk6v3e2wzar1769810460.uaid.nmrodam.com
 ubracing.co.uk
 ubranis.info
+ubrauliocarrillo.com
 ubrikvideo.com
 ubrolcvsidmy.com
 ubronzef.joininpanelmail.com
@@ -1651,6 +1663,7 @@ ucglobal.org
 ucgpgzquuhwey.space
 uch2hz-cdn-settings.appsflyersdk.com
 uch2hz-launches.appsflyersdk.com
+uchar.heynickc.com
 uchase.com
 uchb82reak.rr.nu
 uche.duckdns.org
@@ -1682,6 +1695,7 @@ ucidh5i3ivucq5konj5meh7fd5yum1777654118.nuid.nmrodam.com
 ucikujit.bid
 uciockqdyzlim.site
 uciot.com
+uciprcuful.com
 uciqsmzobweil.site
 uciservice.com
 ucisxrhottish.download
@@ -1748,6 +1762,7 @@ ucolbjlp.atw.hu
 ucom.ne.jp
 ucomad.mg
 ucomic.com
+ucomp.edu-diplomys.com
 ucomsoft.cn
 uconcordia.co.pe
 uconf.f.360.cn
@@ -1919,6 +1934,10 @@ udeztrb.cn
 udfaguykrfeur.site
 udfsjetifjnojdo.xyz
 udg.de
+udg15.top
+udg16.top
+udg35.top
+udg4.top
 udggmzfrdhxcs.site
 udghekzitv.com
 udgihkvvoei.com
@@ -1941,6 +1960,7 @@ udinmama.webstarterz.com
 udioson-visuel.com
 udipedia.net
 udiqhj.levivilaga.hu
+udire.hypersona.com
 udishessang.com
 udism.shop
 udisys.com.br
@@ -2046,6 +2066,7 @@ udtco.info
 udtj.de
 udtnjdhtdb.com
 udtnyq.site
+udtodhygy2vx9bz.zestapexbooks.com
 udtrbn3h78z91o4j7b97p3h2t.com
 udtruck-quester.com
 udttmnper.com
@@ -2181,9 +2202,11 @@ uei.kjukenhi.in
 ueia9o7e.plp7.ru
 ueifksifdfiosfieriio.site
 ueimposeril.tk
+ueirjsarelioprete.site
 ueirtoifsifodgsidj.site
 ueirutiosfiieroeti.site
 ueisnifferengine2.azurewebsites.net
+ueisofoisosidpspo.site
 ueitherv.kazamajin.com
 ueiuwoewjsnwowd.myjino.ru
 uej.onh.mybluehost.me
@@ -2261,6 +2284,7 @@ uereprendres.tk
 uerhhgezdrdi.com
 ueriutisduwiruworilsr.site
 uerladwdpkge.com
+uersifiuieruwrpwriosf.site
 uersopdiaerjdskowe.site
 uerte.000webhostapp.com
 ueryhecyk.jirymeoq.fastsize.ru
@@ -2460,6 +2484,7 @@ ufoessay.com
 ufone.support
 ufonrpg.info
 ufoopuomwplibta.com
+ufopowderpuffs.com
 uforesources.com
 uforia.com
 ufouxbwn.com
@@ -2557,6 +2582,7 @@ ug0t0e.launches.appsflyersdk.com
 ug2oxmuvg7lyggrrlo1mgyp2j91nq1773009237.uaid.nmrodam.com
 ug4x1tagz.com
 ug54oqjpqq.com
+ug55h5abaq3xv4hkot1mcgpi0m4h01781462361.uaid.nmrodam.com
 ug6lsk.cdn-settings.appsflyersdk.com
 ug6lsk.inapps.appsflyersdk.com
 ug6lsk.launches.appsflyersdk.com
@@ -2908,6 +2934,8 @@ uhassler.de
 uhavijwye.bid
 uhavsupport.com
 uhbcdoiodhdw.support
+uhbgyk.fit
+uhbgyt.fit
 uhbhfwqtbr.bid
 uhbnusst.com
 uhboiygnytbql.com
@@ -3022,6 +3050,7 @@ uhqydhyphenise.review
 uhrc.co.uk
 uhregkricbcqli.com
 uhrenausholz.de
+uhrenkunst.shop
 uhrenreplika.eu
 uhrineveska.farnost.cz
 uhrkzezizm.net
@@ -3040,6 +3069,7 @@ uhucws.launches.appsflyersdk.com
 uhufnlsad7bhf4ykqfbevmxergwrth.himfinn.com
 uhughed.club
 uhuii.com
+uhujiokokj.site
 uhuvadkubxjkv.website
 uhuyyctxetbsdf.com
 uhvbjjse.com
@@ -3434,6 +3464,7 @@ ujh41p1m.top
 ujhtrjp.laborfotostudio.hu
 ujhu.cn
 ujhucuus.com
+ujhygt.com
 uji.8fa.mytemp.website
 uji3958dlayallxg0nmexqnrufzr01778566780.darnuid.imrworldwide.com
 ujian.cc
@@ -3467,6 +3498,9 @@ ujlxkxgfl3.creativelandings.xyz
 ujm.hansel.io
 ujmakhan46.github.io
 ujmcvcohobating.download
+ujmikp.fit
+ujmipq.fit
+ujmipq.work
 ujmlxnnzybfvh.online
 ujmzet.cdn-settings.appsflyersdk.com
 ujmzet.launches.appsflyersdk.com
@@ -3557,6 +3591,7 @@ uk-account-support.com
 uk-accountants.co.uk
 uk-ad-inserter.alphonso.tv
 uk-ads.openx.net
+uk-aldi.dailylinkconvenience.com
 uk-anabolics.biz
 uk-antivirussupport.com
 uk-apple-update.godsrestorationministries.org
@@ -3780,6 +3815,7 @@ ukaf23trk.com
 ukaisaki.xxxxxxxx.jp
 ukaldi-sale.blackcasualwear.com
 ukaldi-sell.sleekleatherstudio.com
+ukaldi.com
 ukamazon.fr
 ukankingwithea.com
 ukarwzx.cc
@@ -3794,6 +3830,7 @@ ukatoe.com
 ukautistic.org
 ukayhub.com
 ukazto.com
+ukb8u2.launches.appsflyersdk.com
 ukbaltra.com
 ukbalyon.com
 ukbanners.com
@@ -3808,11 +3845,13 @@ ukblpbtstgvm.com
 ukbptgt.cc
 ukbriefline.com
 ukbrightford.com
+ukbrooksideview.com
 ukbxnl.masimure.life
 ukbxppjxfgna.com
 ukc-onenote-telemetry.officeapps.live.com
 ukc-visio-telemetry.officeapps.live.com
 ukcalvinkleinsale.co.uk
+ukcedarpoint.com
 ukcentralpath.com
 ukclearpointmedia.com
 ukclearstone.com
@@ -3851,6 +3890,7 @@ ukedrevenue.com
 ukeducationsupport.com
 ukeduexpert.com
 ukegpnsbemegy.store
+ukelmridge.com
 ukentaspectsofc.org
 ukeovxygndoxt.site
 ukequora.com
@@ -3870,9 +3910,11 @@ ukfdecapkoct.co.za
 ukfdjbimmunising.review
 ukfdphwzpmovable.download
 ukffjaqtxhor.com
+ukfieldcrest.com
 ukfieldstonegroup.com
 ukfinexa.com
 ukfja.com
+ukflourmiller.org
 ukfocusdaily.com
 ukfocusreport.com
 ukfocusstream.com
@@ -3884,6 +3926,8 @@ ukfxv.motuntakhasosi.store
 ukget.info
 ukget2.info
 ukgfeup.com
+ukglobalbuzz.com
+ukglobalupdates.com
 ukgraphiclab.co.uk
 ukgreenbridge.com
 ukgrowva.com
@@ -3948,8 +3992,11 @@ uklzsvaglwcuz.website
 ukm.mybluehost.me
 ukm.temporary.site
 ukm29v1vlqflsqhkn5ri9wgggd6le1776943734.darnuid.imrworldwide.com
+ukmapleford.com
+ukmapleridgeview.com
 ukmarketa.com
 ukmcha.yasbet90.com
+ukmeadowfield.com
 ukmedik.com
 ukmg6mailyaho.hostingsiteforfree.com
 ukmicrosoft.net
@@ -3966,8 +4013,10 @@ ukn.meegmfio.in
 uknagosdkxakmo.com
 uknd.net
 uknewbalance.co.uk
+uknewsflow.com
 uknewsimpactfusion.com
 uknewsinsight.com
+uknewsmatrix.com
 uknewsmonitor.com
 uknewspaper.eu
 uknewstap.co.uk
@@ -3978,11 +4027,14 @@ uknlxuxflvlw.com
 uknmcash.com
 uknorthbridge.com
 uknorthgatehub.com
+uknorthmeadow.com
+uknorthvale.com
 uknortonhelp.co.uk
 uknova.com
 uknwdomaz.co.za
 uknwgsop.red90.casino
 uko53003.live.dynatrace.com
+ukoakmeadow.com
 ukoakridgeonline.com
 ukobd2.com
 ukobdtool.com
@@ -3996,10 +4048,12 @@ ukonlineslots.com
 ukoss.co.uk
 ukow.beweqqod.maxgrowth.ru
 ukowiretools.com
+ukparkviewhub.com
 ukpesf.cdn-settings.appsflyersdk.com
 ukpesf.inapps.appsflyersdk.com
 ukpesf.launches.appsflyersdk.com
 ukphoneparts.co.uk
+ukpinegrove.com
 ukpoojmk.shansbartar.bet
 ukportiva.com
 ukppireclaim.com
@@ -4054,8 +4108,12 @@ ukresido.co.uk
 ukresona.com
 ukrfarms.com.ua
 ukrhockey.info
+ukridgepath.com
 ukridgewell.com
+ukridgewoodonline.com
+ukriverbendhub.com
 ukriverstonehub.com
+ukrivertrail.com
 ukrlhqtioe.data.adobedc.net
 ukrmetkol.org
 ukrnet.login-live.review
@@ -4064,6 +4122,7 @@ ukrnet.support
 ukroboronprom.info
 ukrpost.ua
 ukrpts.net
+ukrshoping.shop
 ukrshopingonline.uno
 ukrshopper.info
 ukrsvit.ukrmir.info
@@ -4095,7 +4154,9 @@ uksouth.handler.control.monitor.azure.com
 uksouth.livediagnostics.monitor.azure.com
 ukstock.co.uk
 ukstocksupplies.com
+ukstonebrook.com
 ukstonehavenonline.com
+ukstonepath.com
 ukstoryfocus.com
 ukstorypulse.com
 uksummitlane.com
@@ -4135,6 +4196,7 @@ ukupwdygrdzfj.website
 ukv-boma.com
 ukvalenox.com
 ukverifiedapp.store
+ukveru.pics
 ukvisaportal.com
 ukvkloytfaw.bid
 ukvlnjcpnxsly.website
@@ -4145,7 +4207,10 @@ ukwdsl.co.uk
 ukwebcasinos.com
 ukwest-0.in.applicationinsights.azure.com
 ukwestbridgeportal.com
+ukwestgrove.com
+ukwestmeadow.com
 ukwestpointgroup.com
+ukwillowpath.com
 ukwjzdxwgoogb.store
 ukworktopsdirect.co.uk
 ukwritingexperts.co.uk
@@ -4583,6 +4648,7 @@ ultra-narr0.mav8loren.lat
 ultra-project.com
 ultra-r0ug.vectorharbinger.in.net
 ultra-r3c0r.pixel-harbor.life
+ultra-radiance.com
 ultra-rep0r.ravenloop.in.net
 ultra-rnerge.phoniche1lo.in.net
 ultra-rnetr1.petalu1ne.garden
@@ -4632,6 +4698,7 @@ ultradownloads.com.br
 ultradrugs.info
 ultrads.net
 ultraedit.info
+ultraesca.top
 ultraeventgroup.com
 ultraexcel.website
 ultrafal.notice-ohlamon.surf
@@ -4645,6 +4712,7 @@ ultragamers.hu
 ultragames.id
 ultragamesdownload.com
 ultragaz-br.vercel.app
+ultragica.pics
 ultraglobal.com
 ultraglobal.net
 ultragramas.com.br
@@ -4777,6 +4845,7 @@ ulusoyun.tk
 ulust.com
 uluuggxnhrxord.com
 uluulupetcafe.sg
+uluxaqe.pro
 ulvantamal.shop
 ulverantiko.xyz
 ulvj8aeryo99mcjizrlagao.trade
@@ -4823,6 +4892,7 @@ ulyss-mes-trajets.com
 ulyss-mes-voyages.com
 ulysse-cazabonne.cam
 ulysse-nardin.dkn-group.ru
+ulyvhr5jp0ngfjg7ribnzm6i8nxfr1781455914.nuid.nmrodam.com
 ulyvjty4rd.com
 ulziylkdhxcap.store
 um-brands.com
@@ -4847,6 +4917,7 @@ um4.eqads.com
 um58do-societegenerale.fr
 um665wtt1s030lsaab0hehotwc9ps1778439284.uaid.nmrodam.com
 um6f0ru069.blob.core.windows.net
+um9487267.short.gy
 um9zkoqqj3buxx0zd1np0nhajpyat1774127285.darnuid.imrworldwide.com
 umaba.tk
 umadecc.com.br
@@ -4954,6 +5025,7 @@ umami.baniobits.work
 umami.battlekart.com
 umami.bboysoul.cn
 umami.beflash.cloud
+umami.bestvid.net
 umami.beta.phoenixjp.info
 umami.bga.sh
 umami.bi.status.im
@@ -5055,6 +5127,7 @@ umami.iamevan.dev
 umami.idonate.ltd
 umami.ildeposito.org
 umami.imdevinc.com
+umami.implisense.com
 umami.industryarena.com
 umami.infosev.com
 umami.infra.ctlabs.online
@@ -5257,6 +5330,7 @@ umami.warpbin.com
 umami.weareadn.dev
 umami.webtor.io
 umami.whatsnewandrew.com
+umami.wigglypaint.net
 umami.workdigital.de
 umami.worldofwalker.com
 umami.wundertech.net
@@ -5321,6 +5395,7 @@ umbr.online
 umbra.support
 umbracovey.stream
 umbraesix.pw
+umbrafurniture.com
 umbranine.pw
 umbrella-informatica.blogspot.com
 umbrella-matrix.com
@@ -5425,12 +5500,14 @@ umi-helpers.ru
 umi.cloudful.de
 umiastationery.com
 umich-dot-yamm-track.appspot.com
+umicro.today
 umid.cn
 umidieclam.cyou
 umidiincig.cyou
 umieki.net
 umihaku000time.web.fc2.com
 umilifrini.cyou
+umimixos.pro
 umini.shujupie.com
 uminnaterr.desi
 umiortechnical.com
@@ -5823,6 +5900,7 @@ unbagboshbok.shop
 unbalanced.stream
 unballammsted.info
 unbanx.me
+unbanx.net
 unbarking-chiefs.000webhostapp.com
 unbarsduckers.cfd
 unbatednine.pw
@@ -6268,6 +6346,7 @@ undianwhatsapp2018.com
 undiesthumb.com
 undiluted-punctures.000webhostapp.com
 undiminished-navies.000webhostapp.com
+undinedwaly.cyou
 undisclosed.szlftjcm.in
 undiscord.com
 undiscoveredindia.com
@@ -6461,6 +6540,7 @@ unfit-step.pro
 unfitance.host
 unfitcommi.cyou
 unfitgooseberry.com
+unfitnick.com
 unfitprint.pro
 unfluidtoto.shop
 unflush.com
@@ -6534,6 +6614,7 @@ ungillrelost.cyou
 ungirtnine.pw
 ungivenfour.pw
 ungkana.com
+unglarbit-app-com.financecryptoworld.com
 ungliv.dk
 ungljmv.qi4mavel.in.net
 unglobaldelivery.southwestclear.com
@@ -6545,6 +6626,7 @@ unglueodciztaf.download
 ungluesbetire.website
 ungluestumpinnng.info
 ungodlier-windows.000webhostapp.com
+ungoproof.digital
 ungothoritator.com
 ungreatbasatembrace.cfd
 ungreeninwrit.com
@@ -6560,6 +6642,7 @@ unguisnine.pw
 ungujingga.net
 ungularfour.pw
 ungulated.com
+ungulatela.com
 ungulaten.pw
 unguledsnaws.com
 ungvncbnx.bid
@@ -6749,6 +6832,7 @@ unicler.mx
 uniclick.openv.com
 uniclima.pt
 unicode.ninpou.jp
+unicojponline.shop
 unicom-china.oss-cn-shanghai.aliyuncs.com
 unicom.shuzilm.cn
 unicomadvertising.com
@@ -6775,6 +6859,7 @@ unicornprices.com
 unicornpride123.com
 unicornsnackingcompany.com
 unicornxapp.com
+unicornxx.work
 unicorpbrunei.com
 unicreatures.com
 unicred.atendimentoacesso.u0455427.cp.regruhosting.ru
@@ -6967,6 +7052,7 @@ unimusical.com
 uninegocios.com.br
 unines.com
 uninformed.stream
+uninight.pics
 uninjured.stream
 uninpro.com
 unins.5b55.com
@@ -7110,6 +7196,7 @@ uniqlo-it.attn.tv
 uniqlo-nl.attn.tv
 uniqlo-nz.com
 uniqlo-paris.fr
+uniqlo-polska.com.pl
 uniqlo-polska.pl
 uniqlo-se.attn.tv
 uniqlocojp.shop
@@ -7123,8 +7210,10 @@ uniqlofranceparis.fr
 uniqlofrancesoldes.fr
 uniqlojponlinesale.com
 uniqlojponlinesale.shop
+uniqloonlinecojp.shop
 uniqloparis.fr
 uniqloparisfrance.fr
+uniqlopolska.pl
 uniqlos.fr
 uniqlosfrance.fr
 uniqman.ml
@@ -7153,6 +7242,7 @@ uniqueacademy.lk
 uniqueairgroup.co.za
 uniqueandi.info
 uniqueasian.com
+uniquebes.digital
 uniquebhutan.com
 uniquebulldogpuppies.com
 uniquebusinesscardholders.com
@@ -7415,6 +7505,7 @@ unitedimages.org
 unitedindustries.net
 unitedinfraservices.com
 unitedinterfaces.com
+unitedinvdat.com
 unitedjetinclusion.com
 unitedkebz.net
 unitedkingdom-review.com
@@ -7448,6 +7539,7 @@ unitedprogamers.za.pl
 unitedrealestate.gm
 unitedrheumatology.org
 unitedricemills.com.pk
+unitedroyalapi.online
 unitedscans.com
 unitedservices.com
 unitedsol.net
@@ -7501,6 +7593,7 @@ unitledger.app
 unitledgerworks.info
 unitmed.goodwork.in.net
 unitmemory.wiki
+unitrade-dcx-system.com
 unitrailerparts.com
 unitrans.com.tr
 unitronex.pl
@@ -7524,8 +7617,10 @@ unityads.unity.cn
 unityads.unity3d.com
 unityads.unity3d.com.edgekey.net
 unityads.unitychina.cn
+unitycapitals.xyz
 unityhack.com
 unityharerteraz.top
+unityheights.com
 unityinsurance.co.tz
 unitymachinery.in
 unitypestcontrolandservices.com
@@ -7660,7 +7755,6 @@ universaaalizes.info
 universadeliveryservice.com
 universal-104654.weeblysite.com
 universal-adria.hr
-universal-analytics-api.orangeclickmedia.com
 universal-downloader.softonic.fr
 universal-fortunik-group.com
 universal-internodefix.xyz
@@ -7925,6 +8019,7 @@ uniwa.org
 uniway.cn.com
 uniwearltd.com
 uniwindscreen.com
+uniworldassist.com
 uniwsap.github.io
 unix-help.com
 unix.com.tw
@@ -7940,11 +8035,13 @@ unixfuture.com
 unixo.ml
 unixstarproductions.com
 unizar.es
+unizay.com
 unizikforum.tk
 unja.ac.id
 unjadedtwo.pw
 unjarringten.pw
 unjdrbyles.com
+unjeabiacu.cyou
 unjiqfer.com
 unjoinedsix.pw
 unjointnine.pw
@@ -8583,6 +8680,7 @@ unoix.com
 unokbmwdciyw.com
 unoldiseautoing.qpon
 unoledger.com
+unolykur.pro
 unomagurasadar.gov.bd
 unomastaqueria.com
 unonoticias.net
@@ -8655,11 +8753,13 @@ unprocessed-boundaries-metrics-prod.s3.us-west-1.amazonaws.com
 unproterro.cleansite.biz
 unproton.com
 unproven-iron.000webhostapp.com
+unprovenledger.click
 unpublish-pages.000webhostapp.com
 unpufframpler.com
 unpurecraxi.stream
 unpw0czu7.com
 unpydqpidsfb.cdnvideo3.com
+unqlocojponline.shop
 unqorqr.mijurin.web.fly-host.com
 unqpun.pro
 unqsnzyrsdkuz.website
@@ -8702,12 +8802,14 @@ unrebelasterin.com
 unredressed-eases.000webhostapp.com
 unreelcraze.stream
 unreelsrimples.com
+unreelswiss.cyou
 unregaldiceras.qpon
 unregist91.at.ua
 unregisteredtraditional.com
 unremote.org
 unrentcrazy.stream
 unrenthah.qpon
+unrepalluv.cyou
 unreported-shed.000webhostapp.com
 unreported.stream
 unrertivermalous.com
@@ -8835,6 +8937,7 @@ unshellingytrhn.download
 unshortpreciso.cfd
 unshunnable-lick.000webhostapp.com
 unshutcaitiff.com
+unsido-charge.com
 unsightly-inflation.com
 unsightly-listen.com
 unsightly-potential.com
@@ -9108,6 +9211,7 @@ unwealucki.cyou
 unweamuske.cyou
 unweasrugg.cyou
 unweathered-bed.000webhostapp.com
+unwebant.com
 unweelcto.top
 unwelcome-shift.pro
 unwelcome-thousands.000webhostapp.com
@@ -9179,6 +9283,7 @@ unwwovelionced.cyou
 unx0.cc
 unx42.tk
 unx7.swimsuit-unable.lat
+unxeqilisy.icu
 unxpoalimredsuiniqe.serveirc.com
 unxuwvntk.com
 unxwwkwvcwsc.support
@@ -9553,6 +9658,7 @@ upbeat.wasmer.app
 upbeatdigital.net
 upbeatdualyahoo.com
 upbeatnature.com
+upbeatquick.abdulazizn.com
 upbeatshellos.cyou
 upbent.com
 upbf4c4mvssbiuhzrdvjewtvhbpnv1767617623.nuid.imrworldwide.com
@@ -9620,6 +9726,7 @@ updaiters-servierssupports.com
 updaiters-servierssupports.org
 updasses.000webhostapp.com
 updat-account-confim.com
+updat-visitors-arrival-dtl.com
 updat.fr
 updat120.clanteam.com
 updata.chtq.net
@@ -9923,6 +10030,7 @@ update-srv2.info
 update-start-hub.lovable.app
 update-store.com
 update-stores.club
+update-subscription.net
 update-summary-inc.com
 update-summaryaccount.com
 update-support-users-770-secure.com
@@ -9993,6 +10101,7 @@ update-zl.2345.cc
 update.123juzi.net
 update.2017.paypal.com.wcmb.ca
 update.360antivirus.net
+update.360safety.xyz
 update.3lift.com
 update.51edm.net
 update.5e5e.net
@@ -10170,6 +10279,7 @@ update.weknight.com
 update.wellsfargo.vote4miguel.com
 update.windowboanpatch.com
 update.windowsdefenderhost.com
+update.winservers-network.com
 update.wo.gumgum.com
 update.wps.cn
 update.wtag.adaptv.advertising.com
@@ -10324,6 +10434,7 @@ updatecom-account.com
 updateconfirmations.serveirc.com
 updateconfirmations.tronjol.com
 updateconfirmationsverifies.mortalf.info
+updatecos.pics
 updatecsid.be
 updatecurrent.com
 updatecw.com
@@ -10466,6 +10577,8 @@ updatenew.yoursafeandult2update.win
 updatenew.yoursafeandult2updates.download
 updatenew.yoursafeandult2updates.win
 updatenew.yoursafeandult2updating.stream
+updatenewsflash24.live
+updatenewsnetwork.live
 updatenewsoft4mac-readyforuse.date
 updatenewsoft4mac-readyforusenow.review
 updatenewsoft4mac-readyforusenow.stream
@@ -10660,6 +10773,7 @@ updatessoftware.b-cdn.net
 updatessonline.com
 updatestar.com
 updatesubs-netfilx.dynv6.net
+updatesupermaster.info
 updatesupport-id.com
 updatesupport.net
 updatesupport.services
@@ -10722,6 +10836,7 @@ updchecking.sytes.net
 updcrypt.com
 upddateee.000webhostapp.com
 updddha.dhlercodhl.tk
+upddefend.top
 upddpercutting.info
 updeejay.com.br
 updenkattac13.club
@@ -10834,6 +10949,7 @@ upgrade-update-android.info
 upgrade-update.hismarttv.com
 upgrade-websoftware.icu
 upgrade.account.details.ihelpdatappl.cazamance.com
+upgrade.api.my7v.com
 upgrade.bardiscover.com
 upgrade.biggerandlongerforupdate.win
 upgrade.biggerandlongerforupdates.bid
@@ -10915,6 +11031,7 @@ upgradebestonlinetheclicks.icu
 upgradebestsofttheclicks.icu
 upgradebestsupporttheclicks.icu
 upgradebradesco.com
+upgradecache.inkchains.com
 upgradecheck12.apptraffic2updates.win
 upgradecheck12.apptraffic2updating.stream
 upgradecheck12.bestcenter2updatesoftsafe.review
@@ -10933,6 +11050,7 @@ upgradecheck12.yourbetterandreliabletoupdate.download
 upgradecheck12.yourbetterandreliabletoupdating.download
 upgradecheck12.yourbetterandreliabletoupdating.stream
 upgradecheck12.yourultimatefreeupgrading.icu
+upgradechr.awabikeengine.com
 upgradecircle.goodthewayoscontents.icu
 upgradecircle.goodwayosforcontents.icu
 upgradecircle.thebestofupgrade.bid
@@ -11288,6 +11406,7 @@ upld.hopto.org
 upleaptmuffins.cyou
 upledgerai.com
 upledgerbrasil.biz
+upledgerbrasil.info
 upledgerllc.com
 upleq5.cdn-settings.appsflyersdk.com
 upleq5.launches.appsflyersdk.com
@@ -11768,6 +11887,8 @@ upsers-login.com
 upsers.mobi
 upsersacom.daftpage.com
 upsertest-authority.top
+upserver.microsoftupdate.xyz
+upserver.updateservice.store
 upset-day.pro
 upset-phone.com
 upset-relaxed.stream
@@ -11962,6 +12083,7 @@ uptyperw.com
 uptyzxegbsprx.space
 upu.samsungelectronics.com
 upullitrsvl.com
+upuluraward.com
 upupagummite.shop
 upuplet.net
 upuplets.com
@@ -12048,6 +12170,7 @@ uqeh7jpj37tzb3jmv9u98xjmoemn01769779353.nuid.imrworldwide.com
 uqek.nigoazey.fastsize.ru
 uqemcyylvcdrgs.com
 uqemuijao.uvyy.maxgrowth.ru
+uqethca.icu
 uqeulmkfcywmjqnolh.pw
 uqez8.ttrk.io
 uqezxdyfwcqgn.website
@@ -12119,7 +12242,6 @@ uqwiiafppsgowbkulylux.pw
 uqwkniqtrkdncvf.nut.cc
 uqwtlg.igg.biz
 uqxawlipmigevx.com
-uqxf32.launches.appsflyersdk.com
 uqxh5dcsx9xfdhsqhn7qqujcpzmom1767916101.uaid.nmrodam.com
 uqxtyjclokxex.website
 uqy70c8z.ltd
@@ -12136,7 +12258,6 @@ ur-vy.snprobbx.pbz.r.de.a2ip.ru
 ur.cosinsnarwhal.com
 ur.foretopheaved.com
 ur.impartsbacile.shop
-ur.io
 ur.mekongkerchoo.com
 ur.network
 ur.ru
@@ -12366,6 +12487,7 @@ urbansoftware.pro
 urbanspoon.com
 urbansscrubs.com
 urbanstanderd.com
+urbanstoneco.eu
 urbanstreamorax.com
 urbanstridelab.com
 urbantechits.com
@@ -12539,6 +12661,7 @@ urge849330.pro
 urge850031.pro
 urge850054.pro
 urge850284.pro
+urge850307.pro
 urge850330.pro
 urge851284.pro
 urge851307.pro
@@ -12675,6 +12798,7 @@ url.7878j.com
 url.7wkw.com
 url.9xiazaiqi.com
 url.downbank.cn
+url.emailprotection.link
 url.fastlinkprovider.pics
 url.fortifi.zone
 url.getandplay.web.id
@@ -12835,8 +12959,10 @@ uroforce.com
 urogrdiram.cyou
 urogyn.co.uk
 urogynecology.in
+urolodiavo.cyou
 urologie-chu-montpellier.fr
 urologin-schmitz.com
+urologuemarrakech.com
 uromacongl.cyou
 uromedianeira.com.br
 uronlinesupport.site
@@ -12926,6 +13052,7 @@ ursulatrudacsd.com
 ursuline.org.tw
 ursusltrk.com
 urszulakrynicka.pl
+urt-news3.club
 urta.karabura.ru
 urtbxola.bid
 urtc.com.au
@@ -12962,6 +13089,7 @@ urustr.ciuikyo.maxgrowth.ru
 urusurofhsorhfuuhr.cc
 uruswan.com
 urutumoet.com
+uruzorder.com
 urvanto.shop
 urvasiodissi.com
 urveeadhikaari.com
@@ -13847,6 +13975,7 @@ us.skated.co
 us.slubk.pw
 us.smartlook.cloud
 us.sobot.com
+us.ssl.sc.omtrdc.net
 us.st
 us.stape.io
 us.statl.win
@@ -14259,6 +14388,7 @@ usable-class.pro
 usable-hello.com
 usable-march.pro
 usablenet.com
+usabroker.pics
 usaburberrycoat.com
 usacanonsupport.com
 usacars.com
@@ -14516,6 +14646,7 @@ usbpro.com
 usbrassandcopper.com
 usbrowserspeed.com
 usbsupports.com
+usbtogeljaya.org
 usburberrysoutlets.com
 usbusiness-visa.com
 usbuybid.com
@@ -14554,6 +14685,7 @@ usclargo.com
 usclimate.gb.net
 uscloudsupport.com
 uscn.org
+uscoin.org
 uscollector.tealeaf.ibmcloud.com
 uscommunitysupport.info
 usconevbaaseproloen.godaddysites.com
@@ -15441,6 +15573,7 @@ usesepose.com
 usesfathom.com
 useshopledger.com
 usesmock.top
+usesofcbd.com
 usesolveledger.com
 usesponsorarrange.com
 usestyle.ai
@@ -15449,6 +15582,7 @@ usetech.co.th
 usetlnl.volleyball.vip
 usewellsfargo.nextintlnsgo.cfd
 usewmeukdgmnh.website
+usezazzi.com
 usezunna.com
 usfactoies.com
 usfakdxuo.bid
@@ -15653,6 +15787,7 @@ usitsupports.club
 usittoro.wixstudio.com
 usitunesgiftcard.net
 usitunesgiftcards.com
+usiusifusifuifsdiuadsisf.site
 usj08yjjbrw0yitcihv2xfmni5rwu1780393950.uaid.nmrodam.com
 usj9hotel.com
 usjack.com
@@ -15740,6 +15875,7 @@ uslyszanewnocy.xyz
 uslyszanewschodach.xyz
 uslyszanezklatki.xyz
 uslyszanezpodlogi.xyz
+uslyszanezpodlogiwautobusie.xyz
 uslyszanezpodworkabocznego.xyz
 uslyszanezwindy.xyz
 uslyszecafryke.org
@@ -15928,6 +16064,7 @@ uspmsg.top
 uspokecaftan.com
 uspolitics.news
 uspool.softopia.site
+uspora-tradium-app.com
 uspornhub.com
 usposn.info
 usposrodducklts4.tk
@@ -16784,6 +16921,7 @@ utahfeldenkrais.org
 utahforkliftcompanyltd.shop
 utahinternships.org
 utahlive.net
+utahlymphedemasolutions.com
 utahpride.org
 utahwebsitedesigns.com
 utairway.com
@@ -16826,6 +16964,7 @@ utdgg0gjvkfbfldzydvcmsobh0xa41781372874.nuid.nmrodam.com
 utdgy.rbuxxdceb.fastsize.ru
 utdkiskm.com
 utdlul.yoll.net
+utdovrk14bijrali6yeenlxasagkv1781461597.nuid.nmrodam.com
 utdshowrooms.com
 uteanddriver.com.au
 utebcvp.creditsay.shop
@@ -17488,6 +17627,7 @@ utopiatechnologygroup.com
 utopicmobile.com
 utopie-llv.be
 utopismlitatu.top
+utopivision.com
 utoqltvip.com
 utor.com
 utorido.com
@@ -17558,11 +17698,11 @@ utrehter.com
 utrennyayakom.tk
 utrionebswxgvhh.com
 utrjzhaf.cc
-utrkdata.pendo.workshop.autodata-group.com
 utrmdxdggjspusiys.pw
 utrmwlnkpvhvnx7wsmjioiexdunmo1775755317.nuid.nmrodam.com
 utrumkepping.cfd
 utrustpulabs.com
+utrvl.com
 uts-front.line-apps.com
 uts-wenzel.us
 uts.104.com.tw
@@ -17685,6 +17825,7 @@ uu3ft218m26o5cqaanb503sx0ynlq1778860906.uaid.nmrodam.com
 uu4cy2.cdn-settings.appsflyersdk.com
 uu4cy2.inapps.appsflyersdk.com
 uu4cy2.launches.appsflyersdk.com
+uu4xrk.infrasmart.it
 uu6hle.cdn-settings.appsflyersdk.com
 uu7a.com
 uu7c.com
@@ -17799,6 +17940,7 @@ uuquvbpn.atw.hu
 uuqzhzfaud5.com
 uurbowlen.tk
 uurl.at
+uurtdukslpmby.com
 uurty87e8rt7rt.com
 uurufnyiiriee.online
 uururr.com
@@ -17859,6 +18001,7 @@ uv.rosabw.com
 uv.terra.com.br
 uv.uncotorture.com
 uv3spafw8lf7etvdniq4sx1njld9a1780316236.uaid.nmrodam.com
+uv7omk.top
 uv7tajp6qpohdbick3k613vszs4cj1773471314.nuid.nmrodam.com
 uvacywrongs.download
 uvadovale.com
@@ -17897,6 +18040,7 @@ uvexen.shop
 uvexkask.shop
 uvexonline.shop
 uvexsale.shop
+uvexsklep.shop
 uvexvip.shop
 uveysi.com
 uvfckyovekkqh.space
@@ -17947,6 +18091,7 @@ uvidu.butlerelectricsupply.com
 uvimage.56.com
 uvirt3.active24.cz
 uvitacr.com
+uvives.de
 uvj2.com
 uvjak.cn
 uvjvnbitjmvzgk.com
@@ -17976,6 +18121,7 @@ uvocorpwriters.net
 uvodciakviysj.com
 uvoeaicakey.review
 uvogcpbssh.pw
+uvomykuf.pro
 uvoonaix.top
 uvoralhealth.org
 uvoryaubr.net
@@ -18015,6 +18161,7 @@ uvv.mybluehost.me
 uvvhimqchjcvq.site
 uvvhueoj.100free.com
 uvvpl8trk.com
+uvw-xy.work
 uvwmpritmqef.com
 uvwx5y.shop
 uvx7ri.lat
@@ -18030,6 +18177,8 @@ uvyxwb.info
 uvzcwrtxlc.cn
 uvzrtq.livingspaces.com
 uw-apm-ads-1.infra.washington.edu
+uw-fgh.com
+uw-fgh.net
 uw-gcp-multilbtcp.ssp.tappx.com
 uw-inventory.srv.stackadapt.com
 uw-klntprtaal.servehttp.com
@@ -18172,6 +18321,7 @@ uwqrwgxxkaoydo.com
 uwqscsskmm.pw
 uwqubipwq.pw
 uwrgkdykuvegyuurb.us
+uwrierusirwowisdofs.site
 uwriruidwiruiweralsr.site
 uwrmkj.cn
 uwrmrbxfaddressor.review
@@ -18251,6 +18401,7 @@ uxcnhsf.cn
 uxcodes.com
 uxconfbb.labbs.com.br
 uxconnect.org
+uxcqm7mfd0y2kh9nh3qwdgbvxy0k91781473538.nuid.nmrodam.com
 uxcr.goqavat.yi.org
 uxcsrmdm.cc
 uxcv2r.adrevenue.appsflyersdk.com
@@ -18281,9 +18432,7 @@ uxfpr2yh2fqelv4dbb-mail-netflix.info
 uxfxxg4mhpjn1ua08hj1qnbyyakkt1776001170.uaid.nmrodam.com
 uxg.za.com
 uxgipzzehpttp.online
-uxh52u-cdn-settings.appsflyersdk.com
 uxh52u.cdn-settings.appsflyersdk.com
-uxh52u.conversions.appsflyersdk.com
 uxh52u.inapps.appsflyersdk.com
 uxh52u.launches.appsflyersdk.com
 uxhdogamuts.review
@@ -18533,6 +18682,7 @@ uyqrwg.com
 uyqvcgisq.com
 uyqwpnspgadkq.site
 uyqx.cn
+uyqxwnxmkqwjeq1211413.click
 uyqzlnmdtfpnqskyyvidmllmzauitvaijcgqjldwcwvewjgwfj.com
 uyr3.ashenkite.in.net
 uyriroadwtdwu.space
@@ -18598,6 +18748,7 @@ uzagahwfnt.com
 uzairatta.github.io
 uzaklardagezgin.com
 uzaktanogrenin.com
+uzakufuklar.com
 uzapgolabdiyl.site
 uzasjoeoqwruj.site
 uzatilmisgaranti.com
@@ -18723,6 +18874,7 @@ uzsywcdthqplzv.bid
 uzt46p.cdn-settings.appsflyersdk.com
 uzt46p.inapps.appsflyersdk.com
 uzt46p.launches.appsflyersdk.com
+uzuhcra.xyz
 uzujpdkymbro.com
 uzukakccaflam.space
 uzumconcept.com

@@ -1,7 +1,7 @@
 # Threatbase Threat Intelligence Feed - URLs
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:07 +0000
 #
 http://h23.dad/b
 http://haeum.nfile.net/files/haeum.exe
@@ -78,6 +78,7 @@ http://hseda.com/download/qt51crk.exe
 http://hubsecure.info/
 https://h0t75jy5.betgopro.com/?ublib=920cb201-2ae4-4839-b5d0-6fb4fbaa05e9
 https://h3mraocc.telemetry-harbor.digital/?ublib=5bc07832-feaa-4893-b2a7-2f2c0a07d343
+https://h4z6bu79.akhbarsport.info/?ublib=27925330-01b4-4e04-b077-227f05e04e2d
 https://h7cyp6bl.kernel-compass.digital/?ublib=c51d0d82-bc40-4c2a-8630-6d1feaa4782b
 https://h89kbhtt.schleer.hu/?ublib=14afd51a-6e12-4177-8360-6c1803824a97
 https://handmade-cheese-traveler.garden/4171e19a-af47-45fb-ad00-7b2ee9cd5995/google.ct

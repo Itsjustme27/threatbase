@@ -1,7 +1,7 @@
 # Threatbase Threat Intelligence Feed - URLs
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:07 +0000
 #
 http://icy-lab-0431.guilherme-telecomunicacoes2024.workers.dev/HnDvE/
 http://icy-lab-0431.guilherme-telecomunicacoes2024.workers.dev/WrkWF
@@ -1209,6 +1209,7 @@ https://indepahote.com/test/
 https://inervadores.life/bin/stego_payload.png
 https://inervadores.life/enter/stego_payload.png
 https://info-alert.net/2fb8071a-0463-4603-8a2a-b8859236a0b1/a/02d6cd9c-708e-43e3-a9e7-eb06baf6db3b/ccp?lid=505ceb7d-356a-4d39-8a68-761173d04bc2/
+https://infobhz.com.br/
 https://infohelprus.vercel.app/?download=1
 https://infosvo2026.vercel.app/?download=1
 https://infoworkerOne.com/tracker.js

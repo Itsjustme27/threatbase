@@ -1,9 +1,12 @@
 # Threatbase Threat Intelligence Feed - Domains
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:08 +0000
 #
 k-2-j-d.com
+k-8xda.fit
+k-8xda.shop
+k-8xda.skin
 k-ad.region.adaether.com
 k-ad.region.funmora.com
 k-ad.region.kwai.com
@@ -202,6 +205,7 @@ k18xj.top
 k19now-cdn-settings.appsflyersdk.com
 k19now.cdn-settings.appsflyersdk.com
 k19now.launches.appsflyersdk.com
+k1a.i3vdaw.cfd
 k1baef3ed.app-ads-txt.com
 k1bueh.launches.appsflyersdk.com
 k1capital.net.au
@@ -295,6 +299,7 @@ k3cxd.pileanoted.com
 k3ez1p.vip
 k3fufvlwr6jui3lozkw9yos7g5ukq1779390088.darnuid.imrworldwide.com
 k3mlrm1tnbotwdcct5vpnblvvvhyo1779382285.nuid.nmrodam.com
+k3n8xr.fit
 k3on.com
 k3p8z1r6t5w2.cfd
 k3pzz.superpromo.6642.ws
@@ -329,6 +334,7 @@ k4ci.de
 k4fjfu85tpv2lbkqcgddzt3qjrrv41778000630.uaid.nmrodam.com
 k4hitech.in
 k4jkx7ehz6.adsl.datanet.hu
+k4m-rp.shop
 k4mf9p.xyz
 k4mkfkuwh2f0j2utanipivl5ncyxh1772144163.nuid.imrworldwide.com
 k4mob.tk
@@ -360,7 +366,9 @@ k57famtz.bordestan.com
 k57frabej9bw1agzdi9cmomatitkw1779572118.nuid.nmrodam.com
 k57kb6if2z3zvp6wpwyob63lb2t351761666164.uaid.nmrodam.com
 k58designs.com
+k597s.cn110.xyz
 k5a.io
+k5a9dx.beer
 k5a9dx.hair
 k5ads.osdn.com
 k5ahmfv2rx.tiffney1.workers.dev
@@ -403,13 +411,16 @@ k69wes8q8.com
 k6a654bf3.app-ads-txt.com
 k6d6xeijd42sm9wghvs32t0av5olk1772050977.nuid.imrworldwide.com
 k6da8776d.app-ads-txt.com
+k6dfxa.fit
 k6f9acdo.xyz
 k6fg3.com
 k6g9v6yg8tc95pbwbyuey0wpm7sgk1779045204.uaid.nmrodam.com
 k6hj.top
 k6hk.xm.instanthq.com
 k6jd1ko4o340ma0z3spqjlg40n0pe1771871202.uaid.nmrodam.com
+k6odxs.fit
 k6plic4lmpibimjmgiiqcqkwvfies1770042436.nuid.nmrodam.com
+k6ptdw.fit
 k6s9c6.adrevenue.appsflyersdk.com
 k6s9c6.launches.appsflyersdk.com
 k6spzgv77upv0ss4ocvl4tgckmmm91779637622.nuid.nmrodam.com
@@ -439,7 +450,9 @@ k7hwq3ncqpodz56izlsq4yrhgqar11777824241.nuid.nmrodam.com
 k7m4co459k.com
 k7pixtcdrmb6ifm9vgclx1o1mcc7a1765311660.nuid.nmrodam.com
 k7poker.com
+k7rqf.n3gfml.cfd
 k7t1p.vip
+k7tlgj.casa
 k7w7vgegubl3jogkesswmbgtfvxhq1778698029.darnuid.imrworldwide.com
 k7wp9dp7jn9x8ka3pflm2bpw3oab21776803933.uaid.nmrodam.com
 k7xl.zj.cleansite.us
@@ -479,7 +492,6 @@ k8pgqqyp8as6031z03jh7dg5gdzej1771879521.uaid.nmrodam.com
 k8s-cctracki-tracking-6ca960b650-686607281.eu-central-1.elb.amazonaws.com
 k8s-cobalt.azure.meltwater.io
 k8s-default-ingress-7a0478170e-1709036071.us-east-2.elb.amazonaws.com
-k8s-default-tracking-12d92acef5-947069874.eu-west-1.elb.amazonaws.com
 k8s-log-c04904bdbf9d54b87bb7e696c59308587.cn-hangzhou.log.aliyuncs.com
 k8s-log-c1f874a604cb64b29bb69219c8faaf8b7.cn-hongkong.log.aliyuncs.com
 k8s-log-custom-gcp-popmart-eu-prod.eu-central-1.log.aliyuncs.com
@@ -520,6 +532,8 @@ k8velr77p.com
 k8wf.top
 k8zcheekymonkeyz.com
 k8zmjoint0d61vi60di1x6dmpk.net
+k8zpxf.fit
+k8zpxf.work
 k8zr6ihqgegxb3wwxh0uccghv6fmk1779568115.uaid.nmrodam.com
 k8zy.com
 k9-rim-outer.altasphera.in.net
@@ -572,6 +586,8 @@ k9oeb2eg2ehpgc8fnhkeyyyyyn.domsearch.net
 k9onotmj0j1op0gnsis9potpm7ck71779286921.uaid.nmrodam.com
 k9p68pj291vxszgiqb4v15zj2zjk61771678852.uaid.nmrodam.com
 k9pdlefk.website
+k9r-zp.cyou
+k9r-zp.skin
 k9rescuesupport.com
 k9securitysupportservices.com
 k9sforthecure.com
@@ -581,6 +597,8 @@ k9unta.casa
 k9v8xg8glkodynncfu2hzapqv6a4n1778192161.nuid.nmrodam.com
 k9vbksw1dypnw5lididt8o5yje1qo1777407631.nuid.imrworldwide.com
 k9vn2.com
+k9x-pq.fit
+k9x-pq.shop
 k9x.net
 k9zxbudgix.com
 ka-ad-zfxnggyn.kgslb.com
@@ -699,6 +717,7 @@ kabelnet-254-132.parisat.hu
 kabelnet-254-190.parisat.hu
 kabelospy.ga
 kabelves.ru
+kabeshop.hoc11.vn
 kabex.com
 kabey.000webhostapp.com
 kabiconllc.live
@@ -840,6 +859,7 @@ kadush-sideburnsushan.courses
 kadvemfcxjqb.com
 kadxin.net
 kadyavarilganpati.com
+kadynskandies.com
 kae.ae
 kaecex.com
 kaedan.com
@@ -859,6 +879,7 @@ kaetkq.cdn-settings.appsflyersdk.com
 kaewe.caesarresidence.com
 kafaneroskzu.com
 kafanov.com
+kafasntutgelburdaalsyap.online
 kafebuhara.ru
 kafeie.com
 kafemar.com
@@ -912,6 +933,7 @@ kagonst.com
 kagopij.tripod.com
 kagroup.co.za
 kagug.mabaninazari.shop
+kagupuo.pro
 kagura-lc.com
 kagura88.com
 kagxyvk.com
@@ -955,6 +977,7 @@ kaidd.clinicweb.co.kr
 kaidee.info
 kaideemark.com
 kaidilong.top
+kaidl.co.uk
 kaidokdiaodwewarewe.site
 kaidop.com
 kaidoplayers.xyz
@@ -976,6 +999,7 @@ kaihuashiye.com
 kaijiang001.com
 kaijohnson.me
 kaijos.nut.cc
+kaijuconverter.com
 kaikam.com
 kaikayarestaurante.com
 kaikoaregabigi.net
@@ -1121,6 +1145,7 @@ kak.znate.ru
 kaka00.myq-see.com
 kakabey.com
 kakadu-interior.com.ua
+kakaerixomal.site
 kakafind.com
 kakaku.com.102.112.2o7.net
 kakakucom-d.openx.net
@@ -1230,6 +1255,7 @@ kalcho.com.mx
 kalcit.id
 kaldar.pl
 kaldiperu.com
+kaldkburdaaccacalsyoruzszdegeln.info
 kaldo.it
 kaldonri.desi
 kaldoravixa.info
@@ -1262,6 +1288,7 @@ kalewife.us
 kalexuan.net
 kaley-cuoco-keto-gummies.company.site
 kaley-cuoco-keto-official-website.company.site
+kaley-cuoco.com
 kaleykennedy.com
 kalfin.eu
 kalfman50.5gbfree.com
@@ -1357,6 +1384,7 @@ kaloam.com
 kaloistvan.atw.hu
 kalokalocasino.fr
 kalomira.myforumtoolbar.com
+kalomkpw.com
 kalonblsndebnm.shop
 kalonso.com
 kalooga.com
@@ -1444,6 +1472,7 @@ kamagra-4you.cz
 kamagra-direct.com
 kamagra-kopen.nl
 kamagra-premium.net
+kamagra-pro.online
 kamagra-webshop.com
 kamagra-wolf.com
 kamagra.guru
@@ -1522,6 +1551,7 @@ kamennews.ucoz.ru
 kamenotes.biz
 kamera.wolbrom.pl
 kamera89.com
+kameraffbutt.online
 kamerague.com
 kamerali.com
 kameraplus.com
@@ -1598,6 +1628,7 @@ kampanyaparafi.com
 kampanyaparafim.com
 kampanyyafirsatllarikvueyts.sbs
 kampaysburdadsendekatlyen2535.info
+kampermania.com
 kampioenen.numpet.com
 kampioenenl.numpet.com
 kampioenenvanhetcircuit.numpet.com
@@ -1639,6 +1670,7 @@ kamyki.com
 kamyn9ka.com
 kamyst.websoft.kz
 kan-eg.com
+kan-pl.top
 kan-support.com
 kan11web.2cnt.net
 kana.cloud
@@ -1949,6 +1981,7 @@ kapendo.com
 kaperollsitegh.info
 kapersky.fr
 kapetracking.com
+kapfexproplatform.com
 kaphorenti.info
 kapi.dev
 kapiche.com
@@ -1957,11 +1990,11 @@ kapieu3fsi.centde.com
 kapilananda.github.io
 kapinda-olanlar-surekli-seviniyor-simdi.com
 kapindakimutlulukhemenal.com
-kapindakimutlulukhemenal.org
 kapisbusinnes.click
 kapisigov.icu
 kapiskara.lat
 kapistir.com
+kapital-direkt.de
 kapital-news.com
 kapital.pw
 kapitalinfo24.com
@@ -1970,6 +2003,7 @@ kapitalmenkul.com.tr
 kapitalpolska.net
 kapitalpolskapro.info
 kapitalrus.ru
+kapitaltrezbit.com
 kapitalzonepl24.info
 kapitanjack.ru
 kapiti-alpaca.co.nz
@@ -2027,6 +2061,7 @@ kapselnanabolaxan.company.site
 kapselnanaboloxan-muscle.company.site
 kapsero.net
 kapsglobal.ae
+kapsmuh.com
 kapsoftech.com
 kapswholesale.info
 kaptagro.com.br
@@ -2100,6 +2135,7 @@ karamesetarim.com
 karamina.com
 karamisha.ru
 karamnews.com
+karamut.com
 karamwajed.com
 karan-pc.com
 karan.mobi
@@ -2161,6 +2197,7 @@ karavantravel.org
 karavelabcroisierees.112.2o7.net
 karawankenblick-velden.at
 karaweb.it
+karaxic.wpenginepowered.com
 karayurt.nl
 karbadina.com
 karbaninsaat.com
@@ -2261,6 +2298,7 @@ kariciassexshop.com.br
 karihunter.net
 karikari.com.br
 kariklik.co.nf
+karimaalilat.shop
 karimatwahab.github.io
 karimsglobal.com
 karin-hrat.am
@@ -2303,6 +2341,7 @@ karla-hanns-karla.blogspot.com
 karlalozano.com
 karlasmakingit.com
 karlast.com
+karldiscount-eu.shop
 karleyt.narod.ru
 karlies.000webhostapp.com
 karlingglues.qpon
@@ -2318,6 +2357,7 @@ karlshouse.com
 karlskreations.com
 karlsmart.com
 karlsquell.de
+karlsson.com
 karlstejn-golf.cz
 karma-bodrum.com
 karma.ashleyshaw.ca
@@ -2349,6 +2389,7 @@ karmashree.com
 karmaskids.com
 karmasnackhealth.com
 karmauniforma.com
+karmayogamexico.org
 karmeluishinomo.skylineinsulation.com
 karmetdokum.com
 karmic-koala.info
@@ -2372,6 +2413,8 @@ karoestekhdam.ir
 karokaroliney.blogspot.com
 karolatelier.com.br
 karolbunsch.pl
+karolnawrockapla.com
+karolnawrockaplc.com
 karolnawrockapld.com
 karolnawrockaplg.com
 karolnawrockaplk.com
@@ -2828,6 +2871,7 @@ kataprius.com
 katara.eshopshub.com
 katariahospitalkotkapura.com
 katariainfotech.com
+katarinalazic.shop
 katarinaty.com
 katariyaconsultancy.com
 katariyaindia.com
@@ -2987,6 +3031,7 @@ katmilby.com
 katmovie4k.com
 katoconsulting.ro
 katofer.axelero.net
+katojansen.shop
 katok-kotak.tk
 katolik.ru
 katongtutor.com
@@ -3148,6 +3193,7 @@ kavtqkbsyrpzt.site
 kavwbdxhjwgca.com
 kavyanepal.com
 kavyap565799.github.io
+kavysveta.com
 kavzatemizlikurunleri.com
 kavzora.shop
 kavzrejsqdzwq5td22gvacac9doak1777824198.nuid.nmrodam.com
@@ -3300,6 +3346,7 @@ kayvon.me
 kaywa.me
 kayyyy.000webhostapp.com
 kayzen.io
+kaz-li.fit
 kaz.jlxnesex.in
 kaz.kz
 kaz.shariki1.kz
@@ -3333,6 +3380,7 @@ kazan.xrus.org
 kazan.zrus.org
 kazanankampanya.net
 kazanankampanya.org
+kazancbank.com
 kazancliurun.com
 kazancperisi127.com
 kazandiriyor.net
@@ -3344,6 +3392,7 @@ kazaricollectionapi.kazaricollection.com
 kazario.b-cdn.net
 kazarschuheshop.com
 kazarslovensko.sk
+kazatomprom-invest.com
 kazatski.us
 kazatsky.us
 kazazinsaat.com
@@ -3515,6 +3564,7 @@ kbjit.com
 kbjn.co.uk
 kbjqa.wpsmart.app
 kbjr.marketminute.com
+kbjsuytutdqms.online
 kbjtd.com
 kbjuqbdplwpjm.online
 kbjv.ch
@@ -3571,6 +3621,7 @@ kbprwm.ltd
 kbq.temporary.site
 kbqebfcubeiaa.com
 kbqgv.ruffwear.co.uk
+kbqhmskmilbjj.space
 kbqjzi7w6g00cm41qt1wmdxnivogy1775602970.uaid.nmrodam.com
 kbquoi.com
 kbqwpu1061.host
@@ -3670,6 +3721,7 @@ kc3r1z4l6f45hkeczhyl0q20i3amc1780157289.uaid.nmrodam.com
 kc419.ddns.net
 kc4xmp9o.com
 kc7s4uri.padelconstruct.hu
+kc817o25hldlu.sbs
 kc84bz7wcjntg1pp8r4nqz0f9iuud1762782521.nuid.nmrodam.com
 kc8h28q5yoxpmjf.top
 kc8ibx5d8p054re6s89par7z8pbxk1778069904.uaid.nmrodam.com
@@ -3818,6 +3870,7 @@ kcta.or.kr
 kctag.net
 kctbry190.site
 kctctour.com
+kctelectrics.com
 kctfmpharshens.download
 kctfzc.cdn-settings.appsflyersdk.com
 kcti.re.kr
@@ -4050,11 +4103,14 @@ kdmv.igg.biz
 kdmxiileig.com
 kdmyatytentionia.com
 kdn.cl
+kdn.n3gfml.cfd
 kdn031.konyadizayn.net
 kdnbljfbgheqq.space
 kdnhdmshejecta.download
 kdnnhkwwbjr.net
+kdnscowdnvierwq.com
 kdo2.ddns.net
+kdoiery.com
 kdoirpjdoruwqe.weebly.com
 kdollldq.com
 kdomqi.site
@@ -4188,8 +4244,10 @@ ke.hl.cn
 ke.lgsmartad.com
 ke02a9adgyi3gbpbewamuz9arvf8k1780827687.uaid.nmrodam.com
 ke0bihzabp61hubq4z4un1mwzl3hl1776941933.darnuid.imrworldwide.com
+ke1mpy-cdn-settings.appsflyersdk.com
 ke1oizqwlz.centde.com
 ke2cc3nmvugpd274uo5wf9j7nr7y31779270771.uaid.nmrodam.com
+ke2vsl.top
 ke3srk.dashjore.in.net
 ke4c664f17cade13c9f84ad4d5454b0-qthijs477q-ew.a.run.app
 ke4rx.org
@@ -4250,6 +4308,7 @@ kebbucks.us
 kebdnwepskuoe.website
 kebeckirgon.net
 kebegvpl.com
+kebentekstil.com
 kebi1.top
 kebikhh4tw6rfnxfrmzmczrucywet1775937041.nuid.nmrodam.com
 kebixing.top
@@ -4306,6 +4365,7 @@ kedierssale.fr
 kedjcfkxuhg.cc
 kedlzb.datiing4you.com
 kedlzb.orlglnaldate.net
+kedofyu.pro
 kedokteran.malahayati.ac.id
 kedraventiqa.com
 kedravonia24.top
@@ -4359,6 +4419,8 @@ keen-fr.fr
 keen-gear.com
 keen-girlfriend.pro
 keen-hammer.com
+keen-profit.com
+keen-trust.com
 keen.io
 keen.sspinc.io
 keenach.top
@@ -4382,6 +4444,7 @@ keenfactchronicle.pro
 keenfootwearsale.com
 keenfr.fr
 keeniediy.com
+keenimp.com
 keenings.stream
 keenkale.com
 keenlyinterested.tk
@@ -4431,9 +4494,11 @@ keepassx.com
 keepassxc.com
 keepassxc.fr
 keepcell.com.br
+keepcho.xyz
 keepclean.be
 keepcolletive.com
 keepcousin.com
+keepdginger.ecom-staging-nad.com
 keepdrive.it
 keeper.10put.site
 keeperdatastorage.com
@@ -4516,6 +4581,7 @@ keewoach.net
 keewurd.com
 keeykijnlogin.webflow.io
 kef0o4ndd75w2b3ol59dx40llm0m61773638246.uaid.nmrodam.com
+kefaka.com
 kefbd.info
 kefeeanekerk.nl
 kefewono.info
@@ -4531,6 +4597,7 @@ kefreepdf.site
 kefrq0wkie.da387v98cv.icu
 kefthymioudevelopment.com
 keftisighty.cfd
+kefureu.pro
 kefuwidijyp.eu
 kefuzixun.cn
 kefvspvbxrd.org
@@ -4549,6 +4616,8 @@ keha-matomo-tmt-prod.azurewebsites.net
 kehalim.com
 kehcrvdnftestoons.website
 kehg.com
+kehillatcornerstone.us
+kehilot.net
 kehkbsknnedlv.site
 kehklungaofc.com
 kehogmgm511.site
@@ -4594,6 +4663,7 @@ keitaro1.cityads.com
 keithbrid.shop
 keithdaley.co.uk
 keithklassen.com
+keithmcfarland.com
 keithobrien.xyz
 keithomeara.com
 keithosworld.com
@@ -4617,11 +4687,13 @@ kejaksan.xyz
 kejaksanc.cc
 kejakswan.cc
 kejari-kotawaringinbarat.go.id
+kejejay.pro
 kejet.net
 kejiahong.cc
 kejianjc.com
 kejiba.duapp.com
 kejimn.com
+kejinae.com
 kejixueyuan.cn
 kejkzhzgzbloodstock.review
 kejoranews.net
@@ -4813,6 +4885,7 @@ kelopronto.com
 kelownaledger.click
 kelownatownhomes.com
 kelp4less.com
+kelperai.com
 kelpiesinc.com
 kelpiesregna.com
 kelpmedia.com
@@ -4882,6 +4955,7 @@ kemenpppa.go.id
 kemerealty.com
 kemerkebabchi.com
 kemerovo-psyter.ucoz.ru
+kemet-ac.com
 kemetdesign.cf
 kemihansome.000webhostapp.com
 kemistry.co.in
@@ -4976,6 +5050,7 @@ kengai.cu.ma
 kengi.top
 kengomotors.com
 kengoods.com
+kengraetz.org
 kengray.com
 kengreenfish.co.uk
 kenh4share.tk
@@ -5161,6 +5236,7 @@ kenzmedical.com
 kenzofrance.fr
 kenzog.no-ip.biz
 kenzosoldes.fr
+kenzototo.net
 kenzoworld.fr
 keo.tw
 keoarr.gayailiance.com
@@ -5210,6 +5286,7 @@ keptn.devstats.cncf.io
 kepusz.atw.hu
 kepw.org
 keqawm.findgirlfor.com
+keqind.com
 keqnebfovnhl.com
 keqp41u1x7nn79phtx387nqyokqo61779197277.uaid.nmrodam.com
 ker.mybluehost.me
@@ -5368,6 +5445,7 @@ kerplunk.pw
 kerrcalendar.com
 kerremeuoi.com
 kerri-meehan.com
+kerriasoutliptreaty.cyou
 kerricastesokras.cfd
 kerrinobrien.com
 kerrison.com
@@ -5447,6 +5525,7 @@ kesteewhecmeep.com
 kestrels.pw
 kesu9.tk
 kesug.com
+kesugiy.pro
 kesz.gyor.hu
 keszhaz.net
 keszja.collections.cmp.optimizely.com
@@ -5684,6 +5763,8 @@ kewajwe.loan
 kewalym.loan
 kewapuwubeme.000webhostapp.com
 kewdjb.metgirlforyou.com
+keweejuana.com
+keweenawlakeshoreforest.com
 keweenawsolarbrew.com
 kewelina.com
 kewkrg.path2llove.com
@@ -5820,6 +5901,7 @@ keyid2o0gx6d0tmzj49b2ez3v6as5h75ltm0dwfhgigl1.info
 keyida.top
 keyiduo.top
 keyimmo.info
+keyknitwear.shop
 keyless.stream
 keylesscarremote.com
 keyletmutage.cfd
@@ -6087,6 +6169,7 @@ kflosfpnwfzrc.store
 kflvisblmhvn1vacgxxwpfkhjgudc1768827378.darnuid.imrworldwide.com
 kfmecpvpybqcn4.com
 kfmmfyrkrgipm.love
+kfmrc.com
 kfnar8d26gdv3o-gn99x.com
 kfnjyxq.pw
 kfnmpmggzsubclause.review
@@ -6263,6 +6346,7 @@ kgjgd9cjzwidcbtxbloafub9p7q361771512665.nuid.imrworldwide.com
 kgjglobal.com
 kgk-kirov.nichost.ru
 kgk185ux.zb.dyndns.pro
+kgki9lumlyweykxeqvk2oasemabke1781475660.nuid.imrworldwide.com
 kgkjlivo.com
 kgkkfrvujnqf.com
 kgknyxxabkmk.com
@@ -6487,6 +6571,7 @@ khaki-communication-866608.framer.app
 khaki-english-129668.framer.app
 khaki-shares-665070.framer.app
 khakiconc.best
+khakieffe.uzoagu.com
 khakiweasel42.sakura.ne.jp
 khaklikrt.com
 khaledayesh.org
@@ -6733,6 +6818,7 @@ khnnnlvb.150m.com
 khnnnlvb.atspace.com
 khnnnlvb.atw.hu
 khntelecom.nl
+khnzvcrw.shop
 kho-anh.blogspot.com
 khoaf.com
 khoagufhmp.com
@@ -6855,6 +6941,7 @@ khurki.com
 khurshideng.com
 khurxram.github.io
 khushalitravels.com
+khushbet.lol
 khushh1711.github.io
 khushi-kumari98.github.io
 khushiconstructions.com
@@ -6892,6 +6979,7 @@ khyyo.zebiqayxy.fastsize.ru
 khzbeucrltin.com
 khzca.info
 khzqjaf.org
+ki-trading-solution.com
 ki-utopia.com
 ki.203kcontractorskansas.com
 ki.cpcempower.com
@@ -6908,6 +6996,7 @@ ki4jkq-launches.appsflyersdk.com
 ki6tf1-cdn-settings.appsflyersdk.com
 ki6tf1-launches.appsflyersdk.com
 ki6tf1.cdn-settings.appsflyersdk.com
+ki6tf1.conversions.appsflyersdk.com
 ki6tf1.launches.appsflyersdk.com
 ki7.leakof.shop
 ki888gcash.com
@@ -7086,6 +7175,7 @@ kickprincess.com
 kickproduction.api.useinsider.com
 kickrunwrite.com
 kicks-runnings.uk.com
+kicks-se.shop
 kicksbelow.com
 kicksforward.ru
 kicksstore.uk.com
@@ -7402,6 +7492,7 @@ kiknadkt.com
 kiko5giveajingl.tk
 kikofrance.fr
 kikohash.com
+kikoliy.pro
 kikon-link.com
 kikon-match.co.jp
 kikorpo.com.br
@@ -7535,6 +7626,7 @@ kilorama.com
 kilos0t8.beget.tech
 kilosex.com
 kilotkatat.cyou
+kiloup.fit
 kilovoltsqychaubi.download
 kilowattssnualinoculation.courses
 kilpad.com
@@ -7575,6 +7667,7 @@ kimberlycharleston.com
 kimberlycoville.com
 kimberlydanger.com
 kimberlyorient.net
+kimberlypoland.com
 kimberlyvargasauthor.com
 kimbweza.com
 kimc.ac.ke
@@ -7593,6 +7686,7 @@ kimdanger.com
 kimdirkim.com
 kimdobank.com
 kimehr.com
+kimekrueger.com
 kimete.com
 kimexa.com
 kimeya.aielber.com
@@ -7615,6 +7709,7 @@ kimiasazan.com
 kimiasol.com
 kimiasp.com
 kimikoi8.com
+kimiluy.com
 kimimischke.com
 kiminonawa.web.id
 kiminsitesi.com
@@ -7733,6 +7828,7 @@ kinder-toys.ru
 kinder.oewabox.at
 kinderatv-vrn.ru
 kinderbetreuung-kaernten.at
+kinderdays.com
 kindereninnood.nl
 kindergarten-aholfing.de
 kindergarten-weltentdecker.de
@@ -7829,11 +7925,13 @@ kindof-queer.tk
 kindofwelcomeperspective.com
 kindomledger.app
 kindomstar.com
+kindred-tenements.com
 kindredplc.com
 kindredvet.com
 kindring.com
 kindspot.com
 kindsvater.net
+kindwayconsultinggroup.cyou
 kindworldwideventures.com
 kine.web4me.fr
 kinebydesign.com
@@ -7843,6 +7941,7 @@ kinecosystem.io
 kinecosystems.org
 kinecthacks.com
 kinemastermodapk.byethost13.com
+kineretaisystem.com
 kinerjago.com
 kinesesduply.cyou
 kinesicintell.com
@@ -7856,6 +7955,7 @@ kinetec.com.br
 kinetic-ind.com
 kinetic-io.dynaflux.in.net
 kinetic-io.dynamismjuply.in.net
+kinetic6iot.com
 kineticartstucson.com
 kineticcc.org.za
 kineticflare.net
@@ -7863,6 +7963,7 @@ kineticharbor.com
 kineticminds.com
 kinetics.fitness
 kinetictokenforms.typeform.com
+kinetimed.com
 kinetins.stream
 kinetiqa.space
 kinetisphere.shop
@@ -7936,6 +8037,7 @@ kingchancefrance.fr
 kingcityhomes.net
 kingcoast.homedns.org
 kingcoderschacker.qpon
+kingconsultingllc.com
 kingdata.ksyun.com
 kingdavid.it
 kingdavidhomecare.com
@@ -8001,6 +8103,8 @@ kingkongcash.nl
 kingkongcashevenbiggerbananas.uk
 kingkongcashguide.xyz
 kingkongcashjackpotking.store
+kingkongcashplay.online
+kingkongcashplay.site
 kingkongcashplay.xyz
 kingkongsearch.com
 kingkonta.pl
@@ -8116,6 +8220,7 @@ kingsugardaddy.com
 kingsumo.com
 kingsvilla.in
 kingswaypainting.com
+kingswelltradeluxengine.com
 kingswet431-spec.github.io
 kingswin-casino.fr
 kingswin.fr
@@ -8370,6 +8475,7 @@ kiqpresents.com
 kiqsrh-cdn-settings.appsflyersdk.com
 kiqsrh-inapps.appsflyersdk.com
 kiqsrh-launches.appsflyersdk.com
+kir-ye.work
 kira-kira.blue
 kira99.ddns.net
 kirafacebook2077.online
@@ -8405,6 +8511,7 @@ kirdugunu.com.tr
 kirdwbntcyp.cn
 kireahkainlogin.webflow.io
 kirech.com.ua
+kireexo.site
 kireibox.xyz
 kireosdiresdpqeowr.site
 kires.umk-spo.biz
@@ -8688,6 +8795,8 @@ kitealert.social
 kitebersama.web.id
 kiteboarding.com.tw
 kitecom.co.uk
+kiteeo.com
+kiteffect.top
 kitehosting.com
 kiteknit.shop
 kitemailpocket.com
@@ -8778,6 +8887,7 @@ kittycatcasino.fr
 kittycatking.com
 kittydorable.com
 kittygfs.cc
+kittygoesboom.com
 kittygruff.com
 kittykatrescue.co.uk
 kittyland.to
@@ -8787,6 +8897,8 @@ kittypretty.com
 kittyrespectfully.com
 kittyscash.com
 kittyscontent.com
+kittysherberry.shop
+kittysherbery.shop
 kittysherberys.shop
 kittyspring-fountain.kckb.st
 kittystore.net
@@ -9193,6 +9305,7 @@ kjnj.org
 kjnkmidieyrb.com
 kjnl5dij3j2tmmnb9qwufoow3eajk1771492486.nuid.nmrodam.com
 kjnlmn.help
+kjnomics.com
 kjntsho.com
 kjnvnjf.weebly.com
 kjo6giveacall.tk
@@ -9279,6 +9392,7 @@ kk-1.sgrew.club
 kk-combat.ucoz.ru
 kk-dk-parkiingkkt.one
 kk-resources.com
+kk-z.xyz
 kk.bsirn20.uk.cc
 kk.com.pl
 kk.macromultimedia.com
@@ -9304,6 +9418,7 @@ kk54.joksserver.in.net
 kk59it.cdn-settings.appsflyersdk.com
 kk59it.inapps.appsflyersdk.com
 kk59it.launches.appsflyersdk.com
+kk7rqe.casa
 kkabba.usa.cc
 kkadverts.com
 kkajbengram.download
@@ -9396,6 +9511,7 @@ kkkmr.com
 kkkuinn-logii.godaddysites.com
 kkkweb.com
 kkl9.weebly.com
+kklacademy.com
 kklarhormendosmod.com
 kklatam.com
 kkledger.com
@@ -9548,6 +9664,7 @@ kl.skyresensify.com
 kl.smogsdewworm.top
 kl.yditweb.cn
 kl23rl6f.nahjolbalage.xyz
+kl3l72.launches.appsflyersdk.com
 kl4bxdyzdqlqoppgcrtm0o01tb1zn1779540124.nuid.imrworldwide.com
 kl4vpi.sbs
 kl4xkg1xghpxglap4iuly2kq7dnf71780213582.nuid.nmrodam.com
@@ -9703,6 +9820,7 @@ klarrisakristina.ru
 klartscouncil.ca
 klarvermowald.net
 klasa6asuwalki.za.pl
+klasaodwierodewrios.site
 klasemen.co
 klasgrup.net
 klasjob.com
@@ -9718,6 +9836,7 @@ klasste.tripod.com
 klassykleenhouston.com
 klaster.ee
 klaster.ptzp.org.pl
+klasterfin-platform.com
 klastermebel.pl
 klasterpolskanatura.pl
 klasykaslubna.pl
@@ -9729,12 +9848,14 @@ klattorneysdbn.co.za
 klaudena-sale.tech
 klauhdvtcngsga.us
 klaumonforma.com.br
+klaun.expertdeathmatch.com
 klaus-juergen-adler-b-eng.de
 klaus-meat-grill.ch
 klaus-moersch.de
 klaushydra.com
 klausnerlaw.com
 klausschuster.at
+klavento.shop
 klavern.stream
 klaviertrio-hannover.com
 klaviyo-sending.com
@@ -9758,6 +9879,7 @@ klcuqncy9ztfamng0es2qtmzartmy1777740022.darnuid.imrworldwide.com
 kld666.com
 kldf-vvod-12ck.view-shared-document-reviewpending-document.workers.dev
 kldiqtpcoaqwe.com
+kldpwe.work
 kldvkyjdvwcvp.online
 kldwitfrqwal.com
 kldxlqdp.com
@@ -9770,6 +9892,7 @@ klean-tech.com.tw
 kleansys.com
 kleanthisxatzinikos.gr
 kleber.navegg.com
+klebergvaccineclinic.com
 klebezeit.de
 kled.updatestar.com
 kledgrliv-logn.wixstudio.com
@@ -10012,6 +10135,7 @@ klickpiloten.de
 klicksoftware.com
 klicktausch.com
 klicktrk.com
+klickwance.com
 klico.link
 klidiit.com.br
 klidpcdzfqj.com
@@ -10095,6 +10219,7 @@ klinika-gofmana.ru
 klinikdraji.com
 klinikgrahamitra.site
 klinikhewangaluhmas.com
+klinikiagiosloukas.com
 klinikjejaringpadjadjaran.com
 klinikkecantikankulithelena.com
 klinikpilates.com.tr
@@ -10250,6 +10375,7 @@ kloudtechnology.in
 kloudteck.com
 kloun.com
 klounada.com
+kloutij.com
 klove.fr
 klovyssantosbr.github.io
 klowns4phun.com
@@ -10359,6 +10485,7 @@ klymba-nn.ru
 klyqksclydki1k9asqw1ewaczf.net
 klyrix-ledger.com
 klyrix-ledger.net
+klyro-current.com
 klythareome.xyz
 klythera.xyz
 klytheron.com
@@ -10395,6 +10522,7 @@ km88gcashcasino.com
 kma.biz
 kma.demdex.net
 kma1.biz
+kmaa67.com
 kmaagycbjbnwf.site
 kmabogados.com
 kmacraeandson.co.uk
@@ -10601,6 +10729,7 @@ kmrsbj.com
 kmrstdqeptom.com
 kmrtby.com
 kmrvvsdgfainp.space
+kmrxgs.com
 kmrxz.wesgroup.za.com
 kms-activator.net
 kms-auto.apgroups.net
@@ -10984,6 +11113,7 @@ knotbachelor.com
 knotch-cdn.com
 knotch.it
 knotconstruction.com
+knotgcopper.ethanjfriedman.com
 knotjustyet.com
 knotkettle.com
 knotsgekkekaartendagen.com
@@ -11723,6 +11853,7 @@ kolifornian.info
 kolijuiter.com
 kolimanq.com
 kolimport.com
+kolindexix.com
 kolipento.xyz
 kolis.bid
 kolisa.ml
@@ -11935,6 +12066,7 @@ komtrack.com
 komunalka.github.io
 komunikacije.viamedia.ba
 komunikacyjni.pl
+komunikaty.puescinc.com
 komunitaslovebird.com
 komunitasmentari.com
 komv9kg.swimsuit-unable.lat
@@ -12094,6 +12226,7 @@ konstructiva.com
 konsultacija.lv
 konsultanasuransi.com
 konsultanci.online
+konsultant.podatkina.com
 konsy.1x.de
 kont-news.com
 kont7.cc
@@ -12158,6 +12291,7 @@ kontosupport-24.info
 kontoverify.page.gd
 kontrast1.no
 kontrol.binclusive.io
+kontrola.podatkina.com
 kontrolapip.info
 kontrolle.net
 kontrollmax.com
@@ -12338,6 +12472,7 @@ kora02.info
 kora2.com
 kora4u6.com
 korabli.ucoz.ru
+koraipossi.cyou
 korakskin.com
 koralansakadar.co
 koran.republika.co.id
@@ -12393,12 +12528,14 @@ koredwap.tk
 koreegdhdfihsdzhjub-wg0mumag5u.edgeone.dev
 korekbekas.com
 koren.cc
+korenh.com
 korenizsemi.net
 korenturizm.com
 koreomneity.com
 korep4fxb6.data.adobedc.net
 korepetycje.forge154.forgehost.pl
 korespodent.net
+korespondencja.podatkigov.com
 korewaeroi.com
 korexo.com
 koreyspikes.com
@@ -12451,6 +12588,7 @@ koronad.com
 koronahid.strefa.pl
 koroshshoes.sbs
 korosmezokam.atw.hu
+korowul.com
 korozya.hhos.ru
 korpercosmetics.com
 korpihy.herz-frank.com
@@ -12535,6 +12673,7 @@ kosiwere.net
 koslfprelfsprresdsf.site
 kosliioe.com
 kosma-njt.com
+kosmatokyn.com
 kosmeticca.lovingforever.pro
 kosmetikforyou.ch
 kosmetikinstitut-apart.de
@@ -12638,6 +12777,7 @@ kotori.me
 kotoroman.kakurezato.com
 kotostream.online
 kotowsscabscoifing.qpon
+kotroad.today
 kotsaatio.fi
 kotsp.info
 kottadickal.org
@@ -12789,11 +12929,13 @@ koxaixaunsouh.net
 koxaotdf6a85cjt47qw1x86u5r80a1778708822.uaid.nmrodam.com
 koxgfvotix.com
 koxiquw.com
+koxopoy.com
 koxrqrpnroundlet.review
 koy.jp
 koya8408.com
 koyamaz9am.net
 koybyqraffveng.com
+koydsivmu.top
 koyhptvjywrd.com
 koylabd.com
 koyotebe.com
@@ -12818,6 +12960,7 @@ kozo4gospel.com
 kozszolgalat.com
 kozubmarshand.blogspot.com
 kozuch.wgz.cz
+kozvetitesek.com
 kozyap.com
 kozymakro.com
 kozyr-lubov.ucoz.ru
@@ -12934,6 +13077,7 @@ kpklm.wriaf.suf.guidegoods.net
 kpkmgjrm.com
 kpkms.com
 kpkqm.cc
+kpktoto.org
 kplaw.kz
 kpli.courtindental.org
 kpliker.net
@@ -13069,6 +13213,8 @@ kpzl9x.yqsck.net
 kpzvcvclybfa.com
 kpzwkrozpc.bradul.creatory.org
 kpzwkrozpc.ivertiipolska.com.pl
+kq-4as.shop
+kq-4as.site
 kq.cm
 kq.fratstepefy.com
 kq.miulcueck.maxgrowth.ru
@@ -13081,6 +13227,7 @@ kq7yblvw629m740yvquv5np7cz4bv1777443166.uaid.nmrodam.com
 kq83st.cdn-settings.appsflyersdk.com
 kq95.com
 kq9qpb.cdn-settings.appsflyersdk.com
+kq9xtr.work
 kqalbhgnd.com
 kqaqantjwn.bid
 kqaqdwukbmi.com
@@ -13115,6 +13262,7 @@ kqhdbvyexmp.com
 kqhfuovkrmhkz.online
 kqhgw.convinc8mission.bet
 kqhi97lf.de
+kqhit.com
 kqhzkvhcafxwn.website
 kqimbdcogx.net
 kqineqjwnasdnqjweqwea.net
@@ -13244,6 +13392,7 @@ krabiair.com
 kracahom.click
 kracahomedemlik.click
 kracenluegon.webflow.io
+kracht-paylore-app.com
 krachtverbinding.com
 kracinlgin.webflow.io
 kracivo.ucoz.ru
@@ -13379,6 +13528,7 @@ krakkenlogiing.webflow.io
 krakknlog.webflow.io
 krakneelogin.webflow.io
 krakow-rynowekta-ai.com
+krakowcapitalcore.top
 krakowconnect.top
 krakowfinzone.info
 krakowiak.org.pl
@@ -13459,6 +13609,7 @@ kratuxil-app.net
 krausewelding.com
 krautbyte.com
 kravmagaverona.net
+kravonpeakpro-software.com
 krawangan.com
 kraxcdaaaauuumkakaokaokaokaokaokao.weebly.com
 kraxcdaaaauuumkaokaokaokaokao.weebly.com
@@ -13560,6 +13711,7 @@ kreasiplakat.com
 kreatalune.com
 kreatec.pl
 kreateyou.com
+kreationbykm.com
 kreativbox.in
 kreative-zukunft.com
 kreativehut.com
@@ -14141,6 +14293,7 @@ kroha-vanna.ru
 krohe-dienstleistungen.de
 krohin-photo.ru
 krohvik.ee
+kroiko.com
 kroium.net
 krokow.com
 kroksofteware.club
@@ -14174,12 +14327,14 @@ kronikawiesci.top
 kronivanta365.pro
 kronixpulseva.net
 kronoid29.net
+kronometre.com
 kronos.bot.nu
 kronosoil.ru
 kronpaks.by
 kronstic.bid
 krontjongtoegoe.com
 kronus.pp.ua
+kronverixan-tech.com
 kronwald-mode.de
 kronyxfin-app.com
 kronzy.altervista.org
@@ -14397,6 +14552,7 @@ kryptosinocasino.fr
 kryptoslogic-cve-2021-44228.com
 kryqqez.org
 krysenolam.info
+krysenvoxenplatform.com
 krysntlq.com
 krystal.bestseedtodo.xyz
 krystellecahoon.blogspot.com
@@ -14404,6 +14560,7 @@ krystencathleenphotography.com
 krystexxaconnect.staging.neonglyph.com
 krystry.onlinewebshop.net
 krysyra.ru
+krythonox-max-solution.com
 krytilka.ru
 krytos.moon.seedhost.eu
 kryvalon.biz
@@ -14502,6 +14659,7 @@ ksdentbusters.com
 ksderbenceva.ucoz.ru
 ksdg010.top
 ksdib.tartecosmetics.com
+ksdiet.net
 ksdinspirations.co.za
 ksdiy.com
 ksdjsaa.top
@@ -14732,6 +14890,7 @@ ksvydvfhumpy.review
 kswaskvtvqae.net
 kswbnh.nethouse.ru
 kswissparis.fr
+kswjy.com
 kswomen.com
 ksworkoutgear.com
 kswukgbgw.com
@@ -15071,6 +15230,7 @@ ku34bh9la09.com
 ku42hjr2e.com
 ku57.com
 ku5txooz1otjpoxm58.rest
+ku654ytr32ed.cfd
 ku77.casino
 ku789.fun
 ku88design.blogsuperapp.com
@@ -15701,6 +15861,7 @@ kugo.cc
 kugoofrance.fr
 kugpiwjcuaf.in
 kugtfq.site
+kuhamo.com
 kuhanvetasen.com
 kuhbcpckauwt.bid
 kuhcjgvmcsuun.space
@@ -15889,6 +16050,7 @@ kulqdzhpmvokp.online
 kulquedingwuyuanjhousai.com.cn
 kulro.csheaven.com
 kulroakonsu.net
+kultapaycore-app.com
 kultari.fi
 kultfilmler.org
 kulttuurimaisema.ruthli.com
@@ -16169,6 +16331,7 @@ kuponseller.com
 kuponundian2026.fectget.my.id
 kuppieczatke.pl
 kupprakim.bid
+kupteraz953821-4t9h.cyou
 kupujemycopolskie.pl
 kupujemymieszkania.pl
 kupujszybko.pl
@@ -16312,6 +16475,7 @@ kurtgcwrdakv.com
 kurtgeiger-france.fr
 kurtgeigerlondonsac.fr
 kurtgeigerusaoutlet.com
+kurtisboylan.com
 kurttasche.com
 kurtwood-construction.com
 kurtzaat.com
@@ -16394,6 +16558,7 @@ kuszowka.pl
 kut-si.com.tr
 kut.nl
 kuta4d647.xyz
+kutahyaotel.com
 kutale.com
 kutaone.stream
 kutayurkmen.com
@@ -16468,6 +16633,7 @@ kuurqoinlagen.webflow.io
 kuuykoinlogin.webflow.io
 kuva.or.th
 kuveres.com
+kuvetteaqeqassasaa.com
 kuveyt-internetsubesi.com
 kuveytsuprizleri.com
 kuveytturk-kampanya.com
@@ -16882,7 +17048,6 @@ kwfdzfptmqlin.website
 kwfreepdf.site
 kwfrroescqswc.com
 kwfvcxbiqglkm.online
-kwfxc3-launches.appsflyersdk.com
 kwg9jb58exnn11876il4meh7c.net
 kwgd.fr
 kwgefe.com
@@ -16891,6 +17056,7 @@ kwgpddeduvje.com
 kwgs.letudiant.fr
 kwhcgsqn2f.com
 kwhgs.ca
+kwhilec.lol
 kwhpllmraltfm.website
 kwhsvnvyugnmgj.in
 kwi18ah9r60yjb70.notify6.com
@@ -16932,6 +17098,7 @@ kwjobboard.ca
 kwjuamkneepad.download
 kwk.mybluehost.me
 kwkahijsj.ca6a8b74-32ac-45ea-84f0-fb607b8789ab.click
+kwkang.com
 kwkhsacpwwnkv.online
 kwladyga.factury-abonament.cfd
 kwlbroadcast.com
@@ -16961,6 +17128,7 @@ kwomkjjoajcyyt.com
 kwonjo.lnk.telstra.net
 kwontdmplpnbl.pw
 kwoptitn.restaurantguideaarhus.com
+kworker.net
 kworldgroup.com
 kwot.biz
 kwovwwkevyu.bid
@@ -17183,7 +17351,6 @@ ky-app-g.hl.cn
 ky.5.p2l.info
 ky.bifilarwhammo.com
 ky.gov-mxc.help
-ky.gov-mxf.help
 ky.gov-mxg.help
 ky.gov-mxh.help
 ky.gov-mxk.help
@@ -17272,8 +17439,11 @@ kyauwsfjargonists.review
 kybeer.com
 kybernesinformatica.it
 kybernetwork.app
+kybershop.com
 kyberswap.biz
 kybiki.ru
+kybylee.pics
+kybyzoi.com
 kyc-holdings.com
 kyc-nickel.fr
 kyc-orange.fr
@@ -17296,6 +17466,7 @@ kycrystalwater.com
 kydb.xyz
 kydcwp.landwirt.com
 kydhls.com
+kydopea.pro
 kydsinc.net
 kydxr.info
 kyebay.com
@@ -17330,6 +17501,7 @@ kyj4b5muxz5k4rjebfrsaekjt8f0z1780690698.nuid.nmrodam.com
 kyj8ysyppol5g6xucvmtf5yry6o3o1780583552.uaid.nmrodam.com
 kyjexaru.info
 kyjivar.ga
+kyjomeze.pro
 kyjov.farnost.cz
 kyk.xt.pl
 kykeduy.com
@@ -17449,6 +17621,7 @@ kyriesvortex.cyou
 kyriework.github.io
 kyrlsfilm.kazeo.com
 kyrmtjxzbdzszrrkgt.com
+kyro-force.com
 kyronlabssa.co.za
 kyronschdhelpers.org
 kyrqfategulated.download
@@ -17480,7 +17653,6 @@ kysyjaakiekosta.com
 kyt.meegmfio.in
 kyt8g9.adrevenue.appsflyersdk.com
 kyt8g9.cdn-settings.appsflyersdk.com
-kyt8g9.conversions.appsflyersdk.com
 kyt8g9.launches.appsflyersdk.com
 kytelink.com
 kytgpczq.apn.stape.io

@@ -1,7 +1,7 @@
 # Threatbase Threat Intelligence Feed - URLs
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:07 +0000
 #
 http://web.archive.org/web/20240808120223if_/http://154.216.19.139/bins/mirai.bin
 http://web.archive.org/web/20240808120223if_/http:/154.216.19.139/bins/mirai.bin
@@ -14,7 +14,6 @@ http://web.archive.org/web/20240808121041if_/http:/154.216.19.139/bins/mirai.arm
 http://web.archive.org/web/20240808121121if_/http://154.216.19.139/bins/mirai.armv7l
 http://web.archive.org/web/20240808121121if_/http:/154.216.19.139/bins/mirai.armv7l
 http://web.archive.org/web/20240808121230if_/http://154.216.19.139/bins/mirai.i586
-http://web.archive.org/web/20240808121230if_/http:/154.216.19.139/bins/mirai.i586
 http://web.archive.org/web/20240808121308if_/http://154.216.19.139/bins/mirai.i686
 http://web.archive.org/web/20240808121308if_/http:/154.216.19.139/bins/mirai.i686
 http://web.archive.org/web/20240808121347if_/http://154.216.19.139/bins/mirai.m68k
@@ -23,10 +22,10 @@ http://web.archive.org/web/20240808121419if_/http://154.216.19.139/bins/mirai.mi
 http://web.archive.org/web/20240808121419if_/http:/154.216.19.139/bins/mirai.mips
 http://web.archive.org/web/20240808121832if_/http://154.216.19.139/bins/mirai.mipsel
 http://web.archive.org/web/20240808121832if_/http:/154.216.19.139/bins/mirai.mipsel
-http://web.archive.org/web/20240808122159if_/http://154.216.19.139/bins/mirai.powerpc
 http://web.archive.org/web/20240808122159if_/http:/154.216.19.139/bins/mirai.powerpc
 http://web.archive.org/web/20240808122448if_/http://154.216.19.139/bins/mirai.sh4
 http://web.archive.org/web/20240808122448if_/http:/154.216.19.139/bins/mirai.sh4
+http://web.archive.org/web/20240808122636if_/http://154.216.19.139/bins/mirai.sparc
 http://web.archive.org/web/20240808122636if_/http:/154.216.19.139/bins/mirai.sparc
 http://web.archive.org/web/20240808122755if_/http://154.216.19.139/bins/mirai.x86_64
 http://web.archive.org/web/20240808122755if_/http:/154.216.19.139/bins/mirai.x86_64
@@ -36,7 +35,6 @@ http://web.archive.org/web/20240808123114if_/http://154.216.19.139/bins/mirai.ar
 http://web.archive.org/web/20240808123114if_/http:/154.216.19.139/bins/mirai.arc
 http://web3-exdus.zapier.app/
 http://win.down.55kantu.com/winassist/login/login.7z
-http://windriversfiles.imeitools.com/component/vc2005sp1redist_x86.exe
 http://wittenhorst.eu/tmp/imgs.exe
 http://worthknowing.us/2.jpg
 http://worthknowing.us/3.jpg
@@ -61,6 +59,7 @@ http://www.chanmiraicd1.duckdns.org/bins/xnxnxnxnxnxnxnxnsh4xnxn
 http://www.chanmiraicd1.duckdns.org/bins/xnxnxnxnxnxnxnxnx86_64xnxn
 http://www.chenwangqiao.com/wordpress/3waa9-ke38h-15/
 http://www.chenwangqiao.com/wordpress/FILE/
+http://www.chenwangqiao.com/wordpress/wp-lm9-32/
 http://www.esl-msg-claim.xyz/
 http://www.fishing-app.vercel.app/
 http://www.fortsun.xyz/
@@ -97,6 +96,7 @@ http://www.rbcfort.com/wp-admin/rd62/
 http://www.reifenquick.de/Scripts/FILE/21mnqlvi/oz88535657v7rbazasyth9x8i/
 http://www.reifenquick.de/Scripts/closed_957176_mxqSdoJ6a4IZ/close_warehouse/ql55hnq09iyn6lm_334stxvw03wyv/
 http://www.reifenquick.de/Scripts/hl8-8w4cs-6325/
+http://www.reifenquick.de/Scripts/open-0627720493640-azQ24PfFjRm/guarded-space/gxkx9t42ra6yf-6x7uyx330389w/
 http://www.reifenquick.de/Scripts/statement/ul397wfyb/
 http://www.robiox.com.ps/users/5279824440/profile/
 http://www.robiox.com.py/users/118406246925/profile/
@@ -109,6 +109,7 @@ http://www.square-maniaq.live/
 http://www.square-maniaq.live/login
 http://www.ss-01.com/R0400/YahooDLL.dll
 http://www.starcountry.net/screenmate/cute/sm1302.zip
+http://www.tecunonline.com/ForU.apk
 http://www.teknoarge.com/update/ana/Update.exe
 http://www.tradedsglobal.com/yuyu/rump20th.png
 http://www.tradedsglobal.com/yuyu/rumpyu.png
@@ -265,6 +266,7 @@ https://www.namuvpn.com/install/NAMUVPN7.exe
 https://www.namuvpn.com/install/back/NAMUVPN32.exe
 https://www.namuvpn.com/install/back/NAMUVPN32.zip
 https://www.namuvpn.com/install/back/NAMUVPN7.exe
+https://www.namuvpn.com/install/back/NAMUVPN7.zip
 https://www.namuvpn.com/install/back/NAMUVPN7/NAMUVPN7.exe
 https://www.namuvpn.com/install/back/namuvpnx2.exe
 https://www.namuvpn.com/install/back/namuvpnx2.zip

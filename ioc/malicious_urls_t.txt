@@ -1,11 +1,10 @@
 # Threatbase Threat Intelligence Feed - URLs
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:07 +0000
 #
 http://t-mobile.rshicz.top/pay/
 http://tarratarea.duckdns.org/tarra31.vbs
-http://techbud.ro/ttse/ttse.js
 http://tecunonline.com/ForU.apk
 http://tehnomag.rs/Wheatw.pfm
 http://tengfeidn.cn/tfsoft/xftd/v2/ctf/
@@ -89,6 +88,7 @@ https://the-sopranos-family-tree.garden/af090082-74da-4f8e-a1e1-b01c1a57e7e5/goo
 https://theholidayroads.com/public/userbackend/plugins/dropzone/min/assents.php
 https://theholidayroads.com/public/userbackend/plugins/dropzone/min/knave.php
 https://theholidayroads.com/public/userbackend/plugins/dropzone/min/stare.php
+https://theholidayroads.com/public/userbackend/plugins/dropzone/min/tautly.php
 https://thementordirectory.com/donate.php
 https://thementordirectory.com/hare.php
 https://thementordirectory.com/hoopoe.php

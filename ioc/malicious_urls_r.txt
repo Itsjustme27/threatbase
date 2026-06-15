@@ -1,7 +1,7 @@
 # Threatbase Threat Intelligence Feed - URLs
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:07 +0000
 #
 http://r34fa352.duckdns.org/aarch64
 http://r34fa352.duckdns.org/arm
@@ -16,7 +16,6 @@ http://r34fa352.duckdns.org/sh4
 http://r34fa352.duckdns.org/sparc
 http://r34fa352.duckdns.org/x86_64
 http://rdm.91yunma.cn/api/upgrade/jd
-http://rdm.91yunma.cn/api/upgrade/qcoin
 http://redlk.com/tqpjo/Scan/UftRuaEmi2h/
 http://reifenquick.de/Scripts/hl8-8w4cs-6325/
 http://reifenquick.de/Scripts/statement/ul397wfyb/
@@ -620,6 +619,7 @@ https://raw.githubusercontent.com/iamsysadmin/SetTeamsBG/main/Set-Teams-Backgrou
 https://raw.githubusercontent.com/iciamyplant/ctf/master/plantrojan.exe
 https://raw.githubusercontent.com/ilganrat342/dertyom/refs/heads/main/setup.exe
 https://raw.githubusercontent.com/ilganrat342/dgasgxc/refs/heads/main/setup.exe
+https://raw.githubusercontent.com/ilpigna03/site/refs/heads/main/Launcher.zip
 https://raw.githubusercontent.com/industrialintelligence/homestead/refs/heads/master/images/funitture_icon/Software-3.2-beta.4.zip
 https://raw.githubusercontent.com/industrialintelligence/homestead_new_backend/refs/heads/master/validator/backend_homestead_new_v1.9-beta.5.zip
 https://raw.githubusercontent.com/industrialintelligence/willywarriorportfolio/refs/heads/master/fonts/font-awesome-4.7.0/fonts/Software-3.7.zip

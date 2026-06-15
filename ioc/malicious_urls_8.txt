@@ -1,7 +1,7 @@
 # Threatbase Threat Intelligence Feed - URLs
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:07 +0000
 #
 http://8.131.63.6/SysUpdate/CKBGD/2.3.0624.zip
 http://8.131.63.6/SysUpdate/CKBGD/2.3.0703.zip
@@ -41,6 +41,7 @@ http://80.14.38.66:1081/sshd
 http://80.147.155.189/AV.lnk
 http://80.147.155.189/AV.scr
 http://80.147.155.189/Photo.lnk
+http://80.147.155.189/Photo.scr
 http://80.147.155.189/Video.lnk
 http://80.147.155.189/Video.scr
 http://80.147.3.138:88/
@@ -58,6 +59,12 @@ http://80.67.33.209:38158/bin.sh
 http://80.67.33.209:38158/i
 http://80.67.33.209:44014/bin.sh
 http://80.67.33.209:44014/i
+http://80.94.92.170/bot_arm
+http://80.94.92.170/bot_arm7
+http://80.94.92.170/bot_mips
+http://80.94.92.170/bot_mipsel
+http://80.94.92.170/bot_x86
+http://80.94.92.170/bot_x86_64
 http://81.133.96.61:8080/AV.lnk
 http://81.133.96.61:8080/Photo.lnk
 http://81.133.96.61:8080/Video.lnk
@@ -70,11 +77,18 @@ http://81.151.191.4:60030/sshd
 http://81.152.253.99:81/sshd
 http://81.152.253.99:82/sshd
 http://81.16.123.55:41567/.i
+http://81.16.123.55:41567/Aqua.arm4
+http://81.16.123.55:41567/Aqua.arm7
+http://81.16.123.55:41567/Aqua.i686
 http://81.16.123.55:41567/Aqua.sh4
 http://81.16.123.55:41567/Mozi.a
+http://81.16.123.55:41567/bin.sh
+http://81.16.123.55:41567/i
+http://81.16.123.55:41567/o
 http://81.16.242.236:28115/.i
 http://81.16.242.236:28115/Mozi.m
 http://81.16.242.236:28115/i
+http://81.16.247.81:17403/i
 http://81.16.247.83:54069/.i
 http://81.16.247.83:54069/Mozi.m
 http://81.16.247.83:54069/i
@@ -86,9 +100,12 @@ http://81.226.168.17:40587/bin.sh
 http://81.226.168.17:40587/i
 http://81.229.60.159:58639/bin.sh
 http://81.229.60.159:58639/i
+http://81.23.17.166/sshd
 http://81.231.7.219:3117/bin.sh
+http://81.231.7.219:3117/i
 http://81.26.83.155:60355/bin.sh
 http://81.26.83.155:60355/i
+http://81.30.194.134:30357/
 http://81.30.194.134:30357/i
 http://81.30.208.254:6792/i
 http://81.4.156.50:63841/i
@@ -259,10 +276,12 @@ http://83.168.110.191/iran.arc
 http://83.168.110.191/iran.armv4l
 http://83.168.110.191/iran.armv5l
 http://83.168.110.191/iran.armv6l
+http://83.168.110.191/iran.armv7l
 http://83.168.110.191/iran.i486
 http://83.168.110.191/iran.m68k
 http://83.168.110.191/iran.mips
 http://83.168.110.191/iran.mipsel
+http://83.168.110.191/iran.powerpc
 http://83.168.110.191/iran.sh4
 http://83.168.110.191/iran.sparc
 http://83.168.110.191/iran.x86_64
@@ -358,7 +377,9 @@ http://85.163.234.15/Photo.scr
 http://85.17.200.10/loader.sh
 http://85.187.54.142:10032/sshd
 http://85.187.54.142:10042/sshd
+http://85.187.82.120:41465/.i
 http://85.187.82.120:41465/Mozi.m
+http://85.187.82.120:41465/i
 http://85.204.125.76/Sakura.sh
 http://85.204.125.76/a-r.m-4.Sakura
 http://85.204.125.76/a-r.m-5.Sakura
@@ -425,6 +446,7 @@ http://85.239.151.41/wokbin/gbhnj.ppc
 http://85.239.151.41/wokbin/gbhnj.sh4
 http://85.239.151.41/wokbin/gbhnj.spc
 http://85.239.151.41/wokbin/gbhnj.x86
+http://85.239.53.207/adRaiJD6ufSV0Pqp9.dat
 http://85.239.53.207/ajZd3hVYfb14MIow.dat
 http://85.25.72.70//ChromeSetup.exe
 http://85.25.72.70//google.exe
@@ -434,6 +456,7 @@ http://85.57.30.25:7580/sshd
 http://86.106.101.159:1026/sshd
 http://86.106.155.155:8081/sshd
 http://86.89.95.77:8999/sshd
+http://87.119.108.21:40462/
 http://87.119.108.21:40462/.i
 http://87.119.108.21:40462/i
 http://87.120.107.248:8080/Fie.hta
@@ -499,6 +522,7 @@ http://87.97.161.106:8083/sshd
 http://87.97.161.106:8084/sshd
 http://87.97.161.106:8085/sshd
 http://87.97.161.106:8086/sshd
+http://88.116.62.226:52714/.i
 http://88.116.62.226:52714/Mozi.m
 http://88.116.62.226:52714/i
 http://88.123.92.100:8000//sshd
@@ -507,6 +531,7 @@ http://88.180.236.68/
 http://88.19.49.215:91/sshd
 http://88.190.74.159/sshd
 http://88.232.61.40:49461/i
+http://88.24.52.121:10062/sshd
 http://88.24.52.121:10072/sshd
 http://88.249.70.76:56125/bin.sh
 http://88.249.70.76:56125/i
@@ -612,12 +637,16 @@ https://803886com3.803886dh-xlu.top/demo/
 https://81729sv5.stgsolar.hu/?ublib=777f3bab-df0d-43b5-94ba-0d2b9a6c6b33
 https://82.146.62.232/
 https://83j6hfza.runtime-forge.digital/?ublib=58dab6da-45dd-444a-a996-21ade890e7f7
+https://84.54.33.71/Bin/ScreenConnect.ClientSetup.exe
+https://84.54.33.71/bin/support.client.exe
 https://84.54.33.84/Bin/ScreenConnect.ClientSetup.exe
 https://84.54.33.84/bin/support.client.exe
 https://86h7e2zq.anodaz.co/?ublib=0d026720-3dfe-46d0-a19a-d961b817eddd
 https://888qp100.com/
 https://89.125.188.171/mem/program.exe/
 https://89.125.188.171/nah11/file.exe/
+https://89.40.31.51/Bin/ScreenConnect.ClientSetup.exe
+https://89.40.31.51/bin/support.client.exe
 https://8bk9x8td.ravanshenasinovin.xyz/?ublib=c7840707-54a1-4210-b9c2-79a3e77c6bc6
 https://8co4mfeh.qurandownload.xyz/?ublib=761655fd-dbd9-4efc-8033-6a957c790e3e
 https://8duc5067.siciliandefensetheory.digital/?ublib=96088ca9-a952-4d48-bdac-691d9ba54c5f

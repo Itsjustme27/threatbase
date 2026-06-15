@@ -1,7 +1,7 @@
 # Threatbase Threat Intelligence Feed - URLs
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:07 +0000
 #
 http://badoxa7777.lol/bins/arm
 http://badoxa7777.lol/bins/arm5
@@ -35,8 +35,6 @@ http://badoxa7777.lol/bins/x86_64
 http://badxqjge.gift-lattice.christmas/505ac99f-02c9-42a2-9d0d-c95052c9ebea
 http://bafkreicohl4bjtxbxh7srnvwbuayrctjspzatbtjudnbirrg3snjujrkna.ipfs.dweb.link/
 http://bbos.minet.vn/abc1.sh
-http://bbos.minet.vn/abc2.sh
-http://bbos.minet.vn/abc3.sh
 http://bbos.minet.vn/arm
 http://bbos.minet.vn/arm5
 http://bbos.minet.vn/arm6
@@ -47,6 +45,7 @@ http://bbos.minet.vn/m68k
 http://bbos.minet.vn/mips
 http://bbos.minet.vn/mpsl
 http://bbos.minet.vn/ppc
+http://bbos.minet.vn/sh4
 http://bbos.minet.vn/spc
 http://bbos.minet.vn/x86
 http://bbos.minet.vn/x86_64
@@ -167,7 +166,6 @@ https://best.obs.cn-sz1.ctyun.cn/cn/sysnew.arm
 https://best.obs.cn-sz1.ctyun.cn/cn/sysnew.i686
 https://best.obs.cn-sz1.ctyun.cn/cn/sysnew.mips
 https://best.obs.cn-sz1.ctyun.cn/cn/sysnew.spc
-https://best.obs.cn-sz1.ctyun.cn/cn/sysnew.x86
 https://best.obs.cn-sz1.ctyun.cn/cn/sysnew.x86_64
 https://best10cdn.blob.core.windows.net/recipes/staging/a-89fb7017-7780-4b72-950d-c2db1146a34a.exe
 https://betk365k16.cc/
@@ -259,6 +257,7 @@ https://bvnvrjx.kvbel.com/de8a8b05-2f16-4759-a366-dc4494022705
 https://bwqzszo.football2026.world/4c9e067f-64b0-4d9c-9048-c1f9893acace
 https://bxhnheh.vostrovape.com/085ea1d6-65ee-4ae9-8890-37e422ddf547
 https://bxjmrg.krisztinavarga.hu/bf99157e-2fd0-4857-b585-267760c69b81
+https://bxzyp.daneshkhanevade.xyz/b4ca518c-8957-4ffc-91dd-a80e0a865df5
 https://byiuatd.pinnaclebetting.bet/79c9b48d-7e93-465b-8816-a5da0113d8b6
 https://byrlek3riv.zoi9.pro/h5/
 https://bysjry.fusionize.org/38c76721-58d1-4d51-bf1a-4b72d51153fa

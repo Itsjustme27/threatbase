@@ -1,7 +1,7 @@
 # Threatbase Threat Intelligence Feed - URLs
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:07 +0000
 #
 http://5.149.184.170/images/art/info.zip
 http://5.149.184.170/images/info.zip
@@ -22,6 +22,7 @@ http://5.175.217.137/bins/sora.sh4
 http://5.175.217.137/bins/sora.spc
 http://5.175.217.137/bins/sora.x86
 http://5.175.223.249/all.sh
+http://5.175.223.249/bbc
 http://5.175.223.249/data_aarch64
 http://5.175.223.249/data_arm4
 http://5.175.223.249/data_arm5
@@ -249,6 +250,7 @@ http://5.89.102.77/Video.lnk
 http://5.89.102.77/Video.scr
 http://5.89.102.77/info.zip
 http://50.217.49.93:31800/.i
+http://50.217.49.93:31800/i
 http://50.43.160.231:38064/.i
 http://50.43.160.231:38064/i
 http://50.56.159.185/hiddenbin/boatnet.arc

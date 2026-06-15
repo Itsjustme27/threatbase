@@ -1,7 +1,7 @@
 # Threatbase Threat Intelligence Feed - URLs
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:07 +0000
 #
 http://jj7765.com/
 http://js.byxly.eu.cc/arc
@@ -88,6 +88,7 @@ https://jyothishmathi.in/pinout.php
 https://jyothishmathi.in/ruleless.php
 https://jyothishmathi.in/steeplechases.php
 https://jyothishmathi.in/toothy.php
+https://jyothishmathi.in/unpunished.php
 https://jyvartai.hugugdaryayi.xyz/3bda8235-2912-4c46-933b-7b088c932149
 https://jzl98lpw.betbuilder.promo/?ublib=4fc935b7-f7dc-4205-8dd8-3dfe3786f432
 https://jzufjrnq.floraanalyticshub.garden/bbd819d8-cb31-41b8-8ca8-1d09a2cf3d98/google.cl

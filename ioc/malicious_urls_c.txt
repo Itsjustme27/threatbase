@@ -1,12 +1,11 @@
 # Threatbase Threat Intelligence Feed - URLs
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:07 +0000
 #
-http://c2.mc-live.online/bot.x86
+http://cacywears.ga/index.php
 http://camparyxseces.wasmer.app/mdbuilders
 http://cat.dashabi.in/netstat.ps1
-http://cat.xiaojiji.nl/netstat.ps1
 http://cat.xiaoshabi.nl/access.txt
 http://cat.xiaoshabi.nl/cohernece.txt
 http://cat.xiaoshabi.nl/min.txt
@@ -21,16 +20,14 @@ http://cdaonline.com.ar/wp-admin/FILE/x7Z9wBk77Tt6v9/
 http://cdaonline.com.ar/wp-admin/bXjesdj7W3meuh7iAtiURBsgh/
 http://cdaonline.com.ar/wp-admin/sites/ci6p05ScnuoNqsLQmeHm/
 http://cdn-10049480.file.myqcloud.com/jd/jd124.exe
-http://cdn-10049480.file.myqcloud.com/jd/jd127.exe
 http://cdn-10049480.file.myqcloud.com/jd/jd136.exe
 http://cdn-10049480.file.myqcloud.com/jd/jd137.exe
 http://cdn-10049480.file.myqcloud.com/jd/jd144.exe
-http://cdn-10049480.file.myqcloud.com/jd/jd156.exe
+http://cdn-10049480.file.myqcloud.com/jd/jd145.exe
 http://cdn-10049480.file.myqcloud.com/qcoin/qcoin128.exe
 http://cdn-10049480.file.myqcloud.com/qcoin/qcoin130.exe
 http://cdn-10049480.file.myqcloud.com/qcoin/qcoin133.exe
 http://cdn-10049480.file.myqcloud.com/qcoin/qcoin139.exe
-http://cdn-10049480.file.myqcloud.com/qcoin/qcoin140.exe
 http://cdn-10049480.file.myqcloud.com/qcoin/qcoin141.exe
 http://cdn-10049480.file.myqcloud.com/qcoin/qcoin142.exe
 http://cdn-assets.xyz/arm
@@ -197,7 +194,6 @@ https://c3436037.salamanderprocessing.pages.dev/download/static/files/Bootstrapp
 https://c3ord92p.ravanshenasiganji.xyz/?ublib=ec4c63fd-f857-4cec-9b81-cfd073290db2
 https://c9791c08-f1e4-4402-9510-d04c13c50ea3.selstorage.ru/msedge.exe
 https://cache-orbit.christmas/24570d7a-161a-490a-8818-be3190f8a653/ton.ch
-https://cad.659t.cn/static/setup/autocad_v1.4.exe
 https://cadcr.zaszlorudbolt.hu/0ec95e1b-636b-44aa-b2fe-01976395f3e6
 https://cafdfe.pishbinihoshmand.com/9247b3b2-a7dc-49f7-ba03-da92b2eb1bc5
 https://cajya.addmagad.com/4c7dcdde-ee62-448f-95c6-d297b8b850e3
@@ -230,9 +226,7 @@ https://cdpus.vikstore.hu/7f151d58-332c-4f37-910a-d5947af518ed
 https://cdvmgdw.melbetkade.com/468e3159-5088-4ee5-b05a-cc7de4e0e1bf
 https://ceappi.com/
 https://cebsrg.jamjahani.football/aa7caee1-668a-417e-9ecf-529cfdd77aa9
-https://celebratingseniors.net/oste.zip
 https://celebratingseniors.net/rate.zip
-https://celebratingseniors.net/rats.zip
 https://cftxqt.lifemax.hu/1dd56c0c-f3fa-4171-8362-9ad55f3688e1
 https://cfwrfrqx.leaguejazire.com/72c4bc63-821e-4c58-990c-7a4cfdb8e58d
 https://chamcmlu.jamjahani.football/8c3bdf2f-2503-499f-a36e-311b3ac8b796
@@ -374,6 +368,7 @@ https://cstaipas.pt/encrypt/Client.exe
 https://cstaipas.pt/french/Client.exe
 https://cswwy.tractor11.com/f783afd5-b12c-47a9-8b56-afda3b57e382
 https://ctl.it-bd.com/
+https://cucnczaq.testdrivepaye3.com/8fbe1ca0-3a94-4d25-8bed-0a8f0447b8a0
 https://cugeuvle.betwanna.com/0512bed0-756b-4f03-b1a3-2ff544f92964
 https://customer-assets.emergentagent.com/job_addon-central-glazed/artifacts/yzvvrb5k_GlazedAddon-1.21.4.jar
 https://cuzxamf.airtechmedical.com/1a330963-0940-415a-9ca2-bbf957728d1b

@@ -1,7 +1,7 @@
 # Threatbase Threat Intelligence Feed - URLs
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:07 +0000
 #
 http://abbas.mohammadzadeh-abbas65.workers.dev/
 http://absolutecaninepa.com/DocuSign/Mac/utility.php/download/index.php
@@ -107,7 +107,6 @@ https://abyssalkraken.fit/6012f3d4-316c-45ab-9481-14c396946301/zone.id
 https://access.skaparade.com/scanUBS9420625Fpdf.7z
 https://acmdo.ceremoniavezeto.hu/c1097eaa-17b5-43b0-a822-bd27ec6a065a
 https://acms.saleseos.com/src/js/scripts/gallery/photo-swipe/highlight.php
-https://acms.saleseos.com/src/js/scripts/gallery/photo-swipe/retraction.php
 https://acms.saleseos.com/src/js/scripts/gallery/photo-swipe/zany.php
 https://acre-ripe-exit-partial.trycloudflare.com/z.zip
 https://actmimo.aftabsport.ir/0c819c10-c899-4611-a2d2-6e6d1c4fadea
@@ -185,6 +184,7 @@ https://alternativas.ru/bitrix/cache/js/s1/universe_s1/kernel_main/kernel_main_v
 https://amber-fossil-mosquito.garden/3ac57b2f-2bfc-4f12-b1cd-247c272c148f/google.cl
 https://amcbvlw.bordbet.casino/03e33117-8fbf-4672-8632-88b6ff1f2f44
 https://amici.addmagad.com/3ee4530b-403c-423c-819a-fb6ca4d406d3
+https://amrwjltv.tarikhcheravanshenasi.xyz/c9304589-54fb-4d24-8a01-a28c1055b068
 https://amrzjixs.hugugmadanikatouzian.xyz/16af109d-613e-49dd-afb6-0324c46125c2
 https://ancient-colosseum-engineering.garden/baee3115-fdaa-460b-92ca-7fb4bc12a525/google.cl
 https://ancient-parchment-archive.garden/832cb6af-b07c-4e38-bd4b-30d60fd00224/google.ct

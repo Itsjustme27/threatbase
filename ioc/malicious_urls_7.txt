@@ -1,7 +1,7 @@
 # Threatbase Threat Intelligence Feed - URLs
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:07 +0000
 #
 http://70.190.199.152:85/AV.lnk
 http://70.190.199.152:85/AV.scr
@@ -82,6 +82,7 @@ http://74.48.34.10/AB4g5/Josho.arm6
 http://74.48.34.10/AB4g5/Josho.arm7
 http://74.48.34.10/AB4g5/Josho.m68k
 http://74.48.34.10/AB4g5/Josho.mips
+http://74.48.34.10/AB4g5/Josho.mpsl
 http://74.48.34.10/AB4g5/Josho.ppc
 http://74.48.34.10/AB4g5/Josho.sh4
 http://74.48.34.10/AB4g5/Josho.x86
@@ -136,6 +137,7 @@ http://76.53.38.126:8090//sshd
 http://76.53.38.126:8090/sshd
 http://76.53.38.126:8888//sshd
 http://76.53.38.126:8888/sshd
+http://76.76.195.174:62922/.i
 http://76.76.195.174:62922/Mozi.m
 http://76.76.195.174:62922/i
 http://76.94.199.139/Photo.scr
@@ -151,9 +153,11 @@ http://77.172.14.72/Video.scr
 http://77.172.14.72/info.zip
 http://77.174.79.191:8000/
 http://77.211.28.150/AV.lnk
+http://77.211.28.150/AV.scr
 http://77.211.28.150/Photo.lnk
 http://77.211.28.150/Photo.scr
 http://77.211.28.150/Video.scr
+http://77.211.28.150/info.zip
 http://77.226.241.197:5003/tftp
 http://77.236.74.65:44635/bin.sh
 http://77.236.74.65:44635/i
@@ -169,7 +173,9 @@ http://77.247.88.82:49471/i
 http://77.247.88.82:56383/bin.sh
 http://77.247.88.82:56383/i
 http://77.39.19.233:52424/i
+http://77.46.170.18:53326/Mozi.m
 http://77.50.222.238:51680/.i
+http://77.50.222.238:51680/i
 http://77.73.49.254:14233/.i
 http://77.73.49.254:14233/i
 http://77.79.160.210:35206/i
@@ -187,6 +193,7 @@ http://77.89.245.118:44811/i
 http://77.91.96.122/download
 http://77.91.96.41/svchost.exe
 http://78-20-115-5.access.telenet.be/Photo.scr
+http://78.111.30.28:6692/i
 http://78.111.82.210:8089/
 http://78.13.245.82/bins/bins.sh
 http://78.13.245.82/bins/cnc
@@ -239,6 +246,7 @@ http://78.171.62.47:35109/bin.sh
 http://78.171.62.47:35109/i
 http://78.20.115.5/Photo.scr
 http://78.25.123.5:37843/i
+http://78.29.14.127:29050/
 http://78.29.14.127:29050/.i
 http://78.29.14.127:29050/Mozi.m
 http://78.29.14.127:29050/i
@@ -267,6 +275,10 @@ http://79.175.42.18:46125/i
 http://79.175.42.206:7773/.i
 http://79.175.42.206:7773/i
 https://74.50.99.45:8443/
+https://77.83.39.195/Bin/ScreenConnect.ClientSetup.exe
+https://77.83.39.195/bin/support.client.exe
+https://77.83.39.246/Bin/ScreenConnect.ClientSetup.exe
+https://77.83.39.246/bin/support.client.exe
 https://79.124.8.44/Bin/ScreenConnect.ClientSetup.exe
 https://79.124.8.44/bin/support.client.exe
 https://7aaxg4kb.betbatis.com/?ublib=7ce4b7ee-3b86-4990-9527-dadeed8e276d

@@ -1,7 +1,7 @@
 # Threatbase Threat Intelligence Feed - URLs
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 06:54:15 +0000
+# Last update: Mon, 15 Jun 2026 10:16:07 +0000
 #
 http://60.16.159.58:53118/bin.sh
 http://60.16.159.58:53118/i
@@ -95,6 +95,8 @@ http://60.23.233.54:53239/bin.sh
 http://60.23.233.54:53239/i
 http://60.23.233.9:50603/i
 http://60.23.234.64:57869/bin.sh
+http://60.23.236.87:49422/bin.sh
+http://60.23.236.87:49422/i
 http://60.23.238.19:53967/i
 http://60.23.238.214:41404/bin.sh
 http://60.23.238.214:41404/i
@@ -231,6 +233,8 @@ http://61.52.227.222:43876/bin.sh
 http://61.52.227.222:43876/i
 http://61.52.3.245:50999/bin.sh
 http://61.52.3.245:50999/i
+http://61.52.3.251:36662/bin.sh
+http://61.52.3.251:36662/i
 http://61.52.32.109:46778/bin.sh
 http://61.52.33.251:33922/bin.sh
 http://61.52.33.251:33922/i
@@ -709,6 +713,7 @@ http://66.131.243.81:34952/i
 http://66.167.169.176:55625/Mozi.m
 http://66.185.26.66/info.zip
 http://66.196.62.177:10159/
+http://66.196.62.177:10159/i
 http://66.212.185.81:35901/bin.sh
 http://66.212.185.81:35901/i
 http://66.212.185.81:57425/bin.sh
@@ -756,6 +761,7 @@ http://68.226.36.150:1122/sshd
 http://68.226.36.150:1123/sshd
 http://69.178.5.220:60908/bin.sh
 http://69.178.5.220:60908/i
+http://69.46.43.35/pty1
 http://69.46.43.35/pty10
 http://69.46.43.35/pty2
 http://69.46.43.35/pty3
@@ -811,8 +817,12 @@ http://69sexy.duckdns.org:8080/x86
 https://60aaf9c6.salamanderprocessing.pages.dev/download/static/files/BootstrapperNew.exe
 https://60hx33ds.minescasino.bet/?ublib=33e08c1f-75a1-42e1-867a-9c4656db7337
 https://62.238.44.180/
+https://62.60.226.155/Bin/ScreenConnect.ClientSetup.exe
+https://62.60.226.155/bin/support.client.exe
 https://635k6cma.uniquetilingsa.com.au/?ublib=e0adb66b-50eb-42c6-9fff-74f872002aac
 https://63yoanli.ravanshenasi.xyz/?ublib=1d136609-2d79-4699-b44b-8a13abfa77a1
+https://64.89.160.96/Bin/ScreenConnect.ClientSetup.exe
+https://64.89.160.96/bin/support.client.exe
 https://64.89.163.196/BIIIN
 https://64.89.163.196/bins/bot_arm
 https://64.89.163.196/bins/bot_arm7
