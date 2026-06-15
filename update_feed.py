@@ -526,6 +526,8 @@ async def run_async_collector():
     false_positives = load_false_positives()
     
     ip_sources = {}
+    ipv6_sources = {}
+    cidr_sources = {}
     domain_results = {}
     hash_sources = {}
     url_sources = {}
@@ -570,6 +572,8 @@ async def run_async_collector():
             
             if feed_type == 'ip':
                 ip_sources[name] = res.get('ipv4', set())
+                ipv6_sources[name] = res.get('ipv6', set())
+                cidr_sources[name] = res.get('cidrs', set())
             elif feed_type == 'domain':
                 domain_results[name] = res
             elif feed_type == 'hash':
@@ -577,10 +581,12 @@ async def run_async_collector():
             elif feed_type == 'url':
                 url_sources[name] = res
             elif feed_type == 'tf':
-                if res["ips"]: ip_sources[name] = res["ips"]
-                if res["domains"]: domain_results[name] = res["domains"]
-                if res["hashes"]: hash_sources[name] = res["hashes"]
-                if res["urls"]: url_sources[name] = res["urls"]
+                if res.get("ips"): ip_sources[name] = res["ips"]
+                if res.get("ipv6"): ipv6_sources[name] = res["ipv6"]
+                if res.get("cidrs"): cidr_sources[name] = res["cidrs"]
+                if res.get("domains"): domain_results[name] = res["domains"]
+                if res.get("hashes"): hash_sources[name] = res["hashes"]
+                if res.get("urls"): url_sources[name] = res["urls"]
 
     log.info(f"All feeds downloaded and parsed in {time.time()-t_start:.1f}s")
     
@@ -592,15 +598,15 @@ async def run_async_collector():
     sorted_ips = sorted(filtered_ip_info.keys())
     
     # Write JSON with rich metadata
-    log.info("Writing malicious_ips.json...")
-    json_output_path = "ioc/malicious_ips.json"
+    log.info("Writing threatbase-ip.json...")
+    json_output_path = "ioc/threatbase-ip.json"
     ip_list_out = [filtered_ip_info[ip] for ip in sorted_ips]
     with open(json_output_path, "w", encoding="utf-8") as f:
         json.dump(ip_list_out, f, indent=2)
 
     # Write Text outputs
-    log.info("Writing malicious_ips.txt...")
-    txt_output_path = "ioc/malicious_ips.txt"
+    log.info("Writing threatbase-ip.txt...")
+    txt_output_path = "ioc/threatbase-ip.txt"
     timestamp = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
     
     with open(txt_output_path, "w", encoding="utf-8", buffering=1 << 16) as f:
@@ -612,17 +618,58 @@ async def run_async_collector():
             tags_str = "|".join(info["tags"])
             f.write(f"{info['ip']},{info['count']},{info['score']},{tags_str}\n")
             
-    # Combine domains and hashes (simplifying for artifact brevity)
+    # Write domains
     all_domains = sorted(set().union(*domain_results.values()))
-    with open("ioc/malicious_domains.txt", "w", encoding="utf-8") as f:
+    with open("ioc/threatbase-domain.txt", "w", encoding="utf-8") as f:
         for d in all_domains:
             if d not in false_positives: f.write(f"{d}\n")
             
+    # Write hashes
+    all_hashes = sorted(set().union(*hash_sources.values()))
+    with open("ioc/threatbase-hash.txt", "w", encoding="utf-8") as f:
+        for h in all_hashes:
+            f.write(f"{h}\n")
+            
+    # Write urls
+    all_urls = sorted(set().union(*url_sources.values()))
+    with open("ioc/threatbase-url.txt", "w", encoding="utf-8") as f:
+        for u in all_urls:
+            f.write(f"{u}\n")
+            
+    # Write IPv6
+    all_ipv6 = sorted(set().union(*ipv6_sources.values()))
+    with open("ioc/threatbase-ipv6.txt", "w", encoding="utf-8") as f:
+        for ipv6 in all_ipv6:
+            if ipv6 not in false_positives: f.write(f"{ipv6}\n")
+            
+    # Write CIDRs
+    all_cidrs = sorted(set().union(*cidr_sources.values()))
+    with open("ioc/threatbase-cidr.txt", "w", encoding="utf-8") as f:
+        for cidr in all_cidrs:
+            if cidr not in false_positives: f.write(f"{cidr}\n")
+            
+    # Write stats.json for github action diffs
+    stats = {
+        "total_unique_ips": len(sorted_ips),
+        "total_unique_ipv6": len(all_ipv6),
+        "total_unique_cidrs": len(all_cidrs),
+        "total_unique_domains": len(all_domains),
+        "total_unique_hashes": len(all_hashes),
+        "total_unique_urls": len(all_urls)
+    }
+    with open("ioc/stats.json", "w", encoding="utf-8") as f:
+        json.dump(stats, f)
+        
     # S3 Upload Phase
     log.info("Initiating Supabase S3 Uploads...")
-    upload_to_supabase(txt_output_path, "malicious_ips.txt")
-    upload_to_supabase(json_output_path, "malicious_ips.json")
-    upload_to_supabase("ioc/malicious_domains.txt", "malicious_domains.txt")
+    upload_to_supabase(txt_output_path, "threatbase-ip.txt")
+    upload_to_supabase(json_output_path, "threatbase-ip.json")
+    upload_to_supabase("ioc/threatbase-domain.txt", "threatbase-domain.txt")
+    upload_to_supabase("ioc/threatbase-hash.txt", "threatbase-hash.txt")
+    upload_to_supabase("ioc/threatbase-url.txt", "threatbase-url.txt")
+    upload_to_supabase("ioc/threatbase-ipv6.txt", "threatbase-ipv6.txt")
+    upload_to_supabase("ioc/threatbase-cidr.txt", "threatbase-cidr.txt")
+    upload_to_supabase("ioc/stats.json", "stats.json")
     
     elapsed = time.time() - t_start
     log.info("═" * 55)

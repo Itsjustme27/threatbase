@@ -143,14 +143,14 @@ jobs:
           DATE_DASH=$(date -u +'%Y-%m-%d')
           DATE_DOT=$(date -u +'%Y.%m.%d')
           echo "ARCHIVE_DATE=${DATE_DASH}" >> $GITHUB_ENV
-          zip -j threatbase-archive-${DATE_DOT}.zip ioc/malicious_ips*.txt ioc/malicious_ipv6*.txt ioc/malicious_cidrs*.txt ioc/malicious_domains*.txt ioc/malicious_hashes*.txt ioc/malicious_urls*.txt
+          zip -j threatbase-archive-${DATE_DOT}.zip ioc/threatbase-ip*.txt ioc/threatbase-ipv6*.txt ioc/threatbase-cidr*.txt ioc/threatbase-domain*.txt ioc/threatbase-hash*.txt ioc/threatbase-url*.txt
 
       - name: Create Daily Archive Release
         uses: ncipollo/release-action@v1
         with:
           tag: archive-${{ env.ARCHIVE_DATE }}
           name: Daily Feed Archive - ${{ env.ARCHIVE_DATE }}
-          artifacts: "ioc/malicious_ips*.txt,ioc/malicious_ipv6*.txt,ioc/malicious_cidrs*.txt,ioc/malicious_domains*.txt,ioc/malicious_hashes*.txt,ioc/malicious_urls*.txt,ioc/stats.json,threatbase-archive-*.zip"
+          artifacts: "ioc/threatbase-*.txt,ioc/threatbase-ip.json,ioc/stats.json,threatbase-archive-*.zip"
           allowUpdates: true
           replacesArtifacts: true
           body: "Automated daily archive of the Threatbase threat intelligence database."
