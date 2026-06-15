@@ -649,14 +649,19 @@ async def run_async_collector():
         for cidr in all_cidrs:
             if cidr not in false_positives: f.write(f"{cidr}\n")
             
-    # Write stats.json for github action diffs
+    category_counts = defaultdict(int)
+    for info in filtered_ip_info.values():
+        for tag in info["tags"]:
+            category_counts[tag] += 1
+
     stats = {
         "total_unique_ips": len(sorted_ips),
         "total_unique_ipv6": len(all_ipv6),
         "total_unique_cidrs": len(all_cidrs),
         "total_unique_domains": len(all_domains),
         "total_unique_hashes": len(all_hashes),
-        "total_unique_urls": len(all_urls)
+        "total_unique_urls": len(all_urls),
+        "category_counts": dict(category_counts)
     }
     with open("ioc/stats.json", "w", encoding="utf-8") as f:
         json.dump(stats, f)

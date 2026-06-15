@@ -1,1 +1,1 @@
-{"total_unique_ips": 58410, "total_unique_ipv6": 3220, "total_unique_cidrs": 0, "total_unique_domains": 1557022, "total_unique_hashes": 1096463, "total_unique_urls": 27910}
+{"total_unique_ips": 353585, "total_unique_ipv6": 147, "total_unique_cidrs": 0, "total_unique_domains": 1557023, "total_unique_hashes": 1096448, "total_unique_urls": 27909, "category_counts": {"C2": 7607, "Malicious": 179111, "Brute-Force": 27079, "Malware": 2728, "Mixed": 139994, "Compromised": 15518, "Spam": 13385, "Exploit": 9132, "Tor": 1252, "Botnet": 3323}}
