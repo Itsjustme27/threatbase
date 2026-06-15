@@ -163,6 +163,10 @@ ABUSEIPDB_API_KEY: Optional[str] = os.environ.get("ABUSEIPDB_API_KEY")
 if ABUSEIPDB_API_KEY:
     FEEDS["abuseipdb"] = "https://api.abuseipdb.com/api/v2/blacklist?confidenceMinimum=70"
 
+URLHAUS_AUTH_KEY: Optional[str] = os.environ.get("URLHAUS_AUTH_KEY")
+if URLHAUS_AUTH_KEY:
+    URL_FEEDS["urlhaus_recent"] = f"https://urlhaus-api.abuse.ch/v2/files/exports/{URLHAUS_AUTH_KEY}/recent.csv"
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Regex & Whitelist setup
 # ─────────────────────────────────────────────────────────────────────────────
