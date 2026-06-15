@@ -71,6 +71,7 @@ jobs:
       # ── 5. Run the aggregator ────────────────────────────────────────────────
       - name: Run feed aggregator
         env:
+          URLHAUS_AUTH_KEY: ${{ secrets.URLHAUS_AUTH_KEY }}
           ABUSEIPDB_API_KEY: ${{ secrets.ABUSEIPDB_API_KEY }}
           OTX_API_KEY: ${{ secrets.OTX_API_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
