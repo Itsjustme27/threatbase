@@ -53,7 +53,7 @@ async function fetchAndCacheFeed(baseUrl, filename, feedVersion) {
     
     const results = await Promise.all(fetchPromises)
     for (const lines of results) {
-      allLines.push(...lines)
+      allLines = allLines.concat(lines)
     }
     success = true
   } catch (e) {
@@ -83,7 +83,7 @@ async function fetchAndCacheFeed(baseUrl, filename, feedVersion) {
       const results = await Promise.all(fetchPromises)
       allLines = []
       for (const lines of results) {
-        allLines.push(...lines)
+        allLines = allLines.concat(lines)
       }
     } catch (e) {
       console.error('GitHub Raw fallback fetch failed:', e)
