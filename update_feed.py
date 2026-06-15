@@ -12,6 +12,7 @@ import bisect
 import io
 import json
 import logging
+import csv
 import os
 import re
 import socket
@@ -52,10 +53,11 @@ FEEDS: Dict[str, str] = {
     "blocklist_de_ssh": "https://lists.blocklist.de/lists/ssh.txt",
     "blocklist_de_mail": "https://lists.blocklist.de/lists/mail.txt",
     "blocklist_de_apache": "https://lists.blocklist.de/lists/apache.txt",
-    "binary_defense": "https://www.binarydefense.com/banlist.txt",
+    "binary_defense": "https://binarydefense.com/banlist.txt",
     "greensnow": "https://blocklist.greensnow.co/greensnow.txt",
     "spamhaus_drop": "https://www.spamhaus.org/drop/drop.txt",
     "spamhaus_edrop": "https://www.spamhaus.org/drop/edrop.txt",
+    "spamhaus_dropv6": "https://www.spamhaus.org/drop/dropv6.txt",
     "dshield_blocklist": "https://feeds.dshield.org/block.txt",
     "criticalpath_security": "https://raw.githubusercontent.com/CriticalPathSecurity/Public-Intelligence-Feeds/master/compromised-ips.txt",
     "bruteforceblocker": "https://danger.rulez.sk/projects/bruteforceblocker/blist.php",
@@ -65,7 +67,7 @@ FEEDS: Dict[str, str] = {
     "romainmarcoux_outgoing_40k": "https://raw.githubusercontent.com/romainmarcoux/malicious-outgoing-ip/main/full-outgoing-ip-40k.txt",
     "romainmarcoux_outgoing_aa": "https://raw.githubusercontent.com/romainmarcoux/malicious-outgoing-ip/main/full-outgoing-ip-aa.txt",
     "romainmarcoux_outgoing_ab": "https://raw.githubusercontent.com/romainmarcoux/malicious-outgoing-ip/main/full-outgoing-ip-ab.txt",
-    "alienvault_reputation": "https://reputation.alienvault.com/reputation.generic",
+    "alienvault_reputation": "https://reputation.alienvault.com/reputation.data",
     "talos_intel": "https://talosintelligence.com/documents/ip-blacklist",
     "sslbl_abuse_ch": "https://sslbl.abuse.ch/blacklist/sslipblacklist.txt",
     "osint_bambenek_c2": "https://osint.bambenekconsulting.com/feeds/c2-ipmasterlist.txt",
@@ -98,12 +100,14 @@ FEED_CATEGORIES: Dict[str, str] = {
     "binary_defense": "Mixed",
     "greensnow": "Brute-Force",
     "spamhaus_drop": "Spam",
+    "spamhaus_edrop": "Spam",
+    "spamhaus_dropv6": "Spam",
     "dshield_blocklist": "Malware",
     "criticalpath_security": "Compromised",
     "abuseipdb": "Malicious",
     "bruteforceblocker": "Brute-Force",
     "botvrij": "Mixed",
-    "threatfox_recent": "Mixed",
+    "threatfox_full": "Mixed",
     "dan_tor": "Tor",
     "tor_bulk_exit": "Tor",
     "romainmarcoux_outgoing_40k": "Malicious",
@@ -148,8 +152,10 @@ URL_FEEDS: Dict[str, str] = {
 }
 
 THREATFOX_FEEDS: Dict[str, str] = {
-    "threatfox_recent": "https://threatfox.abuse.ch/export/json/recent/",
+    "threatfox_full": "https://threatfox.abuse.ch/export/csv/full/",
 }
+
+USER_AGENT: str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
 
 ABUSEIPDB_API_KEY: Optional[str] = os.environ.get("ABUSEIPDB_API_KEY")
 if ABUSEIPDB_API_KEY:
@@ -289,11 +295,44 @@ def load_false_positives() -> FalsePositivesSet:
     log.info(f"Loaded {len(result)} false positives (including {len(result.cidrs)} CIDRs)")
     return result
 
+def load_previous_ips(path: str) -> Set[int]:
+    ips = set()
+    if os.path.exists(path):
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                if line.startswith("#"): continue
+                parts = line.strip().split(',')
+                if parts:
+                    ip_int = is_valid_ipv4_fast(parts[0])
+                    if ip_int: ips.add(ip_int)
+    return ips
+
+def load_previous_list(path: str) -> Set[str]:
+    items = set()
+    if os.path.exists(path):
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                if line.startswith("#"): continue
+                item = line.strip()
+                if item: items.add(item)
+    return items
+
+import glob
+def clean_temporary_files():
+    log.info("Cleaning up temporary downloaded files (*.zip, *.csv, *.data)...")
+    for ext in ["*.zip", "*.csv", "*.data"]:
+        for f in glob.glob(ext):
+            try:
+                os.remove(f)
+                log.info(f"  Removed {f}")
+            except Exception as e:
+                log.error(f"  Failed to remove {f}: {e}")
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Async Fetchers
 # ─────────────────────────────────────────────────────────────────────────────
 async def fetch_feed_async(session: aiohttp.ClientSession, name: str, url: str) -> dict:
-    headers = {"User-Agent": "Threatbase-Aggregator/4.0"}
+    headers = {"User-Agent": USER_AGENT}
     
     if name == "abuseipdb":
         if ABUSEIPDB_API_KEY:
@@ -330,7 +369,7 @@ async def fetch_feed_async(session: aiohttp.ClientSession, name: str, url: str) 
                 
                 parts = line.split()
                 if not parts: continue
-                token = parts[0].split(",")[0].strip("\"';")
+                token = parts[0].split(",")[0].split("#")[0].strip("\"';")
 
                 if "/" in token:
                     try:
@@ -338,6 +377,8 @@ async def fetch_feed_async(session: aiohttp.ClientSession, name: str, url: str) 
                         if network.version == 4 and network.prefixlen == 32:
                             ip_int = is_valid_ipv4_fast(str(network.network_address))
                             if ip_int: ips.add(ip_int)
+                        else:
+                            cidrs.add(str(network))
                     except ValueError: pass
                 else:
                     ip_int = is_valid_ipv4_fast(token)
@@ -359,7 +400,7 @@ async def fetch_feed_async(session: aiohttp.ClientSession, name: str, url: str) 
 async def fetch_domain_feed_async(session: aiohttp.ClientSession, name: str, url: str) -> Set[str]:
     try:
         async with session.get(url, timeout=aiohttp.ClientTimeout(total=45),
-                               headers={"User-Agent": "Threatbase-Aggregator/4.0"}) as r:
+                               headers={"User-Agent": USER_AGENT}) as r:
             if r.status != 200: return set()
             domains = set()
             async for line_bytes in r.content:
@@ -386,7 +427,7 @@ async def fetch_domain_feed_async(session: aiohttp.ClientSession, name: str, url
 async def fetch_hash_feed_async(session: aiohttp.ClientSession, name: str, url: str) -> Set[str]:
     try:
         async with session.get(url, timeout=aiohttp.ClientTimeout(total=90),
-                               headers={"User-Agent": "Threatbase-Aggregator/4.0"}) as r:
+                               headers={"User-Agent": USER_AGENT}) as r:
             if r.status != 200: return set()
             hashes = set()
             
@@ -421,7 +462,7 @@ async def fetch_hash_feed_async(session: aiohttp.ClientSession, name: str, url: 
 async def fetch_url_feed_async(session: aiohttp.ClientSession, name: str, url: str) -> Set[str]:
     try:
         async with session.get(url, timeout=aiohttp.ClientTimeout(total=45),
-                               headers={"User-Agent": "Threatbase-Aggregator/4.0"}) as r:
+                               headers={"User-Agent": USER_AGENT}) as r:
             if r.status != 200: return set()
             urls = set()
             async for line_bytes in r.content:
@@ -445,35 +486,61 @@ async def fetch_threatfox_async(session: aiohttp.ClientSession, name: str, url: 
     result = {"ips": set(), "ipv6": set(), "cidrs": set(), "domains": set(), "hashes": set(), "urls": set()}
     try:
         async with session.get(url, timeout=aiohttp.ClientTimeout(total=60),
-                               headers={"User-Agent": "Threatbase-Aggregator/4.0"}) as r:
+                               headers={"User-Agent": USER_AGENT}) as r:
             if r.status != 200: return result
-            data = await r.json()
-            entries = data.get("data", data)
-            if isinstance(entries, dict): entries = list(entries.values())
-            
-            flat = []
-            if isinstance(entries, list):
-                for item in entries:
-                    if isinstance(item, list): flat.extend(item)
-                    elif isinstance(item, dict): flat.append(item)
-                    
-            for entry in flat:
-                if not isinstance(entry, dict): continue
-                ioc = entry.get("ioc_value", "").strip()
-                ioc_type = entry.get("ioc_type", "").lower()
-                if not ioc: continue
+            content_type = r.headers.get('Content-Type', '')
+            if 'application/zip' in content_type or url.endswith('.zip') or '/csv/' in url:
+                content = await r.read()
+                with zipfile.ZipFile(io.BytesIO(content)) as z:
+                    for filename in z.namelist():
+                        if filename.endswith('.csv'):
+                            with z.open(filename) as f:
+                                text_stream = io.TextIOWrapper(f, encoding='utf-8', errors='ignore')
+                                reader = csv.reader(text_stream, skipinitialspace=True)
+                                for row in reader:
+                                    if len(row) < 5 or str(row[0]).startswith('#'): continue
+                                    ioc = row[2].strip().strip('\'"')
+                                    ioc_type = row[3].strip().strip('\'"').lower()
+                                    if not ioc: continue
+                                    if "ip" in ioc_type:
+                                        ip_part = ioc.split(":")[0]
+                                        ip_int = is_valid_ipv4_fast(ip_part)
+                                        if ip_int: result["ips"].add(ip_int)
+                                    elif "domain" in ioc_type:
+                                        d = extract_domain(ioc)
+                                        if d: result["domains"].add(d)
+                                    elif "sha256" in ioc_type and _SHA256_PATTERN.match(ioc):
+                                        result["hashes"].add(ioc.lower())
+                                    elif "url" in ioc_type and _URL_PATTERN.match(ioc):
+                                        result["urls"].add(ioc)
+            else:
+                data = await r.json()
+                entries = data.get("data", data)
+                if isinstance(entries, dict): entries = list(entries.values())
                 
-                if "ip" in ioc_type:
-                    ip_part = ioc.split(":")[0]
-                    ip_int = is_valid_ipv4_fast(ip_part)
-                    if ip_int: result["ips"].add(ip_int)
-                elif "domain" in ioc_type:
-                    d = extract_domain(ioc)
-                    if d: result["domains"].add(d)
-                elif "sha256" in ioc_type and _SHA256_PATTERN.match(ioc):
-                    result["hashes"].add(ioc.lower())
-                elif "url" in ioc_type and _URL_PATTERN.match(ioc):
-                    result["urls"].add(ioc)
+                flat = []
+                if isinstance(entries, list):
+                    for item in entries:
+                        if isinstance(item, list): flat.extend(item)
+                        elif isinstance(item, dict): flat.append(item)
+                        
+                for entry in flat:
+                    if not isinstance(entry, dict): continue
+                    ioc = entry.get("ioc_value", "").strip()
+                    ioc_type = entry.get("ioc_type", "").lower()
+                    if not ioc: continue
+                    
+                    if "ip" in ioc_type:
+                        ip_part = ioc.split(":")[0]
+                        ip_int = is_valid_ipv4_fast(ip_part)
+                        if ip_int: result["ips"].add(ip_int)
+                    elif "domain" in ioc_type:
+                        d = extract_domain(ioc)
+                        if d: result["domains"].add(d)
+                    elif "sha256" in ioc_type and _SHA256_PATTERN.match(ioc):
+                        result["hashes"].add(ioc.lower())
+                    elif "url" in ioc_type and _URL_PATTERN.match(ioc):
+                        result["urls"].add(ioc)
             log.info(f"  ✓ ThreatFox {name}: {len(result['ips'])} IPs")
             return result
     except Exception as e:
@@ -487,7 +554,7 @@ async def fetch_threatfox_async(session: aiohttp.ClientSession, name: str, url: 
 FEED_TRUST_TIERS = {
     "custom": "HIGH", "historical": "HIGH",
     "feodo_tracker": "HIGH", "feodo_tracker_aggressive": "HIGH", "abuseipdb": "HIGH",
-    "threatfox_recent": "HIGH", "spamhaus_drop": "HIGH", "spamhaus_edrop": "HIGH",
+    "threatfox_full": "HIGH", "spamhaus_drop": "HIGH", "spamhaus_edrop": "HIGH", "spamhaus_dropv6": "HIGH",
     "cins_army": "HIGH", "emerging_threats": "HIGH", "emerging_threats_fwrules": "HIGH",
     "greensnow": "HIGH", "dshield_blocklist": "HIGH", "alienvault_reputation": "HIGH", "talos_intel": "HIGH",
     "sslbl_abuse_ch": "HIGH", "osint_bambenek_c2": "HIGH", "snort_ip_filter": "HIGH",
@@ -566,6 +633,14 @@ async def run_async_collector():
     domain_results = {}
     hash_sources = {}
     url_sources = {}
+
+    log.info("Loading previous IOCs from cache...")
+    ip_sources["historical"] = load_previous_ips("ioc/threatbase-ip.txt")
+    ipv6_sources["historical"] = load_previous_list("ioc/threatbase-ipv6.txt")
+    cidr_sources["historical"] = load_previous_list("ioc/threatbase-cidr.txt")
+    domain_results["historical"] = load_previous_list("ioc/threatbase-domain.txt")
+    hash_sources["historical"] = load_previous_list("ioc/threatbase-hash.txt")
+    url_sources["historical"] = load_previous_list("ioc/threatbase-url.txt")
 
     log.info("Spawning all fetch tasks asynchronously...")
     
@@ -699,6 +774,8 @@ async def run_async_collector():
     }
     with open("ioc/stats.json", "w", encoding="utf-8") as f:
         json.dump(stats, f)
+        
+    clean_temporary_files()
         
     elapsed = time.time() - t_start
     log.info("═" * 55)
