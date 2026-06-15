@@ -24,6 +24,7 @@ async function fetchAndCacheFeedText(baseUrl, filename, feedVersion) {
   if (feedCache[cacheKey]) return feedCache[cacheKey]
   
   const GITHUB_RAW = 'https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/'
+  
   let text = ''
   
   try {
