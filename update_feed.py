@@ -75,7 +75,6 @@ FEEDS: Dict[str, str] = {
     "osint_bambenek_c2": "https://osint.bambenekconsulting.com/feeds/c2-ipmasterlist.txt",
     "stopforumspam_toxic": "https://www.stopforumspam.com/downloads/toxic_ip_cidr.txt",
     "firehol_level3": "https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level3.netset",
-    "firehol_level4": "https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level4.netset",
     "blocklist_net_bots": "https://lists.blocklist.de/lists/bots.txt",
     "blocklist_net_strongips": "https://lists.blocklist.de/lists/strongips.txt",
     "snort_ip_filter": "https://snort.org/downloads/ip-block-list",
@@ -124,7 +123,6 @@ FEED_CATEGORIES: Dict[str, str] = {
     "osint_bambenek_c2": "C2",
     "stopforumspam_toxic": "Spam",
     "firehol_level3": "Mixed",
-    "firehol_level4": "Mixed",
     "blocklist_net_bots": "Botnet",
     "blocklist_net_strongips": "Brute-Force",
     "snort_ip_filter": "Malicious",
@@ -509,7 +507,7 @@ FEED_TRUST_TIERS = {
     "ipsum_level2": "LOW", "ipsum_level3": "LOW", "ipsum_level4": "LOW",
     "ipsum_level5": "LOW", "blackbook": "LOW", "romainmarcoux_outgoing_40k": "LOW",
     "romainmarcoux_outgoing_aa": "LOW", "romainmarcoux_outgoing_ab": "LOW",
-    "firehol_level3": "LOW", "firehol_level4": "LOW",
+    "firehol_level3": "LOW",
 }
 
 def process_ip_metadata(ip_sources: Dict[str, Set[int]], false_positives: set) -> Dict[int, dict]:
