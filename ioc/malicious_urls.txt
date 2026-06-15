@@ -1,7 +1,7 @@
 # Threatbase Threat Intelligence Feed - URLs
 # (https://github.com/kalidada18/threatbase)
 #
-# Last update: Mon, 15 Jun 2026 05:31:52 +0000
+# Last update: Mon, 15 Jun 2026 05:57:23 +0000
 #
 http://0000153.0000255.0000011.0000125/httpswww.tcs.comwhat-we-doindustriespublic-servicessolutiontcs-sovereignsecure-cloudness.php
 http://0022a601.pphost.net/threatsim/doc/46cad0e0ca3b2d6d9d3ce691ca2887b18abc80acf0e81799fbb290cce104c8eb.doc
@@ -16288,6 +16288,7 @@ http://42.229.219.110:60883/i
 http://42.229.220.156:51692/bin.sh
 http://42.229.220.156:51692/i
 http://42.229.220.76:44022/bin.sh
+http://42.229.220.76:44022/i
 http://42.229.221.185:44022/bin.sh
 http://42.229.221.185:44022/i
 http://42.229.221.36:37561/bin.sh
@@ -26329,6 +26330,7 @@ https://bazasvo2026.vercel.app/?download=1
 https://bbchurch.net/
 https://bcbjicn.kreativkiteljesedes.hu/29d8ab59-feb0-4779-8b80-7aab295d7aab
 https://bcfaxrtc.logic-compass.digital/?ublib=fc4c2afc-d641-4677-b313-959281dd5b4e
+https://bcfrgjpx.sakhtemandade.shop/6221f596-557c-4ee4-b959-b95791576ac0
 https://bcwkesayq.defamogadas.xyz/3d331bf9-0f79-4181-bba2-5dc9b2aa8a6c
 https://bcypppaq.asynchronous-growth-platform.garden/cc331331-caae-4f0b-a600-0d2f7330553a/google.ct
 https://bczth.bertifolia.hu/b49ef12c-321d-4fba-a93b-9683282fe140
