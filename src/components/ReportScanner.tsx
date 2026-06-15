@@ -19,6 +19,84 @@ const getCategoryColor = (cat: string) => {
   return 'bg-slate-500/10 text-slate-300 border border-slate-500/20'
 }
 
+function MalwareDescriptionBlock({ tag }: { tag: string }) {
+  const [desc, setDesc] = useState<string | null>(() => getMalwareDescription(tag));
+  const [loading, setLoading] = useState(!getMalwareDescription(tag));
+
+  useEffect(() => {
+    // If we already have the description from the dictionary, don't fetch
+    if (getMalwareDescription(tag)) return;
+    
+    let isMounted = true;
+    setLoading(true);
+    
+    // Wikipedia API search
+    const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(tag + ' malware')}&utf8=&format=json&origin=*`;
+    
+    fetch(searchUrl)
+      .then(r => r.json())
+      .then(data => {
+        if (!isMounted) return;
+        const results = data?.query?.search;
+        if (results && results.length > 0) {
+          const title = results[0].title;
+          const detailUrl = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro=true&explaintext=true&titles=${encodeURIComponent(title)}&format=json&origin=*`;
+          return fetch(detailUrl).then(r => r.json());
+        }
+        return null;
+      })
+      .then(data => {
+        if (!isMounted) return;
+        if (!data) {
+          setLoading(false);
+          return;
+        }
+        const pages = data?.query?.pages;
+        if (pages) {
+          const pageId = Object.keys(pages)[0];
+          const extract = pages[pageId]?.extract;
+          if (extract && extract.length > 50) {
+            let trimmed = extract;
+            if (trimmed.length > 300) {
+              trimmed = trimmed.substring(0, 300).trim() + '...';
+            }
+            setDesc(trimmed);
+          }
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Wikipedia fetch error:", err);
+        if (isMounted) setLoading(false);
+      });
+      
+    return () => { isMounted = false; };
+  }, [tag]);
+
+  if (!desc && !loading) return null;
+  
+  return (
+    <div className="mt-5 p-4 rounded-xl bg-slate-950/40 border border-rose-500/10 shadow-inner">
+      <div className="flex items-start gap-3">
+        <div className="bg-rose-500/10 p-1.5 rounded-lg border border-rose-500/20 shrink-0 mt-0.5">
+          {loading ? (
+            <div className="w-4 h-4 rounded-full border-2 border-rose-500/30 border-t-rose-400 animate-spin" />
+          ) : (
+            <ShieldAlert className="w-4 h-4 text-rose-400" />
+          )}
+        </div>
+        <div>
+          <h4 className="text-slate-200 font-bold text-sm tracking-tight flex items-center gap-2">
+            {tag} 
+            {loading && <span className="text-xs text-slate-500 font-normal">Searching online...</span>}
+          </h4>
+          {desc && <p className="text-slate-400 text-sm mt-1 leading-relaxed">{desc}</p>}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function ReportScanner({ scanResult, isScanning, showReport, scanInput, addToast }: any) {
   const [reports, setReports] = useState<any[]>([])
   const [loadingReports, setLoadingReports] = useState(false)
@@ -250,23 +328,11 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                   )}
 
                   {/* Malware Descriptions */}
-                  {type === 'danger' && scanResult?.tags?.length > 0 && scanResult.tags.some((t: string) => getMalwareDescription(t)) && (
-                    <div className="mt-5 p-4 rounded-xl bg-slate-950/40 border border-rose-500/10 shadow-inner space-y-4">
-                      {scanResult.tags.map((tag: string) => {
-                        const desc = getMalwareDescription(tag);
-                        if (!desc) return null;
-                        return (
-                          <div key={`desc-${tag}`} className="flex items-start gap-3">
-                            <div className="bg-rose-500/10 p-1.5 rounded-lg border border-rose-500/20 shrink-0">
-                              <ShieldAlert className="w-4 h-4 text-rose-400" />
-                            </div>
-                            <div>
-                              <h4 className="text-slate-200 font-bold text-sm tracking-tight">{tag}</h4>
-                              <p className="text-slate-400 text-sm mt-1 leading-relaxed">{desc}</p>
-                            </div>
-                          </div>
-                        )
-                      })}
+                  {type === 'danger' && scanResult?.tags?.length > 0 && (
+                    <div className="flex flex-col">
+                      {scanResult.tags.map((tag: string) => (
+                        <MalwareDescriptionBlock key={`desc-${tag}`} tag={tag} />
+                      ))}
                     </div>
                   )}
                 </div>
