@@ -54,14 +54,42 @@ function MalwareDescriptionBlock({ tag }: { tag: string }) {
         const pages = data?.query?.pages;
         if (pages) {
           const pageId = Object.keys(pages)[0];
-          const extract = pages[pageId]?.extract;
+          const page = pages[pageId];
+          const extract = page?.extract;
+          const title = page?.title?.toLowerCase() || '';
+
           if (extract && extract.length > 50) {
-            let trimmed = extract;
-            if (trimmed.length > 300) {
-              trimmed = trimmed.substring(0, 300).trim() + '...';
+            // Extract only the first sentence
+            let firstSentence = extract.match(/[^.!?]+[.!?]+/)?.[0] || extract;
+            if (firstSentence.length > 250) {
+              firstSentence = firstSentence.substring(0, 250).trim() + '...';
             }
-            setDesc(trimmed);
+
+            const textLower = extract.toLowerCase();
+            const tagLower = tag.toLowerCase();
+
+            // Filter out generic irrelevant pages and ensure it's about malware
+            const isRelevant = 
+              title.includes(tagLower) || 
+              textLower.includes(tagLower) || 
+              textLower.includes('malware') || 
+              textLower.includes('trojan') ||
+              textLower.includes('ransomware') ||
+              textLower.includes('virus');
+
+            const isGeneric = title.includes('security') || title.includes('computing');
+
+            if (isRelevant && !isGeneric) {
+              setDesc(firstSentence.trim());
+            } else {
+              // Fallback to generic malware description
+              setDesc(getMalwareDescription('Malware'));
+            }
+          } else {
+             setDesc(getMalwareDescription('Malware'));
           }
+        } else {
+           setDesc(getMalwareDescription('Malware'));
         }
         setLoading(false);
       })
@@ -82,7 +110,7 @@ function MalwareDescriptionBlock({ tag }: { tag: string }) {
           {loading ? (
             <div className="w-4 h-4 rounded-full border-2 border-rose-500/30 border-t-rose-400 animate-spin" />
           ) : (
-            <ShieldAlert className="w-4 h-4 text-rose-400" />
+            <img src={getCategoryIconPath(tag)} className="w-4 h-4 object-contain drop-shadow-sm" alt="Malware Icon" />
           )}
         </div>
         <div>
