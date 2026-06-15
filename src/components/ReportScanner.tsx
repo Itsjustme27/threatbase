@@ -169,7 +169,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                   <motion.div animate={{ opacity: [1, 0, 1] }} transition={{ duration: 1, repeat: Infinity }} className="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_var(--tw-colors-primary)]" />
                   <span className="text-xs font-bold text-slate-300 tracking-[0.25em] uppercase drop-shadow-md">Scanning Target</span>
                 </div>
-                <div className="text-3xl md:text-4xl font-mono font-bold tracking-tight text-white mb-6 drop-shadow-lg">{ip}</div>
+                <div className="text-3xl md:text-4xl font-mono font-bold tracking-tight text-white mb-6 drop-shadow-lg break-all text-center px-4 max-w-full">{ip}</div>
               </div>
             </motion.div>
           ) : scanResult ? (
@@ -191,7 +191,8 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                   <div className="flex items-center gap-3 mb-4">
                     <img src={`${import.meta.env.BASE_URL}img/threatbase.png`} className="w-8 h-8 rounded-full shadow-sm border border-white/5" alt="Threatbase Logo" />
                     <h3 className={`text-xl md:text-2xl font-bold tracking-tight ${type === 'danger' ? 'text-rose-400' : type === 'safe' ? 'text-primary' : 'text-orange-400'}`}>
-                      {ip} {type === 'danger' ? 'was found in our database' : type === 'safe' ? 'was not found in our database' : 'is currently disputed'}
+                      <span className="break-all">{ip}</span>{' '}
+                      <span className="inline-block">{type === 'danger' ? 'was found in our database' : type === 'safe' ? 'was not found in our database' : 'is currently disputed'}</span>
                     </h3>
                   </div>
 
@@ -252,7 +253,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                         {scanResult.isDomain ? (
                           <tr className="hover:bg-slate-800/20 transition-colors">
                             <td className="py-3.5 px-5 md:px-6 font-bold text-slate-400 w-[35%] bg-slate-900/20 border-r border-slate-800/50">Domain Name</td>
-                            <td className="py-3.5 px-5 md:px-6 text-slate-200 font-medium">{ip}</td>
+                            <td className="py-3.5 px-5 md:px-6 text-slate-200 font-medium break-all">{ip}</td>
                           </tr>
                         ) : (
                           <>
@@ -358,7 +359,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                 <div className="w-full space-y-6">
                   <div>
                     <h3 className="text-xl md:text-2xl font-black text-white tracking-tight mb-2">
-                      Community Reports for <span className="bg-gradient-to-r from-primary/80 to-primary bg-clip-text text-transparent font-mono">{ip}</span>
+                      Community Reports for <span className="bg-gradient-to-r from-primary/80 to-primary bg-clip-text text-transparent font-mono break-all inline-block">{ip}</span>
                     </h3>
                     <p className="text-xs md:text-sm text-slate-400 leading-relaxed font-medium">
                       This IP address has been reported <span className="text-white font-bold">{reports.length.toLocaleString()}</span> times. First reported on <span className="text-slate-300 font-medium">{new Date(reports[reports.length - 1].created_at || Date.now()).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}</span>, with the most recent report from <span className="text-slate-300 font-medium">{timeAgo(reports[0].created_at || new Date().toISOString())}</span>.

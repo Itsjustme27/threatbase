@@ -19,82 +19,40 @@ async function getStats(rawBaseUrl) {
   return null
 }
 
-async function fetchAndCacheFeed(baseUrl, filename, feedVersion) {
+async function fetchAndCacheFeedText(baseUrl, filename, feedVersion) {
   const cacheKey = `${filename}?v=${feedVersion}`
   if (feedCache[cacheKey]) return feedCache[cacheKey]
   
-  let stats = await getStats(baseUrl)
   const GITHUB_RAW = 'https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/'
+  let text = ''
   
-  if (!stats) {
-    stats = await getStats(GITHUB_RAW)
-  }
-  
-  let filesToFetch = [filename]
-  if (stats && stats.chunk_files && stats.chunk_files[filename]) {
-    filesToFetch = stats.chunk_files[filename]
-  }
-  
-  let allLines = []
-  let success = false
-  
-  // Try Supabase Storage first
   try {
-    const fetchPromises = filesToFetch.map(async (file) => {
-      const url = `${baseUrl}${file}?v=${feedVersion}`
-      const r = await fetch(url)
-      if (!r.ok) throw new Error(`Supabase fetch error: ${r.status}`)
-      const text = await r.text()
-      return text
-        .split('\n')
-        .map((l) => l.trim())
-        .filter((l) => l.length > 0 && !l.startsWith('#') && !l.startsWith('ip,'))
-    })
-    
-    const results = await Promise.all(fetchPromises)
-    for (const lines of results) {
-      allLines = allLines.concat(lines)
+    const url = `${baseUrl}${filename}?v=${feedVersion}`
+    const r = await fetch(url)
+    if (r.ok) {
+      text = await r.text()
+    } else {
+      throw new Error(`Supabase fetch error: ${r.status}`)
     }
-    success = true
   } catch (e) {
     console.warn(`Supabase Storage fetch failed for ${filename}, falling back to GitHub Raw:`, e)
-  }
-  
-  // Fallback to GitHub Raw if Supabase failed or returned empty
-  if (!success || allLines.length === 0) {
-    let githubFiles = [filename]
-    const githubStats = await getStats(GITHUB_RAW)
-    if (githubStats && githubStats.chunk_files && githubStats.chunk_files[filename]) {
-      githubFiles = githubStats.chunk_files[filename]
-    }
-    
     try {
-      const fetchPromises = githubFiles.map(async (file) => {
-        const url = `${GITHUB_RAW}${file}?v=${feedVersion}`
-        const r = await fetch(url)
-        if (!r.ok) return []
-        const text = await r.text()
-        return text
-          .split('\n')
-          .map((l) => l.trim())
-          .filter((l) => l.length > 0 && !l.startsWith('#') && !l.startsWith('ip,'))
-      })
-      
-      const results = await Promise.all(fetchPromises)
-      allLines = []
-      for (const lines of results) {
-        allLines = allLines.concat(lines)
+      const url = `${GITHUB_RAW}${filename}?v=${feedVersion}`
+      const r = await fetch(url)
+      if (r.ok) {
+        text = await r.text()
       }
     } catch (e) {
       console.error('GitHub Raw fallback fetch failed:', e)
     }
   }
   
-  feedCache[cacheKey] = allLines
-  return allLines
+  feedCache[cacheKey] = text
+  return text
 }
 
 function ipCsvCompare(query, line) {
+  if (line.startsWith('#') || line.startsWith('ip,')) return 1;
   const ipPart = line.split(',')[0]
   const pA = query.split('.').map(Number)
   const pB = ipPart.split('.').map(Number)
@@ -106,22 +64,47 @@ function ipCsvCompare(query, line) {
 }
 
 function stringCompare(query, line) {
-  if (query < line) return -1
-  if (query > line) return 1
+  if (line.startsWith('#') || line.startsWith('ip,')) return 1;
+  const key = line.split(',')[0];
+  if (query < key) return -1
+  if (query > key) return 1
   return 0
 }
 
-function binarySearchArray(arr, query, compareFn) {
-  let low = 0
-  let high = arr.length - 1
+function binarySearchString(text, query, compareFn) {
+  if (!text) return null;
+  let low = 0;
+  let high = text.length - 1;
+  
   while (low <= high) {
-    const mid = Math.floor((low + high) / 2)
-    const comp = compareFn(query, arr[mid])
-    if (comp === 0) return arr[mid]
-    if (comp < 0) high = mid - 1
-    else low = mid + 1
+    let mid = Math.floor((low + high) / 2);
+    
+    let start = mid;
+    while (start > 0 && text[start - 1] !== '\n') start--;
+    
+    let end = mid;
+    while (end < text.length && text[end] !== '\n' && text[end] !== '\r') end++;
+    
+    let line = text.slice(start, end).trim();
+    if (line.length === 0) {
+      // Empty line, safely move past it
+      low = end + 1;
+      continue;
+    }
+    
+    const comp = compareFn(query, line);
+    if (comp === 0) {
+      if (line.startsWith('#') || line.startsWith('ip,')) return null;
+      return line;
+    }
+    
+    if (comp < 0) {
+      high = start - 1;
+    } else {
+      low = end + 1;
+    }
   }
-  return null
+  return null;
 }
 
 /**
@@ -166,25 +149,38 @@ export async function scanIndicatorLogic(rawInput, feedVersion) {
   let tags = []
 
   try {
-    let list = []
+    let textData = ''
     let compareFn = stringCompare
 
     if (isIP) {
-      list = await fetchAndCacheFeed(RAW, 'malicious_ips.txt', feedVersion)
+      const p = ip.split('.')[0]
+      const prefix = /^\d+$/.test(p) ? p : 'other'
+      textData = await fetchAndCacheFeedText(RAW, `malicious_ips_${prefix}.txt`, feedVersion)
       compareFn = ipCsvCompare
     } else if (isIPv6) {
-      list = await fetchAndCacheFeed(RAW, 'malicious_ipv6.txt', feedVersion)
+      textData = await fetchAndCacheFeedText(RAW, 'malicious_ipv6.txt', feedVersion)
     } else if (isCIDR) {
-      list = await fetchAndCacheFeed(RAW, 'malicious_cidrs.txt', feedVersion)
+      textData = await fetchAndCacheFeedText(RAW, 'malicious_cidrs.txt', feedVersion)
     } else if (isDomain) {
-      list = await fetchAndCacheFeed(RAW, 'malicious_domains.txt', feedVersion)
+      const c = ip[0].toLowerCase()
+      const prefix = /^[a-z0-9]$/.test(c) ? c : 'other'
+      textData = await fetchAndCacheFeedText(RAW, `malicious_domains_${prefix}.txt`, feedVersion)
     } else if (isHash) {
-      list = await fetchAndCacheFeed(RAW, 'malicious_hashes.txt', feedVersion)
+      const c = ip[0].toLowerCase()
+      const prefix = /^[0-9a-f]$/.test(c) ? c : 'other'
+      textData = await fetchAndCacheFeedText(RAW, `malicious_hashes_${prefix}.txt`, feedVersion)
     } else if (isURL) {
-      list = await fetchAndCacheFeed(RAW, 'malicious_urls.txt', feedVersion)
+      try {
+        const clean = ip.split("://")[1]
+        const c = clean[0].toLowerCase()
+        const prefix = /^[a-z0-9]$/.test(c) ? c : 'other'
+        textData = await fetchAndCacheFeedText(RAW, `malicious_urls_${prefix}.txt`, feedVersion)
+      } catch (e) {
+        textData = await fetchAndCacheFeedText(RAW, 'malicious_urls_other.txt', feedVersion)
+      }
     }
 
-    const result = binarySearchArray(list, ip, compareFn)
+    const result = binarySearchString(textData, ip, compareFn)
 
     if (result) {
       isMalicious = true

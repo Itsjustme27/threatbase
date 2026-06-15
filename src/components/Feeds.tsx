@@ -115,7 +115,7 @@ export default function Feeds({ statsData }: { statsData?: any }) {
                       Split Feed ({chunks.length} Parts)
                     </span>
                     <div className="grid grid-cols-2 gap-2 w-full">
-                      {chunks.map((chunk, idx) => (
+                      {chunks.slice(0, 3).map((chunk, idx) => (
                         <a
                           key={chunk}
                           href={`https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/${chunk}`}
@@ -127,6 +127,16 @@ export default function Feeds({ statsData }: { statsData?: any }) {
                           <span>Part {idx + 1}</span>
                         </a>
                       ))}
+                      {chunks.length > 3 && (
+                        <a
+                          href="https://github.com/kalidada18/threatbase/tree/main/ioc"
+                          className="inline-flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold transition-all duration-300 border border-white/10 rounded-xl bg-white/5 text-white hover:bg-white/10 hover:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-sm overflow-hidden relative group/chunk"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <span>+{chunks.length - 3} More</span>
+                        </a>
+                      )}
                     </div>
                   </div>
                 ) : (

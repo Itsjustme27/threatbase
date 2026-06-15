@@ -362,6 +362,44 @@ def write_split_file(filepath: str, header_lines: List[str], data_lines: List[st
     return written_files
 
 
+def write_prefix_split_files(filepath: str, header_lines: List[str], data_lines: List[str], get_prefix_fn) -> List[str]:
+    import collections
+    base_no_ext, ext = os.path.splitext(filepath)
+    
+    old_files = set()
+    if os.path.exists(filepath):
+        old_files.add(filepath)
+    for p in glob.glob(f"{base_no_ext}_*{ext}"):
+        old_files.add(p)
+        
+    grouped = collections.defaultdict(list)
+    for line in data_lines:
+        prefix = get_prefix_fn(line)
+        grouped[prefix].append(line)
+        
+    written_files = []
+    header_content = "\n".join(header_lines) + "\n" if header_lines else ""
+    
+    for prefix, lines in grouped.items():
+        chunk_filepath = f"{base_no_ext}_{prefix}{ext}"
+        with open(chunk_filepath, "w", encoding="utf-8", buffering=1<<16) as current_file:
+            written_files.append(chunk_filepath)
+            current_file.write(header_content)
+            for line in lines:
+                current_file.write(line + "\n")
+                
+    for old_f in old_files:
+        if old_f not in written_files:
+            try:
+                os.remove(old_f)
+                log.info(f"Removed orphaned old chunk file: {old_f}")
+            except Exception as e:
+                log.error(f"Failed to remove orphaned file {old_f}: {e}")
+                
+    log.info(f"Wrote {len(written_files)} prefix files for {filepath}")
+    return written_files
+
+
 def upload_to_supabase_storage(filepath: str, bucket: str = "threatbase-ioc") -> bool:
     """Uploads a file to Supabase Storage using S3 protocol if keys are set, otherwise REST API."""
     s3_access_key = os.environ.get("SUPABASE_S3_ACCESS_KEY", "").strip()
@@ -781,7 +819,10 @@ def write_hashes(hash_sources: Dict[str, Set[str]]) -> tuple:
         f"# Last update: {timestamp}",
         "#"
     ]
-    written = write_split_file("ioc/malicious_hashes.txt", header, all_hashes)
+    def get_hash_prefix(h):
+        c = h[0].lower()
+        return c if c in "0123456789abcdef" else "other"
+    written = write_prefix_split_files("ioc/malicious_hashes.txt", header, all_hashes, get_hash_prefix)
     log.info(f"  Wrote malicious_hashes.txt chunks ({len(all_hashes)} hashes)")
     return set(all_hashes), [os.path.basename(f) for f in written]
 
@@ -797,7 +838,14 @@ def write_urls(url_map: Dict[str, Set[str]]) -> tuple:
         f"# Last update: {timestamp}",
         "#"
     ]
-    written = write_split_file("ioc/malicious_urls.txt", header, all_urls)
+    def get_url_prefix(u):
+        try:
+            clean = u.split("://", 1)[-1]
+            c = clean[0].lower()
+            return c if c.isalnum() else "other"
+        except Exception:
+            return "other"
+    written = write_prefix_split_files("ioc/malicious_urls.txt", header, all_urls, get_url_prefix)
     log.info(f"  Wrote malicious_urls.txt chunks ({len(all_urls)} URLs)")
     return set(all_urls), [os.path.basename(f) for f in written]
 
@@ -1193,7 +1241,9 @@ def main():
         f"# Last update: {timestamp}",
         "#"
     ]
-    written_ips = write_split_file("ioc/malicious_ips.txt", header_ips, ip_lines)
+    def get_ip_prefix(ip_line):
+        return ip_line[0] if ip_line[0].isdigit() else "other"
+    written_ips = write_prefix_split_files("ioc/malicious_ips.txt", header_ips, ip_lines, get_ip_prefix)
     chunk_files["malicious_ips.txt"] = [os.path.basename(f) for f in written_ips]
     for chunk in chunk_files["malicious_ips.txt"]:
         all_written_files.append(f"ioc/{chunk}")
@@ -1209,7 +1259,10 @@ def main():
         f"# Last update: {timestamp}",
         "#"
     ]
-    written_domains = write_split_file("ioc/malicious_domains.txt", header_domains, sorted_domains)
+    def get_domain_prefix(d):
+        c = d[0].lower()
+        return c if c.isalnum() else "other"
+    written_domains = write_prefix_split_files("ioc/malicious_domains.txt", header_domains, sorted_domains, get_domain_prefix)
     chunk_files["malicious_domains.txt"] = [os.path.basename(f) for f in written_domains]
     for chunk in chunk_files["malicious_domains.txt"]:
         all_written_files.append(f"ioc/{chunk}")
