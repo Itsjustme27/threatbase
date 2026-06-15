@@ -20,105 +20,21 @@ const getCategoryColor = (cat: string) => {
 }
 
 function MalwareDescriptionBlock({ tag }: { tag: string }) {
-  const [desc, setDesc] = useState<string | null>(() => getMalwareDescription(tag));
-  const [loading, setLoading] = useState(!getMalwareDescription(tag));
+  const desc = getMalwareDescription(tag) || getMalwareDescription('Malware');
 
-  useEffect(() => {
-    // If we already have the description from the dictionary, don't fetch
-    if (getMalwareDescription(tag)) return;
-    
-    let isMounted = true;
-    setLoading(true);
-    
-    // Wikipedia API search
-    const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(tag + ' malware')}&utf8=&format=json&origin=*`;
-    
-    fetch(searchUrl)
-      .then(r => r.json())
-      .then(data => {
-        if (!isMounted) return;
-        const results = data?.query?.search;
-        if (results && results.length > 0) {
-          const title = results[0].title;
-          const detailUrl = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro=true&explaintext=true&titles=${encodeURIComponent(title)}&format=json&origin=*`;
-          return fetch(detailUrl).then(r => r.json());
-        }
-        return null;
-      })
-      .then(data => {
-        if (!isMounted) return;
-        if (!data) {
-          setLoading(false);
-          return;
-        }
-        const pages = data?.query?.pages;
-        if (pages) {
-          const pageId = Object.keys(pages)[0];
-          const page = pages[pageId];
-          const extract = page?.extract;
-          const title = page?.title?.toLowerCase() || '';
-
-          if (extract && extract.length > 50) {
-            // Extract only the first sentence
-            let firstSentence = extract.match(/[^.!?]+[.!?]+/)?.[0] || extract;
-            if (firstSentence.length > 250) {
-              firstSentence = firstSentence.substring(0, 250).trim() + '...';
-            }
-
-            const textLower = extract.toLowerCase();
-            const tagLower = tag.toLowerCase();
-
-            // Filter out generic irrelevant pages and ensure it's about malware
-            const isRelevant = 
-              title.includes(tagLower) || 
-              textLower.includes(tagLower) || 
-              textLower.includes('malware') || 
-              textLower.includes('trojan') ||
-              textLower.includes('ransomware') ||
-              textLower.includes('virus');
-
-            const isGeneric = title.includes('security') || title.includes('computing');
-
-            if (isRelevant && !isGeneric) {
-              setDesc(firstSentence.trim());
-            } else {
-              // Fallback to generic malware description
-              setDesc(getMalwareDescription('Malware'));
-            }
-          } else {
-             setDesc(getMalwareDescription('Malware'));
-          }
-        } else {
-           setDesc(getMalwareDescription('Malware'));
-        }
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Wikipedia fetch error:", err);
-        if (isMounted) setLoading(false);
-      });
-      
-    return () => { isMounted = false; };
-  }, [tag]);
-
-  if (!desc && !loading) return null;
+  if (!desc) return null;
   
   return (
     <div className="mt-5 p-4 rounded-xl bg-slate-950/40 border border-rose-500/10 shadow-inner">
       <div className="flex items-start gap-3">
         <div className="bg-rose-500/10 p-1.5 rounded-lg border border-rose-500/20 shrink-0 mt-0.5">
-          {loading ? (
-            <div className="w-4 h-4 rounded-full border-2 border-rose-500/30 border-t-rose-400 animate-spin" />
-          ) : (
-            <img src={getCategoryIconPath(tag)} className="w-4 h-4 object-contain drop-shadow-sm" alt="Malware Icon" />
-          )}
+          <img src={`${import.meta.env.BASE_URL}img/malware.png`} className="w-4 h-4 object-contain drop-shadow-sm" alt="Malware Icon" />
         </div>
         <div>
           <h4 className="text-slate-200 font-bold text-sm tracking-tight flex items-center gap-2">
             {tag} 
-            {loading && <span className="text-xs text-slate-500 font-normal">Searching online...</span>}
           </h4>
-          {desc && <p className="text-slate-400 text-sm mt-1 leading-relaxed">{desc}</p>}
+          <p className="text-slate-400 text-sm mt-1 leading-relaxed">{desc}</p>
         </div>
       </div>
     </div>
@@ -362,6 +278,11 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                         <MalwareDescriptionBlock key={`desc-${tag}`} tag={tag} />
                       ))}
                     </div>
+                  )}
+
+                  {/* Hash Simple Text */}
+                  {type === 'danger' && scanResult?.isHash && (
+                    <p className="mt-5 text-slate-300 text-sm leading-relaxed font-medium">This is a malicious hash found in our feed.</p>
                   )}
                 </div>
 

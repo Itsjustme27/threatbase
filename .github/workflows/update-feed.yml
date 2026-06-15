@@ -75,6 +75,8 @@ jobs:
           OTX_API_KEY: ${{ secrets.OTX_API_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          SUPABASE_ACCESS_KEY_ID: ${{ secrets.SUPABASE_ACCESS_KEY_ID }}
+          SUPABASE_SECRET_ACCESS_KEY: ${{ secrets.SUPABASE_SECRET_ACCESS_KEY }}
           PYTHONUNBUFFERED: '1'
         run: python update_feed.py
 

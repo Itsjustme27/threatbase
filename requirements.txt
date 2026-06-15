@@ -3,6 +3,7 @@
 
 # HTTP client — feed downloads, retries, timeout handling
 requests>=2.32.0
+aiohttp>=3.9.0
 
 # S3 compatible storage uploads
 boto3>=1.34.0
