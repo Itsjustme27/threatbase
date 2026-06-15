@@ -5,6 +5,7 @@ import supabaseClient from '../supabaseClient'
 import { timeAgo, getCategoryIconPath, normalizeTags } from '../utils'
 import { useAuth } from '../AuthContext'
 import Loader from './ui/loader'
+import { getMalwareDescription } from '../malwareDictionary'
 
 const getCategoryColor = (cat: string) => {
   if (!cat) return 'bg-slate-500/10 text-slate-300 border border-slate-500/20'
@@ -245,6 +246,27 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                           ))}
                         </div>
                       )}
+                    </div>
+                  )}
+
+                  {/* Malware Descriptions */}
+                  {type === 'danger' && scanResult?.tags?.length > 0 && scanResult.tags.some((t: string) => getMalwareDescription(t)) && (
+                    <div className="mt-5 p-4 rounded-xl bg-slate-950/40 border border-rose-500/10 shadow-inner space-y-4">
+                      {scanResult.tags.map((tag: string) => {
+                        const desc = getMalwareDescription(tag);
+                        if (!desc) return null;
+                        return (
+                          <div key={`desc-${tag}`} className="flex items-start gap-3">
+                            <div className="bg-rose-500/10 p-1.5 rounded-lg border border-rose-500/20 shrink-0">
+                              <ShieldAlert className="w-4 h-4 text-rose-400" />
+                            </div>
+                            <div>
+                              <h4 className="text-slate-200 font-bold text-sm tracking-tight">{tag}</h4>
+                              <p className="text-slate-400 text-sm mt-1 leading-relaxed">{desc}</p>
+                            </div>
+                          </div>
+                        )
+                      })}
                     </div>
                   )}
                 </div>
