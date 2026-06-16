@@ -1,24 +1,39 @@
-import React, { useEffect, useRef } from 'react';
-import * as THREE from 'three';
-import { Infinity, Rocket, Shield, Brain, Play, ChevronDown } from 'lucide-react';
+import { useEffect, useRef } from 'react'
+import * as THREE from 'three'
 
-const AnoAI = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
+/**
+ * Full-bleed animated aurora shader, rendered as a background layer.
+ * Fills its positioned parent (place inside a `relative` container) and sits
+ * behind content with pointer-events disabled. No mouse interaction.
+ */
+export default function AnimatedShaderBackground({ className = '' }: { className?: string }) {
+  const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-    
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    container.appendChild(renderer.domElement);
+    const container = containerRef.current
+    if (!container) return
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+    if (!renderer.getContext()) return // WebGL unavailable — bail gracefully
+
+    const scene = new THREE.Scene()
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1)
+
+    const sizeOf = () => ({
+      w: container.clientWidth || window.innerWidth,
+      h: container.clientHeight || window.innerHeight,
+    })
+
+    const initial = sizeOf()
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    renderer.setSize(initial.w, initial.h)
+    container.appendChild(renderer.domElement)
 
     const material = new THREE.ShaderMaterial({
+      transparent: true,
       uniforms: {
         iTime: { value: 0 },
-        iResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+        iResolution: { value: new THREE.Vector2(initial.w, initial.h) },
       },
       vertexShader: `
         void main() {
@@ -84,40 +99,45 @@ const AnoAI = () => {
           o = tanh(pow(o / 100.0, vec4(1.6)));
           gl_FragColor = o * 1.5;
         }
-      `
-    });
+      `,
+    })
 
-    const geometry = new THREE.PlaneGeometry(2, 2);
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
+    const geometry = new THREE.PlaneGeometry(2, 2)
+    const mesh = new THREE.Mesh(geometry, material)
+    scene.add(mesh)
 
-    let frameId: number;
+    let frameId = 0
     const animate = () => {
-      material.uniforms.iTime.value += 0.016;
-      renderer.render(scene, camera);
-      frameId = requestAnimationFrame(animate);
-    };
-    animate();
+      material.uniforms.iTime.value += 0.016
+      renderer.render(scene, camera)
+      frameId = requestAnimationFrame(animate)
+    }
+    animate()
 
     const handleResize = () => {
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      material.uniforms.iResolution.value.set(window.innerWidth, window.innerHeight);
-    };
-    window.addEventListener('resize', handleResize);
+      const { w, h } = sizeOf()
+      renderer.setSize(w, h)
+      material.uniforms.iResolution.value.set(w, h)
+    }
+    window.addEventListener('resize', handleResize)
 
     return () => {
-      cancelAnimationFrame(frameId);
-      window.removeEventListener('resize', handleResize);
-      container.removeChild(renderer.domElement);
-      geometry.dispose();
-      material.dispose();
-      renderer.dispose();
-    };
-  }, []);
+      cancelAnimationFrame(frameId)
+      window.removeEventListener('resize', handleResize)
+      if (renderer.domElement.parentNode === container) {
+        container.removeChild(renderer.domElement)
+      }
+      geometry.dispose()
+      material.dispose()
+      renderer.dispose()
+    }
+  }, [])
 
   return (
-    <div ref={containerRef} className="absolute inset-0 z-0 overflow-hidden" />
-  );
-};
-
-export default AnoAI;
+    <div
+      ref={containerRef}
+      aria-hidden="true"
+      className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}
+    />
+  )
+}

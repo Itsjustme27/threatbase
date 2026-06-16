@@ -5,9 +5,6 @@ import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import {
   ChartConfig,
@@ -15,31 +12,31 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/area-chart";
-import { Badge } from "@/components/ui/badge";
-import React, { useEffect, useState } from "react";
-import { getBaseUrl } from "../../utils";
+import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+import React, { useEffect, useState, useMemo } from "react";
+import { getBaseUrl, fmt } from "../../utils";
 
-const animationConfig = {
-  glowWidth: 300,
-};
+type SeriesKey = "ipv4" | "ipv6" | "cidrs" | "domains" | "hashes" | "urls";
 
 const chartConfig = {
   ipv4: { label: "IPv4", color: "#ef4444" },
-  ipv6: { label: "IPv6", color: "#06b6d4" },
-  cidrs: { label: "CIDRs", color: "#10b981" },
   domains: { label: "Domains", color: "#3b82f6" },
   hashes: { label: "Hashes", color: "#a855f7" },
   urls: { label: "URLs", color: "#f97316" },
+  cidrs: { label: "CIDRs", color: "#10b981" },
+  ipv6: { label: "IPv6", color: "#06b6d4" },
 } satisfies ChartConfig;
 
+const SERIES_ORDER: SeriesKey[] = ["ipv4", "domains", "hashes", "urls", "cidrs", "ipv6"];
+
 export default function AnimatedHighlightedAreaChart({ feedVersion }: { feedVersion?: any }) {
-  const [xAxis, setXAxis] = useState<number | null>(null);
   const [history, setHistory] = useState<any[]>([]);
+  const [hidden, setHidden] = useState<Set<SeriesKey>>(new Set());
 
   useEffect(() => {
     const RAW = getBaseUrl()
     const GITHUB_RAW = 'https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/'
-    
+
     fetch(RAW + 'history.json?v=' + (feedVersion || Date.now()))
       .then((r) => {
         if (!r.ok) throw new Error('HTTP ' + r.status)
@@ -64,7 +61,7 @@ export default function AnimatedHighlightedAreaChart({ feedVersion }: { feedVers
       })
   }, [feedVersion])
 
-  const chartData = history.length > 0 ? history.map((h) => {
+  const chartData = useMemo(() => history.length > 0 ? history.map((h) => {
     const d = new Date(h.date)
     return {
       dateLabel: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }),
@@ -75,86 +72,170 @@ export default function AnimatedHighlightedAreaChart({ feedVersion }: { feedVers
       hashes: h.total_unique_hashes || 0,
       urls: h.total_unique_urls || 0,
     }
-  }) : []
+  }) : [], [history])
+
+  // Latest snapshot totals + period delta across all visible categories.
+  const { latestTotal, periodDelta, periodPct, rangeLabel, latestByKey } = useMemo(() => {
+    if (chartData.length === 0) {
+      return { latestTotal: 0, periodDelta: 0, periodPct: 0, rangeLabel: '', latestByKey: {} as Record<SeriesKey, number> }
+    }
+    const last = chartData[chartData.length - 1]
+    const first = chartData[0]
+    const sumRow = (row: any) => SERIES_ORDER.reduce((s, k) => s + (row[k] || 0), 0)
+    const lt = sumRow(last)
+    const ft = sumRow(first)
+    const byKey = {} as Record<SeriesKey, number>
+    SERIES_ORDER.forEach((k) => { byKey[k] = last[k] || 0 })
+    return {
+      latestTotal: lt,
+      periodDelta: lt - ft,
+      periodPct: ft > 0 ? ((lt - ft) / ft) * 100 : 0,
+      rangeLabel: `${first.dateLabel} – ${last.dateLabel}`,
+      latestByKey: byKey,
+    }
+  }, [chartData])
+
+  const toggle = (k: SeriesKey) => {
+    setHidden((prev) => {
+      const next = new Set(prev)
+      next.has(k) ? next.delete(k) : next.add(k)
+      // Never allow hiding every series.
+      if (next.size === SERIES_ORDER.length) next.delete(k)
+      return next
+    })
+  }
+
+  const up = periodDelta > 0
+  const flat = periodDelta === 0
+  const TrendIcon = flat ? Minus : up ? TrendingUp : TrendingDown
+  const trendColor = flat ? 'text-slate-400' : up ? 'text-destructive' : 'text-primary'
+
+  const loading = chartData.length === 0
 
   return (
-    <Card className="rounded-3xl border border-white/10 bg-slate-900/60 backdrop-blur-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] p-2 relative overflow-hidden group">
-      <div className="absolute top-0 inset-x-0 h-[2px] w-full bg-gradient-to-r from-transparent via-red-500/50 to-transparent"></div>
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none"></div>
-      
-      <div className="relative z-10">
-        <CardHeader>
-            <CardTitle className="text-xl font-extrabold flex items-center gap-2 text-white tracking-tight">
-              Threat Landscape Trends
-            </CardTitle>
-          <CardDescription className="text-slate-400 font-medium mt-1">
-            Tracking malicious indicators activity over time across 6 categories
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ChartContainer config={chartConfig} className="w-full h-72">
-          <AreaChart
-            accessibilityLayer
-            data={chartData}
-            onMouseMove={(e) => setXAxis(e.chartX as number)}
-            onMouseLeave={() => setXAxis(null)}
-          >
-            <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-            <XAxis
-              dataKey="dateLabel"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tick={{ fill: "#64748b" }}
-            />
-            <YAxis 
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tick={{ fill: "#64748b" }}
-              width={50}
-              tickFormatter={(value) => {
-                if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`
-                if (value >= 1000) return `${(value / 1000).toFixed(0)}k`
-                return value
-              }}
-            />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <defs>
-              <linearGradient id="animated-highlighted-grad-ipv4" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#ef4444" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
-              </linearGradient>
-              <linearGradient id="animated-highlighted-grad-ipv6" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="#06b6d4" stopOpacity={0} />
-              </linearGradient>
-              <linearGradient id="animated-highlighted-grad-cidrs" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-              </linearGradient>
-              <linearGradient id="animated-highlighted-grad-domains" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
-              </linearGradient>
-              <linearGradient id="animated-highlighted-grad-hashes" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#a855f7" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="#a855f7" stopOpacity={0} />
-              </linearGradient>
-              <linearGradient id="animated-highlighted-grad-urls" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#f97316" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="#f97316" stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <Area dataKey="hashes" type="monotone" fill="url(#animated-highlighted-grad-hashes)" fillOpacity={1} stroke="#a855f7" strokeWidth={2} />
-            <Area dataKey="domains" type="monotone" fill="url(#animated-highlighted-grad-domains)" fillOpacity={1} stroke="#3b82f6" strokeWidth={2} />
-            <Area dataKey="ipv4" type="monotone" fill="url(#animated-highlighted-grad-ipv4)" fillOpacity={1} stroke="#ef4444" strokeWidth={2} />
-            <Area dataKey="urls" type="monotone" fill="url(#animated-highlighted-grad-urls)" fillOpacity={1} stroke="#f97316" strokeWidth={2} />
-            <Area dataKey="cidrs" type="monotone" fill="url(#animated-highlighted-grad-cidrs)" fillOpacity={1} stroke="#10b981" strokeWidth={2} />
-            <Area dataKey="ipv6" type="monotone" fill="url(#animated-highlighted-grad-ipv6)" fillOpacity={1} stroke="#06b6d4" strokeWidth={2} />
-          </AreaChart>
-        </ChartContainer>
-      </CardContent>
+    <Card className="rounded-3xl border border-white/10 bg-slate-900/60 backdrop-blur-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] relative overflow-hidden group h-full flex flex-col">
+      <div className="absolute top-0 inset-x-0 h-[2px] w-full bg-gradient-to-r from-transparent via-red-500/50 to-transparent" />
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
+
+      <div className="relative z-10 flex flex-col h-full">
+        {/* Header */}
+        <div className="px-6 pt-6 pb-4 flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-white/[0.06]">
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-500/10 border border-red-500/20 text-[10px] font-bold uppercase tracking-widest text-red-400">
+                <span className="inline-flex h-1.5 w-1.5 rounded-full bg-red-400" />
+                Trends
+              </span>
+            </div>
+            <h3 className="text-xl font-extrabold text-white tracking-tight">Threat Landscape Trends</h3>
+            <p className="text-slate-400 font-medium text-sm mt-1">
+              Tracked malicious indicators across 6 categories{rangeLabel ? ` · ${rangeLabel}` : ''}
+            </p>
+          </div>
+
+          {/* Headline total + period delta */}
+          <div className="shrink-0 text-left sm:text-right">
+            <div className="text-2xl md:text-3xl font-black text-white tabular-nums tracking-tight leading-none">
+              {loading ? '—' : fmt(latestTotal)}
+            </div>
+            <div className={`mt-1.5 inline-flex items-center gap-1 text-xs font-bold tabular-nums ${trendColor}`}>
+              <TrendIcon size={14} strokeWidth={2.5} />
+              {loading ? '' : `${up ? '+' : ''}${fmt(periodDelta)} (${periodPct > 0 ? '+' : ''}${periodPct.toFixed(1)}%)`}
+              <span className="text-slate-500 font-medium ml-0.5">this period</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Interactive legend */}
+        <div className="px-6 pt-4 flex flex-wrap gap-2">
+          {SERIES_ORDER.map((k) => {
+            const cfg = chartConfig[k]
+            const off = hidden.has(k)
+            return (
+              <button
+                key={k}
+                onClick={() => toggle(k)}
+                aria-pressed={!off}
+                className={`group/chip inline-flex items-center gap-2 pl-2 pr-2.5 py-1.5 rounded-xl border text-xs font-bold transition-all ${
+                  off
+                    ? 'border-white/5 bg-white/[0.02] text-slate-600'
+                    : 'border-white/10 bg-white/[0.04] text-slate-200 hover:bg-white/[0.07]'
+                }`}
+              >
+                <span
+                  className="h-2.5 w-2.5 rounded-full transition-transform"
+                  style={{ backgroundColor: off ? '#475569' : cfg.color, boxShadow: off ? 'none' : `0 0 8px ${cfg.color}80` }}
+                />
+                {cfg.label}
+                <span className={`tabular-nums font-semibold ${off ? 'text-slate-700' : 'text-slate-400'}`}>
+                  {loading ? '' : fmt(latestByKey[k] || 0)}
+                </span>
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Chart */}
+        <CardContent className="flex-1 pt-4">
+          {loading ? (
+            <div className="w-full h-72 flex flex-col items-center justify-center gap-3 text-slate-500">
+              <div className="relative h-7 w-7">
+                <div className="absolute inset-0 rounded-full border border-slate-700" />
+                <div className="absolute inset-0 rounded-full border border-slate-400 border-t-transparent animate-spin" />
+              </div>
+              <p className="text-[11px] font-bold uppercase tracking-widest">Loading trend data…</p>
+            </div>
+          ) : (
+            <ChartContainer config={chartConfig} className="w-full h-72">
+              <AreaChart accessibilityLayer data={chartData} margin={{ left: 4, right: 8, top: 8 }}>
+                <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                <XAxis
+                  dataKey="dateLabel"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                  minTickGap={24}
+                  tick={{ fill: "#64748b", fontSize: 11 }}
+                />
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                  tick={{ fill: "#64748b", fontSize: 11 }}
+                  width={46}
+                  tickFormatter={(value) => {
+                    if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`
+                    if (value >= 1000) return `${(value / 1000).toFixed(0)}k`
+                    return value
+                  }}
+                />
+                <ChartTooltip cursor={{ stroke: 'rgba(255,255,255,0.15)', strokeWidth: 1 }} content={<ChartTooltipContent />} />
+                <defs>
+                  {SERIES_ORDER.map((k) => (
+                    <linearGradient key={k} id={`grad-${k}`} x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={chartConfig[k].color} stopOpacity={0.35} />
+                      <stop offset="95%" stopColor={chartConfig[k].color} stopOpacity={0} />
+                    </linearGradient>
+                  ))}
+                </defs>
+                {SERIES_ORDER.map((k) =>
+                  hidden.has(k) ? null : (
+                    <Area
+                      key={k}
+                      dataKey={k}
+                      type="monotone"
+                      fill={`url(#grad-${k})`}
+                      fillOpacity={1}
+                      stroke={chartConfig[k].color}
+                      strokeWidth={2}
+                      activeDot={{ r: 3.5, strokeWidth: 0 }}
+                    />
+                  )
+                )}
+              </AreaChart>
+            </ChartContainer>
+          )}
+        </CardContent>
       </div>
     </Card>
   );
