@@ -29,36 +29,60 @@ const chartConfig = {
 
 const SERIES_ORDER: SeriesKey[] = ["ipv4", "domains", "hashes", "urls", "cidrs", "ipv6"];
 
+// How often to poll for fresh history while the dashboard is open.
+const HISTORY_REFRESH_MS = 5 * 60 * 1000
+
+const HISTORY_FIELDS = [
+  'date', 'total_unique_ips', 'total_unique_ipv6', 'total_unique_cidrs',
+  'total_unique_domains', 'total_unique_hashes', 'total_unique_urls',
+] as const
+
+// True when the freshly fetched series differs from what we already render
+// (a new day was appended, or the latest day's counts changed).
+function historyChanged(prev: any[], next: any[]): boolean {
+  if (prev.length !== next.length) return true
+  if (next.length === 0) return false
+  const a = prev[prev.length - 1], b = next[next.length - 1]
+  return HISTORY_FIELDS.some((k) => a?.[k] !== b?.[k])
+}
+
 export default function AnimatedHighlightedAreaChart({ feedVersion }: { feedVersion?: any }) {
   const [history, setHistory] = useState<any[]>([]);
   const [hidden, setHidden] = useState<Set<SeriesKey>>(new Set());
 
   useEffect(() => {
-    const RAW = getBaseUrl()
-    const GITHUB_RAW = 'https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/'
+    const GITHUB_RAW = getBaseUrl()
+    let cancelled = false
 
-    fetch(RAW + 'history.json?v=' + (feedVersion || Date.now()))
-      .then((r) => {
+    const apply = (data: any) => {
+      if (cancelled || !Array.isArray(data) || data.length === 0) return
+      // Only swap state when the data actually moved, so the chart animation
+      // doesn't restart on every poll.
+      setHistory((prev) => (historyChanged(prev, data) ? data : prev))
+    }
+
+    const loadHistory = async () => {
+      const bust = 'v=' + (feedVersion || '') + '&_=' + Date.now()
+      try {
+        const r = await fetch(GITHUB_RAW + 'history.json?' + bust)
         if (!r.ok) throw new Error('HTTP ' + r.status)
-        return r.json()
-      })
-      .then((data) => {
-        if (!data || data.length === 0) return
-        setHistory(data)
-      })
-      .catch((err) => {
-        console.warn('history.json unavailable on Supabase, trying GitHub Raw:', err.message)
-        fetch(GITHUB_RAW + 'history.json?v=' + (feedVersion || Date.now()))
-          .then((r) => {
-            if (!r.ok) throw new Error('HTTP ' + r.status)
-            return r.json()
-          })
-          .then((data) => {
-            if (!data || data.length === 0) return
-            setHistory(data)
-          })
-          .catch((githubErr) => console.error('history.json unavailable on both Supabase and GitHub Raw:', githubErr.message))
-      })
+        apply(await r.json())
+      } catch (err: any) {
+        console.error('history.json unavailable on GitHub Raw:', err?.message)
+      }
+    }
+
+    loadHistory()
+    const intervalId = setInterval(loadHistory, HISTORY_REFRESH_MS)
+    // Refresh immediately when the user returns to the tab.
+    const onVisible = () => { if (document.visibilityState === 'visible') loadHistory() }
+    document.addEventListener('visibilitychange', onVisible)
+
+    return () => {
+      cancelled = true
+      clearInterval(intervalId)
+      document.removeEventListener('visibilitychange', onVisible)
+    }
   }, [feedVersion])
 
   const chartData = useMemo(() => history.length > 0 ? history.map((h) => {

@@ -72,6 +72,40 @@
   }
   </script>
 
+  <!-- WebSite + Sitelinks Search Box -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Threatbase",
+    "alternateName": "Threatbase Threat Intelligence",
+    "url": "https://threatbase.qzz.io/",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://threatbase.qzz.io/?search={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <!-- Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Threatbase",
+    "url": "https://threatbase.qzz.io/",
+    "logo": "https://threatbase.qzz.io/img/threatbase.png",
+    "description": "Community-driven, open-source threat intelligence platform providing real-time IOC feeds, IP and domain reputation scanning, and free blocklists.",
+    "sameAs": [
+      "https://github.com/kalidada18/threatbase"
+    ]
+  }
+  </script>
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -82,6 +116,34 @@
 
 <body>
   <div id="root"></div>
+
+  <!-- Crawlable fallback for non-JS crawlers and link discovery. Hidden once the app mounts. -->
+  <noscript>
+    <main>
+      <h1>Threatbase — Real-Time Threat Intelligence &amp; Free IOC Blocklists</h1>
+      <p>
+        Threatbase is a community-driven, open-source threat intelligence platform. Scan any IP address,
+        domain, URL, or file hash against continuously updated indicators of compromise (IOCs), and deploy
+        high-performance blocklists to your firewalls, IDS/IPS, and SIEM — completely free.
+      </p>
+      <h2>What you can do with Threatbase</h2>
+      <ul>
+        <li>Check whether an IP address or domain is malicious in real time</li>
+        <li>Download free IPv4, IPv6, domain, URL, hash, and CIDR blocklists</li>
+        <li>Report malicious infrastructure to the community threat feed</li>
+        <li>Track global threat trends across millions of indicators</li>
+      </ul>
+      <h2>Explore</h2>
+      <ul>
+        <li><a href="/report">Report a malicious IP</a></li>
+        <li><a href="/contributors">Top community contributors</a></li>
+        <li><a href="/about">About Threatbase</a></li>
+        <li><a href="/policy">Reporting policy</a></li>
+      </ul>
+      <p>Sourced from Spamhaus, FireHOL, Emerging Threats, Abuse.ch, SANS DShield, and the wider infosec community.</p>
+    </main>
+  </noscript>
+
   <script type="module" src="/src/main.tsx"></script>
 </body>
 

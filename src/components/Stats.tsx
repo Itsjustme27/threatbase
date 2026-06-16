@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Activity, Database, Radio } from 'lucide-react'
 import { fmt } from '../utils'
+import Section from './layout/Section'
 
 type MetricDef = {
   key: string
@@ -92,8 +93,7 @@ export default function Stats({ statsData }: any) {
   }, [statsData])
 
   return (
-    <section className="relative py-12 md:py-20 overflow-hidden scroll-mt-24" id="stats">
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-12">
+    <Section id="stats" className="overflow-hidden" containerClassName="relative z-10">
 
         {/* Section header */}
         <motion.div
@@ -143,8 +143,7 @@ export default function Stats({ statsData }: any) {
             />
           ))}
         </motion.div>
-      </div>
-    </section>
+    </Section>
   )
 }
 

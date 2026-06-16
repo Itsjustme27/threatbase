@@ -1,7 +1,7 @@
 import React from 'react'
-import IsoLevelWarp from '@/components/ui/isometric-wave-grid-background'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import IsoPageShell from './layout/IsoPageShell'
 import { Search, ShieldCheck, Share2, ArrowRight, Github } from 'lucide-react'
 import { useSEO } from '@/useSEO'
 
@@ -62,17 +62,7 @@ export default function AboutPage() {
   ]
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden font-sans bg-app">
-
-      {/* BACKGROUND */}
-      <IsoLevelWarp
-        color="220, 38, 38"
-        density={50}
-        speed={1.2}
-      />
-
-      {/* CONTENT LAYER */}
-      <div className="relative z-10 flex flex-col items-center px-6 py-32">
+    <IsoPageShell>
 
         {/* Top Header */}
         <motion.div
@@ -236,7 +226,6 @@ export default function AboutPage() {
           </div>
         </motion.div>
 
-      </div>
-    </div>
+    </IsoPageShell>
   )
 }

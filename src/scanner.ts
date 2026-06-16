@@ -22,32 +22,21 @@ async function getStats(rawBaseUrl) {
 async function fetchAndCacheFeedText(baseUrl, filename, feedVersion) {
   const cacheKey = `${filename}?v=${feedVersion}`
   if (feedCache[cacheKey]) return feedCache[cacheKey]
-  
-  const GITHUB_RAW = 'https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/'
-  
+
   let text = ''
-  
+
   try {
     const url = `${baseUrl}${filename}?v=${feedVersion}`
     const r = await fetch(url)
     if (r.ok) {
       text = await r.text()
     } else {
-      throw new Error(`Supabase fetch error: ${r.status}`)
+      throw new Error(`GitHub Raw fetch error: ${r.status}`)
     }
   } catch (e) {
-    console.warn(`Supabase Storage fetch failed for ${filename}, falling back to GitHub Raw:`, e)
-    try {
-      const url = `${GITHUB_RAW}${filename}?v=${feedVersion}`
-      const r = await fetch(url)
-      if (r.ok) {
-        text = await r.text()
-      }
-    } catch (e) {
-      console.error('GitHub Raw fallback fetch failed:', e)
-    }
+    console.error(`GitHub Raw fetch failed for ${filename}:`, e)
   }
-  
+
   feedCache[cacheKey] = text
   return text
 }

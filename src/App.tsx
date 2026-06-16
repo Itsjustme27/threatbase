@@ -25,18 +25,23 @@ import { useSEO } from './useSEO'
 import TurnstileModal from './components/TurnstileModal'
 import InitialVerification from './components/InitialVerification'
 
+/** Homepage-only SEO. Scoped to the index route so it never overrides subpage meta. */
+function HomeSeo() {
+  useSEO({
+    title: 'Threatbase — Real-Time Threat Intelligence & Free IOC Blocklists',
+    description: 'Free, community-driven threat intelligence. Scan any IP, domain, URL, or file hash for malicious activity and download real-time IOC blocklists for your firewall, IDS/IPS, and SIEM.',
+    path: '/',
+    keywords: 'threat intelligence, free IOC feed, IP blocklist, check malicious IP, domain reputation, malware hash lookup, open source threat intelligence, abuse IP database, IOC blocklist, SIEM threat feed',
+  })
+  return null
+}
+
 export default function App() {
   const [statsData, setStatsData] = useState(null)
   const [feedVersion, setFeedVersion] = useState(Date.now())
   const [syncTime, setSyncTime] = useState('Live Mode')
 
-  // SEO for homepage
   const location = useLocation()
-  useSEO({
-    title: 'Threatbase — Real-Time Threat Intelligence & IOC Blocklists',
-    description: 'Access real-time threat data, scan IPs and domains, and deploy high-performance blocklists. Community-driven threat intelligence platform for cybersecurity defenders.',
-    path: location.pathname,
-  })
 
   // Scan state (shared between Hero and ReportScanner)
   const [scanInput, setScanInput] = useState('')
@@ -108,10 +113,9 @@ export default function App() {
 
   // Boot: fetch stats.json
   useEffect(() => {
-    const RAW = getBaseUrl()
-    const GITHUB_RAW = 'https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/'
-    
-    fetch(RAW + 'stats.json?_=' + Date.now())
+    const GITHUB_RAW = getBaseUrl()
+
+    fetch(GITHUB_RAW + 'stats.json?_=' + Date.now())
       .then((r) => {
         if (!r.ok) throw new Error('HTTP ' + r.status)
         return r.json()
@@ -122,21 +126,8 @@ export default function App() {
         setSyncTime(formatSyncTime(d.last_updated))
       })
       .catch((err) => {
-        console.warn('stats.json unavailable on Supabase, trying GitHub Raw:', err.message)
-        fetch(GITHUB_RAW + 'stats.json?_=' + Date.now())
-          .then((r) => {
-            if (!r.ok) throw new Error('HTTP ' + r.status)
-            return r.json()
-          })
-          .then((d) => {
-            setStatsData(d)
-            setFeedVersion(d.last_updated || Date.now())
-            setSyncTime(formatSyncTime(d.last_updated))
-          })
-          .catch((githubErr) => {
-            console.error('stats.json unavailable on both Supabase and GitHub Raw:', githubErr.message)
-            setSyncTime('Live Mode')
-          })
+        console.error('stats.json unavailable on GitHub Raw:', err.message)
+        setSyncTime('Live Mode')
       })
   }, [])
 
@@ -180,6 +171,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={
           <main id="main-content">
+            <HomeSeo />
             <HeroSection scanInput={scanInput} setScanInput={setScanInput} handleScan={handleScan} statsData={statsData} />
 
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2, duration: 0.5 }}>

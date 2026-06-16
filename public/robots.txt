@@ -5,6 +5,9 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /profile/
+Disallow: /u/
+Disallow: /*?search=
+Disallow: /*?q=
 
 # Sitemap
 Sitemap: https://threatbase.qzz.io/sitemap.xml

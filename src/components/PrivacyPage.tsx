@@ -1,7 +1,7 @@
 import React from 'react'
-import IsoLevelWarp from '@/components/ui/isometric-wave-grid-background'
 import { motion } from 'framer-motion'
 import { useSEO } from '@/useSEO'
+import IsoPageShell from './layout/IsoPageShell'
 
 export default function PrivacyPage() {
   useSEO({
@@ -11,19 +11,8 @@ export default function PrivacyPage() {
   })
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden font-sans bg-app">
-      
-      {/* BACKGROUND */}
-      <IsoLevelWarp 
-        color="220, 38, 38" 
-        density={50} 
-        speed={1.2}
-      />
-
-      {/* CONTENT LAYER */}
-      <div className="relative z-10 flex flex-col items-center min-h-screen px-6 py-32">
-        
-        <motion.div 
+    <IsoPageShell>
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -97,7 +86,6 @@ export default function PrivacyPage() {
           </div>
 
         </motion.div>
-      </div>
-    </div>
+    </IsoPageShell>
   )
 }

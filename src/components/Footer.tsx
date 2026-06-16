@@ -19,7 +19,7 @@ export default function Footer() {
           {
             title: "Product",
             links: [
-              { name: "Dashboard", href: "/#dashboard" },
+              { name: "Dashboard", href: "/#stats" },
               { name: "Threat Feeds", href: "/#feeds" },
               { name: "Report IP", href: "/report" },
               { name: "Reporting Policy", href: "/policy" },

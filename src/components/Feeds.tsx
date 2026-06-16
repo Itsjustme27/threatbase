@@ -1,5 +1,7 @@
 import { Server, Download } from 'lucide-react'
 import { motion } from 'framer-motion'
+import Section from './layout/Section'
+import Container from './layout/Container'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -63,11 +65,11 @@ export default function Feeds({ statsData }: { statsData?: any }) {
   }
 
   return (
-    <section className="relative py-16 md:py-28 overflow-hidden scroll-mt-24" id="feeds">
+    <Section id="feeds" container={false} className="overflow-hidden">
       {/* Background decorations */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[1px] bg-gradient-to-r from-transparent via-red-500/20 to-transparent"></div>
-      
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-12">
+
+      <Container width="wide" className="relative z-10">
         <div className="mb-16 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-2xl">
             <h2 className="text-3xl md:text-5xl font-black flex items-center justify-center md:justify-start gap-4 text-white tracking-tight">
@@ -148,7 +150,7 @@ export default function Feeds({ statsData }: { statsData?: any }) {
             )
           })}
         </div>
-      </div>
-    </section>
+      </Container>
+    </Section>
   )
 }

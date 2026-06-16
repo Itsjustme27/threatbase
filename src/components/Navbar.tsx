@@ -7,7 +7,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 
 const menuItems = [
-    { name: 'Dashboard', href: '/#dashboard' },
+    { name: 'Dashboard', href: '/#stats' },
     { name: 'About Us', href: '/about' },
     { name: 'Threat Feeds', href: '/#feeds' },
     { name: 'Report IP', href: '/report' },

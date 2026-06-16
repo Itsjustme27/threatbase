@@ -433,6 +433,7 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
     title: `${usernameDisplay}'s Profile — Threatbase`,
     description: `View ${usernameDisplay}'s threat intelligence contributions, badges, and activity on Threatbase.`,
     path: `/u/${paramUsername || usernameDisplay}`,
+    noindex: true,
   })
 
   if (authLoading || loadingProfile) {
