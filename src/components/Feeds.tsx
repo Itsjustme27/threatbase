@@ -70,13 +70,6 @@ export default function Feeds({ statsData }: { statsData?: any }) {
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-12">
         <div className="mb-16 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-destructive/10 border border-destructive/20 text-xs font-bold text-destructive uppercase tracking-widest mb-4 drop-shadow-sm">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-              </span>
-              Live Blocklists
-            </div>
             <h2 className="text-3xl md:text-5xl font-black flex items-center justify-center md:justify-start gap-4 text-white tracking-tight">
               Threat Intelligence Feeds
             </h2>
