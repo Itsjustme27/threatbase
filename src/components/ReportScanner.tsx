@@ -243,6 +243,18 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                     </>
                   )}
 
+                  {/* Malicious subnet (CIDR range) match */}
+                  {type === 'danger' && scanResult?.matchedCidr && (
+                    <div className="mt-4 flex items-start gap-3 p-3.5 rounded-xl bg-rose-500/5 border border-rose-500/20">
+                      <ShieldAlert size={18} className="text-rose-400 shrink-0 mt-0.5" />
+                      <p className="text-sm text-slate-300 leading-relaxed">
+                        Listed via malicious subnet{' '}
+                        <span className="font-mono font-bold text-rose-300 break-all">{scanResult.matchedCidr}</span>.
+                        This address falls inside a range flagged by threat-intelligence feeds (e.g. Spamhaus, FireHOL).
+                      </p>
+                    </div>
+                  )}
+
                   {/* Threat Tags and Severity */}
                   {type === 'danger' && (scanResult?.tags?.length > 0 || scanResult?.riskScore) && (
                     <div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-4 pt-4 border-t border-slate-800/50">

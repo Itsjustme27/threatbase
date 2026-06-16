@@ -52,6 +52,45 @@ async function fetchAndCacheFeedText(baseUrl, filename, feedVersion) {
   return text
 }
 
+/** Convert a dotted IPv4 string to an unsigned 32-bit integer. */
+function ipv4ToLong(ip) {
+  const parts = ip.split('.')
+  if (parts.length !== 4) return null
+  let acc = 0
+  for (let i = 0; i < 4; i++) {
+    const oct = Number(parts[i])
+    if (!Number.isInteger(oct) || oct < 0 || oct > 255) return null
+    acc = (acc << 8) + oct
+  }
+  return acc >>> 0
+}
+
+/**
+ * Scan an IPv4 address against the malicious CIDR feed.
+ * Closes the "hidden IP" gap: feeds like Spamhaus/FireHOL publish ranges,
+ * so an IP malicious only by virtue of its subnet has no exact row in the IP feed.
+ * Returns the matching CIDR string, or null.
+ */
+function findMatchingCidr(cidrText, ipLong) {
+  if (!cidrText || ipLong === null) return null
+  const lines = cidrText.split('\n')
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim()
+    if (!line || line.startsWith('#')) continue
+    // IPv6 CIDRs are stored here too; skip them for IPv4 membership tests.
+    if (line.indexOf(':') !== -1) continue
+    const slash = line.indexOf('/')
+    if (slash === -1) continue
+    const base = ipv4ToLong(line.slice(0, slash))
+    if (base === null) continue
+    const mask = Number(line.slice(slash + 1))
+    if (!Number.isInteger(mask) || mask < 0 || mask > 32) continue
+    const bitmask = mask === 0 ? 0 : (~0 << (32 - mask)) >>> 0
+    if ((ipLong & bitmask) === (base & bitmask)) return line
+  }
+  return null
+}
+
 function ipCsvCompare(query, line) {
   if (line.startsWith('#') || line.startsWith('ip,')) return 1;
   const ipPart = line.split(',')[0]
@@ -148,6 +187,7 @@ export async function scanIndicatorLogic(rawInput, feedVersion) {
   let isDisputed = false
   let disputeCount = 0
   let tags = []
+  let matchedCidr = null
 
   try {
     let textData = ''
@@ -168,17 +208,31 @@ export async function scanIndicatorLogic(rawInput, feedVersion) {
       textData = await fetchAndCacheFeedText(RAW, 'threatbase-url.txt', feedVersion)
     }
 
-    const result = binarySearchString(textData, ip, compareFn)
+    let result = binarySearchString(textData, ip, compareFn)
 
-    if (result) {
+    // CIDR fallback: an IPv4 with no exact row may still be malicious because
+    // it falls inside a listed malicious subnet (Spamhaus/FireHOL/etc).
+    if (!result && isIP) {
+      const cidrText = await fetchAndCacheFeedText(RAW, 'threatbase-cidr.txt', feedVersion)
+      matchedCidr = findMatchingCidr(cidrText, ipv4ToLong(ip))
+    }
+
+    if (result || matchedCidr) {
       isMalicious = true
-      const parts = result.split(',')
-      if (parts.length >= 3) {
-        feedCount = parts[1]
-        riskScore = parts[2]
-      }
-      if (parts.length >= 4) {
-        tags = parts[3].split('|').filter(t => t.trim() !== '' && t !== 'Mixed')
+      if (result) {
+        const parts = result.split(',')
+        if (parts.length >= 3) {
+          feedCount = parts[1]
+          riskScore = parts[2]
+        }
+        if (parts.length >= 4) {
+          tags = parts[3].split('|').filter(t => t.trim() !== '' && t !== 'Mixed')
+        }
+      } else if (matchedCidr) {
+        // Range-based detection: high confidence, surface the matched subnet.
+        riskScore = 'High'
+        feedCount = 1
+        tags = ['Malicious Subnet']
       }
 
       if (supabaseClient) {
@@ -204,5 +258,5 @@ export async function scanIndicatorLogic(rawInput, feedVersion) {
     console.error(e)
   }
 
-  return { type: scanType, ip, isIP, isDomain, isHash, isURL, isIPv6, isCIDR, isMalicious, riskScore, feedCount, isDisputed, disputeCount, tags }
+  return { type: scanType, ip, isIP, isDomain, isHash, isURL, isIPv6, isCIDR, isMalicious, riskScore, feedCount, isDisputed, disputeCount, tags, matchedCidr }
 }

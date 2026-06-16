@@ -166,6 +166,11 @@ THREATFOX_FEEDS: Dict[str, str] = {
 
 USER_AGENT: str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
 
+# Network resilience: retry transient feed failures so fresh malicious IOCs
+# are never silently dropped from a run.
+MAX_RETRIES: int = 3
+RETRY_BACKOFF: float = 2.0  # seconds, multiplied by attempt number
+
 ABUSEIPDB_API_KEY: Optional[str] = os.environ.get("ABUSEIPDB_API_KEY")
 if ABUSEIPDB_API_KEY:
     FEEDS["abuseipdb"] = "https://api.abuseipdb.com/api/v2/blacklist?confidenceMinimum=70"
@@ -405,153 +410,177 @@ def clean_temporary_files():
 # ─────────────────────────────────────────────────────────────────────────────
 async def fetch_feed_async(session: aiohttp.ClientSession, name: str, url: str) -> dict:
     headers = {"User-Agent": USER_AGENT}
-    
+
     if name == "abuseipdb":
         if ABUSEIPDB_API_KEY:
             headers["Key"] = ABUSEIPDB_API_KEY
             headers["Accept"] = "application/json"
         else:
             return {'ipv4': set(), 'ipv6': set(), 'cidrs': set()}
-            
-    try:
-        async with session.get(url, headers=headers, timeout=aiohttp.ClientTimeout(total=45)) as r:
-            if r.status != 200:
-                log.error(f"  ✗ Feed {name} failed: HTTP {r.status}")
-                return {}
 
-            if name == "abuseipdb":
-                data = await r.json()
+    last_err = None
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            async with session.get(url, headers=headers, timeout=aiohttp.ClientTimeout(total=45)) as r:
+                if r.status != 200:
+                    raise IOError(f"HTTP {r.status}")
+
+                if name == "abuseipdb":
+                    data = await r.json()
+                    ips = set()
+                    for d in data.get("data", []):
+                        ip_int = is_valid_ipv4_fast(d["ipAddress"])
+                        if ip_int: ips.add(ip_int)
+                    log.info(f"  ✓ {name}: {len(ips)} IPs")
+                    return {'ipv4': ips, 'ipv6': set(), 'cidrs': set()}
+
                 ips = set()
-                for d in data.get("data", []):
-                    ip_int = is_valid_ipv4_fast(d["ipAddress"])
-                    if ip_int: ips.add(ip_int)
-                log.info(f"  ✓ {name}: {len(ips)} IPs")
-                return {'ipv4': ips, 'ipv6': set(), 'cidrs': set()}
+                ipv6s = set()
+                cidrs = set()
 
-            ips = set()
-            ipv6s = set()
-            cidrs = set()
-            raw_lines = 0
-            
-            async for line_bytes in r.content:
-                line = line_bytes.decode('utf-8', errors='ignore').strip()
-                if not line or line.startswith(("#", "//", "!", "/*")):
-                    continue
-                raw_lines += 1
-                
-                parts = line.split()
-                if not parts: continue
-                token = parts[0].split(",")[0].split("#")[0].strip("\"';")
+                async for line_bytes in r.content:
+                    line = line_bytes.decode('utf-8', errors='ignore').strip()
+                    if not line or line.startswith(("#", "//", "!", "/*")):
+                        continue
 
-                if "/" in token:
-                    try:
-                        network = ipaddress.ip_network(token, strict=False)
-                        if network.version == 4 and network.prefixlen == 32:
-                            ip_int = is_valid_ipv4_fast(str(network.network_address))
-                            if ip_int: ips.add(ip_int)
-                        else:
-                            cidrs.add(str(network))
-                    except ValueError: pass
+                    parts = line.split()
+                    if not parts: continue
+                    token = parts[0].split(",")[0].split("#")[0].strip("\"';")
+
+                    if "/" in token:
+                        try:
+                            network = ipaddress.ip_network(token, strict=False)
+                            if network.version == 4 and network.prefixlen == 32:
+                                ip_int = is_valid_ipv4_fast(str(network.network_address))
+                                if ip_int: ips.add(ip_int)
+                            else:
+                                cidrs.add(str(network))
+                        except ValueError: pass
+                    else:
+                        ip_int = is_valid_ipv4_fast(token)
+                        if ip_int:
+                            ips.add(ip_int)
+                        elif is_valid_ipv6(token):
+                            ipv6s.add(token)
+
+                if name == "greensnow":
+                    log.info(f"  ✓ {name}: {len(ips)} IPs (Removed duplicates from source)")
                 else:
-                    ip_int = is_valid_ipv4_fast(token)
-                    if ip_int:
-                        ips.add(ip_int)
-                    elif is_valid_ipv6(token):
-                        ipv6s.add(token)
+                    log.info(f"  ✓ {name}: {len(ips)} IPs")
+                return {'ipv4': ips, 'ipv6': ipv6s, 'cidrs': cidrs}
+        except Exception as e:
+            last_err = e
+            if attempt < MAX_RETRIES:
+                delay = RETRY_BACKOFF * attempt
+                log.warning(f"  ↻ Feed {name} attempt {attempt}/{MAX_RETRIES} failed: {e}; retrying in {delay}s")
+                await asyncio.sleep(delay)
 
-            if name == "greensnow":
-                log.info(f"  ✓ {name}: {len(ips)} IPs (Removed duplicates from source)")
-            else:
-                log.info(f"  ✓ {name}: {len(ips)} IPs")
-            return {'ipv4': ips, 'ipv6': ipv6s, 'cidrs': cidrs}
-    except Exception as e:
-        log.error(f"  ✗ Feed {name} failed: {e}")
-        return {}
+    log.error(f"  ✗ Feed {name} failed after {MAX_RETRIES} attempts: {last_err}")
+    return {}
 
 
 async def fetch_domain_feed_async(session: aiohttp.ClientSession, name: str, url: str) -> Set[str]:
-    try:
-        async with session.get(url, timeout=aiohttp.ClientTimeout(total=45),
-                               headers={"User-Agent": USER_AGENT}) as r:
-            if r.status != 200: return set()
-            domains = set()
-            async for line_bytes in r.content:
-                line = line_bytes.decode('utf-8', errors='ignore').strip()
-                if not line or line.startswith(("#", "//")): continue
-                if line.startswith('"'):
-                    parts = line.split('","')
-                    if len(parts) > 2:
-                        domain = extract_domain(parts[2])
+    last_err = None
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            async with session.get(url, timeout=aiohttp.ClientTimeout(total=45),
+                                   headers={"User-Agent": USER_AGENT}) as r:
+                if r.status != 200: raise IOError(f"HTTP {r.status}")
+                domains = set()
+                async for line_bytes in r.content:
+                    line = line_bytes.decode('utf-8', errors='ignore').strip()
+                    if not line or line.startswith(("#", "//")): continue
+                    if line.startswith('"'):
+                        parts = line.split('","')
+                        if len(parts) > 2:
+                            domain = extract_domain(parts[2])
+                            if domain: domains.add(domain)
+                    else:
+                        candidate = line
+                        if candidate.startswith("0.0.0.0 ") or candidate.startswith("127.0.0.1 "):
+                            candidate = candidate.split(maxsplit=1)[1]
+                        domain = extract_domain(candidate)
                         if domain: domains.add(domain)
-                else:
-                    candidate = line
-                    if candidate.startswith("0.0.0.0 ") or candidate.startswith("127.0.0.1 "):
-                        candidate = candidate.split(maxsplit=1)[1]
-                    domain = extract_domain(candidate)
-                    if domain: domains.add(domain)
-            log.info(f"  ✓ {name}: {len(domains)} domains")
-            return domains
-    except Exception as e:
-        log.error(f"  ✗ Domain feed {name} failed: {e}")
-        return set()
+                log.info(f"  ✓ {name}: {len(domains)} domains")
+                return domains
+        except Exception as e:
+            last_err = e
+            if attempt < MAX_RETRIES:
+                await asyncio.sleep(RETRY_BACKOFF * attempt)
+    log.error(f"  ✗ Domain feed {name} failed after {MAX_RETRIES} attempts: {last_err}")
+    return set()
 
 
 async def fetch_hash_feed_async(session: aiohttp.ClientSession, name: str, url: str) -> Set[str]:
-    try:
-        async with session.get(url, timeout=aiohttp.ClientTimeout(total=90),
-                               headers={"User-Agent": USER_AGENT}) as r:
-            if r.status != 200: return set()
-            hashes = set()
-            
-            content_type = r.headers.get('Content-Type', '')
-            if 'application/zip' in content_type or url.endswith('.zip'):
-                content = await r.read()
-                with zipfile.ZipFile(io.BytesIO(content)) as z:
-                    for filename in z.namelist():
-                        if filename.endswith('.txt') or filename.endswith('.csv'):
-                            with z.open(filename) as f:
-                                for line_bytes in f:
-                                    line = line_bytes.decode('utf-8', errors='ignore').strip()
-                                    if not line or line.startswith(('#', '//', '"')): continue
-                                    token = line.split()[0].split(',')[0].strip('"\';\r\n')
-                                    if _SHA256_PATTERN.match(token):
-                                        hashes.add(token.lower())
-            else:
-                async for line_bytes in r.content:
-                    line = line_bytes.decode('utf-8', errors='ignore').strip()
-                    if not line or line.startswith(('#', '//', '"')): continue
-                    token = line.split()[0].split(',')[0].strip('"\';\r\n')
-                    if _SHA256_PATTERN.match(token):
-                        hashes.add(token.lower())
-                        
-            log.info(f"  ✓ {name}: {len(hashes)} hashes")
-            return hashes
-    except Exception as e:
-        log.error(f"  ✗ Hash feed {name} failed: {e}")
-        return set()
+    last_err = None
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            return await _fetch_hash_feed_once(session, name, url)
+        except Exception as e:
+            last_err = e
+            if attempt < MAX_RETRIES:
+                await asyncio.sleep(RETRY_BACKOFF * attempt)
+    log.error(f"  ✗ Hash feed {name} failed after {MAX_RETRIES} attempts: {last_err}")
+    return set()
+
+
+async def _fetch_hash_feed_once(session: aiohttp.ClientSession, name: str, url: str) -> Set[str]:
+    async with session.get(url, timeout=aiohttp.ClientTimeout(total=90),
+                           headers={"User-Agent": USER_AGENT}) as r:
+        if r.status != 200: raise IOError(f"HTTP {r.status}")
+        hashes = set()
+
+        content_type = r.headers.get('Content-Type', '')
+        if 'application/zip' in content_type or url.endswith('.zip'):
+            content = await r.read()
+            with zipfile.ZipFile(io.BytesIO(content)) as z:
+                for filename in z.namelist():
+                    if filename.endswith('.txt') or filename.endswith('.csv'):
+                        with z.open(filename) as f:
+                            for line_bytes in f:
+                                line = line_bytes.decode('utf-8', errors='ignore').strip()
+                                if not line or line.startswith(('#', '//', '"')): continue
+                                token = line.split()[0].split(',')[0].strip('"\';\r\n')
+                                if _HASH_PATTERN.match(token):
+                                    hashes.add(token.lower())
+        else:
+            async for line_bytes in r.content:
+                line = line_bytes.decode('utf-8', errors='ignore').strip()
+                if not line or line.startswith(('#', '//', '"')): continue
+                token = line.split()[0].split(',')[0].strip('"\';\r\n')
+                if _HASH_PATTERN.match(token):
+                    hashes.add(token.lower())
+
+        log.info(f"  ✓ {name}: {len(hashes)} hashes")
+        return hashes
 
 
 async def fetch_url_feed_async(session: aiohttp.ClientSession, name: str, url: str) -> Set[str]:
-    try:
-        async with session.get(url, timeout=aiohttp.ClientTimeout(total=45),
-                               headers={"User-Agent": USER_AGENT}) as r:
-            if r.status != 200: return set()
-            urls = set()
-            async for line_bytes in r.content:
-                line = line_bytes.decode('utf-8', errors='ignore').strip()
-                if not line or line.startswith(('#', '//')): continue
-                if line.startswith('"'):
-                    parts = line.split('","')
-                    if len(parts) > 2:
-                        candidate = parts[2].strip('"')
-                        if is_valid_url(candidate): urls.add(candidate)
-                elif is_valid_url(line):
-                    urls.add(line)
-            log.info(f"  ✓ {name}: {len(urls)} URLs")
-            return urls
-    except Exception as e:
-        log.error(f"  ✗ URL feed {name} failed: {e}")
-        return set()
+    last_err = None
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            async with session.get(url, timeout=aiohttp.ClientTimeout(total=45),
+                                   headers={"User-Agent": USER_AGENT}) as r:
+                if r.status != 200: raise IOError(f"HTTP {r.status}")
+                urls = set()
+                async for line_bytes in r.content:
+                    line = line_bytes.decode('utf-8', errors='ignore').strip()
+                    if not line or line.startswith(('#', '//')): continue
+                    if line.startswith('"'):
+                        parts = line.split('","')
+                        if len(parts) > 2:
+                            candidate = parts[2].strip('"')
+                            if is_valid_url(candidate): urls.add(candidate)
+                    elif is_valid_url(line):
+                        urls.add(line)
+                log.info(f"  ✓ {name}: {len(urls)} URLs")
+                return urls
+        except Exception as e:
+            last_err = e
+            if attempt < MAX_RETRIES:
+                await asyncio.sleep(RETRY_BACKOFF * attempt)
+    log.error(f"  ✗ URL feed {name} failed after {MAX_RETRIES} attempts: {last_err}")
+    return set()
 
 
 async def fetch_threatfox_async(session: aiohttp.ClientSession, name: str, url: str) -> dict:
@@ -851,6 +880,15 @@ async def run_async_collector():
 
     log.info(f"All feeds downloaded and parsed in {time.time()-t_start:.1f}s")
     log.info(f"  Successful feeds: {len(successful_feeds)}")
+
+    # ── Failure summary: never let a dropped feed disappear silently ─────────
+    attempted_feeds = {name for (_t, name) in task_info}
+    failed_feeds = sorted(attempted_feeds - successful_feeds)
+    if failed_feeds:
+        log.warning(f"  ⚠ {len(failed_feeds)} feed(s) returned no data this run: {', '.join(failed_feeds)}")
+        log.warning("    (historical cache preserves their previously-seen IOCs — nothing is lost)")
+    else:
+        log.info("  ✓ All feeds returned data.")
     
     # ── Process Trust Tiers & IP Tagging ────────────────────────────────────
     log.info("Processing rich IP tags and trust scores...")
@@ -940,7 +978,7 @@ async def run_async_collector():
     # ── Update history.json (for trend charts) ─────────────────────────────
     log.info("Updating history.json...")
     update_history(stats)
-        
+
     # ── Cleanup ────────────────────────────────────────────────────────────
     clean_temporary_files()
         

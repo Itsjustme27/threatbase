@@ -16,6 +16,7 @@ import NotFound1 from './components/ui/8bit-not-found1'
 import Profile from './components/Profile'
 import TermsPage from './components/TermsPage'
 import PrivacyPage from './components/PrivacyPage'
+import PolicyPage from './components/PolicyPage'
 import ContributorsPage from './components/ContributorsPage'
 import { AuthProvider } from './AuthContext'
 import { getBaseUrl, formatSyncTime, animateValue } from './utils'
@@ -207,6 +208,7 @@ export default function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/policy" element={<PolicyPage />} />
         <Route path="/report" element={<ReportIP addToast={addToast} />} />
         <Route path="/contributors" element={<ContributorsPage />} />
         <Route path="/profile/:username?" element={<Profile addToast={addToast} />} />

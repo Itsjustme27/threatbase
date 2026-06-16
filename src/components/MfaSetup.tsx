@@ -196,9 +196,11 @@ export default function MfaSetup({ addToast }: { addToast: (msg: string, type: '
               <Loader2 className="animate-spin text-slate-500" size={24} />
             </div>
           ) : qrCodeSvg ? (
-            <div 
+            // Safe: qrCodeSvg is the TOTP QR returned by Supabase Auth's MFA
+            // enroll API (first-party, trusted), never user-supplied input.
+            <div
               className="bg-white p-4 rounded-xl border-4 border-blue-500/20"
-              dangerouslySetInnerHTML={{ __html: qrCodeSvg }} 
+              dangerouslySetInnerHTML={{ __html: qrCodeSvg }}
             />
           ) : null}
 

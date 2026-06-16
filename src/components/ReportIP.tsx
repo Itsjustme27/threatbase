@@ -484,6 +484,10 @@ export default function ReportIP({ addToast }: any) {
             transition={{ duration: 0.6 }}
             className="text-center relative"
           >
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/80 border border-white/10 backdrop-blur-xl text-[11px] font-bold uppercase tracking-widest mb-5 text-destructive">
+              <ShieldCheck className="h-3.5 w-3.5" />
+              Community Intelligence
+            </div>
             <h1 className="text-4xl md:text-5xl font-black flex items-center justify-center gap-2 text-white tracking-tighter pb-2">
               <MatrixText text="Community Intel" className="font-mono text-white" />
             </h1>
@@ -501,6 +505,24 @@ export default function ReportIP({ addToast }: any) {
                 deleteSpeed={30}
                 cursorChar={"_"}
               />
+            </div>
+
+            {/* Trust indicators */}
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[11px] text-slate-500">
+              <span className="inline-flex items-center gap-1.5">
+                <Users className="h-3.5 w-3.5 text-slate-400" />
+                {reportCount > 0 ? `${fmt(reportCount)} community submissions` : 'Community-driven'}
+              </span>
+              <span className="hidden sm:inline-block h-3 w-px bg-white/10" />
+              <span className="inline-flex items-center gap-1.5">
+                <ShieldCheck className="h-3.5 w-3.5 text-primary" />
+                Verified &amp; whitelist-protected
+              </span>
+              <span className="hidden sm:inline-block h-3 w-px bg-white/10" />
+              <Link to="/policy" className="inline-flex items-center gap-1.5 text-slate-400 hover:text-blue-400 transition-colors">
+                <HelpCircle className="h-3.5 w-3.5" />
+                Reporting policy
+              </Link>
             </div>
           </motion.div>
 
@@ -539,7 +561,8 @@ export default function ReportIP({ addToast }: any) {
                           className="h-11 bg-black/20 border-white/10 text-white placeholder:text-slate-500"
                         />
                         {ipStatus.msg && ipStatus.type !== 'empty' && (
-                          <p className={`text-xs mt-1 font-medium ${ipStatus.type === 'valid_v4' || ipStatus.type === 'valid_v6' ? 'text-primary' : 'text-destructive'}`}>
+                          <p className={`text-xs mt-1.5 font-medium flex items-center gap-1.5 ${ipStatus.type === 'valid_v4' || ipStatus.type === 'valid_v6' ? 'text-primary' : 'text-destructive'}`}>
+                            <span className={`inline-block h-1.5 w-1.5 rounded-full ${ipStatus.type === 'valid_v4' || ipStatus.type === 'valid_v6' ? 'bg-primary' : 'bg-destructive'} ${ipStatus.type === 'valid_v4' || ipStatus.type === 'valid_v6' ? 'shadow-[0_0_6px] shadow-primary' : ''}`} />
                             {ipStatus.msg}
                           </p>
                         )}
@@ -621,7 +644,9 @@ export default function ReportIP({ addToast }: any) {
                           )}
                         </Button>
                         <p className="text-xs text-center text-slate-500">
-                          By submitting, you agree to our <button type="button" onClick={() => setShowPolicyModal(true)} className="text-primary hover:underline">reporting policy</button>.
+                          By submitting, you agree to our{' '}
+                          <Link to="/policy" className="text-primary hover:underline">reporting policy</Link>
+                          {' '}(<button type="button" onClick={() => setShowPolicyModal(true)} className="text-slate-400 hover:text-white hover:underline">quick view</button>).
                         </p>
                       </div>
                     </form>
@@ -878,7 +903,10 @@ export default function ReportIP({ addToast }: any) {
                     <p className="text-slate-400">Do not include Personally Identifiable Information (PII) in your reports unless it is directly part of the threat indicators (e.g., a phishing email address used by an attacker).</p>
                   </div>
                 </div>
-                <div className="flex items-center justify-end pt-4 mt-2 border-t border-white/[0.05] shrink-0">
+                <div className="flex items-center justify-between gap-3 pt-4 mt-2 border-t border-white/[0.05] shrink-0">
+                  <Link to="/policy" onClick={() => setShowPolicyModal(false)} className="text-xs font-semibold text-blue-400 hover:underline inline-flex items-center gap-1.5">
+                    Read the full policy <ChevronRight size={14} />
+                  </Link>
                   <button type="button" onClick={() => setShowPolicyModal(false)} className="px-6 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs transition-all select-none">
                     I UNDERSTAND & AGREE
                   </button>
