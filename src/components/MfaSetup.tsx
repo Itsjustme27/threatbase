@@ -27,10 +27,14 @@ export default function MfaSetup({ addToast }: { addToast: (msg: string, type: '
       const { data, error } = await supabaseClient.auth.mfa.listFactors()
       if (error) throw error
       
-      const totpFactor = data?.totp?.[0]
-      if (totpFactor && totpFactor.status === 'verified') {
+      // An account may carry several TOTP factors (e.g. stale unverified ones
+      // from earlier setup attempts). Look for ANY verified factor rather than
+      // just the first entry, otherwise a leftover unverified factor masks a
+      // real, enabled one and the UI wrongly shows "Disabled".
+      const verifiedFactor = data?.totp?.find((f) => f.status === 'verified')
+      if (verifiedFactor) {
         setIsEnrolled(true)
-        setFactorId(totpFactor.id)
+        setFactorId(verifiedFactor.id)
       } else {
         setIsEnrolled(false)
         setFactorId(null)
@@ -47,9 +51,20 @@ export default function MfaSetup({ addToast }: { addToast: (msg: string, type: '
     setIsSettingUp(true)
     setLoading(true)
     try {
-      // 1. Enroll
+      // Clean up stale, unverified TOTP factors left behind by a previous
+      // incomplete setup (QR shown but never verified). Otherwise enroll()
+      // fails with: A factor with the friendly name "" for this user already
+      // exists. Verified factors are left untouched.
+      const { data: existing } = await supabaseClient.auth.mfa.listFactors()
+      const staleFactors = (existing?.totp || []).filter((f) => f.status !== 'verified')
+      for (const stale of staleFactors) {
+        await supabaseClient.auth.mfa.unenroll({ factorId: stale.id })
+      }
+
+      // 1. Enroll (explicit unique friendlyName avoids name collisions)
       const { data: enrollData, error: enrollError } = await supabaseClient.auth.mfa.enroll({
         factorType: 'totp',
+        friendlyName: `Authenticator (${new Date().toISOString().slice(0, 10)})`,
         issuer: 'https://threatbase.qzz.io/'
       })
       
