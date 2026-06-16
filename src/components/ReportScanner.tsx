@@ -183,8 +183,10 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent opacity-50 pointer-events-none"></div>
 
               {/* Gooey Loader Animation */}
-              <div className="mb-12 flex justify-center items-center">
-                <Loader />
+              <div className="mb-6 mt-4 flex justify-center items-center">
+                <div className="scale-50 transform origin-center">
+                  <Loader />
+                </div>
               </div>
 
               <div className="z-10 flex flex-col items-center mt-2">

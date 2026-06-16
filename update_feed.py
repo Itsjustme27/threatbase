@@ -859,12 +859,7 @@ async def run_async_collector():
     # Sort IPs rapidly using their integer values
     sorted_ips = sorted(filtered_ip_info.keys())
     
-    # ── Write JSON with rich metadata ───────────────────────────────────────
-    log.info("Writing threatbase-ip.json...")
-    json_output_path = "ioc/threatbase-ip.json"
-    ip_list_out = [filtered_ip_info[ip] for ip in sorted_ips]
-    with open(json_output_path, "w", encoding="utf-8") as f:
-        json.dump(ip_list_out, f, indent=2)
+
 
     # ── Write Text outputs ──────────────────────────────────────────────────
     log.info("Writing threatbase-ip.txt...")
