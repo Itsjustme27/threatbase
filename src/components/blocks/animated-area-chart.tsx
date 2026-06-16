@@ -24,14 +24,12 @@ const animationConfig = {
 };
 
 const chartConfig = {
-  ipv4: {
-    label: "IPv4",
-    color: "#ef4444",
-  },
-  domains: {
-    label: "Domains",
-    color: "#3b82f6",
-  },
+  ipv4: { label: "IPv4", color: "#ef4444" },
+  ipv6: { label: "IPv6", color: "#06b6d4" },
+  cidrs: { label: "CIDRs", color: "#10b981" },
+  domains: { label: "Domains", color: "#3b82f6" },
+  hashes: { label: "Hashes", color: "#a855f7" },
+  urls: { label: "URLs", color: "#f97316" },
 } satisfies ChartConfig;
 
 export default function AnimatedHighlightedAreaChart({ feedVersion }: { feedVersion?: any }) {
@@ -71,7 +69,11 @@ export default function AnimatedHighlightedAreaChart({ feedVersion }: { feedVers
     return {
       dateLabel: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }),
       ipv4: h.total_unique_ips || 0,
+      ipv6: h.total_unique_ipv6 || 0,
+      cidrs: h.total_unique_cidrs || 0,
       domains: h.total_unique_domains || 0,
+      hashes: h.total_unique_hashes || 0,
+      urls: h.total_unique_urls || 0,
     }
   }) : []
 
@@ -86,7 +88,7 @@ export default function AnimatedHighlightedAreaChart({ feedVersion }: { feedVers
               Threat Landscape Trends
             </CardTitle>
           <CardDescription className="text-slate-400 font-medium mt-1">
-            Tracking malicious IPv4 and Domains activity over time
+            Tracking malicious indicators activity over time across 6 categories
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -119,59 +121,37 @@ export default function AnimatedHighlightedAreaChart({ feedVersion }: { feedVers
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <defs>
-              <linearGradient
-                id="animated-highlighted-grad-ipv4"
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1"
-              >
-                <stop
-                  offset="5%"
-                  stopColor="#ef4444"
-                  stopOpacity={0.4}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="#ef4444"
-                  stopOpacity={0}
-                />
+              <linearGradient id="animated-highlighted-grad-ipv4" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#ef4444" stopOpacity={0.4} />
+                <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
               </linearGradient>
-              <linearGradient
-                id="animated-highlighted-grad-domains"
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1"
-              >
-                <stop
-                  offset="5%"
-                  stopColor="#3b82f6"
-                  stopOpacity={0.4}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="#3b82f6"
-                  stopOpacity={0}
-                />
+              <linearGradient id="animated-highlighted-grad-ipv6" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.4} />
+                <stop offset="95%" stopColor="#06b6d4" stopOpacity={0} />
+              </linearGradient>
+              <linearGradient id="animated-highlighted-grad-cidrs" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
+                <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+              </linearGradient>
+              <linearGradient id="animated-highlighted-grad-domains" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.4} />
+                <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+              </linearGradient>
+              <linearGradient id="animated-highlighted-grad-hashes" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#a855f7" stopOpacity={0.4} />
+                <stop offset="95%" stopColor="#a855f7" stopOpacity={0} />
+              </linearGradient>
+              <linearGradient id="animated-highlighted-grad-urls" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#f97316" stopOpacity={0.4} />
+                <stop offset="95%" stopColor="#f97316" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <Area
-              dataKey="domains"
-              type="monotone"
-              fill={"url(#animated-highlighted-grad-domains)"}
-              fillOpacity={1}
-              stroke="#3b82f6"
-              strokeWidth={2}
-            />
-            <Area
-              dataKey="ipv4"
-              type="monotone"
-              fill={"url(#animated-highlighted-grad-ipv4)"}
-              fillOpacity={1}
-              stroke="#ef4444"
-              strokeWidth={2}
-            />
+            <Area dataKey="hashes" type="monotone" fill="url(#animated-highlighted-grad-hashes)" fillOpacity={1} stroke="#a855f7" strokeWidth={2} />
+            <Area dataKey="domains" type="monotone" fill="url(#animated-highlighted-grad-domains)" fillOpacity={1} stroke="#3b82f6" strokeWidth={2} />
+            <Area dataKey="ipv4" type="monotone" fill="url(#animated-highlighted-grad-ipv4)" fillOpacity={1} stroke="#ef4444" strokeWidth={2} />
+            <Area dataKey="urls" type="monotone" fill="url(#animated-highlighted-grad-urls)" fillOpacity={1} stroke="#f97316" strokeWidth={2} />
+            <Area dataKey="cidrs" type="monotone" fill="url(#animated-highlighted-grad-cidrs)" fillOpacity={1} stroke="#10b981" strokeWidth={2} />
+            <Area dataKey="ipv6" type="monotone" fill="url(#animated-highlighted-grad-ipv6)" fillOpacity={1} stroke="#06b6d4" strokeWidth={2} />
           </AreaChart>
         </ChartContainer>
       </CardContent>
