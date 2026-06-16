@@ -1,14 +1,24 @@
 #!/usr/bin/env python3
 """
-Threatbase — Threat Intelligence Feed Aggregator (v4)
+Threatbase — Threat Intelligence Feed Aggregator (v5)
 =====================================================
 Collects malicious IPv4 addresses, Domains, Hashes, and URLs from public feeds.
 Highly optimized: fully asynchronous I/O with streaming, C-level fast IP validation.
 Outputs CSV, JSON, TXT.
+
+Writes to ioc/ folder:
+  - threatbase-ip.txt       (sorted by IP, CSV: IP,FeedCount,RiskScore,Tags)
+  - threatbase-ip.json      (detailed JSON with tags and sources)
+  - threatbase-ipv6.txt     (sorted)
+  - threatbase-cidr.txt     (sorted)
+  - threatbase-domain.txt   (sorted)
+  - threatbase-hash.txt     (sorted)
+  - threatbase-url.txt      (sorted)
+  - stats.json              (summary counts + last_updated timestamp)
+  - history.json            (daily snapshots for trend charts)
 """
 
 import asyncio
-import bisect
 import io
 import json
 import logging
@@ -21,11 +31,9 @@ import time
 import zipfile
 from collections import defaultdict
 from datetime import datetime, timezone
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List, Optional, Set
 
 import aiohttp
-import boto3
-from botocore.client import Config
 import ipaddress
 
 logging.basicConfig(
@@ -126,6 +134,7 @@ FEED_CATEGORIES: Dict[str, str] = {
     "dataplane_sshclient": "Scanner",
     "dataplane_sshpwauth": "Brute-Force",
     "dataplane_vnclogin": "Brute-Force",
+    "custom": "Malicious",
 }
 
 DOMAIN_FEEDS: Dict[str, str] = {
@@ -173,6 +182,13 @@ _SHA256_PATTERN = re.compile(r'^[a-fA-F0-9]{64}$')
 _MD5_PATTERN = re.compile(r'^[a-fA-F0-9]{32}$')
 _HASH_PATTERN = re.compile(r'^(?:[a-fA-F0-9]{32}|[a-fA-F0-9]{40}|[a-fA-F0-9]{64})$')
 _URL_PATTERN = re.compile(r'^https?://.+')
+
+def is_valid_url(url: str) -> bool:
+    if not _URL_PATTERN.match(url):
+        return False
+    if "hooks.slack.com/services/" in url:
+        return False
+    return True
 
 _WHITELIST_CIDRS = [
     "1.0.0.0/24",       "1.1.1.0/24",       "8.8.8.0/24",       "8.8.4.0/24",
@@ -229,8 +245,7 @@ def int_to_ip(ip_int: int) -> str:
 def is_valid_ipv6(ip: str) -> bool:
     if ":" not in ip: return False
     try:
-        packed = socket.inet_pton(socket.AF_INET6, ip)
-        # We skip deep private checks for IPv6 for speed, mostly ensuring syntactic validity
+        socket.inet_pton(socket.AF_INET6, ip)
         return True
     except OSError:
         return False
@@ -294,6 +309,63 @@ def load_false_positives() -> FalsePositivesSet:
             
     log.info(f"Loaded {len(result)} false positives (including {len(result.cidrs)} CIDRs)")
     return result
+
+
+def load_custom_iocs() -> dict:
+    """Load community-reported IPs from custom_iocs.txt and community_reports.json."""
+    custom = {"ips": set(), "domains": set(), "hashes": set(), "urls": set()}
+    
+    # Parse custom_iocs.txt
+    if os.path.exists("custom_iocs.txt"):
+        current_section = "ips"  # default section
+        try:
+            with open("custom_iocs.txt", "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line or line.startswith('#'):
+                        continue
+                    # Section headers
+                    if line.startswith('[') and line.endswith(']'):
+                        section = line[1:-1].lower()
+                        if section in custom:
+                            current_section = section
+                        continue
+                    
+                    if current_section == "ips":
+                        ip_int = is_valid_ipv4_fast(line)
+                        if ip_int:
+                            custom["ips"].add(ip_int)
+                    elif current_section == "hashes":
+                        if _HASH_PATTERN.match(line):
+                            custom["hashes"].add(line.lower())
+                    elif current_section == "domains":
+                        d = extract_domain(line)
+                        if d:
+                            custom["domains"].add(d)
+                    elif current_section == "urls":
+                        if is_valid_url(line):
+                            custom["urls"].add(line)
+            log.info(f"  Loaded custom_iocs.txt: {len(custom['ips'])} IPs, {len(custom['hashes'])} hashes, {len(custom['domains'])} domains, {len(custom['urls'])} URLs")
+        except Exception as e:
+            log.error(f"Failed to load custom_iocs.txt: {e}")
+    
+    # Parse community_reports.json for extra IPs
+    if os.path.exists("ioc/community_reports.json"):
+        try:
+            with open("ioc/community_reports.json", "r", encoding="utf-8") as f:
+                reports = json.load(f)
+            for report in reports:
+                ip_str = report.get("ip", "").strip()
+                if ip_str:
+                    ip_int = is_valid_ipv4_fast(ip_str)
+                    if ip_int:
+                        custom["ips"].add(ip_int)
+            log.info(f"  Loaded community_reports.json: {len(reports)} reports")
+        except Exception as e:
+            log.error(f"Failed to load community_reports.json: {e}")
+    
+    return custom
+
 
 def load_previous_ips(path: str) -> Set[int]:
     ips = set()
@@ -472,8 +544,8 @@ async def fetch_url_feed_async(session: aiohttp.ClientSession, name: str, url: s
                     parts = line.split('","')
                     if len(parts) > 2:
                         candidate = parts[2].strip('"')
-                        if _URL_PATTERN.match(candidate): urls.add(candidate)
-                elif _URL_PATTERN.match(line):
+                        if is_valid_url(candidate): urls.add(candidate)
+                elif is_valid_url(line):
                     urls.add(line)
             log.info(f"  ✓ {name}: {len(urls)} URLs")
             return urls
@@ -511,7 +583,7 @@ async def fetch_threatfox_async(session: aiohttp.ClientSession, name: str, url: 
                                         if d: result["domains"].add(d)
                                     elif "sha256" in ioc_type and _SHA256_PATTERN.match(ioc):
                                         result["hashes"].add(ioc.lower())
-                                    elif "url" in ioc_type and _URL_PATTERN.match(ioc):
+                                    elif "url" in ioc_type and is_valid_url(ioc):
                                         result["urls"].add(ioc)
             else:
                 data = await r.json()
@@ -539,7 +611,7 @@ async def fetch_threatfox_async(session: aiohttp.ClientSession, name: str, url: 
                         if d: result["domains"].add(d)
                     elif "sha256" in ioc_type and _SHA256_PATTERN.match(ioc):
                         result["hashes"].add(ioc.lower())
-                    elif "url" in ioc_type and _URL_PATTERN.match(ioc):
+                    elif "url" in ioc_type and is_valid_url(ioc):
                         result["urls"].add(ioc)
             log.info(f"  ✓ ThreatFox {name}: {len(result['ips'])} IPs")
             return result
@@ -572,7 +644,7 @@ FEED_TRUST_TIERS = {
     "firehol_level3": "LOW",
 }
 
-def process_ip_metadata(ip_sources: Dict[str, Set[int]], false_positives: set) -> Dict[int, dict]:
+def process_ip_metadata(ip_sources: Dict[str, Set[int]], false_positives: FalsePositivesSet) -> Dict[int, dict]:
     """Generates rich IP tagging and assigns trust scores."""
     ip_metadata = defaultdict(lambda: {"sources": set(), "tags": set()})
     
@@ -615,13 +687,62 @@ def process_ip_metadata(ip_sources: Dict[str, Set[int]], false_positives: set) -
     return filtered
 
 
+def update_history(stats: dict) -> None:
+    """Append today's stats snapshot to ioc/history.json for trend charts."""
+    history_path = "ioc/history.json"
+    history = []
+    
+    if os.path.exists(history_path):
+        try:
+            with open(history_path, "r", encoding="utf-8") as f:
+                history = json.load(f)
+        except Exception as e:
+            log.warning(f"Could not parse existing history.json, starting fresh: {e}")
+            history = []
+    
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    
+    # Build today's entry
+    today_entry = {
+        "date": today,
+        "total_unique_ips": stats["total_unique_ips"],
+        "total_unique_ipv6": stats.get("total_unique_ipv6", 0),
+        "total_unique_cidrs": stats.get("total_unique_cidrs", 0),
+        "total_unique_domains": stats.get("total_unique_domains", 0),
+        "total_unique_hashes": stats.get("total_unique_hashes", 0),
+        "total_unique_urls": stats.get("total_unique_urls", 0),
+        "active_feeds": stats.get("active_feeds", 0),
+        "category_counts": stats.get("category_counts", {}),
+        "top_sources": stats.get("top_sources", {}),
+    }
+    
+    # Replace today's entry if it already exists, otherwise append
+    updated = False
+    for i, entry in enumerate(history):
+        if entry.get("date") == today:
+            history[i] = today_entry
+            updated = True
+            break
+    
+    if not updated:
+        history.append(today_entry)
+    
+    # Keep last 90 days of history
+    history = history[-90:]
+    
+    with open(history_path, "w", encoding="utf-8") as f:
+        json.dump(history, f, indent=2)
+    
+    log.info(f"  Updated history.json: {len(history)} entries (today = {today})")
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Main Async Runner
 # ─────────────────────────────────────────────────────────────────────────────
 async def run_async_collector():
     t_start = time.time()
     log.info("═" * 55)
-    log.info("  Threatbase v4 — Async Threat Aggregator (JSON Tagging)")
+    log.info("  Threatbase v5 — Async Threat Aggregator")
     log.info("═" * 55)
     
     os.makedirs("ioc", exist_ok=True)
@@ -634,6 +755,7 @@ async def run_async_collector():
     hash_sources = {}
     url_sources = {}
 
+    # ── Load historical IOCs from previous run (accumulative database) ──────
     log.info("Loading previous IOCs from cache...")
     ip_sources["historical"] = load_previous_ips("ioc/threatbase-ip.txt")
     ipv6_sources["historical"] = load_previous_list("ioc/threatbase-ipv6.txt")
@@ -641,14 +763,36 @@ async def run_async_collector():
     domain_results["historical"] = load_previous_list("ioc/threatbase-domain.txt")
     hash_sources["historical"] = load_previous_list("ioc/threatbase-hash.txt")
     url_sources["historical"] = load_previous_list("ioc/threatbase-url.txt")
+    
+    log.info(f"  Historical cache: {len(ip_sources['historical'])} IPs, "
+             f"{len(domain_results['historical'])} domains, "
+             f"{len(hash_sources['historical'])} hashes, "
+             f"{len(url_sources['historical'])} URLs")
 
+    # ── Load custom/community-reported IOCs ─────────────────────────────────
+    log.info("Loading custom and community-reported IOCs...")
+    custom_iocs = load_custom_iocs()
+    if custom_iocs["ips"]:
+        ip_sources["custom"] = custom_iocs["ips"]
+    if custom_iocs["domains"]:
+        domain_results["custom"] = custom_iocs["domains"]
+    if custom_iocs["hashes"]:
+        hash_sources["custom"] = custom_iocs["hashes"]
+    if custom_iocs["urls"]:
+        url_sources["custom"] = custom_iocs["urls"]
+
+    # ── Fetch all remote feeds asynchronously ───────────────────────────────
     log.info("Spawning all fetch tasks asynchronously...")
     
-    conn = aiohttp.TCPConnector(limit=50) # Allow 50 concurrent connections
+    # Track which feeds returned data for stats
+    successful_feeds = set()
+    feed_ip_counts = {}
+    
+    conn = aiohttp.TCPConnector(limit=50)
     async with aiohttp.ClientSession(connector=conn) as session:
         # Create all tasks
         tasks = []
-        task_info = [] # Track what task does what
+        task_info = []
         
         for name, url in FEEDS.items():
             tasks.append(fetch_feed_async(session, name, url))
@@ -680,10 +824,15 @@ async def run_async_collector():
                 
             if not res: continue
             
+            successful_feeds.add(name)
+            
             if feed_type == 'ip':
-                ip_sources[name] = res.get('ipv4', set())
+                ipv4_set = res.get('ipv4', set())
+                ip_sources[name] = ipv4_set
                 ipv6_sources[name] = res.get('ipv6', set())
                 cidr_sources[name] = res.get('cidrs', set())
+                if ipv4_set:
+                    feed_ip_counts[name] = len(ipv4_set)
             elif feed_type == 'domain':
                 domain_results[name] = res
             elif feed_type == 'hash':
@@ -691,7 +840,9 @@ async def run_async_collector():
             elif feed_type == 'url':
                 url_sources[name] = res
             elif feed_type == 'tf':
-                if res.get("ips"): ip_sources[name] = res["ips"]
+                if res.get("ips"):
+                    ip_sources[name] = res["ips"]
+                    feed_ip_counts[name] = len(res["ips"])
                 if res.get("ipv6"): ipv6_sources[name] = res["ipv6"]
                 if res.get("cidrs"): cidr_sources[name] = res["cidrs"]
                 if res.get("domains"): domain_results[name] = res["domains"]
@@ -699,22 +850,23 @@ async def run_async_collector():
                 if res.get("urls"): url_sources[name] = res["urls"]
 
     log.info(f"All feeds downloaded and parsed in {time.time()-t_start:.1f}s")
+    log.info(f"  Successful feeds: {len(successful_feeds)}")
     
-    # Process Trust Tiers & IP Tagging
+    # ── Process Trust Tiers & IP Tagging ────────────────────────────────────
     log.info("Processing rich IP tags and trust scores...")
     filtered_ip_info = process_ip_metadata(ip_sources, false_positives)
     
     # Sort IPs rapidly using their integer values
     sorted_ips = sorted(filtered_ip_info.keys())
     
-    # Write JSON with rich metadata
+    # ── Write JSON with rich metadata ───────────────────────────────────────
     log.info("Writing threatbase-ip.json...")
     json_output_path = "ioc/threatbase-ip.json"
     ip_list_out = [filtered_ip_info[ip] for ip in sorted_ips]
     with open(json_output_path, "w", encoding="utf-8") as f:
         json.dump(ip_list_out, f, indent=2)
 
-    # Write Text outputs
+    # ── Write Text outputs ──────────────────────────────────────────────────
     log.info("Writing threatbase-ip.txt...")
     txt_output_path = "ioc/threatbase-ip.txt"
     timestamp = datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000")
@@ -728,41 +880,53 @@ async def run_async_collector():
             tags_str = "|".join(info["tags"])
             f.write(f"{info['ip']},{info['count']},{info['score']},{tags_str}\n")
             
-    # Write domains
+    # ── Write domains (sorted for binary search) ───────────────────────────
+    log.info("Writing threatbase-domain.txt...")
     all_domains = sorted(set().union(*domain_results.values()))
     with open("ioc/threatbase-domain.txt", "w", encoding="utf-8") as f:
         for d in all_domains:
             if d not in false_positives: f.write(f"{d}\n")
             
-    # Write hashes
+    # ── Write hashes (sorted for binary search) ────────────────────────────
+    log.info("Writing threatbase-hash.txt...")
     all_hashes = sorted(set().union(*hash_sources.values()))
     with open("ioc/threatbase-hash.txt", "w", encoding="utf-8") as f:
         for h in all_hashes:
             f.write(f"{h}\n")
             
-    # Write urls
+    # ── Write urls (sorted for binary search) ──────────────────────────────
+    log.info("Writing threatbase-url.txt...")
     all_urls = sorted(set().union(*url_sources.values()))
     with open("ioc/threatbase-url.txt", "w", encoding="utf-8") as f:
         for u in all_urls:
             f.write(f"{u}\n")
             
-    # Write IPv6
+    # ── Write IPv6 (sorted) ────────────────────────────────────────────────
+    log.info("Writing threatbase-ipv6.txt...")
     all_ipv6 = sorted(set().union(*ipv6_sources.values()))
     with open("ioc/threatbase-ipv6.txt", "w", encoding="utf-8") as f:
         for ipv6 in all_ipv6:
             if ipv6 not in false_positives: f.write(f"{ipv6}\n")
             
-    # Write CIDRs
+    # ── Write CIDRs (sorted) ──────────────────────────────────────────────
+    log.info("Writing threatbase-cidr.txt...")
     all_cidrs = sorted(set().union(*cidr_sources.values()))
     with open("ioc/threatbase-cidr.txt", "w", encoding="utf-8") as f:
         for cidr in all_cidrs:
             if cidr not in false_positives: f.write(f"{cidr}\n")
-            
+    
+    # ── Build category counts ──────────────────────────────────────────────
     category_counts = defaultdict(int)
     for info in filtered_ip_info.values():
         for tag in info["tags"]:
             category_counts[tag] += 1
 
+    # ── Build top sources (top 5 feeds by IP count) ────────────────────────
+    top_sources = dict(sorted(feed_ip_counts.items(), key=lambda x: x[1], reverse=True)[:5])
+
+    # ── Write stats.json (with last_updated for the website) ───────────────
+    log.info("Writing stats.json...")
+    now_utc = datetime.now(timezone.utc)
     stats = {
         "total_unique_ips": len(sorted_ips),
         "total_unique_ipv6": len(all_ipv6),
@@ -770,17 +934,31 @@ async def run_async_collector():
         "total_unique_domains": len(all_domains),
         "total_unique_hashes": len(all_hashes),
         "total_unique_urls": len(all_urls),
-        "category_counts": dict(category_counts)
+        "active_feeds": len(successful_feeds),
+        "category_counts": dict(category_counts),
+        "top_sources": top_sources,
+        "last_updated": now_utc.isoformat(),
     }
     with open("ioc/stats.json", "w", encoding="utf-8") as f:
-        json.dump(stats, f)
+        json.dump(stats, f, indent=2)
+
+    # ── Update history.json (for trend charts) ─────────────────────────────
+    log.info("Updating history.json...")
+    update_history(stats)
         
+    # ── Cleanup ────────────────────────────────────────────────────────────
     clean_temporary_files()
         
     elapsed = time.time() - t_start
     log.info("═" * 55)
     log.info(f"  Finished gracefully in {elapsed:.1f}s")
-    log.info(f"  Total Valid IPs: {len(sorted_ips)}")
+    log.info(f"  Total IPs:     {len(sorted_ips):>10,}")
+    log.info(f"  Total IPv6:    {len(all_ipv6):>10,}")
+    log.info(f"  Total CIDRs:   {len(all_cidrs):>10,}")
+    log.info(f"  Total Domains: {len(all_domains):>10,}")
+    log.info(f"  Total Hashes:  {len(all_hashes):>10,}")
+    log.info(f"  Total URLs:    {len(all_urls):>10,}")
+    log.info(f"  Active Feeds:  {len(successful_feeds):>10,}")
     log.info("═" * 55)
 
 

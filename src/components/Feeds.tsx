@@ -148,7 +148,7 @@ export default function Feeds({ statsData }: { statsData?: any }) {
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
                     <Download size={16} className="transition-transform group-hover:-translate-y-0.5" /> 
-                    <span>Download <span className="font-mono text-xs text-slate-300 ml-1">{f.file}</span></span>
+                    <span>Download Feed</span>
                   </a>
                 )}
               </motion.div>
