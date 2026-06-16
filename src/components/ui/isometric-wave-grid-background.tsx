@@ -168,7 +168,7 @@ const IsoLevelWarp = ({
       <canvas ref={canvasRef} className="block w-full h-full" />
       
       {/* Optional: Vignette overlay for depth */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#0A0C10_100%)] opacity-80 pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#0B0F19_100%)] opacity-80 pointer-events-none" />
     </div>
   );
 };

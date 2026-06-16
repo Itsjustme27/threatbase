@@ -73,7 +73,7 @@ export default function PolicyPage() {
   })
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden font-sans bg-[#0A0C10]">
+    <div className="relative min-h-screen w-full overflow-hidden font-sans bg-app">
 
       {/* BACKGROUND */}
       <IsoLevelWarp

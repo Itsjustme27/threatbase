@@ -470,7 +470,7 @@ export default function ReportIP({ addToast }: any) {
   }
 
   return (
-    <main className="bg-[#0B0F19] min-h-screen">
+    <main className="bg-app min-h-screen">
       <div className="pt-28 pb-24 relative overflow-hidden font-sans">
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] mix-blend-overlay pointer-events-none"></div>
 

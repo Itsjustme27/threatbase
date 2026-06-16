@@ -57,8 +57,8 @@ export default function Navbar() {
                 data-state={menuState && 'active'}
                 className={cn(
                     "group fixed z-50 transition-all duration-300 w-full",
-                    scrolled 
-                        ? "bg-[#0B0F19]/60 backdrop-blur-xl border-b border-white/[0.05] shadow-[0_8px_30px_rgb(0,0,0,0.5)] py-2" 
+                    scrolled
+                        ? "bg-[#0B0F19]/70 backdrop-blur-xl border-b border-white/[0.06] shadow-lg shadow-black/30 py-2"
                         : "bg-transparent border-b border-transparent py-3.5"
                 )}
             >
@@ -94,8 +94,8 @@ export default function Navbar() {
                                                     to={item.href}
                                                     className={cn(
                                                         "transition-all duration-300 tracking-wide font-bold text-sm px-4 py-2 rounded-full",
-                                                        isActive 
-                                                            ? "bg-white/10 text-white shadow-[0_0_15px_rgba(255,255,255,0.1)]"
+                                                        isActive
+                                                            ? "bg-white/10 text-white"
                                                             : "text-slate-400 hover:text-white hover:bg-white/5"
                                                     )}>
                                                     {item.name}
@@ -135,7 +135,7 @@ export default function Navbar() {
                                 <Button
                                     asChild
                                     variant="outline"
-                                    className="border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20 hover:text-white rounded-full px-5 h-10 transition-all duration-300 hover:shadow-[0_0_15px_rgba(255,255,255,0.05)] gap-2 text-xs font-semibold"
+                                    className="border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20 hover:text-white rounded-full px-5 h-10 transition-all duration-300 gap-2 text-xs font-semibold"
                                     size="sm">
                                     <Link to="/thanks" onClick={() => setMenuState(false)}>
                                         <Heart size={14} className="text-destructive fill-red-400/20" />
@@ -145,7 +145,7 @@ export default function Navbar() {
                                 <Button
                                     asChild
                                     variant="outline"
-                                    className="border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20 hover:text-white rounded-full px-5 h-10 transition-all duration-300 hover:shadow-[0_0_15px_rgba(255,255,255,0.05)] gap-2 text-xs font-semibold"
+                                    className="border-white/10 bg-white/5 text-white hover:bg-white/10 hover:border-white/20 hover:text-white rounded-full px-5 h-10 transition-all duration-300 gap-2 text-xs font-semibold"
                                     size="sm">
                                     <a href="https://github.com/kalidada18/threatbase" target="_blank" rel="noopener noreferrer">
                                         <Github size={14} />
@@ -159,13 +159,19 @@ export default function Navbar() {
                                     <div className="relative">
                                         <button
                                             onClick={() => setDropdownOpen(!dropdownOpen)}
-                                            className="flex items-center gap-2.5 p-1 pr-3 rounded-full border border-white/10 bg-slate-900/40 backdrop-blur-md hover:bg-slate-800/60 hover:border-white/20 transition-all duration-300 focus:outline-none select-none active:scale-[0.98] cursor-pointer shadow-[0_0_15px_rgba(255,255,255,0.02)]"
+                                            className="flex items-center gap-2.5 p-1 pr-3 rounded-full border border-white/10 bg-slate-900/40 backdrop-blur-md hover:bg-slate-800/60 hover:border-white/20 transition-all duration-300 focus:outline-none select-none active:scale-[0.98] cursor-pointer"
                                         >
-                                            <img
-                                                src={profile?.avatar_url || user.user_metadata?.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=80&auto=format&fit=crop&q=60'}
-                                                alt="User Avatar"
-                                                className="w-7 h-7 rounded-full object-cover border border-white/20"
-                                            />
+                                            {(profile?.avatar_url || user.user_metadata?.avatar_url) ? (
+                                                <img
+                                                    src={profile?.avatar_url || user.user_metadata?.avatar_url}
+                                                    alt="User avatar"
+                                                    className="w-7 h-7 rounded-full object-cover border border-white/20"
+                                                />
+                                            ) : (
+                                                <span className="w-7 h-7 rounded-full border border-white/20 bg-slate-800 flex items-center justify-center text-slate-300">
+                                                    <UserIcon size={14} />
+                                                </span>
+                                            )}
                                             <span className="text-xs font-bold text-slate-300 block">
                                                 My Account
                                             </span>
@@ -183,7 +189,7 @@ export default function Navbar() {
                                                         animate={{ opacity: 1, scale: 1, y: 0 }}
                                                         exit={{ opacity: 0, scale: 0.95, y: 10 }}
                                                         transition={{ duration: 0.15 }}
-                                                        className="absolute right-0 mt-2.5 w-48 rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-xl p-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.5)] ring-1 ring-white/5 z-50 flex flex-col gap-1 select-none"
+                                                        className="absolute right-0 mt-2.5 w-48 rounded-2xl border border-white/10 bg-slate-900/60 backdrop-blur-xl p-2.5 shadow-xl shadow-black/40 ring-1 ring-white/5 z-50 flex flex-col gap-1 select-none"
                                                     >
                                                         <div className="px-3 py-2 border-b border-white/5 mb-1 text-left">
                                                             <p className="text-[9px] font-bold uppercase tracking-widest text-slate-500">Logged In As</p>
@@ -215,7 +221,7 @@ export default function Navbar() {
                                 ) : (
                                     <Button
                                         onClick={() => { signInWithGoogle(); setMenuState(false) }}
-                                        className="rounded-full px-5 h-10 gap-2 text-xs font-bold bg-white text-black hover:bg-slate-200 transition-all duration-300 hover:shadow-[0_0_18px_rgba(255,255,255,0.25)] active:scale-[0.98]"
+                                        className="rounded-full px-5 h-10 gap-2 text-xs font-bold bg-white text-black hover:bg-slate-200 transition-all duration-300 hover:shadow-lg hover:shadow-white/10 active:scale-[0.98]"
                                         size="sm">
                                         <LogIn size={14} />
                                         Sign In

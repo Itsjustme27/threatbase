@@ -60,7 +60,7 @@ export default function ThanksPage() {
   })
 
   return (
-    <main className="min-h-screen pt-32 pb-32 relative bg-[#0B0F19] overflow-hidden font-sans">
+    <main className="min-h-screen pt-32 pb-32 relative bg-app overflow-hidden font-sans">
       {/* Animated aurora shader background */}
       <AnimatedShaderBackground className="opacity-60" />
       {/* Readability overlay + texture on top of the shader */}

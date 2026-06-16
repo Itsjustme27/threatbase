@@ -14,7 +14,7 @@ export function HeroSection({ scanInput, setScanInput, handleScan, statsData }: 
     return (
         <>
             <div
-                className="relative overflow-hidden w-full min-h-[90vh] bg-[#0B0F19]"
+                className="relative overflow-hidden w-full min-h-[90vh] bg-app"
             >
                 <ThreatMap />
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0B0F19]/50 to-[#0B0F19] pointer-events-none z-0" />

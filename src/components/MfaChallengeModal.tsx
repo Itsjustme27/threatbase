@@ -102,7 +102,7 @@ export default function MfaChallengeModal() {
           initial={{ opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 10 }}
-          className="relative w-full max-w-md rounded-2xl border border-white/10 bg-[#0B0F19] p-8 shadow-2xl overflow-hidden"
+          className="relative w-full max-w-md rounded-2xl border border-white/10 bg-app p-8 shadow-2xl overflow-hidden"
         >
           {/* Decorative glow */}
           <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />

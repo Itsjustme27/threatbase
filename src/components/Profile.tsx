@@ -437,7 +437,7 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
 
   if (authLoading || loadingProfile) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#0B0F19] text-slate-400">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-app text-slate-400">
         <Loader2 className="animate-spin text-slate-600 mb-4" size={24} />
         <p className="text-xs font-semibold tracking-widest uppercase text-slate-500">Loading Profile...</p>
       </div>
@@ -446,7 +446,7 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
 
   if (profileNotFound) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#0B0F19] text-slate-400">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-app text-slate-400">
         <h2 className="text-2xl font-bold text-white mb-2">Profile Not Found</h2>
         <p className="text-sm text-slate-500">The user you are looking for does not exist.</p>
         <Button onClick={() => navigate(-1)} className="mt-6 border border-white/10 bg-white/5 hover:bg-white/10 text-white" variant="outline">
@@ -468,7 +468,7 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
   }
 
   return (
-    <main className="min-h-screen pt-28 pb-24 relative bg-[#0B0F19] font-sans selection:bg-slate-800">
+    <main className="min-h-screen pt-28 pb-24 relative bg-app font-sans selection:bg-slate-800">
       <div className="mx-auto max-w-5xl px-6 relative z-10 space-y-6">
         
         {/* Navigation back */}
@@ -777,7 +777,7 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="relative w-full max-w-md rounded-xl border border-white/10 bg-[#0B0F19] p-6 md:p-8 shadow-2xl"
+              className="relative w-full max-w-md rounded-xl border border-white/10 bg-app p-6 md:p-8 shadow-2xl"
             >
               <div className="space-y-6">
                 <div>
