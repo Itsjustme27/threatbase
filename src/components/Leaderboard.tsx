@@ -23,15 +23,15 @@ const getRankInfo = (count: number) => {
   if (count >= 100) {
     return {
       name: 'Pro',
-      style: 'bg-primary/10 border-primary/30 text-primary transition-all duration-500 group-hover:bg-primary/20 group-hover:border-primary/60 group-hover:text-primary',
-      icon: <Star size={14} className="text-primary transition-all duration-500 group-hover:text-primary" strokeWidth={2.5} />
+      style: 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400 transition-all duration-500 group-hover:bg-cyan-500/20 group-hover:border-cyan-400/60 group-hover:text-cyan-300',
+      icon: <Star size={14} className="text-cyan-400 transition-all duration-500 group-hover:text-cyan-300" strokeWidth={2.5} />
     }
   }
   if (count >= 50) {
     return {
       name: 'Defender',
-      style: 'bg-primary/10 border-primary/30 text-primary transition-all duration-500 group-hover:bg-primary/20 group-hover:border-primary/60 group-hover:text-primary',
-      icon: <Shield size={14} className="text-primary transition-all duration-500 group-hover:text-primary" strokeWidth={2.5} />
+      style: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 transition-all duration-500 group-hover:bg-emerald-500/20 group-hover:border-emerald-400/60 group-hover:text-emerald-300',
+      icon: <Shield size={14} className="text-emerald-400 transition-all duration-500 group-hover:text-emerald-300" strokeWidth={2.5} />
     }
   }
   return {
@@ -83,7 +83,6 @@ export default function Leaderboard() {
   if (leaders.length === 0) {
     return (
       <div className="text-center py-12 text-slate-500">
-        <Award size={48} className="mx-auto mb-4 opacity-30" />
         <Medal size={48} className="mx-auto mb-4 opacity-30" />
         <p>No contributors yet. Be the first to earn a rank!</p>
       </div>
@@ -119,6 +118,10 @@ export default function Leaderboard() {
                 <div className="flex flex-wrap items-center gap-2">
                   <img src={leader.avatar_url || getAvatarForName(leader.reporter_alias)} alt="Avatar" className="w-6 h-6 rounded-full border border-white/10 bg-black/20 object-cover drop-shadow-sm" />
                   <h4 className="font-semibold text-white/80 transition-all duration-500 group-hover:text-white text-[15px] md:text-[16px] tracking-tight font-elegant leading-tight break-words">@{leader.reporter_alias}</h4>
+                  <span className={`hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border text-[10px] font-bold uppercase tracking-wider ${rank.style}`}>
+                    {rank.icon}
+                    {rank.name}
+                  </span>
                   {(leader.reporter_alias === 'lamichhanesujal18' || leader.reporter_alias === 'kalidada') && (
                     <span className="flex-shrink-0 flex items-center gap-2 transition-transform duration-500 hover:scale-105">
                       <img src={`${import.meta.env.BASE_URL}img/admin.png`} title="Admin" alt="Admin" className="w-7 h-7 object-contain drop-shadow-md transition-all duration-500" />

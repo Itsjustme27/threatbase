@@ -212,7 +212,15 @@ export default function Navbar() {
                                             )}
                                         </AnimatePresence>
                                     </div>
-                                ) : null}
+                                ) : (
+                                    <Button
+                                        onClick={() => { signInWithGoogle(); setMenuState(false) }}
+                                        className="rounded-full px-5 h-10 gap-2 text-xs font-bold bg-white text-black hover:bg-slate-200 transition-all duration-300 hover:shadow-[0_0_18px_rgba(255,255,255,0.25)] active:scale-[0.98]"
+                                        size="sm">
+                                        <LogIn size={14} />
+                                        Sign In
+                                    </Button>
+                                )}
                             </div>
                         </div>
                     </div>

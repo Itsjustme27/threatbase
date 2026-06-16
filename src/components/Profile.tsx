@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  Globe, Edit3, Save, Copy, Check, ExternalLink, ArrowLeft, Loader2
-} from 'lucide-react'
-import { useNavigate, Link, useParams } from 'react-router-dom'
+import { Globe, Copy, Check, ArrowLeft, Loader2 } from 'lucide-react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 import supabaseClient from '../supabaseClient'
 import { Button } from '@/components/ui/button'
@@ -127,14 +125,14 @@ const getUserBadges = (profile: any, reportsCount: number, joinIndex: number | n
     });
   }
 
-  // 3. Community Helper Badge
-  const isHelper = profile?.is_helper === true || 
-                   profile?.role === 'helper' || 
-                   profile?.username === 'kalidada18' || 
-                   (profile?.username && typeof profile.username === 'string' && profile.username.toLowerCase().includes('admin')) ||
-                   (profile?.username && typeof profile.username === 'string' && profile.username.toLowerCase().includes('helper')) ||
-                   (profile?.bio && typeof profile.bio === 'string' && profile.bio.toLowerCase().includes('helper')) ||
-                   (profile?.bio && typeof profile.bio === 'string' && profile.bio.toLowerCase().includes('moderator'));
+  // 3. Community Helper Badge — granted only from trusted, server-controlled
+  // fields. Never derived from user-editable bio/username text, which is
+  // trivially spoofable by editing your own profile.
+  const isHelper =
+    profile?.is_helper === true ||
+    profile?.role === 'helper' ||
+    profile?.role === 'moderator' ||
+    profile?.role === 'admin';
   if (isHelper) {
     badges.push({
       id: 'helper',
@@ -153,7 +151,39 @@ const getUserBadges = (profile: any, reportsCount: number, joinIndex: number | n
   return badges;
 }
 
-export default function Profile({ addToast }: any) {
+// Derive up to two uppercase initials from a display name.
+const getInitials = (name: string) => {
+  const parts = name.trim().split(/\s+/).filter(Boolean)
+  if (parts.length === 0) return '?'
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase()
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+}
+
+// Avatar that renders the user's image when present, otherwise a stable
+// initials placeholder. Also falls back to initials if the image fails to load.
+function ProfileAvatar({ src, name }: { src?: string; name: string }) {
+  const [errored, setErrored] = useState(false)
+  const showImage = src && !errored
+
+  return (
+    <div className="w-24 h-24 rounded-full border border-white/10 overflow-hidden flex items-center justify-center bg-gradient-to-br from-slate-700 to-slate-900 shrink-0">
+      {showImage ? (
+        <img
+          src={src}
+          alt={`${name}'s avatar`}
+          onError={() => setErrored(true)}
+          className="w-full h-full object-cover"
+        />
+      ) : (
+        <span className="text-2xl font-semibold text-slate-300 select-none tracking-tight">
+          {getInitials(name)}
+        </span>
+      )}
+    </div>
+  )
+}
+
+export default function Profile({ addToast }: { addToast: (msg: string, type?: string) => void }) {
   const navigate = useNavigate()
   const { username: paramUsername } = useParams<{ username?: string }>()
   const { user, profile: authProfile, loading: authLoading, refreshProfile, signOut } = useAuth()
@@ -207,6 +237,7 @@ export default function Profile({ addToast }: any) {
       }
 
       setLoadingProfile(true)
+      setProfileNotFound(false)
       try {
         const { data, error } = await supabaseClient
           .from('profiles')
@@ -457,10 +488,9 @@ export default function Profile({ addToast }: any) {
           <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-left">
               {/* Profile Avatar */}
-              <img 
-                src={activeProfile?.avatar_url || activeProfile?.user_metadata?.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80'} 
-                alt="Profile Avatar"
-                className="w-24 h-24 rounded-full object-cover border border-white/10"
+              <ProfileAvatar
+                src={activeProfile?.avatar_url || activeProfile?.user_metadata?.avatar_url}
+                name={activeProfile?.full_name || activeProfile?.user_metadata?.full_name || usernameDisplay}
               />
               
               <div className="space-y-3">
