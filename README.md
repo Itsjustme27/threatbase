@@ -1,66 +1,61 @@
 <div align="center">
   <br/>
-  <img src="public/img/threatbase.png" alt="Threatbase" width="130" style="border-radius: 50%;">
-  <br/><br/>
+  <img src="public/img/threatbase.png" alt="Threatbase" width="120" style="border-radius: 50%;">
 
-  <h1>⚔️ Threatbase</h1>
-  <p><strong>Enterprise-Grade Open-Source Threat Intelligence · Automated · Zero-Cost</strong></p>
+  <h1>⚔️&nbsp; Threatbase</h1>
+
+  <p><strong>Enterprise-grade, open-source threat intelligence.</strong><br/>Automated · Deduplicated · Zero-cost.</p>
 
   <p>
-    <a href="https://github.com/kalidada18/threatbase/actions/workflows/update-feed.yml">
-      <img src="https://github.com/kalidada18/threatbase/actions/workflows/update-feed.yml/badge.svg" alt="Feed Pipeline">
-    </a>
-    &nbsp;
+    <a href="https://github.com/kalidada18/threatbase/actions/workflows/update-feed.yml"><img src="https://github.com/kalidada18/threatbase/actions/workflows/update-feed.yml/badge.svg" alt="Feed Pipeline"></a>
+    <img src="https://img.shields.io/badge/IOCs-3M%2B-ef4444" alt="IOCs">
+    <img src="https://img.shields.io/badge/Feeds-54-f59e0b" alt="Feeds">
     <img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white" alt="Python">
-    &nbsp;
-    <img src="https://img.shields.io/badge/React-19.0-61DAFB?logo=react&logoColor=black" alt="React">
-    &nbsp;
+    <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black" alt="React">
     <img src="https://img.shields.io/badge/License-MIT-22c55e" alt="MIT License">
-    &nbsp;
-    <img src="https://img.shields.io/badge/IOCs-10M%2B-ef4444" alt="IOCs">
   </p>
 
   <p>
-    <a href="https://threatbase.qzz.io">🌐 Live Dashboard</a>
+    <a href="https://threatbase.qzz.io"><b>🌐 Live Dashboard</b></a>
     &nbsp;·&nbsp;
-    <a href="#-using-the-threat-feeds-directly">📥 Raw Feeds</a>
+    <a href="#-using-the-feeds"><b>📥 Raw Feeds</b></a>
     &nbsp;·&nbsp;
-    <a href="https://github.com/kalidada18/threatbase/releases">📦 Archives</a>
+    <a href="https://github.com/kalidada18/threatbase/releases"><b>📦 Archives</b></a>
     &nbsp;·&nbsp;
-    <a href="https://threatbase.qzz.io/thanks">🙏 Sources</a>
+    <a href="https://threatbase.qzz.io/thanks"><b>🙏 Sources</b></a>
   </p>
 
   <br/>
 
-  > *Built with ❤️ to democratize access to high-quality threat intelligence.*
-  > *One indicator at a time.*
+  <em>Built to democratize access to high-quality threat intelligence — one indicator at a time.</em>
 
-  <br/>
 </div>
-
----
-
-## 🧩 What Is Threatbase?
-
-Threatbase is a **fully-automated threat intelligence ecosystem**. It ingests, deduplicates, and curates malicious IOCs from 10+ industry-leading OSINT feeds, then serves them through a sleek React dashboard and raw-URL blocklists.
-
-```
-  OSINT Feeds → Python Aggregator → GitHub Actions → Raw Blocklists
-                                                   ↘ React Dashboard
-                                                   ↘ Daily ZIP Archive
-```
 
 <br/>
 
+---
+
+## 🧩 What is Threatbase?
+
+Threatbase is a **fully-automated threat-intelligence pipeline**. It ingests, validates, and deduplicates malicious indicators from **54 industry OSINT feeds**, then publishes them as ready-to-use blocklists and serves them through a fast React dashboard.
+
+> **3,000,000+** unique indicators · refreshed continuously · no auth, no rate limits.
+
+```text
+  54 OSINT Feeds ──▶ Python Aggregator ──▶ GitHub Actions ─┬─▶ Raw Blocklists
+                     (fetch · dedup ·                       ├─▶ React Dashboard
+                      validate · classify)                  └─▶ Daily ZIP Archive
+```
+
 ### 🏗️ Architecture
 
-| Component | Stack | Role |
-|:---|:---|:---|
-| **Intelligence Engine** | Python 3.11, ThreadPoolExecutor | Feed ingestion, dedup, validation |
-| **Automation** | GitHub Actions | Scheduled pipeline (6h cadence) |
-| **Dashboard** | React 19, Chart.js | IOC search, analytics, manual reporting |
-| **Delivery** | GitHub Pages + Raw URLs | Zero-infra, always-on feed serving |
-| **Archives** | GitHub Releases | Daily ZIP snapshots for SIEM hunting |
+| Layer | Stack | Responsibility |
+|:--|:--|:--|
+| **Intelligence Engine** | Python 3.11 · `ThreadPoolExecutor` | Concurrent ingestion, dedup, validation, classification |
+| **Automation** | GitHub Actions | Scheduled & on-demand pipeline runs |
+| **Dashboard** | React 19 · Chart.js · Cloudflare Pages | IOC search, live analytics, community reporting |
+| **Delivery** | GitHub Raw | Zero-infra, always-on blocklist serving |
+| **Archives** | GitHub Releases | Daily ZIP snapshots for retrospective hunting |
 
 ---
 
@@ -68,14 +63,16 @@ Threatbase is a **fully-automated threat intelligence ecosystem**. It ingests, d
 
 <div align="center">
 
-| Type | Source Count | Use Case |
-|:---:|:---:|:---|
-| 🔴 **IPv4 Addresses** | 8 feeds | Firewall blocklists, SIEM correlation |
-| 🟠 **IPv6 Addresses** | 3 feeds | Next-gen network blocking |
-| 🟡 **CIDR Ranges** | 2 feeds | BGP null-routing, edge filtering |
-| 🟢 **Domains** | 4 feeds | DNS sinkholing, Pi-Hole, AdGuard |
-| 🔵 **URLs** | 3 feeds | Web proxy / NGFW blocking |
-| 🟣 **SHA-256 Hashes** | 2 feeds | EDR ingestion, malware triage |
+| Indicator | Count | Primary Use Case |
+|:--|--:|:--|
+| 🔴 &nbsp;**IPv4** | `329,696` | Firewall blocklists, SIEM correlation |
+| 🟠 &nbsp;**IPv6** | `3,419` | Next-gen network blocking |
+| 🟡 &nbsp;**CIDR Ranges** | `7,738` | BGP null-routing, edge filtering |
+| 🟢 &nbsp;**Domains** | `1,603,762` | DNS sinkholing, Pi-hole, AdGuard |
+| 🔵 &nbsp;**URLs** | `42,201` | Web proxy / NGFW blocking |
+| 🟣 &nbsp;**SHA-256 Hashes** | `1,098,522` | EDR ingestion, malware triage |
+
+<sub>Live counts on the <a href="https://threatbase.qzz.io">dashboard</a>. Indicators are classified into categories such as <code>C2</code>, <code>Botnet</code>, <code>Brute-Force</code>, <code>Exploit</code>, <code>Spam</code>, <code>Tor</code> &amp; more.</sub>
 
 </div>
 
@@ -83,23 +80,23 @@ Threatbase is a **fully-automated threat intelligence ecosystem**. It ingests, d
 
 ## 📡 Upstream Intelligence Sources
 
-Threatbase curates and deduplicates from the following authoritative providers:
+Threatbase curates and deduplicates from authoritative providers, including:
 
 <details open>
-<summary><strong>View all sources</strong></summary>
+<summary><strong>View source highlights</strong></summary>
 
 <br/>
 
 | Provider | Focus Area | IOC Types |
-|:---|:---|:---|
-| **Abuse.ch** — FeodoTracker, URLhaus, MalwareBazaar | Botnets, C2s, Malware Delivery | IPs, Domains, URLs, Hashes |
-| **Spamhaus** — DROP / EDROP | Spam Networks, Hijacked ASNs | IPs, CIDRs |
-| **FireHOL** | Botnets, Cybercrime Infrastructure | IPs |
-| **DShield (SANS ISC)** | Port Scanners, Bruteforcers | IPs |
-| **PhishTank / OpenPhish** | Phishing Campaigns | Domains, URLs |
-| **Emerging Threats / CINS Army** | Compromised Hosts | IPs |
-| **Hagezi** | DNS Blocklists (Malware & Ads) | Domains |
-| **Blocklist.de / GreenSnow** | SSH/FTP Bruteforcers | IPs |
+|:--|:--|:--|
+| **Abuse.ch** — FeodoTracker, URLhaus, MalwareBazaar | Botnets, C2s, malware delivery | IPs, Domains, URLs, Hashes |
+| **Spamhaus** — DROP / EDROP | Spam networks, hijacked ASNs | IPs, CIDRs |
+| **FireHOL** | Botnets, cybercrime infrastructure | IPs |
+| **DShield** (SANS ISC) | Port scanners, brute-forcers | IPs |
+| **PhishTank / OpenPhish** | Phishing campaigns | Domains, URLs |
+| **Emerging Threats / CINS Army** | Compromised hosts | IPs |
+| **Hagezi** | DNS blocklists (malware & ads) | Domains |
+| **Blocklist.de / GreenSnow** | SSH/FTP brute-forcers | IPs |
 
 > Full attribution on the **[Acknowledgements page →](https://threatbase.qzz.io/thanks)**
 
@@ -107,112 +104,117 @@ Threatbase curates and deduplicates from the following authoritative providers:
 
 ---
 
-## 📄 Using the Threat Feeds Directly
+## 📥 Using the Feeds
 
-All IOC files are committed to this repository and served continuously via **GitHub Raw**. Drop them directly into your security tooling — no auth, no rate limits.
+Every feed is committed to this repo and served continuously via **GitHub Raw** — drop them straight into your tooling. No auth. No rate limits.
 
 ### 🌐 Network Blocklists
 
-> Import into firewall rules, edge routers, or BGP null-routing pipelines.
-
-```
-https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/malicious_ips.txt
-https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/malicious_ipv6.txt
-https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/malicious_cidrs.txt
+```text
+https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/threatbase-ip.txt
+https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/threatbase-ipv6.txt
+https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/threatbase-cidr.txt
 ```
 
 | Feed | File | Format |
-|:---|:---|:---|
-| IPv4 Blocklist | `malicious_ips.txt` | One IP per line |
-| IPv6 Blocklist | `malicious_ipv6.txt` | One IP per line |
-| CIDR Blocklist | `malicious_cidrs.txt` | CIDR notation |
+|:--|:--|:--|
+| IPv4 Blocklist | `threatbase-ip.txt` | One IP per line |
+| IPv6 Blocklist | `threatbase-ipv6.txt` | One IP per line |
+| CIDR Blocklist | `threatbase-cidr.txt` | CIDR notation |
 
 ### 🕸️ DNS & Web Blocklists
 
-> Compatible with Pi-Hole, AdGuard Home, Squid, Palo Alto EDL.
+> Compatible with Pi-hole, AdGuard Home, Squid, and Palo Alto EDL.
 
-```
-https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/malicious_domains.txt
-https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/malicious_urls.txt
+```text
+https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/threatbase-domain.txt
+https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/threatbase-url.txt
 ```
 
 | Feed | File | Format |
-|:---|:---|:---|
-| Domain Blocklist | `malicious_domains.txt` | One domain per line |
-| URL Blocklist | `malicious_urls.txt` | Full URL per line |
+|:--|:--|:--|
+| Domain Blocklist | `threatbase-domain.txt` | One domain per line |
+| URL Blocklist | `threatbase-url.txt` | Full URL per line |
 
 ### 💀 Malware File Hashes
 
-> 1,000,000+ SHA-256 hashes for EDR ingestion and malware triage pipelines.
+> 1,000,000+ SHA-256 hashes for EDR ingestion and malware-triage pipelines.
 
-```
-https://raw.githubusercontent.com/kalidadas18/threatbase/main/ioc/malicious_hashes.txt
+```text
+https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/threatbase-hash.txt
 ```
 
 | Feed | File | Format |
-|:---|:---|:---|
-| Malware Hash DB | `malicious_hashes.txt` | SHA-256, one per line |
+|:--|:--|:--|
+| Malware Hash DB | `threatbase-hash.txt` | SHA-256, one per line |
 
 ---
 
-## 🗄️ Historical Archives
-
-A full ZIP archive of the complete feed is published daily to the **[Releases](https://github.com/kalidada18/threatbase/releases)** page.
-
-```
-threatbase-YYYY-MM-DD.zip
-├── malicious_ips.txt
-├── malicious_ipv6.txt
-├── malicious_cidrs.txt
-├── malicious_domains.txt
-├── malicious_urls.txt
-└── malicious_hashes.txt
-```
-
-Ideal for **retrospective SIEM hunting**, academic research, and historical IOC enrichment.
-
----
-
-## ⚡ Quick Integration Examples
+## ⚡ Quick Integration
 
 <details>
-<summary><strong>iptables (Linux)</strong></summary>
+<summary><strong>iptables — Linux firewall</strong></summary>
+
+<br/>
 
 ```bash
-curl -s https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/malicious_ips.txt \
+curl -s https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/threatbase-ip.txt \
   | grep -v '^#' \
-  | xargs -I{} iptables -A INPUT -s {} -j DROP
+  | xargs -I{} sudo iptables -A INPUT -s {} -j DROP
 ```
 </details>
 
 <details>
-<summary><strong>Pi-Hole / AdGuard (DNS blocklist)</strong></summary>
+<summary><strong>Pi-hole / AdGuard — DNS blocklist</strong></summary>
 
-Add this URL to your blocklist sources:
-```
-https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/malicious_domains.txt
+<br/>
+
+Add this URL as a blocklist source:
+
+```text
+https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/threatbase-domain.txt
 ```
 </details>
 
 <details>
-<summary><strong>Splunk / SIEM IOC lookup</strong></summary>
+<summary><strong>Splunk / SIEM — batch ingestion</strong></summary>
+
+<br/>
 
 ```bash
-# Download daily archive for batch ingestion
-wget https://github.com/kalidadas18/threatbase/releases/latest/download/threatbase-latest.zip
+# Pull the latest daily archive for bulk lookup ingestion
+wget https://github.com/kalidada18/threatbase/releases/latest/download/threatbase-latest.zip
 unzip threatbase-latest.zip -d ./ioc-feeds/
 ```
 </details>
 
 ---
 
+## 🗄️ Historical Archives
+
+A full ZIP of the complete feed is published daily to the **[Releases](https://github.com/kalidada18/threatbase/releases)** page.
+
+```text
+threatbase-YYYY-MM-DD.zip
+├── threatbase-ip.txt
+├── threatbase-ipv6.txt
+├── threatbase-cidr.txt
+├── threatbase-domain.txt
+├── threatbase-url.txt
+└── threatbase-hash.txt
+```
+
+Ideal for **retrospective SIEM hunting**, academic research, and historical IOC enrichment.
+
+---
+
 ## 🤝 Contributing
 
-Threatbase is community-powered. Contributions welcome:
+Threatbase is community-powered. Contributions are welcome:
 
-- 📥 **New Feed Sources** — open an issue with feed URL + license
-- 🐛 **Bug Reports** — label as `bug`
-- 💡 **Feature Requests** — label as `enhancement`
+- 📥 **New feed sources** — open an issue with the feed URL + license
+- 🐛 **Bug reports** — label as `bug`
+- 💡 **Feature requests** — label as `enhancement`
 
 ---
 
@@ -220,7 +222,7 @@ Threatbase is community-powered. Contributions welcome:
   <br/>
   <sub>
     ⚖️ <a href="LICENSE">MIT License</a> &nbsp;·&nbsp;
-    Upstream feed data subject to each provider's respective Terms of Service &nbsp;·&nbsp;
+    Upstream feed data remains subject to each provider's Terms of Service &nbsp;·&nbsp;
     Made in 🇳🇵
   </sub>
   <br/><br/>
