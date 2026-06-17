@@ -4,7 +4,7 @@ import {
   AlertTriangle, Copy, Check, ChevronLeft, ChevronRight, HelpCircle, Users, ShieldCheck, ListFilter
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { SignIn1 } from '@/components/ui/modern-stunning-sign-in'
+import { AuthComponent } from '@/components/ui/sign-up'
 import supabaseClient from '../supabaseClient'
 import { fmt, timeAgo, getAvatarForName, getCategoryIconPath } from '../utils'
 import { useAuth } from '../AuthContext'
@@ -49,11 +49,11 @@ const CommentCell = ({ comment }: { comment: string }) => {
   if (!comment) return <span className="text-slate-500 italic">No comment provided</span>;
   
   if (comment.length <= maxLength) {
-    return <div className="whitespace-pre-wrap break-words leading-relaxed text-slate-200 font-mono text-[12px]">{comment}</div>;
+    return <div className="whitespace-pre-wrap break-words leading-relaxed text-slate-300 font-elegant text-[13px] tracking-wide">{comment}</div>;
   }
 
   return (
-    <div className="whitespace-pre-wrap break-words leading-relaxed text-slate-200 font-mono text-[12px]">
+    <div className="whitespace-pre-wrap break-words leading-relaxed text-slate-300 font-elegant text-[13px] tracking-wide">
       {expanded ? comment : `${comment.substring(0, maxLength).trim()}...`}
       <div className="text-right mt-1">
         <button 
@@ -333,16 +333,9 @@ export default function ReportIP({ addToast }: any) {
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="text-center relative max-w-3xl mx-auto"
           >
-            <div className="flex justify-center">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 backdrop-blur-xl text-[11px] font-bold uppercase tracking-[0.2em] text-slate-300">
-                <ShieldCheck className="h-3.5 w-3.5 text-primary" />
-                Community Intelligence
-              </span>
-            </div>
-
-            <h1 className="mt-6 text-4xl md:text-6xl font-black tracking-tight text-white leading-[1.05]">
-              Report a{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-rose-500 to-blue-500">
+            <h1 className="text-5xl md:text-7xl font-space font-extrabold tracking-tighter text-white leading-[1.1] drop-shadow-2xl">
+              Report a <br className="hidden sm:block" />
+              <span className="text-liquid-red font-righteous tracking-wide">
                 Malicious IP
               </span>
             </h1>
@@ -352,28 +345,7 @@ export default function ReportIP({ addToast }: any) {
               tracking threat actors, and exposing malicious infrastructure.
             </p>
 
-            {/* Trust strip */}
-            <div className="mt-9 grid grid-cols-1 sm:grid-cols-3 max-w-2xl mx-auto rounded-2xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-xl overflow-hidden divide-y sm:divide-y-0 sm:divide-x divide-white/[0.06]">
-              <div className="flex flex-col items-center justify-center gap-1 px-4 py-4">
-                <div className="flex items-center gap-2 text-white">
-                  <Users className="h-4 w-4 text-primary" />
-                  <span className="text-lg font-black tabular-nums tracking-tight">
-                    {reportCount > 0 ? fmt(reportCount) : '—'}
-                  </span>
-                </div>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Submissions</span>
-              </div>
 
-              <div className="flex flex-col items-center justify-center gap-1 px-4 py-4">
-                <ShieldCheck className="h-5 w-5 text-emerald-400" />
-                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Whitelist-protected</span>
-              </div>
-
-              <Link to="/policy" className="group flex flex-col items-center justify-center gap-1 px-4 py-4 transition-colors hover:bg-white/[0.03]">
-                <HelpCircle className="h-5 w-5 text-blue-400" />
-                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500 group-hover:text-blue-400 transition-colors">Reporting policy</span>
-              </Link>
-            </div>
           </motion.div>
 
           <motion.div
@@ -383,6 +355,11 @@ export default function ReportIP({ addToast }: any) {
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.12 }}
           >
             <div>
+              {!user ? (
+                <div className="flex justify-center w-full my-8">
+                  <AuthComponent />
+                </div>
+              ) : (
               <Card className="relative overflow-hidden border-white/[0.08] bg-slate-950/50 backdrop-blur-2xl shadow-[0_24px_70px_-20px_rgba(0,0,0,0.7)] rounded-3xl">
                 <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
                 <CardHeader className="border-b border-white/[0.06] pb-5">
@@ -399,11 +376,6 @@ export default function ReportIP({ addToast }: any) {
                   </div>
                 </CardHeader>
                 <CardContent className="pt-6">
-                  {!user ? (
-                    <div className="flex justify-center w-full mt-4">
-                      <SignIn1 />
-                    </div>
-                  ) : (
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <div className="space-y-2">
                         <Label htmlFor="ipAddress" className="text-sm font-semibold text-slate-200 tracking-wide flex items-center gap-1.5">
@@ -518,9 +490,9 @@ export default function ReportIP({ addToast }: any) {
                         </p>
                       </div>
                     </form>
-                  )}
                 </CardContent>
               </Card>
+              )}
             </div>
           </motion.div>
 
@@ -576,18 +548,18 @@ export default function ReportIP({ addToast }: any) {
                   </div>
                 ) : (
                   <table className="w-full text-left font-sans block md:table border-collapse">
-                    <thead className="hidden md:table-header-group bg-black/30 text-slate-400 border-b border-white/[0.08]">
+                    <thead className="hidden md:table-header-group bg-black/30 border-b border-white/[0.08]">
                       <tr>
-                        <th className="px-5 py-3.5 text-[10px] font-bold tracking-[0.12em] uppercase w-[16%]">IP Address</th>
-                        <th className="px-5 py-3.5 text-[10px] font-bold tracking-[0.12em] uppercase w-[16%]">Reporter</th>
-                        <th className="px-5 py-3.5 text-[10px] font-bold tracking-[0.12em] uppercase w-[20%]">
+                        <th className="px-5 py-3.5 text-[10px] font-space font-bold tracking-[0.12em] uppercase text-slate-400 w-[16%]">IP Address</th>
+                        <th className="px-5 py-3.5 text-[10px] font-space font-bold tracking-[0.12em] uppercase text-slate-400 w-[16%]">Reporter</th>
+                        <th className="px-5 py-3.5 text-[10px] font-space font-bold tracking-[0.12em] uppercase text-slate-400 w-[20%]">
                           <span className="inline-flex items-center gap-1.5">
                             Timestamp (UTC)
                             <HelpCircle size={13} className="text-slate-500" />
                           </span>
                         </th>
-                        <th className="px-5 py-3.5 text-[10px] font-bold tracking-[0.12em] uppercase">Evidence</th>
-                        <th className="px-5 py-3.5 text-[10px] font-bold tracking-[0.12em] uppercase text-right w-[16%]">Categories</th>
+                        <th className="px-5 py-3.5 text-[10px] font-space font-bold tracking-[0.12em] uppercase text-slate-400">Evidence</th>
+                        <th className="px-5 py-3.5 text-[10px] font-space font-bold tracking-[0.12em] uppercase text-slate-400 text-right w-[16%]">Categories</th>
                       </tr>
                     </thead>
                     <tbody className="block md:table-row-group space-y-4 md:space-y-0 p-4 md:p-0">
@@ -614,7 +586,7 @@ export default function ReportIP({ addToast }: any) {
                               <td className="block md:table-cell px-0 py-1.5 md:px-5 md:py-4 align-top whitespace-nowrap">
                                 {showIp ? (
                                   <div className="flex items-center gap-2 group/ip">
-                                    <span className="text-slate-100 font-mono text-[15px] md:text-[13px] font-semibold">
+                                    <span className="text-slate-100 font-space text-[15px] font-bold tracking-wide">
                                       {row.ip}
                                     </span>
                                     <button
@@ -634,7 +606,7 @@ export default function ReportIP({ addToast }: any) {
                               <td className="block md:table-cell px-0 py-1 md:px-5 md:py-4 align-top whitespace-nowrap">
                                 <div className="flex items-center gap-2">
                                   <img src={getAvatarForName(row.reporter_alias)} alt="" className="w-6 h-6 rounded-full border border-white/10 bg-black/20 object-cover" />
-                                  <span className="text-slate-200 group-hover:text-blue-400 transition-colors cursor-pointer text-[13px] font-semibold">
+                                  <span className="text-slate-200 group-hover:text-blue-400 transition-colors cursor-pointer font-elegant text-[14px] font-medium tracking-wide">
                                     {row.reporter_alias || 'Anonymous'}
                                   </span>
                                   {row.reporter_alias === 'lamichhanesujal18' && (
@@ -649,8 +621,8 @@ export default function ReportIP({ addToast }: any) {
                               {/* Timestamp */}
                               <td className="block md:table-cell px-0 py-1 md:px-5 md:py-4 align-top whitespace-nowrap">
                                 <div className="flex items-center gap-2 md:block">
-                                  <div className="text-[13px] text-slate-300 font-mono">{fullDate}</div>
-                                  <div className="text-[11px] text-slate-500 md:mt-0.5">{timeAgo(row.created_at)}</div>
+                                  <div className="text-[13px] text-slate-300 font-space font-medium tracking-tight">{fullDate}</div>
+                                  <div className="text-[11px] text-slate-500 font-elegant mt-0.5">{timeAgo(row.created_at)}</div>
                                 </div>
                               </td>
 
