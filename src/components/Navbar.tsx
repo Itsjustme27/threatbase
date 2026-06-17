@@ -18,7 +18,7 @@ export default function Navbar() {
     const navigate = useNavigate()
     const location = useLocation()
     const isReportActive = location.pathname === '/report'
-    const { user, profile, loading, signInWithGoogle, signOut } = useAuth()
+    const { user, profile, loading, signInWithGoogle, signInWithGithub, signOut } = useAuth()
     const [dropdownOpen, setDropdownOpen] = React.useState(false)
     const [menuState, setMenuState] = React.useState(false)
     const [scrolled, setScrolled] = React.useState(false)
@@ -219,13 +219,22 @@ export default function Navbar() {
                                         </AnimatePresence>
                                     </div>
                                 ) : (
-                                    <Button
-                                        onClick={() => { signInWithGoogle(); setMenuState(false) }}
-                                        className="rounded-full px-5 h-10 gap-2 text-xs font-bold bg-white text-black hover:bg-slate-200 transition-all duration-300 hover:shadow-lg hover:shadow-white/10 active:scale-[0.98]"
-                                        size="sm">
-                                        <LogIn size={14} />
-                                        Sign In
-                                    </Button>
+                                    <div className="flex gap-2">
+                                        <Button
+                                            onClick={() => { signInWithGoogle(); setMenuState(false) }}
+                                            className="rounded-full px-4 h-10 gap-2 text-xs font-bold bg-white text-black hover:bg-slate-200 transition-all duration-300 hover:shadow-lg hover:shadow-white/10 active:scale-[0.98]"
+                                            size="sm" title="Sign In with Google">
+                                            <LogIn size={14} />
+                                            <span className="hidden sm:inline">Google</span>
+                                        </Button>
+                                        <Button
+                                            onClick={() => { signInWithGithub(); setMenuState(false) }}
+                                            className="rounded-full px-4 h-10 gap-2 text-xs font-bold bg-[#24292e] text-white hover:bg-[#2f363d] transition-all duration-300 hover:shadow-lg active:scale-[0.98]"
+                                            size="sm" title="Sign In with GitHub">
+                                            <Github size={14} />
+                                            <span className="hidden sm:inline">GitHub</span>
+                                        </Button>
+                                    </div>
                                 )}
                             </div>
                         </div>

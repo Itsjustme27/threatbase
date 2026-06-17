@@ -13,6 +13,7 @@ interface AuthContextType {
   mfaVerified: () => void
   checkMfaLevel: () => Promise<void>
   signInWithGoogle: () => Promise<void>
+  signInWithGithub: () => Promise<void>
   signInWithEmail: (email: string, password: string) => Promise<void>
   signUpWithEmail: (email: string, password: string) => Promise<void>
   signOut: () => Promise<void>
@@ -130,6 +131,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (error) throw error
   }
 
+  const signInWithGithub = async () => {
+    if (!supabaseClient) return
+    const redirectTo = window.location.origin + import.meta.env.BASE_URL
+    const { error } = await supabaseClient.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        redirectTo,
+      },
+    })
+    if (error) throw error
+  }
+
   const signInWithEmail = async (email: string, password: string) => {
     if (!supabaseClient) return
     const { error } = await supabaseClient.auth.signInWithPassword({
@@ -165,6 +178,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         mfaVerified,
         checkMfaLevel,
         signInWithGoogle,
+        signInWithGithub,
         signInWithEmail,
         signUpWithEmail,
         signOut,
