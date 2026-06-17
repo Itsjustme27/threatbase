@@ -170,6 +170,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       provider: 'github',
       options: {
         redirectTo,
+        scopes: 'read:user user:email',
       },
     })
     if (error) throw error
