@@ -161,35 +161,7 @@ export default function ThanksPage() {
           </motion.div>
         )}
 
-        {/* Sources grid */}
-        <motion.div
-          className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ staggerChildren: 0.04 }}
-        >
-          {SOURCES.map((s) => (
-            <motion.a
-              key={s.name}
-              href={s.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              variants={cardVariants}
-              whileHover={{ y: -4 }}
-              className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/[0.07] bg-white/[0.02] backdrop-blur-xl p-5 transition-colors hover:border-white/15 hover:bg-white/[0.04]"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <h3 className="text-base font-bold text-white tracking-tight group-hover:text-amber-300 transition-colors">
-                  {s.name}
-                </h3>
-                <ExternalLink className="h-4 w-4 text-slate-600 group-hover:text-amber-400 transition-colors shrink-0 mt-0.5" />
-              </div>
-              <p className="mt-1.5 text-sm text-slate-400 leading-relaxed">{s.desc}</p>
-              <div className="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            </motion.a>
-          ))}
-        </motion.div>
+
 
         {/* Footer note + CTA */}
         <motion.div
