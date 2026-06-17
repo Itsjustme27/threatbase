@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom'
 import { useSEO } from '@/useSEO'
 import supabaseClient from '@/supabaseClient'
 import AnimatedShaderBackground from '@/components/ui/animated-shader-background'
+import { Sparkles } from '@/components/ui/sparkles'
+import { InfiniteSlider } from '@/components/ui/infinite-slider'
+import { ProgressiveBlur } from '@/components/ui/progressive-blur'
 
 type Source = { name: string; desc: string; url: string }
 
@@ -91,6 +94,48 @@ export default function ThanksPage() {
             made possible by the maintainers who tirelessly collect, verify, and share open threat
             intelligence — making the internet measurably safer for everyone.
           </p>
+        </motion.div>
+
+        {/* Scrolling feed-name marquee */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="relative mt-14"
+        >
+          <div className="relative h-[88px] w-full">
+            <InfiniteSlider className="flex h-full w-full items-center" duration={40} gap={56}>
+              {SOURCES.map((s) => (
+                <span
+                  key={s.name}
+                  className="whitespace-nowrap text-lg md:text-xl font-bold tracking-tight text-slate-400/70 transition-colors hover:text-amber-300"
+                >
+                  {s.name}
+                </span>
+              ))}
+            </InfiniteSlider>
+            <ProgressiveBlur
+              className="pointer-events-none absolute top-0 left-0 h-full w-[180px]"
+              direction="left"
+              blurIntensity={1}
+            />
+            <ProgressiveBlur
+              className="pointer-events-none absolute top-0 right-0 h-full w-[180px]"
+              direction="right"
+              blurIntensity={1}
+            />
+          </div>
+
+          <div className="relative -mt-6 h-28 w-full overflow-hidden [mask-image:radial-gradient(50%_50%,white,transparent)]">
+            <div className="absolute inset-0 before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_bottom_center,var(--gradient-color),transparent_70%)] before:opacity-30" />
+            <div className="absolute -left-1/2 top-1/2 z-10 aspect-[1/0.7] w-[200%] rounded-[100%] border-t border-white/10 bg-app" />
+            <Sparkles
+              density={500}
+              size={1.2}
+              className="absolute inset-x-0 bottom-0 h-full w-full [mask-image:radial-gradient(50%_50%,white,transparent_85%)]"
+              color="#ffffff"
+            />
+          </div>
         </motion.div>
 
         {/* Top contributor highlight */}
