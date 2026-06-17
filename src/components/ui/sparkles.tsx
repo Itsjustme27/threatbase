@@ -1,6 +1,6 @@
 import { useEffect, useId, useState } from "react"
-import Particles, { initParticlesEngine } from "@tsparticles/react"
-import type { ISourceOptions } from "@tsparticles/engine"
+import Particles from "@tsparticles/react"
+import { tsParticles, type ISourceOptions } from "@tsparticles/engine"
 import { loadSlim } from "@tsparticles/slim"
 
 type SparklesProps = {
@@ -35,9 +35,7 @@ export function Sparkles({
   const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
-    initParticlesEngine(async (engine) => {
-      await loadSlim(engine)
-    }).then(() => {
+    loadSlim(tsParticles).then(() => {
       setIsReady(true)
     })
   }, [])
