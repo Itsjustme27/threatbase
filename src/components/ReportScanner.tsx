@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Bug, ShieldCheck, AlertTriangle, AlertOctagon, ChevronRight, Search, Check, ShieldAlert } from 'lucide-react'
+import DOMPurify from 'dompurify'
 import supabaseClient from '../supabaseClient'
 import { timeAgo, getCategoryIconPath, normalizeTags } from '../utils'
 import { useAuth } from '../AuthContext'
@@ -135,10 +136,11 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
     setIsDisputing(true)
     try {
       const alias = user.user_metadata?.username || user.user_metadata?.full_name || user.email?.split('@')[0]
+      const safeReason = DOMPurify.sanitize(disputeReason.trim())
       const { error } = await supabaseClient.from('disputes').insert([{
         ip,
         reporter_alias: alias,
-        reason: disputeReason.trim()
+        reason: safeReason
       }])
 
       if (error) {

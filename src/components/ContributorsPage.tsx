@@ -1,8 +1,6 @@
-import React from 'react'
 import { motion } from 'framer-motion'
 import Leaderboard from './Leaderboard'
 import { useSEO } from '../useSEO'
-import { MatrixText } from '@/components/ui/matrix-text'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import AnoAI from '@/components/ui/animated-shader-background'
 
@@ -37,24 +35,38 @@ export default function ContributorsPage() {
             </p>
           </motion.div>
 
-          <Card className="relative z-10 shadow-2xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-[40px] overflow-hidden rounded-2xl">
-            <CardHeader className="pb-6 pt-6 px-6 border-b border-white/[0.05] bg-gradient-to-r from-white/[0.02] to-transparent">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-blue-500/10 rounded-2xl border border-blue-500/20 text-blue-400 drop-shadow-[0_0_12px_rgba(59,130,246,0.5)]">
-                  <img src={`${import.meta.env.BASE_URL}img/community.png`} alt="Community Icon" className="w-10 h-10 object-contain drop-shadow-md" />
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="relative"
+          >
+            {/* Ambient card glow */}
+            <div className="pointer-events-none absolute -inset-px rounded-[1.4rem] bg-gradient-to-b from-blue-500/20 via-transparent to-transparent opacity-60 blur-xl" />
+
+            <Card className="relative z-10 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] shadow-2xl backdrop-blur-xl">
+              {/* top sheen */}
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+
+              <CardHeader className="relative border-b border-white/[0.06] bg-gradient-to-r from-white/[0.03] to-transparent px-6 pb-6 pt-6">
+                <div className="flex items-center gap-4">
+                  <div className="rounded-2xl border border-blue-500/20 bg-blue-500/10 p-3 text-blue-400 drop-shadow-[0_0_12px_rgba(59,130,246,0.5)]">
+                    <img src={`${import.meta.env.BASE_URL}img/community.png`} alt="Community Icon" className="h-10 w-10 object-contain drop-shadow-md" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-[22px] font-bold tracking-wide text-white drop-shadow-sm">Leaderboard</CardTitle>
+                    <CardDescription className="mt-0.5 text-slate-400">Global threat intelligence leaders</CardDescription>
+                  </div>
                 </div>
-                <div>
-                  <CardTitle className="text-[22px] font-bold text-white tracking-wide drop-shadow-sm">Leaderboard</CardTitle>
-                  <CardDescription className="text-slate-400 mt-0.5">Global threat intelligence leaders</CardDescription>
+              </CardHeader>
+
+              <CardContent className="p-0">
+                <div className="px-3 py-4 sm:px-4">
+                  <Leaderboard />
                 </div>
-              </div>
-            </CardHeader>
-            <CardContent className="p-0 pt-4">
-              <div className="px-6 pb-6">
-                <Leaderboard />
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
       </div>
     </main>

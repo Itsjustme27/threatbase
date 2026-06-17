@@ -1,44 +1,90 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Crown, Diamond, Star, Shield, Target, Trophy, ShieldCheck, Medal } from 'lucide-react'
+import { Diamond, Star, Shield, Trophy, Medal } from 'lucide-react'
 import supabaseClient from '../supabaseClient'
 import { fmt, getAvatarForName } from '../utils'
 
-// Ranks based on number of reports
+// Ranks based on number of reports. Each rank exposes a single `accent` token
+// so the badge border, 10%-opacity background, and text color stay in sync.
 const getRankInfo = (count: number) => {
   if (count >= 500) {
     return {
       name: 'Legend',
-      style: 'bg-amber-500/10 border-amber-500/30 text-amber-500 transition-all duration-500 group-hover:bg-amber-500/20 group-hover:border-amber-400/60 group-hover:text-amber-400',
-      icon: <Trophy size={14} className="text-amber-500 transition-all duration-500 group-hover:text-amber-400" strokeWidth={2.5} />
+      accent: 'amber',
+      badge: 'bg-amber-500/10 border-amber-500/30 text-amber-400 group-hover:bg-amber-500/[0.16] group-hover:border-amber-400/50',
+      icon: <Trophy size={11} strokeWidth={2.5} />,
     }
   }
   if (count >= 300) {
     return {
       name: 'Elite',
-      style: 'bg-fuchsia-500/10 border-fuchsia-500/30 text-fuchsia-500 transition-all duration-500 group-hover:bg-fuchsia-500/20 group-hover:border-fuchsia-400/60 group-hover:text-fuchsia-400',
-      icon: <Diamond size={14} className="text-fuchsia-500 transition-all duration-500 group-hover:text-fuchsia-400" strokeWidth={2.5} />
+      accent: 'fuchsia',
+      badge: 'bg-fuchsia-500/10 border-fuchsia-500/30 text-fuchsia-400 group-hover:bg-fuchsia-500/[0.16] group-hover:border-fuchsia-400/50',
+      icon: <Diamond size={11} strokeWidth={2.5} />,
     }
   }
   if (count >= 100) {
     return {
       name: 'Pro',
-      style: 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400 transition-all duration-500 group-hover:bg-cyan-500/20 group-hover:border-cyan-400/60 group-hover:text-cyan-300',
-      icon: <Star size={14} className="text-cyan-400 transition-all duration-500 group-hover:text-cyan-300" strokeWidth={2.5} />
+      accent: 'cyan',
+      badge: 'bg-cyan-500/10 border-cyan-500/30 text-cyan-300 group-hover:bg-cyan-500/[0.16] group-hover:border-cyan-400/50',
+      icon: <Star size={11} strokeWidth={2.5} />,
     }
   }
   if (count >= 50) {
     return {
       name: 'Defender',
-      style: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 transition-all duration-500 group-hover:bg-emerald-500/20 group-hover:border-emerald-400/60 group-hover:text-emerald-300',
-      icon: <Shield size={14} className="text-emerald-400 transition-all duration-500 group-hover:text-emerald-300" strokeWidth={2.5} />
+      accent: 'emerald',
+      badge: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300 group-hover:bg-emerald-500/[0.16] group-hover:border-emerald-400/50',
+      icon: <Shield size={11} strokeWidth={2.5} />,
     }
   }
-  return {
-    name: 'Initiate',
-    style: 'bg-slate-500/10 border-slate-500/30 text-slate-400 transition-all duration-500 group-hover:bg-slate-400/20 group-hover:border-slate-300/40 group-hover:text-slate-200',
-    icon: <Target size={14} className="text-slate-400 transition-all duration-500 group-hover:text-slate-200" strokeWidth={2.5} />
+  return null
+}
+
+// Top-3 ambient treatment: a soft ring + colored radial glow bleeding in from
+// the left edge of the row. Anything past 3rd place is visually neutral.
+const podiumStyle = (index: number) => {
+  switch (index) {
+    case 0:
+      return {
+        row: 'ring-1 ring-inset ring-amber-400/20 hover:ring-amber-300/30',
+        glow: 'bg-[radial-gradient(120%_140%_at_0%_50%,rgba(245,158,11,0.10),transparent_60%)]',
+      }
+    case 1:
+      return {
+        row: 'ring-1 ring-inset ring-slate-300/15 hover:ring-slate-200/25',
+        glow: 'bg-[radial-gradient(120%_140%_at_0%_50%,rgba(203,213,225,0.08),transparent_60%)]',
+      }
+    case 2:
+      return {
+        row: 'ring-1 ring-inset ring-orange-500/15 hover:ring-orange-400/25',
+        glow: 'bg-[radial-gradient(120%_140%_at_0%_50%,rgba(234,88,12,0.08),transparent_60%)]',
+      }
+    default:
+      return {
+        row: 'ring-1 ring-inset ring-white/[0.04] hover:ring-white/10',
+        glow: 'bg-transparent',
+      }
   }
+}
+
+const MEDALS = ['1streward.png', '2ndmedal.png', '3rdmedal.png']
+
+const container = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.07, delayChildren: 0.05 },
+  },
+}
+
+const rowVariants = {
+  hidden: { opacity: 0, y: 14 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { type: 'spring', stiffness: 260, damping: 26 },
+  },
 }
 
 export default function Leaderboard() {
@@ -74,7 +120,7 @@ export default function Leaderboard() {
 
   if (loading && leaders.length === 0) {
     return (
-      <div className="flex justify-center py-12">
+      <div className="flex justify-center py-16">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     )
@@ -82,7 +128,7 @@ export default function Leaderboard() {
 
   if (leaders.length === 0) {
     return (
-      <div className="text-center py-12 text-slate-500">
+      <div className="text-center py-16 text-slate-500">
         <Medal size={48} className="mx-auto mb-4 opacity-30" />
         <p>No contributors yet. Be the first to earn a rank!</p>
       </div>
@@ -90,60 +136,87 @@ export default function Leaderboard() {
   }
 
   return (
-    <div className="w-full flex flex-col gap-3">
+    <motion.ol
+      variants={container}
+      initial="hidden"
+      animate="show"
+      className="w-full flex flex-col gap-2"
+    >
       {leaders.map((leader, index) => {
         const rank = getRankInfo(leader.reports_count)
+        const podium = podiumStyle(index)
+        const isAdmin =
+          leader.reporter_alias === 'lamichhanesujal18' ||
+          leader.reporter_alias === 'kalidada'
 
         return (
-          <motion.div
+          <motion.li
             key={leader.reporter_alias}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            className="flex items-center justify-between py-4 px-3 border-b border-white/[0.06] last:border-0 hover:bg-white/[0.02] transition-colors duration-200 relative group gap-4"
+            variants={rowVariants}
+            className={`group relative overflow-hidden rounded-xl transition-all duration-300 ease-out
+              bg-white/[0.015] hover:bg-white/[0.04] hover:translate-x-1 ${podium.row}`}
           >
-            <div className="flex items-center gap-4 relative z-10 flex-1 min-w-0">
-              <div className={`flex items-center justify-center flex-shrink-0 w-10 h-10 rounded-full font-bold font-elegant border transition-all duration-500 ${
-                index === 0 ? 'bg-yellow-500/5 border-yellow-500/20 text-yellow-500' :
-                index === 1 ? 'bg-slate-400/5 border-slate-400/20 text-slate-400' :
-                index === 2 ? 'bg-orange-600/5 border-orange-600/20 text-orange-600' :
-                'bg-transparent text-slate-500 border-transparent text-[14px]'
-              }`}>
-                {index === 0 ? <img src={`${import.meta.env.BASE_URL}img/1streward.png`} alt="1st Place" className="w-8 h-8 object-contain drop-shadow-md transition-all duration-500 group-hover:scale-110" /> :
-                 index === 1 ? <img src={`${import.meta.env.BASE_URL}img/2ndmedal.png`} alt="2nd Place" className="w-8 h-8 object-contain drop-shadow-md transition-all duration-500 group-hover:scale-110" /> :
-                 index === 2 ? <img src={`${import.meta.env.BASE_URL}img/3rdmedal.png`} alt="3rd Place" className="w-8 h-8 object-contain drop-shadow-md transition-all duration-500 group-hover:scale-110" /> :
-                 `#${index + 1}`}
-              </div>
-              <div className="flex flex-col justify-center gap-2 flex-1 min-w-0">
-                <div className="flex flex-wrap items-center gap-2">
-                  <img src={leader.avatar_url || getAvatarForName(leader.reporter_alias)} alt="Avatar" className="w-6 h-6 rounded-full border border-white/10 bg-black/20 object-cover drop-shadow-sm" />
-                  <h4 className="font-semibold text-white/80 transition-all duration-500 group-hover:text-white text-[15px] md:text-[16px] tracking-tight font-elegant leading-tight break-words">@{leader.reporter_alias}</h4>
-                  <span className={`hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border text-[10px] font-bold uppercase tracking-wider ${rank.style}`}>
-                    {rank.icon}
-                    {rank.name}
+            {/* podium ambient glow */}
+            <div className={`pointer-events-none absolute inset-0 opacity-70 transition-opacity duration-500 group-hover:opacity-100 ${podium.glow}`} />
+
+            <div className="relative z-10 grid grid-cols-[2.75rem_1fr_auto] sm:grid-cols-[3rem_1fr_auto] items-center gap-3 sm:gap-4 px-3 sm:px-4 py-3.5">
+              {/* Rank / medal */}
+              <div className="flex items-center justify-center">
+                {index < 3 ? (
+                  <img
+                    src={`${import.meta.env.BASE_URL}img/${MEDALS[index]}`}
+                    alt={`Rank ${index + 1}`}
+                    className="w-8 h-8 sm:w-9 sm:h-9 object-contain drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)] transition-transform duration-300 group-hover:scale-110"
+                  />
+                ) : (
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full font-elegant text-sm font-bold text-slate-500 tabular-nums transition-colors duration-300 group-hover:text-slate-300">
+                    {index + 1}
                   </span>
-                  {(leader.reporter_alias === 'lamichhanesujal18' || leader.reporter_alias === 'kalidada') && (
-                    <span className="flex-shrink-0 flex items-center gap-2 transition-transform duration-500 hover:scale-105">
-                      <img src={`${import.meta.env.BASE_URL}img/admin.png`} title="Admin" alt="Admin" className="w-7 h-7 object-contain drop-shadow-md transition-all duration-500" />
-                      <img src={`${import.meta.env.BASE_URL}img/hunter.png`} title="Hunter" alt="Hunter" className="w-7 h-7 object-contain drop-shadow-md transition-all duration-500" />
+                )}
+              </div>
+
+              {/* User info */}
+              <div className="flex items-center gap-3 min-w-0">
+                <img
+                  src={leader.avatar_url || getAvatarForName(leader.reporter_alias)}
+                  alt=""
+                  className="h-9 w-9 flex-shrink-0 rounded-full border border-white/10 bg-black/20 object-cover drop-shadow-sm transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="flex flex-col gap-1.5 min-w-0">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <h4 className="truncate font-elegant text-[15px] font-semibold leading-none tracking-tight text-white/85 transition-colors duration-300 group-hover:text-white">
+                      @{leader.reporter_alias}
+                    </h4>
+                    {isAdmin && (
+                      <span className="flex flex-shrink-0 items-center gap-1">
+                        <img src={`${import.meta.env.BASE_URL}img/admin.png`} title="Admin" alt="Admin" className="h-5 w-5 object-contain drop-shadow transition-transform duration-300 group-hover:scale-110" />
+                        <img src={`${import.meta.env.BASE_URL}img/hunter.png`} title="Hunter" alt="Hunter" className="h-5 w-5 object-contain drop-shadow transition-transform duration-300 group-hover:scale-110" />
+                      </span>
+                    )}
+                  </div>
+                  {/* Rank badge — premium SaaS tag */}
+                  {rank && (
+                    <span className={`inline-flex w-fit items-center gap-1.5 rounded-md border px-2 py-0.5 text-[10px] font-bold uppercase leading-none tracking-wider transition-all duration-300 ${rank.badge}`}>
+                      {rank.icon}
+                      {rank.name}
                     </span>
                   )}
                 </div>
+              </div>
 
+              {/* Score */}
+              <div className="flex flex-col items-end justify-center pl-1 text-right">
+                <div className="font-elegant text-lg sm:text-xl font-bold leading-none tracking-tight text-white tabular-nums">
+                  {fmt(leader.reports_count)}
+                </div>
+                <div className="mt-1 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500 whitespace-nowrap">
+                  Intel Reports
+                </div>
               </div>
             </div>
-
-            <div className="text-right relative z-10 flex flex-col justify-center flex-shrink-0">
-              <div className="text-xl font-bold text-white font-elegant tracking-tight leading-none mb-0.5">
-                {fmt(leader.reports_count)}
-              </div>
-              <div className="text-[10px] uppercase tracking-[0.15em] text-slate-400 font-bold whitespace-nowrap">
-                Intel Reports
-              </div>
-            </div>
-          </motion.div>
+          </motion.li>
         )
       })}
-    </div>
+    </motion.ol>
   )
 }
