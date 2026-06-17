@@ -48,7 +48,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     checkMfaLevel()
   }
 
-  const fetchProfile = async (userId: string) => {
+  const fetchProfile = async (userId: string, userObj?: User) => {
     if (!supabaseClient) return null
     try {
       const { data, error } = await supabaseClient
@@ -58,7 +58,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .single()
       if (error) {
         if (error.code === 'PGRST116') {
-          // Profile row doesn't exist yet, we will fallback to user_metadata
+          // Profile row doesn't exist yet, auto-create it
+          if (userObj) {
+            try {
+              const fallbackUsername = userObj.user_metadata?.user_name || userObj.user_metadata?.preferred_username || userObj.email?.split('@')[0] || `user_${Math.floor(Math.random()*10000)}`
+              const baseUsername = fallbackUsername.replace(/[^a-zA-Z0-9_-]/g, '') || `user_${Math.floor(Math.random()*10000)}`
+              
+              const newProfile = {
+                id: userObj.id,
+                username: baseUsername,
+                full_name: userObj.user_metadata?.full_name || null,
+                avatar_url: userObj.user_metadata?.avatar_url || null,
+              }
+              
+              const { data: inserted, error: insertError } = await supabaseClient
+                .from('profiles')
+                .insert([newProfile])
+                .select()
+                .single()
+                
+              if (!insertError && inserted) return inserted
+              
+              if (insertError?.code === '23505') { // unique violation
+                const { data: inserted2, error: insertError2 } = await supabaseClient
+                  .from('profiles')
+                  .insert([{ ...newProfile, username: `${baseUsername}_${Math.floor(Math.random()*1000)}` }])
+                  .select()
+                  .single()
+                if (!insertError2 && inserted2) return inserted2
+              }
+            } catch (err) {
+              console.error('Error auto-creating profile:', err)
+            }
+          }
           return null
         }
         throw error
@@ -72,7 +104,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const refreshProfile = async () => {
     if (user) {
-      const p = await fetchProfile(user.id)
+      const p = await fetchProfile(user.id, user)
       setProfile(p)
     }
   }
@@ -90,7 +122,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(u)
       if (u) {
         await checkMfaLevel()
-        const p = await fetchProfile(u.id)
+        const p = await fetchProfile(u.id, u)
         setProfile(p)
       }
       setLoading(false)
@@ -104,7 +136,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(u)
         if (u) {
           await checkMfaLevel()
-          const p = await fetchProfile(u.id)
+          const p = await fetchProfile(u.id, u)
           setProfile(p)
         } else {
           setProfile(null)

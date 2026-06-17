@@ -265,7 +265,7 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
         setEditBio(authProfile.bio || '')
         setEditWebsite(authProfile.website || '')
       } else if (user) {
-        const fallback = user.user_metadata?.custom_claims?.global_name || user.email?.split('@')[0] || ''
+        const fallback = user.user_metadata?.user_name || user.user_metadata?.preferred_username || user.user_metadata?.custom_claims?.global_name || user.email?.split('@')[0] || ''
         setEditUsername(fallback.replace(/[^a-zA-Z0-9_-]/g, ''))
       }
     }
@@ -274,7 +274,7 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
   // Fetch reports submitted by this user
   useEffect(() => {
     async function loadReports() {
-      const targetUsername = paramUsername || authProfile?.username || user?.email?.split('@')[0]
+      const targetUsername = paramUsername || authProfile?.username || user?.user_metadata?.user_name || user?.user_metadata?.preferred_username || user?.email?.split('@')[0]
       if (!supabaseClient || !targetUsername || loadingProfile) {
         if (!loadingProfile) setLoadingReports(false)
         return
