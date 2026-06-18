@@ -1,12 +1,46 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Bug, ShieldCheck, AlertTriangle, AlertOctagon, ChevronRight, Search, Check, ShieldAlert } from 'lucide-react'
+import { Bug, ShieldCheck, AlertTriangle, AlertOctagon, ChevronRight, Search, Check, ShieldAlert, Copy } from 'lucide-react'
 import DOMPurify from 'dompurify'
 import supabaseClient from '../supabaseClient'
 import { timeAgo, getCategoryIconPath, normalizeTags } from '../utils'
 import { useAuth } from '../AuthContext'
 import Loader from './ui/loader'
 import { getMalwareDescription } from '../malwareDictionary'
+
+// Derive a credible 0–100 confidence-of-abuse score from real signals
+// (severity, number of feeds listing it, subnet matches, community reports)
+// instead of a binary 100/0. Clean indicators stay low.
+function computeConfidence(scanResult: any, reportCount: number): number {
+  if (!scanResult) return 0
+  if (scanResult.isDisputed) return 35
+  if (!scanResult.isMalicious) {
+    // A clean indicator that the community has still flagged carries residual risk.
+    return Math.min(20, reportCount * 4)
+  }
+
+  const risk = String(scanResult.riskScore || '').toLowerCase()
+  let score = risk === 'high' ? 82 : risk === 'medium' ? 62 : 45
+
+  // Each independent feed listing the indicator raises confidence.
+  const feeds = Number(scanResult.feedCount) || 1
+  score += Math.min(feeds - 1, 4) * 3
+
+  // A malicious-subnet match is a strong, range-level signal.
+  if (scanResult.matchedCidr) score = Math.max(score, 80)
+
+  // Corroborating community reports nudge confidence up.
+  score += Math.min(reportCount, 8) * 1.5
+
+  return Math.max(0, Math.min(99, Math.round(score)))
+}
+
+const getConfidenceTier = (score: number) => {
+  if (score >= 75) return { label: 'Critical', text: 'text-rose-400', bar: 'bg-rose-500', track: 'shadow-rose-500/20' }
+  if (score >= 50) return { label: 'High', text: 'text-orange-400', bar: 'bg-orange-500', track: 'shadow-orange-500/20' }
+  if (score >= 25) return { label: 'Elevated', text: 'text-yellow-400', bar: 'bg-yellow-500', track: 'shadow-yellow-500/20' }
+  return { label: 'Minimal', text: 'text-primary', bar: 'bg-primary', track: 'shadow-primary/20' }
+}
 
 const getCategoryColor = (cat: string) => {
   if (!cat) return 'bg-slate-500/10 text-slate-300 border border-slate-500/20'
@@ -24,12 +58,23 @@ function MalwareDescriptionBlock({ tag }: { tag: string }) {
   const desc = getMalwareDescription(tag) || getMalwareDescription('Malware');
 
   if (!desc) return null;
-  
+
+  // Pick a color theme per category so each block looks distinct
+  const l = tag.toLowerCase()
+  let accent = { bg: 'bg-rose-500/10', border: 'border-rose-500/20', card: 'border-rose-500/10' }
+  if (l.includes('brute') || l.includes('force'))   accent = { bg: 'bg-orange-500/10', border: 'border-orange-500/20', card: 'border-orange-500/10' }
+  if (l.includes('spam'))                            accent = { bg: 'bg-amber-500/10', border: 'border-amber-500/20', card: 'border-amber-500/10' }
+  if (l.includes('phish') || l.includes('harvest'))  accent = { bg: 'bg-blue-500/10', border: 'border-blue-500/20', card: 'border-blue-500/10' }
+  if (l.includes('ddos'))                            accent = { bg: 'bg-purple-500/10', border: 'border-purple-500/20', card: 'border-purple-500/10' }
+  if (l.includes('botnet') || l.includes('c2'))      accent = { bg: 'bg-rose-500/10', border: 'border-rose-500/20', card: 'border-rose-500/10' }
+  if (l.includes('scan') || l.includes('recon'))     accent = { bg: 'bg-cyan-500/10', border: 'border-cyan-500/20', card: 'border-cyan-500/10' }
+  if (l.includes('malicious'))                       accent = { bg: 'bg-red-500/10', border: 'border-red-500/20', card: 'border-red-500/10' }
+
   return (
-    <div className="mt-5 p-4 rounded-xl bg-slate-950/40 border border-rose-500/10 shadow-inner">
+    <div className={`mt-5 p-4 rounded-xl bg-slate-950/40 border ${accent.card} shadow-inner`}>
       <div className="flex items-start gap-3">
-        <div className="bg-rose-500/10 p-1.5 rounded-lg border border-rose-500/20 shrink-0 mt-0.5">
-          <img src={`${import.meta.env.BASE_URL}img/malware.png`} className="w-4 h-4 object-contain drop-shadow-sm" alt="Malware Icon" />
+        <div className={`${accent.bg} p-1.5 rounded-lg border ${accent.border} shrink-0 mt-0.5`}>
+          <img src={getCategoryIconPath(tag)} className="w-4 h-4 object-contain drop-shadow-sm" alt={`${tag} Icon`} />
         </div>
         <div>
           <h4 className="text-slate-200 font-bold text-sm tracking-tight flex items-center gap-2">
@@ -50,6 +95,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
   const [isDisputing, setIsDisputing] = useState(false)
   const [showDisputeForm, setShowDisputeForm] = useState(false)
   const [disputeReason, setDisputeReason] = useState('')
+  const [copied, setCopied] = useState(false)
 
   const { user } = useAuth()
 
@@ -164,7 +210,20 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
 
 
 
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(ip)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1600)
+    } catch {
+      addToast('Could not copy to clipboard.', 'error')
+    }
+  }
+
   const StatusIcon = type === 'danger' ? Bug : type === 'safe' ? ShieldCheck : type === 'disputed' ? ShieldAlert : AlertTriangle
+
+  const confidence = computeConfidence(scanResult, reports.length)
+  const tier = getConfidenceTier(confidence)
 
   if (!showReport) return null;
 
@@ -212,7 +271,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
               <div className="w-full max-w-4xl bg-slate-900/60 backdrop-blur-xl border border-slate-800 shadow-2xl rounded-2xl mx-auto overflow-hidden font-sans relative">
                 {/* Glow effect */}
                 <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-                
+
                 {/* Header Section */}
                 <div className="p-5 md:p-6 border-b border-slate-800 bg-slate-900/40">
                   <div className="flex items-start gap-4 mb-4">
@@ -221,28 +280,56 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                       <h3 className={`text-xl md:text-2xl font-bold tracking-tight mb-3 ${type === 'danger' ? 'text-rose-400' : type === 'safe' ? 'text-primary' : 'text-orange-400'}`}>
                         {type === 'danger' ? 'Threat found in our database' : type === 'safe' ? 'No threat found in our database' : 'This indicator is currently disputed'}
                       </h3>
-                      <div className="inline-block bg-slate-950/80 border border-white/5 rounded-xl px-4 py-2.5 font-mono text-sm md:text-base text-slate-300 break-all shadow-inner relative overflow-hidden">
-                        {ip}
-                      </div>
+                      <button
+                        type="button"
+                        onClick={handleCopy}
+                        title="Copy to clipboard"
+                        className="group inline-flex items-center gap-2.5 bg-slate-950/80 hover:bg-slate-950 border border-white/5 hover:border-white/15 rounded-xl px-4 py-2.5 font-mono text-sm md:text-base text-slate-300 break-all shadow-inner relative overflow-hidden transition-colors text-left"
+                      >
+                        <span className="break-all">{ip}</span>
+                        {copied
+                          ? <Check size={15} className="text-primary shrink-0" strokeWidth={2.5} />
+                          : <Copy size={15} className="text-slate-500 group-hover:text-slate-300 shrink-0 transition-colors" />}
+                      </button>
                     </div>
                   </div>
 
                   {scanResult && (scanResult.isIP || scanResult.isIPv6 || scanResult.isDomain) && (
                     <>
-                      <div className="flex items-center justify-between mt-2 text-sm font-semibold text-slate-400">
-                        <span>Confidence of Abuse is {type === 'danger' ? '100%' : '0%'}:</span>
-                        <span className="cursor-help font-bold text-slate-500 hover:text-slate-300 transition-colors bg-slate-800/50 rounded-full w-5 h-5 flex items-center justify-center text-xs" title="Confidence of Abuse score">?</span>
+                      <div className="flex items-center justify-between mt-2">
+                        <div className="flex items-center gap-2 text-sm font-semibold text-slate-400">
+                          <span>Confidence of Abuse</span>
+                          <span className="cursor-help font-bold text-slate-500 hover:text-slate-300 transition-colors bg-slate-800/50 rounded-full w-5 h-5 flex items-center justify-center text-xs" title="Weighted score derived from severity, number of threat feeds, subnet matches, and community reports.">?</span>
+                        </div>
+                        <div className="flex items-baseline gap-2">
+                          <span className={`text-[10px] font-bold uppercase tracking-wider ${tier.text}`}>{tier.label}</span>
+                          <span className={`font-mono text-lg font-black tabular-nums ${tier.text}`}>{confidence}<span className="text-xs font-bold text-slate-500">%</span></span>
+                        </div>
                       </div>
-                      <div className="w-full bg-slate-950/50 h-6 mt-3 flex items-center rounded-lg overflow-hidden border border-slate-800 shadow-inner">
-                        <div 
-                          className={`h-full ${type === 'danger' ? 'bg-rose-500' : 'bg-primary'} flex items-center px-3 transition-all duration-1000 relative`} 
-                          style={{ width: type === 'danger' ? '100%' : '10%' }}
+                      <div className={`w-full bg-slate-950/60 h-2.5 mt-3 rounded-full overflow-hidden border border-slate-800 shadow-inner ${tier.track}`}>
+                        <div
+                          className={`h-full ${tier.bar} rounded-full transition-all duration-1000 ease-out relative`}
+                          style={{ width: `${Math.max(confidence, 3)}%` }}
                         >
-                          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 pointer-events-none"></div>
-                          <span className="text-white text-xs font-bold drop-shadow-sm relative z-10">{type === 'danger' ? '100%' : '0%'}</span>
+                          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/25 to-white/0 pointer-events-none"></div>
                         </div>
                       </div>
                     </>
+                  )}
+
+                  {/* Clean indicator — reassuring summary */}
+                  {type === 'safe' && scanResult && (scanResult.isIP || scanResult.isIPv6 || scanResult.isDomain) && (
+                    <div className="mt-4 flex items-start gap-3 p-4 rounded-xl bg-primary/5 border border-primary/20">
+                      <div className="bg-primary/10 p-1.5 rounded-lg border border-primary/20 shrink-0 mt-0.5">
+                        <ShieldCheck size={18} className="text-primary" />
+                      </div>
+                      <div>
+                        <h4 className="text-slate-200 font-bold text-sm tracking-tight">No malicious activity on record</h4>
+                        <p className="text-slate-400 text-sm mt-1 leading-relaxed">
+                          This {scanResult.isDomain ? 'domain' : 'address'} was not found in any of our threat-intelligence feeds and has{reports.length === 0 ? ' no' : ` ${reports.length}`} community {reports.length === 1 ? 'report' : 'reports'}. A clean result is not a guarantee of safety — always combine multiple signals before trusting an indicator.
+                        </p>
+                      </div>
+                    </div>
                   )}
 
                   {/* Malicious subnet (CIDR range) match */}

@@ -76,12 +76,13 @@ export function getAvatarForName(name) {
 export function getCategoryIconPath(label) {
   if (!label) return `${safeBaseUrl()}img/other.png`
   const l = label.toLowerCase()
-  if (l.includes('malware') || l.includes('exploit') || l.includes('zero-day')) return `${safeBaseUrl()}img/malware.png`
+  if (l.includes('malware') || l.includes('exploit') || l.includes('zero-day') || l.includes('malicious')) return `${safeBaseUrl()}img/malware.png`
   if (l.includes('phish') || l.includes('harvest')) return `${safeBaseUrl()}img/phishing.png`
   if (l.includes('spam')) return `${safeBaseUrl()}img/spam.png`
   if (l.includes('ddos')) return `${safeBaseUrl()}img/DDoS.png`
   if (l.includes('brute')) return `${safeBaseUrl()}img/bruteforce.png`
   if (l.includes('botnet') || l.includes('c2')) return `${safeBaseUrl()}img/botnet.png`
+  if (l.includes('scan') || l.includes('recon')) return `${safeBaseUrl()}img/other.png`
   return `${safeBaseUrl()}img/other.png`
 }
 
