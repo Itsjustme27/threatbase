@@ -1,0 +1,156 @@
+import supabaseClient from '../../src/supabaseClient'
+import { isValidPublicIp, isValidCategory, MAX_COMMENT_LENGTH } from '../../src/lib/apiValidation'
+
+// Web (browser) report endpoint. Unlike /api/v1/report (programmatic, API-key
+// auth), this path is for the website's report form. It enforces three things
+// the old browser->Supabase-direct insert could not:
+//   1. Cloudflare Turnstile is verified SERVER-SIDE (token actually checked).
+//   2. The reporter is an authenticated Supabase user (JWT verified here).
+//   3. Per-IP daily rate limiting via KV.
+// Because verification and the privileged write happen in the same request,
+// none of the client-side bypasses apply.
+
+const CORS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+}
+
+const json = (obj: any, status = 200) =>
+  new Response(JSON.stringify(obj), {
+    status,
+    headers: { 'Content-Type': 'application/json', ...CORS },
+  })
+
+export const onRequestOptions = async () => new Response(null, { status: 204, headers: CORS })
+
+/** Verify a Turnstile token against Cloudflare's siteverify endpoint. */
+async function verifyTurnstile(token: string, ip: string, secret: string): Promise<boolean> {
+  const form = new FormData()
+  form.append('secret', secret)
+  form.append('response', token)
+  if (ip) form.append('remoteip', ip)
+  try {
+    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: form,
+    })
+    const data: any = await res.json()
+    return data?.success === true
+  } catch {
+    return false
+  }
+}
+
+const WEB_REPORT_DAILY_LIMIT = 50
+
+export const onRequestPost = async (context: any) => {
+  const { request, env } = context
+
+  if (!supabaseClient) return json({ error: 'Service temporarily unavailable.' }, 503)
+
+  // Fail closed: the entire purpose of this endpoint is server-side verification.
+  const secret = env.TURNSTILE_SECRET
+  if (!secret) {
+    console.error('TURNSTILE_SECRET is not configured — rejecting report.')
+    return json({ error: 'Verification is not configured on the server.' }, 500)
+  }
+
+  const clientIp = request.headers.get('CF-Connecting-IP') || ''
+
+  let body: any
+  try {
+    body = await request.json()
+  } catch {
+    return json({ error: 'Invalid JSON body.' }, 400)
+  }
+
+  const { ip, category, comment, turnstileToken } = body ?? {}
+
+  // 1. Human verification (server-side). A forged/empty/replayed token fails here.
+  if (typeof turnstileToken !== 'string' || !turnstileToken) {
+    return json({ error: 'Missing human-verification token.' }, 400)
+  }
+  const isHuman = await verifyTurnstile(turnstileToken, clientIp, secret)
+  if (!isHuman) {
+    return json({ error: 'Human verification failed. Please complete the check again.' }, 403)
+  }
+
+  // 2. Authenticate the reporter via their Supabase access token.
+  const authHeader = request.headers.get('Authorization') || ''
+  const accessToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : ''
+  if (!accessToken) {
+    return json({ error: 'You must be signed in to report.' }, 401)
+  }
+  const { data: userData, error: userErr } = await supabaseClient.auth.getUser(accessToken)
+  const user = userData?.user
+  if (userErr || !user) {
+    return json({ error: 'Your session has expired. Please sign in again.' }, 401)
+  }
+
+  // 3. Per-IP daily rate limiting (independent of the per-API-key limit).
+  const kv = env.IOC_CACHE
+  if (kv && clientIp) {
+    const today = new Date().toISOString().split('T')[0] // YYYY-MM-DD
+    const rlKey = `web_report_${clientIp}_${today}`
+    const current = await kv.get(rlKey)
+    const count = current ? parseInt(current, 10) : 0
+    if (count >= WEB_REPORT_DAILY_LIMIT) {
+      return json({ error: 'Daily report limit reached for your network. Try again tomorrow.' }, 429)
+    }
+    await kv.put(rlKey, (count + 1).toString(), { expirationTtl: 86400 })
+  }
+
+  // 4. Validate inputs (same rules as the public API).
+  const cleanIp = String(ip ?? '').trim()
+  const cleanCategory = String(category ?? '').trim()
+  const cleanComment = String(comment ?? '').trim()
+
+  if (!cleanIp || !cleanCategory || !cleanComment) {
+    return json({ error: 'Missing required fields: ip, category, comment.' }, 400)
+  }
+  if (!isValidPublicIp(cleanIp)) {
+    return json({ error: 'Invalid IP address. Provide a public IPv4 or IPv6 address.' }, 400)
+  }
+  if (!isValidCategory(cleanCategory)) {
+    return json({ error: 'Invalid category.' }, 400)
+  }
+  if (cleanComment.length > MAX_COMMENT_LENGTH) {
+    return json({ error: `Comment is too long (max ${MAX_COMMENT_LENGTH} characters).` }, 400)
+  }
+
+  // 5. Resolve the alias from the authenticated user's profile (can't be spoofed
+  //    by the client — the browser no longer chooses its own reporter name).
+  let reporterAlias = 'Anonymous'
+  const { data: profile } = await supabaseClient
+    .from('profiles')
+    .select('username')
+    .eq('id', user.id)
+    .single()
+  if (profile?.username) reporterAlias = profile.username
+
+  // 6. Reject duplicates from the same reporter.
+  const { data: existing } = await supabaseClient
+    .from('reported_ips')
+    .select('id')
+    .eq('ip', cleanIp)
+    .eq('reporter_alias', reporterAlias)
+    .maybeSingle()
+  if (existing) {
+    return json({ error: 'You have already reported this IP. Edit your existing report instead.' }, 409)
+  }
+
+  // 7. Insert via SECURITY DEFINER RPC (bypasses RLS for the anon server client).
+  const { error: insertError } = await supabaseClient.rpc('api_insert_report', {
+    p_ip: cleanIp,
+    p_category: cleanCategory,
+    p_comment: cleanComment,
+    p_reporter_alias: reporterAlias,
+  })
+  if (insertError) {
+    console.error('community-report insert failed:', insertError?.message || insertError)
+    return json({ error: 'Failed to save report. Please try again.' }, 500)
+  }
+
+  return json({ success: true, reporter_alias: reporterAlias })
+}

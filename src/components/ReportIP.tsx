@@ -4,6 +4,7 @@ import {
   AlertTriangle, Copy, Check, ChevronLeft, ChevronRight, HelpCircle, Users, ShieldCheck, ListFilter
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 import { AuthComponent } from '@/components/ui/sign-up'
 import supabaseClient from '../supabaseClient'
 import { fmt, timeAgo, getAvatarForName, getCategoryIconPath } from '../utils'
@@ -30,6 +31,7 @@ import Container from './layout/Container'
 
 const REPORT_PAGE_SIZE = 10
 const SUBMIT_COOLDOWN = 15000
+const TURNSTILE_SITE_KEY = '0x4AAAAAADj2T6kY9_5dXRhs'
 
 const THREAT_CATEGORIES = [
   { value: 'malware', label: 'Malware Distribution' },
@@ -81,6 +83,8 @@ export default function ReportIP({ addToast }: any) {
   const [submitting, setSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const [showPolicyModal, setShowPolicyModal] = useState(false)
+  const [turnstileToken, setTurnstileToken] = useState('')
+  const turnstileRef = useRef<TurnstileInstance>(null)
   const lastSubmitRef = useRef(0)
 
   // Reported IPs table state
@@ -223,38 +227,55 @@ export default function ReportIP({ addToast }: any) {
     }
 
     const canSubmit = ipStatus.type === 'valid_v4' || ipStatus.type === 'valid_v6'
-    
+
     if (!canSubmit) {
       return addToast('Submission blocked due to invalid or private IP', 'error')
+    }
+
+    if (!turnstileToken) {
+      return addToast('Please complete the human verification first', 'error')
     }
 
     setSubmitting(true)
 
     // Translate value back to label for database consistency
     const catLabel = THREAT_CATEGORIES.find(c => c.value === category)?.label || category
-    
-    // Sanitize user inputs before insertion
+
+    // Sanitize the comment client-side for cleanliness; the server re-validates.
     const safeComment = DOMPurify.sanitize(rawComment)
-    const safeAlias = DOMPurify.sanitize(rawAlias)
 
     try {
-      const { data: existingReport } = await supabaseClient
-        .from('reported_ips')
-        .select('id')
-        .eq('ip', raw)
-        .eq('reporter_alias', safeAlias || '')
-        .maybeSingle()
-
-      if (existingReport) {
+      // The report is verified and written server-side: the Turnstile token is
+      // checked against Cloudflare, the user is authenticated by their Supabase
+      // JWT, and the insert + per-IP rate limit happen in the same request. This
+      // is what makes the human check non-bypassable — the browser can no longer
+      // write to the database directly.
+      const { data: sessionData } = await supabaseClient.auth.getSession()
+      const accessToken = sessionData?.session?.access_token
+      if (!accessToken) {
         setSubmitting(false)
-        return addToast('You have already reported this IP. You can edit your existing report in the feed below.', 'error')
+        return addToast('Your session has expired. Please sign in again.', 'error')
       }
 
-      const { error } = await supabaseClient
-        .from('reported_ips')
-        .insert([{ ip: raw, category: catLabel, comment: safeComment, reporter_alias: safeAlias || null }])
+      const res = await fetch(`${import.meta.env.BASE_URL}api/community-report`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          ip: raw,
+          category: catLabel,
+          comment: safeComment,
+          turnstileToken,
+        }),
+      })
 
-      if (error) throw error
+      const result = await res.json().catch(() => ({}))
+
+      if (!res.ok) {
+        throw new Error(result?.error || 'Submission failed')
+      }
 
       lastSubmitRef.current = Date.now()
       setSubmitSuccess(true)
@@ -262,13 +283,16 @@ export default function ReportIP({ addToast }: any) {
       setCategory('')
       setComment('')
       loadReportedIPs(0)
-      
+
       setTimeout(() => {
         setSubmitSuccess(false)
       }, 3000)
     } catch (err: any) {
       addToast('Submission failed: ' + (err.message || 'Unknown error'), 'error')
     } finally {
+      // Turnstile tokens are single-use — reset for the next submission.
+      turnstileRef.current?.reset()
+      setTurnstileToken('')
       setSubmitting(false)
     }
   }
@@ -458,10 +482,21 @@ export default function ReportIP({ addToast }: any) {
                         </p>
                       </div>
 
+                      <div className="flex justify-center pt-1">
+                        <Turnstile
+                          ref={turnstileRef}
+                          siteKey={TURNSTILE_SITE_KEY}
+                          onSuccess={setTurnstileToken}
+                          onExpire={() => setTurnstileToken('')}
+                          onError={() => setTurnstileToken('')}
+                          options={{ theme: 'dark', size: 'flexible' }}
+                        />
+                      </div>
+
                       <div className="pt-2 flex flex-col gap-3">
                         <Button
                           type="submit"
-                          disabled={!isFormValid() || submitting}
+                          disabled={!isFormValid() || submitting || !turnstileToken}
                           className="w-full h-12 text-base font-semibold bg-white text-black hover:bg-slate-200 rounded-xl shadow-[0_8px_30px_-8px_rgba(255,255,255,0.25)] transition-all hover:shadow-[0_8px_36px_-6px_rgba(255,255,255,0.35)] disabled:shadow-none"
                         >
                           {submitting ? (
