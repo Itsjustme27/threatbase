@@ -126,13 +126,13 @@ export default function ThanksPage() {
             />
           </div>
 
-          <div className="relative -mt-6 h-28 w-full overflow-hidden [mask-image:radial-gradient(50%_50%,white,transparent)]">
+          <div className="relative -mt-6 h-28 w-full overflow-hidden [mask-image:radial-gradient(ellipse_at_center,white,transparent)]">
             <div className="absolute inset-0 before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_bottom_center,var(--gradient-color),transparent_70%)] before:opacity-30" />
             <div className="absolute -left-1/2 top-1/2 z-10 aspect-[1/0.7] w-[200%] rounded-[100%] border-t border-white/10 bg-app" />
             <Sparkles
               density={500}
               size={1.2}
-              className="absolute inset-x-0 bottom-0 h-full w-full [mask-image:radial-gradient(50%_50%,white,transparent_85%)]"
+              className="absolute inset-x-0 bottom-0 h-full w-full [mask-image:radial-gradient(ellipse_at_center,white,transparent_85%)]"
               color="#ffffff"
             />
           </div>
