@@ -11,6 +11,7 @@ const menuItems = [
     { name: 'About Us', href: '/about' },
     { name: 'Threat Feeds', href: '/#feeds' },
     { name: 'Report IP', href: '/report' },
+    { name: 'API Docs', href: '/api' },
     { name: 'Top Contributors', href: '/contributors' }
 ]
 

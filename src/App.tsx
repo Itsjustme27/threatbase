@@ -18,6 +18,7 @@ import TermsPage from './components/TermsPage'
 import PrivacyPage from './components/PrivacyPage'
 import PolicyPage from './components/PolicyPage'
 import ContributorsPage from './components/ContributorsPage'
+import ApiDocsPage from './components/ApiDocsPage'
 import { AuthProvider } from './AuthContext'
 import { getBaseUrl, formatSyncTime, animateValue } from './utils'
 import { scanIndicatorLogic } from './scanner'
@@ -203,6 +204,7 @@ export default function App() {
         <Route path="/policy" element={<PolicyPage />} />
         <Route path="/report" element={<ReportIP addToast={addToast} />} />
         <Route path="/contributors" element={<ContributorsPage />} />
+        <Route path="/api" element={<ApiDocsPage />} />
         <Route path="/profile/:username?" element={<Profile addToast={addToast} />} />
         <Route path="/thanks" element={<ThanksPage />} />
         <Route path="*" element={<NotFound1 />} />
