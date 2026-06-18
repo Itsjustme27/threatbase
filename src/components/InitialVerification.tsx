@@ -18,7 +18,7 @@ export default function InitialVerification({ onSuccess, siteKey = '0x4AAAAAADj2
         className="w-full max-w-3xl px-6 md:px-12 flex flex-col items-start"
       >
         <div className="flex items-center gap-3 mb-4">
-          <img src={`${import.meta.env.BASE_URL}img/threatbase.png`} alt="Threatbase Logo" className="w-8 h-8 object-contain shrink-0" />
+          <img src={`${import.meta.env.BASE_URL}img/logo.png`} alt="Threatbase Logo" className="w-8 h-8 object-contain shrink-0" />
           <h1 className="text-2xl md:text-3xl font-semibold text-white tracking-tight">Threatbase Intel</h1>
         </div>
         

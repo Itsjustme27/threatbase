@@ -1,6 +1,6 @@
 <div align="center">
   <br/>
-  <img src="public/img/threatbase.png" alt="Threatbase" width="120" style="border-radius: 50%;">
+  <img src="public/img/logo.png" alt="Threatbase" width="120" style="border-radius: 50%;">
 
   <h1>⚔️&nbsp; Threatbase</h1>
 

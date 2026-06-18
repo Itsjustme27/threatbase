@@ -10,7 +10,7 @@ export default function Footer() {
         <Footer7 
         logo={{
           url: "/",
-          src: `${BASE}img/threatbase.png`,
+          src: `${BASE}img/logo.png`,
           alt: "Threatbase Logo",
           title: "Threatbase",
         }}

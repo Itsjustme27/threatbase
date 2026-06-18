@@ -153,7 +153,7 @@ const modalSteps = [
 ];
 const TEXT_LOOP_INTERVAL = 1.5;
 
-const DefaultLogo = () => ( <div className="bg-black/50 text-white rounded-md p-2 border border-white/10 shadow-lg"> <img src={`${import.meta.env.BASE_URL}img/threatbase.png`} alt="ThreatBase" className="h-10 w-10 object-contain rounded-md" /> </div> );
+const DefaultLogo = () => ( <div className="bg-black/50 text-white rounded-md p-2 border border-white/10 shadow-lg"> <img src={`${import.meta.env.BASE_URL}img/logo.png`} alt="ThreatBase" className="h-10 w-10 object-contain rounded-md" /> </div> );
 
 // --- MAIN COMPONENT ---
 interface AuthComponentProps {

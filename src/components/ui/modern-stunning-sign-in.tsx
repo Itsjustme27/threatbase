@@ -13,7 +13,7 @@ const SignIn1 = () => {
       <div className="relative z-10 w-full max-w-sm rounded-3xl bg-gradient-to-br from-white/5 to-transparent border border-white/10 backdrop-blur-md shadow-2xl p-8 flex flex-col items-center">
         {/* Logo */}
         <div className="flex items-center justify-center w-24 h-24 rounded-full mb-6 shadow-2xl border-2 border-white/10 bg-black overflow-hidden">
-          <img src={`${import.meta.env.BASE_URL}img/threatbase.png`} alt="ThreatBase Logo" className="w-full h-full object-cover scale-110" />
+          <img src={`${import.meta.env.BASE_URL}img/logo.png`} alt="ThreatBase Logo" className="w-full h-full object-cover scale-110" />
         </div>
         
         {/* Title */}

@@ -216,7 +216,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                 {/* Header Section */}
                 <div className="p-5 md:p-6 border-b border-slate-800 bg-slate-900/40">
                   <div className="flex items-start gap-4 mb-4">
-                    <img src={`${import.meta.env.BASE_URL}img/threatbase.png`} className="w-10 h-10 rounded-full shadow-sm border border-white/5 shrink-0" alt="Threatbase Logo" />
+                    <img src={`${import.meta.env.BASE_URL}img/logo.png`} className="w-10 h-10 rounded-full shadow-sm border border-white/5 shrink-0" alt="Threatbase Logo" />
                     <div>
                       <h3 className={`text-xl md:text-2xl font-bold tracking-tight mb-3 ${type === 'danger' ? 'text-rose-400' : type === 'safe' ? 'text-primary' : 'text-orange-400'}`}>
                         {type === 'danger' ? 'Threat found in our database' : type === 'safe' ? 'No threat found in our database' : 'This indicator is currently disputed'}

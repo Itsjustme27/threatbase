@@ -41,7 +41,7 @@ export default function TurnstileModal({ isOpen, onClose, onSuccess, siteKey = '
               
               <div className="mb-6 mt-1 flex flex-col items-center text-center">
                 <div className="mb-4 flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border-2 border-slate-800 bg-slate-900 shadow-lg">
-                  <img src={`${import.meta.env.BASE_URL}img/threatbase.png`} alt="Threatbase Logo" className="h-full w-full object-cover" />
+                  <img src={`${import.meta.env.BASE_URL}img/logo.png`} alt="Threatbase Logo" className="h-full w-full object-cover" />
                 </div>
                 <h3 className="text-lg font-medium text-slate-100 tracking-tight">Human Verification</h3>
                 <p className="mt-2 text-sm text-slate-400 max-w-[280px]">

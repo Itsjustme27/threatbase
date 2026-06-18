@@ -71,7 +71,7 @@ export default function Navbar() {
                                 aria-label="home"
                                 className="flex items-center group relative z-10">
                                 <img 
-                                    src={`${import.meta.env.BASE_URL}img/threatbase.png`} 
+                                    src="/img/logo.png" 
                                     alt="Threatbase" 
                                     className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.12] group-hover:rotate-6"
                                 />
