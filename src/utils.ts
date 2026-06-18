@@ -44,36 +44,45 @@ export function timeAgo(dateStr) {
 
 
 
+/** Helper to get base url safely in both Vite and Worker envs */
+const safeBaseUrl = () => {
+  try {
+    return import.meta.env.BASE_URL || '/'
+  } catch (e) {
+    return '/'
+  }
+}
+
 /** Predict male/female avatar based on name heuristically */
 export function getAvatarForName(name) {
-  if (!name || name === 'Anonymous') return `${import.meta.env.BASE_URL}img/maledefender.png`
+  if (!name || name === 'Anonymous') return `${safeBaseUrl()}img/maledefender.png`
   
   const n = name.toLowerCase()
   const femaleIndicators = ['sarah', 'jessica', 'emily', 'mary', 'linda', 'anna', 'emma', 'olivia', 'sophia', 'isabella', 'mia', 'charlotte', 'amelia', 'harper', 'evelyn', 'abigail', 'maria', 'jane', 'jennifer', 'susan', 'lisa', 'karen', 'betty', 'helen', 'sandra', 'ashley', 'kimberly', 'donna', 'carol', 'michelle', 'amanda', 'melissa', 'deborah', 'stephanie', 'rebecca', 'sharon', 'laura', 'cynthia', 'kathleen', 'amy', 'shirley', 'angela', 'heather', 'nicole', 'girl', 'woman', 'lady', 'queen']
   
   for (const f of femaleIndicators) {
-      if (n.includes(f)) return `${import.meta.env.BASE_URL}img/femaledefender.png`
+      if (n.includes(f)) return `${safeBaseUrl()}img/femaledefender.png`
   }
   
   // Rough heuristic for typical feminine suffixes in English and Latin names
   if (/a[0-9_]*$/.test(n) || /ie[0-9_]*$/.test(n) || /ynn[0-9_]*$/.test(n) || /ella[0-9_]*$/.test(n) || /ia[0-9_]*$/.test(n)) {
-      return `${import.meta.env.BASE_URL}img/femaledefender.png`
+      return `${safeBaseUrl()}img/femaledefender.png`
   }
   
-  return `${import.meta.env.BASE_URL}img/maledefender.png`
+  return `${safeBaseUrl()}img/maledefender.png`
 }
 
 /** Get the PNG icon path for a threat category label */
 export function getCategoryIconPath(label) {
-  if (!label) return `${import.meta.env.BASE_URL}img/other.png`
+  if (!label) return `${safeBaseUrl()}img/other.png`
   const l = label.toLowerCase()
-  if (l.includes('malware') || l.includes('exploit') || l.includes('zero-day')) return `${import.meta.env.BASE_URL}img/malware.png`
-  if (l.includes('phish') || l.includes('harvest')) return `${import.meta.env.BASE_URL}img/phishing.png`
-  if (l.includes('spam')) return `${import.meta.env.BASE_URL}img/spam.png`
-  if (l.includes('ddos')) return `${import.meta.env.BASE_URL}img/DDoS.png`
-  if (l.includes('brute')) return `${import.meta.env.BASE_URL}img/bruteforce.png`
-  if (l.includes('botnet') || l.includes('c2')) return `${import.meta.env.BASE_URL}img/botnet.png`
-  return `${import.meta.env.BASE_URL}img/other.png`
+  if (l.includes('malware') || l.includes('exploit') || l.includes('zero-day')) return `${safeBaseUrl()}img/malware.png`
+  if (l.includes('phish') || l.includes('harvest')) return `${safeBaseUrl()}img/phishing.png`
+  if (l.includes('spam')) return `${safeBaseUrl()}img/spam.png`
+  if (l.includes('ddos')) return `${safeBaseUrl()}img/DDoS.png`
+  if (l.includes('brute')) return `${safeBaseUrl()}img/bruteforce.png`
+  if (l.includes('botnet') || l.includes('c2')) return `${safeBaseUrl()}img/botnet.png`
+  return `${safeBaseUrl()}img/other.png`
 }
 
 /** Normalize, clean, and deduplicate tags from external intelligence sources */

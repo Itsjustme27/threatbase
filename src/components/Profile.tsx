@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Globe, Copy, Check, ArrowLeft, Loader2 } from 'lucide-react'
+import { Globe, Copy, Check, ArrowLeft, Loader2, Key, Trash2, AlertTriangle } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../AuthContext'
 import supabaseClient from '../supabaseClient'
@@ -215,6 +215,12 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
   const [deleteInput, setDeleteInput] = useState('')
   const [deleting, setDeleting] = useState(false)
 
+  // API Key state
+  const [apiKeys, setApiKeys] = useState<any[]>([])
+  const [loadingApiKeys, setLoadingApiKeys] = useState(false)
+  const [newlyGeneratedKey, setNewlyGeneratedKey] = useState<string | null>(null)
+  const [generatingKey, setGeneratingKey] = useState(false)
+
   // Block anonymous access if trying to view own profile
   useEffect(() => {
     if (!authLoading && !paramUsername && !user) {
@@ -324,6 +330,84 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
     }
     loadJoinOrder()
   }, [viewedProfile])
+
+  // Fetch API Keys
+  useEffect(() => {
+    async function loadApiKeys() {
+      if (!isOwnProfile || !user || !supabaseClient) return
+      setLoadingApiKeys(true)
+      try {
+        const { data, error } = await supabaseClient
+          .from('api_keys')
+          .select('*')
+          .eq('is_active', true)
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+        if (error) throw error
+        if (data) {
+          setApiKeys(data)
+        }
+      } catch (err) {
+        console.error('Failed to load API keys:', err)
+      } finally {
+        setLoadingApiKeys(false)
+      }
+    }
+    loadApiKeys()
+  }, [isOwnProfile, user, supabaseClient])
+
+  const handleGenerateApiKey = async () => {
+    if (!supabaseClient || !user) return
+    setGeneratingKey(true)
+    try {
+      // 1. Generate Plain Text Key
+      const array = new Uint8Array(24);
+      crypto.getRandomValues(array);
+      const randomStr = Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+      const plainKey = `tb_api_${randomStr}`;
+
+      // 2. Hash the key
+      const encoder = new TextEncoder();
+      const data = encoder.encode(plainKey);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+      // 3. Insert into Supabase
+      const { data: newKeyData, error } = await supabaseClient
+        .from('api_keys')
+        .insert([{ user_id: user.id, key_hash: hashHex, prefix: plainKey.substring(0, 15) }])
+        .select()
+        .single()
+
+      if (error) throw error
+
+      setApiKeys([newKeyData, ...apiKeys])
+      setNewlyGeneratedKey(plainKey)
+      addToast('API Key generated successfully!', 'success')
+    } catch (err: any) {
+      addToast('Failed to generate API Key: ' + err.message, 'error')
+    } finally {
+      setGeneratingKey(false)
+    }
+  }
+
+  const handleRevokeApiKey = async (id: string) => {
+    if (!supabaseClient) return
+    try {
+      const { error } = await supabaseClient
+        .from('api_keys')
+        .update({ is_active: false })
+        .eq('id', id)
+      
+      if (error) throw error
+      setApiKeys(apiKeys.filter(k => k.id !== id))
+      addToast('API Key revoked successfully', 'success')
+      setNewlyGeneratedKey(null)
+    } catch (err: any) {
+      addToast('Failed to revoke key: ' + err.message, 'error')
+    }
+  }
 
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -726,8 +810,84 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
+            className="space-y-6"
           >
+            {/* MFA Setup */}
             <MfaSetup addToast={addToast} />
+
+            {/* API Keys Setup */}
+            <div className="rounded-xl border border-white/[0.05] bg-black/40 p-6 md:p-8">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
+                <div>
+                  <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+                    <Key size={16} className="text-primary" /> API Access Keys
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-1 max-w-lg">
+                    Generate an API key to securely interact with the Threatbase API. Your key will only be shown once.
+                  </p>
+                </div>
+                <Button
+                  onClick={handleGenerateApiKey}
+                  disabled={generatingKey || apiKeys.length >= 3}
+                  className="bg-primary hover:bg-primary/90 text-black text-xs font-semibold rounded shrink-0 h-9"
+                >
+                  {generatingKey ? 'Generating...' : 'Generate API Key'}
+                </Button>
+              </div>
+
+              {newlyGeneratedKey && (
+                <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 mb-6 relative group overflow-hidden">
+                  <div className="absolute top-0 right-0 p-2 opacity-10 blur-xl bg-primary w-24 h-24 rounded-full pointer-events-none" />
+                  <p className="text-xs font-semibold text-primary mb-2 flex items-center gap-2">
+                    <AlertTriangle size={14} /> Please copy this key now. You will not be able to see it again!
+                  </p>
+                  <div className="flex items-center gap-2 bg-black/50 border border-primary/20 p-2 rounded">
+                    <code className="text-sm text-slate-200 font-mono flex-1 select-all tracking-wide">{newlyGeneratedKey}</code>
+                    <button
+                      onClick={() => handleCopyIp(newlyGeneratedKey)}
+                      className="p-2 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 rounded transition-colors"
+                      title="Copy API Key"
+                    >
+                      {copiedIp === newlyGeneratedKey ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {loadingApiKeys ? (
+                <div className="flex items-center justify-center py-8 text-slate-500">
+                  <Loader2 size={16} className="animate-spin" />
+                </div>
+              ) : apiKeys.length > 0 ? (
+                <div className="space-y-3">
+                  {apiKeys.map(key => (
+                    <div key={key.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-lg bg-white/[0.02] border border-white/[0.05] hover:bg-white/[0.03] transition-colors">
+                      <div>
+                        <code className="text-xs text-slate-300 font-mono bg-black/50 px-2 py-1 rounded">{key.prefix}•••••••••••••••••</code>
+                        <p className="text-[10px] text-slate-500 mt-1.5">
+                          Created {new Date(key.created_at).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleRevokeApiKey(key.id)}
+                        className="h-8 border-white/10 text-xs text-slate-400 hover:text-destructive hover:bg-destructive/10 hover:border-destructive/20 shrink-0"
+                      >
+                        <Trash2 size={12} className="mr-1.5" /> Revoke
+                      </Button>
+                    </div>
+                  ))}
+                  {apiKeys.length >= 3 && (
+                    <p className="text-xs text-slate-500 italic mt-4">You have reached the maximum number of active API keys (3).</p>
+                  )}
+                </div>
+              ) : (
+                <p className="text-sm text-slate-500 bg-white/[0.02] border border-white/[0.05] rounded-lg p-6 text-center">
+                  You don't have any active API keys.
+                </p>
+              )}
+            </div>
           </motion.div>
         )}
 
