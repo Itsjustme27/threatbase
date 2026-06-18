@@ -112,24 +112,38 @@ export default function App() {
   }, [scanInput, feedVersion])
 
 
-  // Boot: fetch stats.json
+  // Boot & Poll: fetch stats.json
   useEffect(() => {
     const GITHUB_RAW = getBaseUrl()
+    let cancelled = false
 
-    fetch(GITHUB_RAW + 'stats.json?_=' + Date.now())
-      .then((r) => {
+    const loadStats = async () => {
+      try {
+        const r = await fetch(GITHUB_RAW + 'stats.json?_=' + Date.now())
         if (!r.ok) throw new Error('HTTP ' + r.status)
-        return r.json()
-      })
-      .then((d) => {
+        const d = await r.json()
+        if (cancelled) return
         setStatsData(d)
         setFeedVersion(d.last_updated || Date.now())
         setSyncTime(formatSyncTime(d.last_updated))
-      })
-      .catch((err) => {
-        console.error('stats.json unavailable on GitHub Raw:', err.message)
-        setSyncTime('Live Mode')
-      })
+      } catch (err: any) {
+        if (!cancelled) {
+          console.error('stats.json unavailable on GitHub Raw:', err.message)
+          setSyncTime('Live Mode')
+        }
+      }
+    }
+
+    loadStats()
+    const intervalId = setInterval(loadStats, 5 * 60 * 1000)
+    const onVisible = () => { if (document.visibilityState === 'visible') loadStats() }
+    document.addEventListener('visibilitychange', onVisible)
+
+    return () => {
+      cancelled = true
+      clearInterval(intervalId)
+      document.removeEventListener('visibilitychange', onVisible)
+    }
   }, [])
 
   // Auto-scan from URL parameter
