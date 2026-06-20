@@ -1,8 +1,10 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import * as d3 from 'd3-geo'
 import * as topojson from 'topojson-client'
+import { getBaseUrl } from '../utils'
+import { COUNTRY_COORDS, TARGET_HUBS } from '../lib/countryCoords'
 
-// Major city coordinates [longitude, latitude]
+// Fallback origins used until real geo data loads (or if it fails).
 const CITIES = [
   { name: "New York", coords: [-74.006, 40.7128] },
   { name: "London", coords: [-0.1276, 51.5074] },
@@ -34,8 +36,55 @@ interface Explosion {
   color: string
 }
 
+// Weighted origin list built from real geo.json counts.
+interface WeightedGeo {
+  items: { coords: [number, number]; cc: string }[]
+  cumulative: number[]
+  total: number
+}
+
+interface Origin { cc: string; name: string; count: number }
+
 export default function ThreatMap() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  // Latest weighted origins, read live by the animation loop.
+  const weightedRef = useRef<WeightedGeo | null>(null)
+  const [topOrigins, setTopOrigins] = useState<Origin[]>([])
+  const [totalThreats, setTotalThreats] = useState<number>(0)
+
+  // Fetch real attacker geolocation and build a weighted picker.
+  useEffect(() => {
+    let cancelled = false
+    fetch(getBaseUrl() + 'geo.json?_=' + Date.now())
+      .then(r => r.json())
+      .then((geo: { countries?: Record<string, number>; total_geolocated?: number }) => {
+        if (cancelled || !geo?.countries) return
+        const entries = Object.entries(geo.countries) as [string, number][]
+
+        // Weighted picker — only countries we can place on the map.
+        const items: WeightedGeo['items'] = []
+        const cumulative: number[] = []
+        let total = 0
+        for (const [cc, count] of entries) {
+          const place = COUNTRY_COORDS[cc]
+          if (!place || count <= 0) continue
+          total += count
+          items.push({ coords: place.coords, cc })
+          cumulative.push(total)
+        }
+        if (items.length > 0) weightedRef.current = { items, cumulative, total }
+
+        // HUD: top origins (use full counts so the list is accurate).
+        const top = entries
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 6)
+          .map(([cc, count]) => ({ cc, name: COUNTRY_COORDS[cc]?.name ?? cc, count }))
+        setTopOrigins(top)
+        setTotalThreats(geo.total_geolocated ?? entries.reduce((s, [, c]) => s + c, 0))
+      })
+      .catch(() => { /* keep CITIES fallback */ })
+    return () => { cancelled = true }
+  }, [])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -48,7 +97,6 @@ export default function ThreatMap() {
     let explosions: Explosion[] = []
     let width = 0
     let height = 0
-    let dots: { x: number, y: number }[] = []
 
     const resize = () => {
       const parent = canvas.parentElement
@@ -122,17 +170,44 @@ export default function ThreatMap() {
 
         const colors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b']
 
-        const spawnAttack = () => {
-          const srcCity = CITIES[Math.floor(Math.random() * CITIES.length)]
-          let tgtCity = CITIES[Math.floor(Math.random() * CITIES.length)]
-          while (tgtCity.name === srcCity.name) {
-            tgtCity = CITIES[Math.floor(Math.random() * CITIES.length)]
+        // Pick an origin [lon,lat] weighted by real attacker counts; fall
+        // back to a random city until geo.json has loaded.
+        const pickSource = (): [number, number] => {
+          const w = weightedRef.current
+          if (w && w.total > 0) {
+            const r = Math.random() * w.total
+            let lo = 0, hi = w.cumulative.length - 1
+            while (lo < hi) {
+              const mid = (lo + hi) >> 1
+              if (w.cumulative[mid] < r) lo = mid + 1
+              else hi = mid
+            }
+            return w.items[lo].coords
           }
+          return CITIES[Math.floor(Math.random() * CITIES.length)].coords as [number, number]
+        }
 
-          const srcProj = projection(srcCity.coords as [number, number])
-          const tgtProj = projection(tgtCity.coords as [number, number])
+        const pickTarget = (srcCoords: [number, number]): [number, number] => {
+          if (weightedRef.current) {
+            return TARGET_HUBS[Math.floor(Math.random() * TARGET_HUBS.length)].coords
+          }
+          // Fallback: a random city different from the source.
+          let t = CITIES[Math.floor(Math.random() * CITIES.length)]
+          while (t.coords[0] === srcCoords[0] && t.coords[1] === srcCoords[1]) {
+            t = CITIES[Math.floor(Math.random() * CITIES.length)]
+          }
+          return t.coords as [number, number]
+        }
 
+        const spawnAttack = () => {
+          const srcCoords = pickSource()
+          const tgtCoords = pickTarget(srcCoords)
+
+          const srcProj = projection(srcCoords)
+          const tgtProj = projection(tgtCoords)
           if (!srcProj || !tgtProj) return
+          // Skip degenerate (same point) arcs.
+          if (Math.abs(srcProj[0] - tgtProj[0]) < 1 && Math.abs(srcProj[1] - tgtProj[1]) < 1) return
 
           attacks.push({
             id: Math.random(),
@@ -262,11 +337,58 @@ export default function ThreatMap() {
     }
   }, [])
 
+  const maxCount = topOrigins.length > 0 ? topOrigins[0].count : 0
+
   return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 pointer-events-none z-0 w-full h-full bg-app"
-    />
+    <>
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 pointer-events-none z-0 w-full h-full bg-app"
+      />
+
+      {/* Live threat-origins HUD — bottom-right, clear of the hero copy */}
+      {topOrigins.length > 0 && (
+        <div className="hidden lg:block absolute bottom-6 right-6 z-10 w-64 rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-4 shadow-2xl pointer-events-none">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-red-500" />
+              </span>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-300">
+                Live Threat Origins
+              </span>
+            </div>
+          </div>
+
+          <div className="mb-3">
+            <div className="text-2xl font-black text-white tabular-nums leading-none">
+              {totalThreats.toLocaleString()}
+            </div>
+            <div className="text-[10px] uppercase tracking-wider text-slate-500 mt-1">
+              Geolocated malicious IPs
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            {topOrigins.map((o) => (
+              <div key={o.cc} className="flex items-center gap-2">
+                <span className="w-7 shrink-0 text-[11px] font-bold text-slate-400 tabular-nums">{o.cc}</span>
+                <div className="flex-1 h-1.5 rounded-full bg-white/5 overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-red-500 to-orange-400"
+                    style={{ width: `${maxCount ? Math.max(6, (o.count / maxCount) * 100) : 0}%` }}
+                  />
+                </div>
+                <span className="w-12 shrink-0 text-right text-[10px] font-semibold text-slate-400 tabular-nums">
+                  {o.count.toLocaleString()}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
   )
 }
 

@@ -29,7 +29,9 @@ import socket
 import sys
 import time
 import zipfile
-from collections import defaultdict
+import bisect
+import gzip
+from collections import defaultdict, Counter
 from datetime import datetime, timezone
 from typing import Dict, List, Optional, Set
 
@@ -685,6 +687,84 @@ FEED_TRUST_TIERS = {
     "firehol_level3": "LOW",
 }
 
+# ── Geolocation (IP → country) via iptoasn.com free dataset ─────────────────
+GEO_DB_URL = "https://iptoasn.com/data/ip2asn-v4.tsv.gz"
+GEO_DB_PATH = "ip2asn-v4.tsv.gz"
+
+
+def load_geo_index() -> Optional[tuple]:
+    """Download (if missing) and parse ip2asn into sorted (starts, ranges).
+
+    Returns (starts, ranges) where `starts` is a sorted list of range-start
+    integers for bisect, and `ranges[i]` = (start, end, country_code).
+    Returns None on any failure — geo is best-effort and never blocks the run.
+    """
+    try:
+        if not os.path.exists(GEO_DB_PATH):
+            log.info("Downloading ip2asn geo database...")
+            import requests
+            resp = requests.get(
+                GEO_DB_URL,
+                timeout=120,
+                headers={"User-Agent": "Mozilla/5.0 (Threatbase feed pipeline)"},
+            )
+            resp.raise_for_status()
+            with open(GEO_DB_PATH, "wb") as fh:
+                fh.write(resp.content)
+
+        ranges: List[tuple] = []
+        with gzip.open(GEO_DB_PATH, "rt", encoding="utf-8", errors="replace") as fh:
+            for line in fh:
+                parts = line.rstrip("\n").split("\t")
+                if len(parts) < 4:
+                    continue
+                cc = parts[3]
+                if not cc or cc in ("None", "-"):
+                    continue
+                start = is_valid_ipv4_fast(parts[0])
+                end = is_valid_ipv4_fast(parts[1])
+                if start is None or end is None:
+                    continue
+                ranges.append((start, end, cc))
+
+        ranges.sort(key=lambda r: r[0])
+        starts = [r[0] for r in ranges]
+        log.info(f"  Loaded {len(ranges):,} geo ranges from ip2asn")
+        return starts, ranges
+    except Exception as e:
+        log.warning(f"Geo database unavailable, skipping geo map: {e}")
+        return None
+
+
+def country_for_ip(ip_int: int, starts: list, ranges: list) -> Optional[str]:
+    """Binary-search the country code containing ip_int, or None."""
+    idx = bisect.bisect_right(starts, ip_int) - 1
+    if idx < 0:
+        return None
+    start, end, cc = ranges[idx]
+    return cc if start <= ip_int <= end else None
+
+
+def compute_geo(sorted_ips: list, geo_index: Optional[tuple]) -> Optional[dict]:
+    """Aggregate malicious IP counts per country for the live threat map."""
+    if not geo_index:
+        return None
+    starts, ranges = geo_index
+    counts: Counter = Counter()
+    for ip in sorted_ips:  # sorted_ips are integers
+        cc = country_for_ip(ip, starts, ranges)
+        if cc:
+            counts[cc] += 1
+    geolocated = sum(counts.values())
+    log.info(f"  Geolocated {geolocated:,}/{len(sorted_ips):,} IPs across {len(counts)} countries")
+    return {
+        "countries": dict(counts.most_common()),
+        "total_geolocated": geolocated,
+        "total_ips": len(sorted_ips),
+        "last_updated": datetime.now(timezone.utc).isoformat(),
+    }
+
+
 def process_ip_metadata(ip_sources: Dict[str, Set[int]], false_positives: FalsePositivesSet) -> Dict[int, dict]:
     """Generates rich IP tagging and assigns trust scores."""
     ip_metadata = defaultdict(lambda: {"sources": set(), "tags": set()})
@@ -951,6 +1031,17 @@ async def run_async_collector():
                 f.write(f"{info['ip']},{info['count']},{info['score']},{tags_str}\n")
         ip_category_files[fname] = len(ips)
     log.info(f"  Wrote {len(ip_category_files)} category feeds to ioc/categories/")
+
+    # ── Geolocate IPs → ioc/geo.json (powers the live threat map) ──────────
+    log.info("Computing IP geolocation for threat map...")
+    geo_index = load_geo_index()
+    geo_data = compute_geo(sorted_ips, geo_index)
+    if geo_data:
+        with open("ioc/geo.json", "w", encoding="utf-8") as f:
+            json.dump(geo_data, f, indent=2)
+        log.info("  Wrote ioc/geo.json")
+    else:
+        log.warning("  Skipped ioc/geo.json (no geo data)")
 
 
     # ── Write domains (sorted for binary search) ───────────────────────────
