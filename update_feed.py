@@ -133,6 +133,22 @@ FEED_CATEGORIES: Dict[str, str] = {
     "custom": "Malicious",
 }
 
+# Filename slugs for category-split IP feeds (ioc/categories/threatbase-ip-<slug>.txt).
+# Any category not listed falls back to a lowercased, alphanumeric-only slug.
+CATEGORY_SLUGS: Dict[str, str] = {
+    "C2": "c2",
+    "Botnet": "botnet",
+    "Brute-Force": "bruteforce",
+    "Tor": "tor",
+    "Spam": "spam",
+    "Exploit": "exploit",
+    "Malware": "malware",
+    "Malicious": "malicious",
+    "Compromised": "compromised",
+    "Scanner": "scanner",
+    "Mixed": "mixed",
+}
+
 DOMAIN_FEEDS: Dict[str, str] = {
     "openphish": "https://raw.githubusercontent.com/openphish/public_feed/refs/heads/main/feed.txt",
     "urlhaus": "https://urlhaus.abuse.ch/downloads/text_online/",
@@ -908,7 +924,35 @@ async def run_async_collector():
             info = filtered_ip_info[ip]
             tags_str = "|".join(info["tags"])
             f.write(f"{info['ip']},{info['count']},{info['score']},{tags_str}\n")
-            
+
+    # ── Write category-split IP feeds ──────────────────────────────────────
+    # One blocklist per threat category so defenders can apply different
+    # policies (e.g. hard-block C2, only alert on Tor). Same line format as
+    # the master feed. Each IP appears in every category it is tagged with.
+    log.info("Writing category-split IP feeds...")
+    os.makedirs("ioc/categories", exist_ok=True)
+    category_ips: Dict[str, list] = defaultdict(list)
+    for ip in sorted_ips:  # sorted_ips is already ascending, so buckets stay sorted
+        for tag in filtered_ip_info[ip]["tags"]:
+            category_ips[tag].append(ip)
+
+    ip_category_files: Dict[str, int] = {}
+    for cat, ips in sorted(category_ips.items()):
+        slug = CATEGORY_SLUGS.get(cat, re.sub(r"[^a-z0-9]+", "", cat.lower()))
+        fname = f"threatbase-ip-{slug}.txt"
+        with open(f"ioc/categories/{fname}", "w", encoding="utf-8", buffering=1 << 16) as f:
+            f.write(f"# Threatbase Threat Intelligence Feed - {cat} IPs\n")
+            f.write(f"# Last update: {timestamp}\n")
+            f.write(f"# Count: {len(ips)}\n")
+            f.write("# Format: IP,FeedCount,RiskScore,Tags\n")
+            for ip in ips:
+                info = filtered_ip_info[ip]
+                tags_str = "|".join(info["tags"])
+                f.write(f"{info['ip']},{info['count']},{info['score']},{tags_str}\n")
+        ip_category_files[fname] = len(ips)
+    log.info(f"  Wrote {len(ip_category_files)} category feeds to ioc/categories/")
+
+
     # ── Write domains (sorted for binary search) ───────────────────────────
     log.info("Writing threatbase-domain.txt...")
     all_domains = sorted(set().union(*domain_results.values()))
@@ -965,6 +1009,7 @@ async def run_async_collector():
         "total_unique_urls": len(all_urls),
         "active_feeds": len(successful_feeds),
         "category_counts": dict(category_counts),
+        "ip_category_files": ip_category_files,
         "top_sources": top_sources,
         "last_updated": now_utc.isoformat(),
     }

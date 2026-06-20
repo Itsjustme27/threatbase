@@ -118,9 +118,37 @@ https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/threatbase-cidr
 
 | Feed | File | Format |
 |:--|:--|:--|
-| IPv4 Blocklist | `threatbase-ip.txt` | One IP per line |
+| IPv4 Blocklist | `threatbase-ip.txt` | `IP,FeedCount,RiskScore,Tags` |
 | IPv6 Blocklist | `threatbase-ipv6.txt` | One IP per line |
 | CIDR Blocklist | `threatbase-cidr.txt` | CIDR notation |
+
+#### 🎯 Category-Split IP Feeds
+
+> Apply different policies per threat type — hard-block C2, just alert on Tor.
+
+Per-category IPv4 blocklists (same `IP,FeedCount,RiskScore,Tags` format) live under [`ioc/categories/`](ioc/categories/):
+
+```text
+https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/categories/threatbase-ip-c2.txt
+https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/categories/threatbase-ip-botnet.txt
+https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/categories/threatbase-ip-bruteforce.txt
+https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/categories/threatbase-ip-tor.txt
+https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/categories/threatbase-ip-spam.txt
+https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/categories/threatbase-ip-exploit.txt
+https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/categories/threatbase-ip-malware.txt
+```
+
+| Category | File | Use Case |
+|:--|:--|:--|
+| C2 | `threatbase-ip-c2.txt` | Command-and-control — block aggressively |
+| Botnet | `threatbase-ip-botnet.txt` | Known botnet members |
+| Brute-Force | `threatbase-ip-bruteforce.txt` | SSH/FTP/RDP brute-forcers |
+| Tor | `threatbase-ip-tor.txt` | Tor exit nodes — often alert-only |
+| Spam | `threatbase-ip-spam.txt` | Spam-source networks |
+| Exploit | `threatbase-ip-exploit.txt` | Active exploitation attempts |
+| Malware | `threatbase-ip-malware.txt` | Malware-hosting / delivery |
+
+<sub>Per-file counts are published in <a href="ioc/stats.json"><code>stats.json</code></a> under <code>ip_category_files</code>.</sub>
 
 ### 🕸️ DNS & Web Blocklists
 
