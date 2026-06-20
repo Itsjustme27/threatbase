@@ -1,31 +1,9 @@
-import { Download } from 'lucide-react'
+import { Server, Download } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Section from './layout/Section'
 import Container from './layout/Container'
 
 const BASE = import.meta.env.BASE_URL
-
-const CAT_RAW = 'https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/categories/'
-
-// Display metadata for the per-category IP feeds (keyed by filename slug).
-// Ordered by typical blocking priority. Only categories present in
-// stats.json (ip_category_files) are rendered, so this can be a superset.
-const CATEGORY_META: Record<string, { label: string; blurb: string; dot: string; ring: string }> = {
-  c2:          { label: 'C2',          blurb: 'Command-and-control servers — block aggressively.', dot: 'bg-red-500',     ring: 'hover:border-red-500/40' },
-  botnet:      { label: 'Botnet',      blurb: 'Known botnet members and infected hosts.',          dot: 'bg-orange-500',  ring: 'hover:border-orange-500/40' },
-  malware:     { label: 'Malware',     blurb: 'Malware hosting and delivery infrastructure.',       dot: 'bg-amber-500',   ring: 'hover:border-amber-500/40' },
-  exploit:     { label: 'Exploit',     blurb: 'Active exploitation and attack attempts.',           dot: 'bg-pink-500',    ring: 'hover:border-pink-500/40' },
-  compromised: { label: 'Compromised', blurb: 'Hijacked or compromised legitimate hosts.',          dot: 'bg-rose-500',    ring: 'hover:border-rose-500/40' },
-  bruteforce:  { label: 'Brute-Force', blurb: 'SSH/FTP/RDP brute-force sources.',                    dot: 'bg-yellow-500',  ring: 'hover:border-yellow-500/40' },
-  scanner:     { label: 'Scanner',     blurb: 'Mass port and vulnerability scanners.',              dot: 'bg-lime-500',    ring: 'hover:border-lime-500/40' },
-  spam:        { label: 'Spam',        blurb: 'Spam-source networks and relays.',                    dot: 'bg-emerald-500', ring: 'hover:border-emerald-500/40' },
-  malicious:   { label: 'Malicious',   blurb: 'General high-confidence malicious IPs.',             dot: 'bg-sky-500',     ring: 'hover:border-sky-500/40' },
-  tor:         { label: 'Tor',         blurb: 'Tor exit nodes — often alert-only.',                 dot: 'bg-violet-500',  ring: 'hover:border-violet-500/40' },
-  mixed:       { label: 'Mixed',       blurb: 'Uncategorized malicious IPs.',                        dot: 'bg-slate-400',   ring: 'hover:border-slate-400/40' },
-}
-const CATEGORY_ORDER = ['c2', 'botnet', 'malware', 'exploit', 'compromised', 'bruteforce', 'scanner', 'spam', 'malicious', 'tor', 'mixed']
-
-const slugFromFile = (file: string) => file.replace(/^threatbase-ip-/, '').replace(/\.txt$/, '')
 
 const feeds = [
   {
@@ -85,16 +63,6 @@ export default function Feeds({ statsData }: { statsData?: any }) {
     }
     return [filename]
   }
-
-  // Build the ordered list of category feeds from stats.json.
-  const catFiles: Record<string, number> = statsData?.ip_category_files ?? {}
-  const categoryFeeds = Object.entries(catFiles)
-    .map(([file, count]) => ({ file, count: count as number, slug: slugFromFile(file) }))
-    .sort((a, b) => {
-      const ia = CATEGORY_ORDER.indexOf(a.slug)
-      const ib = CATEGORY_ORDER.indexOf(b.slug)
-      return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib)
-    })
 
   return (
     <Section id="feeds" container={false} className="overflow-hidden">
@@ -182,56 +150,6 @@ export default function Feeds({ statsData }: { statsData?: any }) {
             )
           })}
         </div>
-
-        {/* Category-split IP feeds */}
-        {categoryFeeds.length > 0 && (
-          <div className="mt-20">
-            <div className="mb-8 text-center md:text-left">
-              <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight">
-                Category-Split IP Feeds
-              </h3>
-              <p className="mt-3 text-slate-400 text-base font-medium leading-relaxed max-w-2xl mx-auto md:mx-0">
-                Same malicious IPs, sliced by threat type — so you can hard-block C2 and botnets
-                while only alerting on Tor. Each feed uses the <code className="text-slate-300">IP,FeedCount,RiskScore,Tags</code> format.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {categoryFeeds.map((c, i) => {
-                const meta = CATEGORY_META[c.slug] ?? {
-                  label: c.slug, blurb: 'Categorized malicious IPs.', dot: 'bg-slate-400', ring: 'hover:border-slate-400/40',
-                }
-                return (
-                  <motion.a
-                    key={c.file}
-                    href={`${CAT_RAW}${c.file}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    initial={{ opacity: 0, y: 16 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: '-50px' }}
-                    transition={{ delay: i * 0.04, duration: 0.4, ease: 'easeOut' }}
-                    className={`group flex items-center justify-between gap-4 rounded-2xl border border-white/5 bg-slate-900/40 backdrop-blur-xl px-5 py-4 transition-all duration-300 hover:bg-slate-800/50 hover:-translate-y-0.5 ${meta.ring}`}
-                  >
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2.5">
-                        <span className={`h-2.5 w-2.5 rounded-full ${meta.dot} shadow-[0_0_8px] shadow-current`} />
-                        <span className="font-bold text-white text-sm tracking-tight">{meta.label}</span>
-                        <span className="text-[11px] font-bold text-slate-500 tabular-nums">
-                          {c.count.toLocaleString()}
-                        </span>
-                      </div>
-                      <p className="mt-1.5 text-xs text-slate-400 leading-snug truncate group-hover:text-slate-300 transition-colors">
-                        {meta.blurb}
-                      </p>
-                    </div>
-                    <Download size={16} className="shrink-0 text-slate-500 group-hover:text-white transition-all group-hover:-translate-y-0.5" />
-                  </motion.a>
-                )
-              })}
-            </div>
-          </div>
-        )}
       </Container>
     </Section>
   )
