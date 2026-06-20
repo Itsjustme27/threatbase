@@ -151,7 +151,9 @@ export default function ThreatMap() {
           }
         }
 
-        // Cache map dots to an offscreen canvas for extreme performance
+        // Cache map dots to an offscreen canvas for extreme performance.
+        // Calm, muted steel-blue base map — the attack arcs are the only
+        // vivid elements (professional threat-map aesthetic).
         const dotCanvas = document.createElement('canvas')
         dotCanvas.width = width
         dotCanvas.height = height
@@ -160,15 +162,16 @@ export default function ThreatMap() {
           dotCtx.beginPath()
           newDots.forEach(dot => {
             dotCtx.moveTo(dot.x, dot.y)
-            dotCtx.arc(dot.x, dot.y, 1.6, 0, Math.PI * 2)
+            dotCtx.arc(dot.x, dot.y, 1.3, 0, Math.PI * 2)
           })
-          dotCtx.shadowColor = 'rgba(255, 10, 10, 0.95)'
-          dotCtx.shadowBlur = 8
-          dotCtx.fillStyle = 'rgba(255, 20, 20, 1)'
+          dotCtx.shadowColor = 'rgba(56, 89, 138, 0.35)'
+          dotCtx.shadowBlur = 3
+          dotCtx.fillStyle = 'rgba(80, 104, 140, 0.55)'
           dotCtx.fill()
         }
 
-        const colors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b']
+        // Coherent, vivid accent palette for attacks against the calm map.
+        const colors = ['#22d3ee', '#f59e0b', '#f43f5e']
 
         // Pick an origin [lon,lat] weighted by real attacker counts; fall
         // back to a random city until geo.json has loaded.
@@ -219,15 +222,37 @@ export default function ThreatMap() {
           })
         }
 
+        // Pre-project the victim hubs so we can render soft "impact" pulses.
+        const hubPoints = TARGET_HUBS
+          .map(h => projection(h.coords))
+          .filter((p): p is [number, number] => !!p)
+
         // Spawn initial attacks
         for (let i = 0; i < 5; i++) spawnAttack()
 
+        let frame = 0
         const render = () => {
+          frame++
           // Clear the canvas completely every frame for crisp 60fps (no smudging)
           ctx.clearRect(0, 0, width, height)
 
           // Draw cached background map
           ctx.drawImage(dotCanvas, 0, 0)
+
+          // Soft pulsing markers at the destination hubs
+          ctx.globalCompositeOperation = 'screen'
+          for (let h = 0; h < hubPoints.length; h++) {
+            const [hx, hy] = hubPoints[h]
+            const pulse = (Math.sin(frame * 0.04 + h) + 1) / 2 // 0..1
+            ctx.beginPath()
+            ctx.arc(hx, hy, 2.2 + pulse * 1.5, 0, Math.PI * 2)
+            ctx.fillStyle = `rgba(34, 211, 238, ${0.25 + pulse * 0.35})`
+            ctx.shadowBlur = 8
+            ctx.shadowColor = 'rgba(34, 211, 238, 0.8)'
+            ctx.fill()
+            ctx.shadowBlur = 0
+          }
+          ctx.globalCompositeOperation = 'source-over'
 
           // Spawn new attacks randomly
           if (Math.random() < 0.02 && attacks.length < 15) {
@@ -348,43 +373,47 @@ export default function ThreatMap() {
 
       {/* Live threat-origins HUD — bottom-right, clear of the hero copy */}
       {topOrigins.length > 0 && (
-        <div className="hidden lg:block absolute bottom-6 right-6 z-10 w-64 rounded-2xl border border-white/10 bg-slate-950/60 backdrop-blur-xl p-4 shadow-2xl pointer-events-none">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-red-500" />
-              </span>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-300">
-                Live Threat Origins
-              </span>
-            </div>
+        <div className="hidden lg:block absolute bottom-6 right-6 z-10 w-72 overflow-hidden rounded-2xl border border-white/10 bg-slate-950/70 backdrop-blur-2xl shadow-2xl ring-1 ring-inset ring-white/5 pointer-events-none">
+          {/* Header */}
+          <div className="flex items-center gap-2 border-b border-white/5 bg-white/[0.02] px-4 py-3">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-400" />
+            </span>
+            <span className="text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-300">
+              Live Threat Origins
+            </span>
           </div>
 
-          <div className="mb-3">
-            <div className="text-2xl font-black text-white tabular-nums leading-none">
-              {totalThreats.toLocaleString()}
-            </div>
-            <div className="text-[10px] uppercase tracking-wider text-slate-500 mt-1">
-              Geolocated malicious IPs
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            {topOrigins.map((o) => (
-              <div key={o.cc} className="flex items-center gap-2">
-                <span className="w-7 shrink-0 text-[11px] font-bold text-slate-400 tabular-nums">{o.cc}</span>
-                <div className="flex-1 h-1.5 rounded-full bg-white/5 overflow-hidden">
-                  <div
-                    className="h-full rounded-full bg-gradient-to-r from-red-500 to-orange-400"
-                    style={{ width: `${maxCount ? Math.max(6, (o.count / maxCount) * 100) : 0}%` }}
-                  />
-                </div>
-                <span className="w-12 shrink-0 text-right text-[10px] font-semibold text-slate-400 tabular-nums">
-                  {o.count.toLocaleString()}
-                </span>
+          <div className="px-4 py-4">
+            {/* Headline metric */}
+            <div className="mb-4">
+              <div className="bg-gradient-to-r from-white to-slate-400 bg-clip-text text-3xl font-black leading-none tracking-tight text-transparent tabular-nums">
+                {totalThreats.toLocaleString()}
               </div>
-            ))}
+              <div className="mt-1.5 text-[10px] uppercase tracking-[0.15em] text-slate-500">
+                Geolocated malicious IPs
+              </div>
+            </div>
+
+            {/* Top origin countries */}
+            <div className="flex flex-col gap-2.5">
+              {topOrigins.map((o) => (
+                <div key={o.cc} className="flex items-center gap-2.5">
+                  <span className="w-6 shrink-0 text-[11px] font-bold text-slate-300">{o.cc}</span>
+                  <span className="min-w-0 flex-1 truncate text-[11px] font-medium text-slate-500">{o.name}</span>
+                  <div className="h-1 w-16 shrink-0 overflow-hidden rounded-full bg-white/5">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-amber-400 to-rose-500"
+                      style={{ width: `${maxCount ? Math.max(8, (o.count / maxCount) * 100) : 0}%` }}
+                    />
+                  </div>
+                  <span className="w-12 shrink-0 text-right text-[10px] font-semibold text-slate-400 tabular-nums">
+                    {o.count.toLocaleString()}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}
