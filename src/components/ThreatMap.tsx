@@ -50,7 +50,7 @@ interface Weighted<T> {
   total: number
 }
 
-interface TickerEntry { id: number; src: string; tgt: string; cat: string }
+interface TickerEntry { id: number; src: string; tgt: string; cat: string; ts: number }
 
 function pickWeighted<T>(w: Weighted<T> | null): T | null {
   if (!w || w.total <= 0) return null
@@ -70,6 +70,14 @@ export default function ThreatMap() {
   const geoRef = useRef<Weighted<{ coords: [number, number]; cc: string }> | null>(null)
   const catRef = useRef<Weighted<string> | null>(null)
   const [ticker, setTicker] = useState<TickerEntry[]>([])
+  const [totalSeen, setTotalSeen] = useState(0)
+  // Ticking clock so relative timestamps ("now", "5s") stay fresh.
+  const [now, setNow] = useState(() => Date.now())
+
+  useEffect(() => {
+    const t = window.setInterval(() => setNow(Date.now()), 1000)
+    return () => window.clearInterval(t)
+  }, [])
 
   // Fetch real attacker geolocation + category mix to drive the map.
   useEffect(() => {
@@ -238,8 +246,9 @@ export default function ThreatMap() {
           if (srcCC && tgtCC && srcCC !== tgtCC) {
             const cat = pickWeighted(catRef.current) ?? 'Malicious'
             tickerId += 1
-            const entry: TickerEntry = { id: tickerId, src: srcCC, tgt: tgtCC, cat }
+            const entry: TickerEntry = { id: tickerId, src: srcCC, tgt: tgtCC, cat, ts: Date.now() }
             setTicker(prev => [entry, ...prev].slice(0, 7))
+            setTotalSeen(n => n + 1)
           }
         }
 
@@ -353,41 +362,72 @@ export default function ThreatMap() {
 
       {/* Live attack ticker — fixed-size feed, bottom-right of the hero */}
       {ticker.length > 0 && (
-        <div className="hidden lg:flex flex-col absolute bottom-6 right-6 z-10 w-[18rem] h-[268px] overflow-hidden rounded-xl border border-white/[0.08] bg-slate-950/60 backdrop-blur-xl shadow-[0_8px_40px_rgba(0,0,0,0.45)] pointer-events-none">
-          <div className="flex items-center gap-2.5 border-b border-white/5 px-4 py-3">
-            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-red-500/90" />
-            <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+        <div className="hidden lg:flex flex-col absolute bottom-6 right-6 z-10 w-[20rem] h-[272px] overflow-hidden rounded-xl border border-white/10 bg-slate-950/70 backdrop-blur-xl shadow-[0_8px_40px_rgba(0,0,0,0.5)] ring-1 ring-inset ring-white/[0.04] pointer-events-none">
+          {/* Header: pulsing live dot + session counter */}
+          <div className="flex items-center gap-2.5 border-b border-white/[0.07] px-4 py-3">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-60 animate-ping motion-reduce:hidden" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.9)]" />
+            </span>
+            <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-slate-300">
               Live Attacks
+            </span>
+            <span className="ml-auto flex items-center gap-1 font-mono text-[10px] tabular-nums text-slate-500">
+              <svg viewBox="0 0 12 12" className="h-2.5 w-2.5 stroke-current" fill="none" strokeWidth="1.6" aria-hidden="true">
+                <path d="M6 9.5V2.5M2.8 5.7 6 2.5l3.2 3.2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              {totalSeen.toLocaleString()}
             </span>
           </div>
 
           {/* Feed: fixed height, older rows fade out at the bottom */}
           <div className="relative flex-1 overflow-hidden">
-            <div className="flex flex-col px-2 py-1.5">
-              {ticker.map((t) => (
-                <div key={t.id} className="ticker-in flex items-center gap-3 rounded-lg px-2 py-[7px]">
-                  <span
-                    className="h-1.5 w-1.5 shrink-0 rounded-full"
-                    style={{ backgroundColor: CATEGORY_COLOR[t.cat] ?? '#94a3b8' }}
-                  />
-                  <span className="flex items-center gap-2 font-mono text-[13px] text-slate-200">
-                    <span className="w-6 text-right tracking-wide">{t.src}</span>
-                    <span className="text-slate-600">→</span>
-                    <span className="w-6 tracking-wide">{t.tgt}</span>
-                  </span>
-                  <span className="ml-auto truncate text-[10px] font-medium uppercase tracking-[0.12em] text-slate-500">
-                    {t.cat}
-                  </span>
-                </div>
-              ))}
+            <div className="flex flex-col px-1.5 py-1">
+              {ticker.map((t) => {
+                const c = CATEGORY_COLOR[t.cat] ?? '#94a3b8'
+                return (
+                  <div key={t.id} className="ticker-in flex items-center gap-2.5 rounded-lg px-2 py-[6px]">
+                    <span
+                      className="h-1.5 w-1.5 shrink-0 rounded-full"
+                      style={{ backgroundColor: c, boxShadow: `0 0 6px ${c}99` }}
+                    />
+                    <span className="flex items-center gap-1.5 font-mono text-[13px] tabular-nums">
+                      <span className="w-6 text-right tracking-wide text-slate-100">{t.src}</span>
+                      <svg viewBox="0 0 16 8" className="h-2 w-4 shrink-0 stroke-slate-600" fill="none" strokeWidth="1.4" aria-hidden="true">
+                        <path d="M1 4h12M10 1.5 13.5 4 10 6.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <span className="w-6 tracking-wide text-slate-400">{t.tgt}</span>
+                    </span>
+                    <span className="ml-auto flex items-center gap-2">
+                      <span
+                        className="rounded-md px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.1em]"
+                        style={{ color: c, backgroundColor: `${c}1f` }}
+                      >
+                        {t.cat}
+                      </span>
+                      <span className="w-6 text-right font-mono text-[10px] tabular-nums text-slate-600">
+                        {relTime(t.ts, now)}
+                      </span>
+                    </span>
+                  </div>
+                )
+              })}
             </div>
             {/* Bottom fade mask */}
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-slate-950/90 to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent" />
           </div>
         </div>
       )}
     </>
   )
+}
+
+// Compact relative time for the live feed: "now" → "5s" → "3m".
+function relTime(ts: number, now: number) {
+  const s = Math.max(0, Math.round((now - ts) / 1000))
+  if (s < 1) return 'now'
+  if (s < 60) return `${s}s`
+  return `${Math.floor(s / 60)}m`
 }
 
 function hexToRgb(hex: string) {

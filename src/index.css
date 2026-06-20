@@ -172,3 +172,9 @@
 .ticker-in {
   animation: tickerIn 0.35s ease-out;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-in {
+    animation: none;
+  }
+}
