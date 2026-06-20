@@ -351,33 +351,38 @@ export default function ThreatMap() {
         className="absolute inset-0 pointer-events-none z-0 w-full h-full bg-app"
       />
 
-      {/* Live attack ticker — bottom-right, clear of the hero copy */}
+      {/* Live attack ticker — fixed-size feed, bottom-right of the hero */}
       {ticker.length > 0 && (
-        <div className="hidden lg:block absolute bottom-6 right-6 z-10 w-[19rem] overflow-hidden rounded-xl border border-white/[0.08] bg-slate-950/60 backdrop-blur-xl shadow-[0_8px_40px_rgba(0,0,0,0.45)] pointer-events-none">
-          <div className="flex items-center gap-2.5 px-4 py-3">
+        <div className="hidden lg:flex flex-col absolute bottom-6 right-6 z-10 w-[18rem] h-[268px] overflow-hidden rounded-xl border border-white/[0.08] bg-slate-950/60 backdrop-blur-xl shadow-[0_8px_40px_rgba(0,0,0,0.45)] pointer-events-none">
+          <div className="flex items-center gap-2.5 border-b border-white/5 px-4 py-3">
             <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-red-500/90" />
             <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">
               Live Attacks
             </span>
           </div>
 
-          <div className="px-2 pb-2">
-            {ticker.map((t) => (
-              <div key={t.id} className="ticker-in flex items-center gap-3 rounded-lg px-2 py-2">
-                <span
-                  className="h-1.5 w-1.5 shrink-0 rounded-full"
-                  style={{ backgroundColor: CATEGORY_COLOR[t.cat] ?? '#94a3b8' }}
-                />
-                <span className="flex items-center gap-2 font-mono text-[13px] text-slate-200">
-                  <span className="w-6 text-right tracking-wide">{t.src}</span>
-                  <span className="text-slate-600">→</span>
-                  <span className="w-6 tracking-wide">{t.tgt}</span>
-                </span>
-                <span className="ml-auto truncate text-[10px] font-medium uppercase tracking-[0.12em] text-slate-500">
-                  {t.cat}
-                </span>
-              </div>
-            ))}
+          {/* Feed: fixed height, older rows fade out at the bottom */}
+          <div className="relative flex-1 overflow-hidden">
+            <div className="flex flex-col px-2 py-1.5">
+              {ticker.map((t) => (
+                <div key={t.id} className="ticker-in flex items-center gap-3 rounded-lg px-2 py-[7px]">
+                  <span
+                    className="h-1.5 w-1.5 shrink-0 rounded-full"
+                    style={{ backgroundColor: CATEGORY_COLOR[t.cat] ?? '#94a3b8' }}
+                  />
+                  <span className="flex items-center gap-2 font-mono text-[13px] text-slate-200">
+                    <span className="w-6 text-right tracking-wide">{t.src}</span>
+                    <span className="text-slate-600">→</span>
+                    <span className="w-6 tracking-wide">{t.tgt}</span>
+                  </span>
+                  <span className="ml-auto truncate text-[10px] font-medium uppercase tracking-[0.12em] text-slate-500">
+                    {t.cat}
+                  </span>
+                </div>
+              ))}
+            </div>
+            {/* Bottom fade mask */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-slate-950/90 to-transparent" />
           </div>
         </div>
       )}
