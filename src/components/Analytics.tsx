@@ -37,8 +37,8 @@ export default function Analytics({ statsData, feedVersion }: any) {
           </div>
 
           {/* Donut Chart Card */}
-          <div className="rounded-3xl border border-white/10 bg-slate-900/60 backdrop-blur-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] p-8 relative overflow-hidden group">
-            <div className="absolute top-0 inset-x-0 h-[2px] w-full bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
+          <div className="glass-card p-6 relative overflow-hidden group">
+            <div className="absolute top-0 inset-x-0 h-[2px] w-full bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none"></div>
             
             <div className="relative z-10 h-full flex flex-col">
@@ -58,8 +58,9 @@ export default function Analytics({ statsData, feedVersion }: any) {
 
 function CategoryChart({ categories }: any) {
   const textColor = '#cbd5e1'
-  // Premium tech palette: Red, Orange, Amber, Emerald, Cyan, Purple
-  const bgColors = ['#f43f5e', '#f97316', '#eab308', '#10b981', '#06b6d4', '#a855f7'] 
+  // Unified cyan → red ramp (matches the site's two-accent system):
+  // highest-volume categories run red, tapering to cyan.
+  const bgColors = ['#ef4444', '#f87171', '#fb7185', '#fca5a5', '#67e8f9', '#22d3ee', '#38bdf8', '#0ea5e9', '#0891b2']
 
   const sorted = Object.entries(categories)
     .filter(([k]) => k !== 'Mixed' && k !== 'Unknown')

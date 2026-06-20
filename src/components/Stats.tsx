@@ -104,8 +104,8 @@ export default function Stats({ statsData }: any) {
           transition={{ duration: 0.5, ease: 'easeOut' }}
         >
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[11px] font-bold uppercase tracking-widest text-emerald-400 mb-4">
-              <span className="inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-400/20 text-[11px] font-bold uppercase tracking-widest text-red-400 mb-4">
+              <span className="inline-flex h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />
               Live Intelligence
             </div>
             <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
@@ -117,7 +117,7 @@ export default function Stats({ statsData }: any) {
           </div>
           {lastUpdated && (
             <div className="shrink-0 flex items-center gap-2 text-[11px] font-semibold text-slate-500 bg-white/[0.03] border border-white/[0.06] rounded-xl px-3.5 py-2">
-              <Activity size={13} className="text-emerald-400" />
+              <Activity size={13} className="text-red-400" />
               <span className="uppercase tracking-wider">Synced</span>
               <span className="text-slate-300 font-bold">{lastUpdated}</span>
             </div>
@@ -157,8 +157,8 @@ function SummaryStrip({ total, feeds }: { total: number | null; feeds: number | 
       viewport={{ once: true }}
       transition={{ duration: 0.5, ease: 'easeOut', delay: 0.05 }}
     >
-      <div className="relative overflow-hidden rounded-2xl border border-white/[0.07] bg-gradient-to-br from-white/[0.04] to-transparent p-5 backdrop-blur-xl flex items-center gap-4">
-        <div className="p-3 rounded-2xl border border-white/10 bg-white/[0.04] text-white shrink-0">
+      <div className="glass-card relative overflow-hidden p-6 flex items-center gap-4">
+        <div className="p-3 icon-chip shrink-0">
           <Database size={22} />
         </div>
         <div>
@@ -167,11 +167,11 @@ function SummaryStrip({ total, feeds }: { total: number | null; feeds: number | 
             {total != null ? fmt(totalVal) : '—'}
           </div>
         </div>
-        <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-white/[0.04] blur-3xl pointer-events-none" />
+        <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-red-500/[0.05] blur-3xl pointer-events-none" />
       </div>
 
-      <div className="relative overflow-hidden rounded-2xl border border-white/[0.07] bg-gradient-to-br from-emerald-500/[0.06] to-transparent p-5 backdrop-blur-xl flex items-center gap-4">
-        <div className="p-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 shrink-0">
+      <div className="glass-card relative overflow-hidden p-6 flex items-center gap-4">
+        <div className="p-3 icon-chip shrink-0">
           <Radio size={22} />
         </div>
         <div>
@@ -180,7 +180,7 @@ function SummaryStrip({ total, feeds }: { total: number | null; feeds: number | 
             {feeds != null ? fmt(feeds) : '—'}
           </div>
         </div>
-        <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-emerald-500/[0.06] blur-3xl pointer-events-none" />
+        <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full bg-red-500/[0.06] blur-3xl pointer-events-none" />
       </div>
     </motion.div>
   )
@@ -195,23 +195,22 @@ function StatCard({ metric, target }: { metric: MetricDef; target: number | null
       variants={cardVariants}
       whileHover={{ y: -6 }}
       transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-      className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/[0.06] bg-white/[0.015] p-6 sm:p-7 backdrop-blur-[40px]"
-      style={{ ['--mc' as any]: metric.rgb }}
+      className="group glass-card glass-hover relative flex flex-col overflow-hidden p-6"
     >
-      {/* Color wash keyed to the metric */}
+      {/* Red color wash on hover */}
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-        style={{ background: `radial-gradient(130% 90% at 100% 0%, rgba(${metric.rgb},0.12), transparent 55%)` }}
+        style={{ background: 'radial-gradient(130% 90% at 100% 0%, rgba(239,68,68,0.12), transparent 55%)' }}
       />
       {/* Top accent line on hover */}
       <div
         className="absolute top-0 inset-x-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{ backgroundImage: `linear-gradient(90deg, transparent, rgba(${metric.rgb},0.7), transparent)` }}
+        style={{ backgroundImage: 'linear-gradient(90deg, transparent, rgba(239,68,68,0.7), transparent)' }}
       />
       {/* Corner glow */}
       <div
         className="absolute -top-20 -right-20 w-44 h-44 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-        style={{ background: `rgba(${metric.rgb},0.10)` }}
+        style={{ background: 'rgba(239,68,68,0.10)' }}
       />
 
       {/* Header row */}
@@ -219,7 +218,7 @@ function StatCard({ metric, target }: { metric: MetricDef; target: number | null
         <span className="text-xs font-bold text-slate-400 tracking-widest uppercase group-hover:text-slate-200 transition-colors">
           {metric.label}
         </span>
-        <div className={`p-3 rounded-2xl border transition-all duration-300 shadow-inner group-hover:scale-105 ${metric.iconWrap}`}>
+        <div className="p-3 icon-chip transition-transform duration-300 group-hover:scale-105">
           <img
             src={`${import.meta.env.BASE_URL}img/${metric.img}`}
             alt=""

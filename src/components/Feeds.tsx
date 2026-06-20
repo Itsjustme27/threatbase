@@ -67,7 +67,7 @@ export default function Feeds({ statsData }: { statsData?: any }) {
   return (
     <Section id="feeds" container={false} className="overflow-hidden">
       {/* Background decorations */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[1px] bg-gradient-to-r from-transparent via-red-500/20 to-transparent"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
 
       <Container width="wide" className="relative z-10">
         <div className="mb-16 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -86,7 +86,7 @@ export default function Feeds({ statsData }: { statsData?: any }) {
             const chunks = getChunks(f.file)
             return (
               <motion.div
-                className={`group flex flex-col justify-between overflow-hidden rounded-3xl border border-white/5 bg-slate-900/40 backdrop-blur-xl p-8 shadow-xl transition-all duration-500 hover:bg-slate-800/50 hover:border-white/10 hover:-translate-y-1.5 ${f.glow}`}
+                className="group glass-card flex flex-col justify-between overflow-hidden p-6 transition-all duration-300 hover:-translate-y-1.5 hover:from-white/[0.10] hover:shadow-[0_24px_50px_-20px_rgba(34,211,238,0.18)]"
                 key={f.file}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -95,7 +95,7 @@ export default function Feeds({ statsData }: { statsData?: any }) {
               >
                 <div>
                   <div className="flex items-center gap-4 mb-6">
-                    <div className={`p-3.5 rounded-2xl border transition-all duration-500 shadow-inner group-hover:scale-110 ${f.color}`}>
+                    <div className="p-3.5 icon-chip transition-transform duration-500 group-hover:scale-110">
                       {f.icon}
                     </div>
                     <h3 className="text-xl font-bold text-white tracking-tight">{f.name}</h3>
@@ -114,7 +114,7 @@ export default function Feeds({ statsData }: { statsData?: any }) {
                         <a
                           key={chunk}
                           href={`https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/${chunk}`}
-                          className="inline-flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold transition-all duration-300 border border-white/10 rounded-xl bg-white/5 text-white hover:bg-white/10 hover:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-sm overflow-hidden relative group/chunk"
+                          className="inline-flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold transition-all duration-300 rounded-xl bg-white/5 text-slate-200 hover:bg-cyan-500/10 hover:text-cyan-100 focus:outline-none focus:ring-2 focus:ring-cyan-400/40 overflow-hidden relative group/chunk"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -125,7 +125,7 @@ export default function Feeds({ statsData }: { statsData?: any }) {
                       {chunks.length > 3 && (
                         <a
                           href="https://github.com/kalidada18/threatbase/tree/main/ioc"
-                          className="inline-flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold transition-all duration-300 border border-white/10 rounded-xl bg-white/5 text-white hover:bg-white/10 hover:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-sm overflow-hidden relative group/chunk"
+                          className="inline-flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold transition-all duration-300 rounded-xl bg-white/5 text-slate-200 hover:bg-cyan-500/10 hover:text-cyan-100 focus:outline-none focus:ring-2 focus:ring-cyan-400/40 overflow-hidden relative group/chunk"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -137,7 +137,7 @@ export default function Feeds({ statsData }: { statsData?: any }) {
                 ) : (
                   <a
                     href={`https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/${f.file}`}
-                    className="inline-flex items-center justify-center gap-2 w-full px-5 py-3.5 text-sm font-bold transition-all duration-300 border border-white/10 rounded-2xl bg-white/5 text-white hover:bg-white/10 hover:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-slate-900 shadow-sm overflow-hidden relative"
+                    className="inline-flex items-center justify-center gap-2 w-full px-5 py-3.5 text-sm font-bold transition-all duration-300 rounded-2xl bg-gradient-to-r from-red-500 to-rose-600 text-white hover:from-red-400 hover:to-rose-500 focus:outline-none focus:ring-2 focus:ring-red-400/50 shadow-[0_0_20px_-4px_rgba(239,68,68,0.45)] overflow-hidden relative"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

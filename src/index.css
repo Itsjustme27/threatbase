@@ -128,6 +128,21 @@
   }
 }
 
+@layer components {
+  /* Unified borderless glass surface — single source of truth for all cards. */
+  .glass-card {
+    @apply rounded-2xl bg-gradient-to-b from-white/[0.06] to-white/[0.02] backdrop-blur-xl shadow-[0_16px_50px_-24px_rgba(0,0,0,0.75)];
+  }
+  /* Subtle brighten on hover (pairs with .glass-card). */
+  .glass-hover {
+    @apply transition duration-300 hover:from-white/[0.10];
+  }
+  /* Unified accent chip for section icons (red = data accent). */
+  .icon-chip {
+    @apply flex items-center justify-center rounded-xl bg-red-500/10 text-red-400;
+  }
+}
+
 @keyframes liquidGradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
