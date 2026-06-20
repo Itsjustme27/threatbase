@@ -76,9 +76,7 @@ FEEDS: Dict[str, str] = {
     "romainmarcoux_outgoing_aa": "https://raw.githubusercontent.com/romainmarcoux/malicious-outgoing-ip/main/full-outgoing-ip-aa.txt",
     "romainmarcoux_outgoing_ab": "https://raw.githubusercontent.com/romainmarcoux/malicious-outgoing-ip/main/full-outgoing-ip-ab.txt",
     "alienvault_reputation": "https://reputation.alienvault.com/reputation.data",
-    "talos_intel": "https://talosintelligence.com/documents/ip-blacklist",
     "sslbl_abuse_ch": "https://sslbl.abuse.ch/blacklist/sslipblacklist.txt",
-    "osint_bambenek_c2": "https://osint.bambenekconsulting.com/feeds/c2-ipmasterlist.txt",
     "stopforumspam_toxic": "https://www.stopforumspam.com/downloads/toxic_ip_cidr.txt",
     "firehol_level3": "https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level3.netset",
     "blocklist_net_bots": "https://lists.blocklist.de/lists/bots.txt",
@@ -87,7 +85,7 @@ FEEDS: Dict[str, str] = {
     "dataplane_sipinv": "https://dataplane.org/sipinvitation.txt",
     "dataplane_sshclient": "https://dataplane.org/sshclient.txt",
     "dataplane_sshpwauth": "https://dataplane.org/sshpwauth.txt",
-    "dataplane_vnclogin": "https://dataplane.org/vnclogin.txt",
+    "dataplane_vncrfb": "https://dataplane.org/vncrfb.txt",
 }
 
 FEED_CATEGORIES: Dict[str, str] = {
@@ -122,9 +120,7 @@ FEED_CATEGORIES: Dict[str, str] = {
     "romainmarcoux_outgoing_aa": "Malicious",
     "romainmarcoux_outgoing_ab": "Malicious",
     "alienvault_reputation": "Malicious",
-    "talos_intel": "Malicious",
     "sslbl_abuse_ch": "C2",
-    "osint_bambenek_c2": "C2",
     "stopforumspam_toxic": "Spam",
     "firehol_level3": "Mixed",
     "blocklist_net_bots": "Botnet",
@@ -133,7 +129,7 @@ FEED_CATEGORIES: Dict[str, str] = {
     "dataplane_sipinv": "Scanner",
     "dataplane_sshclient": "Scanner",
     "dataplane_sshpwauth": "Brute-Force",
-    "dataplane_vnclogin": "Brute-Force",
+    "dataplane_vncrfb": "Brute-Force",
     "custom": "Malicious",
 }
 
@@ -657,15 +653,15 @@ FEED_TRUST_TIERS = {
     "feodo_tracker": "HIGH", "feodo_tracker_aggressive": "HIGH", "abuseipdb": "HIGH",
     "threatfox_full": "HIGH", "spamhaus_drop": "HIGH", "spamhaus_edrop": "HIGH", "spamhaus_dropv6": "HIGH",
     "cins_army": "HIGH", "emerging_threats": "HIGH", "emerging_threats_fwrules": "HIGH",
-    "greensnow": "HIGH", "dshield_blocklist": "HIGH", "alienvault_reputation": "HIGH", "talos_intel": "HIGH",
-    "sslbl_abuse_ch": "HIGH", "osint_bambenek_c2": "HIGH", "snort_ip_filter": "HIGH",
+    "greensnow": "HIGH", "dshield_blocklist": "HIGH", "alienvault_reputation": "HIGH",
+    "sslbl_abuse_ch": "HIGH", "snort_ip_filter": "HIGH",
     
     "blocklist_de": "MEDIUM", "blocklist_de_ssh": "MEDIUM", "blocklist_de_mail": "MEDIUM",
     "blocklist_de_apache": "MEDIUM", "bruteforceblocker": "MEDIUM", "criticalpath_security": "MEDIUM",
     "dan_tor": "MEDIUM", "tor_bulk_exit": "MEDIUM", "bbcan177_ms1": "MEDIUM",
     "botvrij": "MEDIUM", "binary_defense": "MEDIUM", "stopforumspam_toxic": "MEDIUM", "blocklist_net_bots": "MEDIUM",
     "blocklist_net_strongips": "MEDIUM", "dataplane_sipinv": "MEDIUM", "dataplane_sshclient": "MEDIUM",
-    "dataplane_sshpwauth": "MEDIUM", "dataplane_vnclogin": "MEDIUM",
+    "dataplane_sshpwauth": "MEDIUM", "dataplane_vncrfb": "MEDIUM",
     
     "firehol_level1": "LOW", "firehol_level2": "LOW", "ipsum": "LOW",
     "blackbook": "LOW", "romainmarcoux_outgoing_40k": "LOW",
