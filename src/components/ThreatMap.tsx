@@ -227,7 +227,7 @@ export default function ThreatMap() {
     autoRotateRef.current = false
     dragStartRef.current = [e.clientX, e.clientY]
     rotStartRef.current = [...rotationRef.current]
-    ;(e.target as HTMLElement).setPointerCapture(e.pointerId)
+      ; (e.target as HTMLElement).setPointerCapture(e.pointerId)
   }, [])
 
   const onPointerMove = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {

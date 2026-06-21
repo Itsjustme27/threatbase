@@ -145,9 +145,9 @@ export default function Leaderboard() {
       {leaders.map((leader, index) => {
         const rank = getRankInfo(leader.reports_count)
         const podium = podiumStyle(index)
-        const isAdmin =
-          leader.reporter_alias === 'lamichhanesujal18' ||
-          leader.reporter_alias === 'kalidada'
+        // Use data-driven role check instead of hardcoded usernames.
+        // The top_contributors view should expose an is_admin/role column.
+        const isAdmin = leader.is_admin === true || leader.role === 'admin'
 
         return (
           <motion.li

@@ -1,10 +1,22 @@
 import supabaseClient from '../../../src/supabaseClient'
 
-export const onRequestOptions = async () => {
+const ALLOWED_ORIGIN = 'https://threatbase.qzz.io'
+
+function getAllowedOrigin(request: Request): string {
+  const origin = request.headers.get('Origin') || ''
+  if (origin === ALLOWED_ORIGIN ||
+      origin.startsWith('http://localhost') ||
+      origin.startsWith('http://127.0.0.1')) {
+    return origin
+  }
+  return ALLOWED_ORIGIN
+}
+
+export const onRequestOptions = async (context: any) => {
   return new Response(null, {
     status: 204,
     headers: {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': getAllowedOrigin(context.request),
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
     },
@@ -22,7 +34,7 @@ export const onRequest = async (context: any) => {
   // Extract API key
   const apiKey = request.headers.get('x-api-key');
   if (!apiKey) {
-    return new Response(JSON.stringify({ error: 'Missing x-api-key header' }), { status: 401, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
+    return new Response(JSON.stringify({ error: 'Missing x-api-key header' }), { status: 401, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': getAllowedOrigin(request) } });
   }
 
   try {
@@ -43,7 +55,7 @@ export const onRequest = async (context: any) => {
       let count = currentVal ? parseInt(currentVal, 10) : 0;
 
       if (count >= 1000) {
-        return new Response(JSON.stringify({ error: 'Rate limit exceeded. Maximum 1000 requests per day.' }), { status: 429, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
+        return new Response(JSON.stringify({ error: 'Rate limit exceeded. Maximum 1000 requests per day.' }), { status: 429, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': getAllowedOrigin(request) } });
       }
 
       await kv.put(rlKey, (count + 1).toString(), { expirationTtl: 86400 }); // Expire after 1 day
@@ -53,7 +65,7 @@ export const onRequest = async (context: any) => {
     const { data: userId, error } = await supabaseClient.rpc('validate_api_key_hash', { client_hash: hashHex });
     
     if (error || !userId) {
-      return new Response(JSON.stringify({ error: 'Invalid or revoked API key' }), { status: 401, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
+      return new Response(JSON.stringify({ error: 'Invalid or revoked API key' }), { status: 401, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': getAllowedOrigin(request) } });
     }
 
     // Attach user context for downstream functions
@@ -63,7 +75,7 @@ export const onRequest = async (context: any) => {
     
     // Ensure CORS headers are present on actual responses
     const newHeaders = new Headers(response.headers);
-    newHeaders.set('Access-Control-Allow-Origin', '*');
+    newHeaders.set('Access-Control-Allow-Origin', getAllowedOrigin(request));
     
     return new Response(response.body, {
       status: response.status,
@@ -72,6 +84,6 @@ export const onRequest = async (context: any) => {
     });
 
   } catch (err: any) {
-    return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } });
+    return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': getAllowedOrigin(request) } });
   }
 };

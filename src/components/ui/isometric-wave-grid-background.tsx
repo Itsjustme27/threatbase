@@ -45,10 +45,10 @@ const IsoLevelWarp = ({
     const gridGap = density;
     const rows = Math.ceil(height / gridGap) + 5; // Extra buffer
     const cols = Math.ceil(width / gridGap) + 5;
-    
+
     // Mouse Interaction
     const mouse = { x: -1000, y: -1000, targetX: -1000, targetY: -1000 };
-    
+
     // Wave Physics
     let time = 0;
 
@@ -78,7 +78,7 @@ const IsoLevelWarp = ({
     const draw = () => {
       // Clear Screen with trail effect (optional, simplified here for clarity)
       ctx.clearRect(0, 0, width, height);
-      
+
       // Smooth mouse movement
       mouse.x = smoothMix(mouse.x, mouse.targetX, 0.1);
       mouse.y = smoothMix(mouse.y, mouse.targetY, 0.1);
@@ -86,12 +86,12 @@ const IsoLevelWarp = ({
       time += 0.01 * speed;
 
       ctx.beginPath();
-      
+
       // Calculate Grid Points
       for (let y = 0; y <= rows; y++) {
         // We draw lines row by row
         // To make it look 3D/Topographic, we offset Y based on noise/sine
-        
+
         let isFirst = true;
 
         for (let x = 0; x <= cols; x++) {
@@ -101,13 +101,13 @@ const IsoLevelWarp = ({
           // DISTORTION LOGIC
           // 1. Ambient Wave (The "Breathing")
           const wave = Math.sin(x * 0.2 + time) * Math.cos(y * 0.2 + time) * 15;
-          
+
           // 2. Mouse Repulsion (The "Interaction")
           const dx = baseX - mouse.x;
           const dy = baseY - mouse.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           const maxDist = 300;
-          
+
           // Calculate force: 0 at edge, 1 at center
           const force = Math.max(0, (maxDist - dist) / maxDist);
           // Apply a "Z-push" effect by moving points UP (negative Y) based on proximity
@@ -147,7 +147,7 @@ const IsoLevelWarp = ({
     window.addEventListener("resize", resize);
     container.addEventListener("mousemove", handleMouseMove);
     container.addEventListener("mouseleave", handleMouseLeave);
-    
+
     resize();
     draw();
 
@@ -166,7 +166,7 @@ const IsoLevelWarp = ({
       {...props}
     >
       <canvas ref={canvasRef} className="block w-full h-full" />
-      
+
       {/* Optional: Vignette overlay for depth */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#0B0F19_100%)] opacity-80 pointer-events-none" />
     </div>

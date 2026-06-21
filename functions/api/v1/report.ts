@@ -1,6 +1,11 @@
 import supabaseClient from '../../../src/supabaseClient'
 import { isValidPublicIp, isValidCategory, MAX_COMMENT_LENGTH } from '../../../src/lib/apiValidation'
 
+/** Minimal server-side HTML sanitiser — strips all HTML tags. */
+function stripHtml(str: string): string {
+  return str.replace(/<[^>]*>/g, '')
+}
+
 export const onRequestPost = async (context: any) => {
   const { request, data } = context;
   const userId = data.userId; // Provided by middleware
@@ -25,7 +30,7 @@ export const onRequestPost = async (context: any) => {
 
     const cleanIp = ip.trim();
     const cleanCategory = category.trim();
-    const cleanComment = comment.trim();
+    const cleanComment = stripHtml(comment.trim());
 
     if (!cleanIp || !cleanCategory || !cleanComment) {
       return new Response(JSON.stringify({ error: "Missing required fields: ip, category, comment" }), {

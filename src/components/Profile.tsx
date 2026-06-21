@@ -10,6 +10,20 @@ import { useSEO } from '../useSEO'
 import MfaSetup from './MfaSetup'
 
 /**
+ * Sanitise a user-supplied URL so it can never trigger script execution.
+ * Only http: and https: protocols are allowed; everything else (javascript:,
+ * data:, vbscript:, etc.) is stripped to '#'.
+ */
+const safeHref = (url: string | undefined | null): string => {
+  if (!url) return '#'
+  try {
+    const parsed = new URL(url, 'https://placeholder.invalid')
+    if (parsed.protocol === 'http:' || parsed.protocol === 'https:') return url
+  } catch { /* malformed URL */ }
+  return '#'
+}
+
+/**
  * Royal medal hierarchy. One coherent metal ramp (gold → platinum → bronze →
  * steel) plus the single house accent (ruby). No candy colors — every tier
  * reads as a struck medal, keeping the page's accent lock intact.
@@ -263,9 +277,11 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
       setLoadingProfile(true)
       setProfileNotFound(false)
       try {
+        // Only fetch columns needed for the public profile view — never SELECT *
+        // which could leak sensitive or future internal columns.
         const { data, error } = await supabaseClient
           .from('profiles')
-          .select('*')
+          .select('id, username, full_name, avatar_url, bio, website, created_at, is_helper, role')
           .eq('username', paramUsername)
           .single()
 
@@ -326,7 +342,8 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
     loadReports()
   }, [paramUsername, authProfile, user, loadingProfile])
 
-  // Fetch join order to identify First/Second/Third Blood
+  // Fetch join order to identify First/Second/Third Blood.
+  // Only fetch the first 3 accounts ever created — avoids leaking every user ID.
   useEffect(() => {
     async function loadJoinOrder() {
       if (!supabaseClient || !viewedProfile?.id) return
@@ -335,12 +352,12 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
           .from('profiles')
           .select('id')
           .order('created_at', { ascending: true })
+          .limit(3)
         if (error) throw error
         if (data) {
           const idx = data.findIndex((p: any) => p.id === viewedProfile.id)
-          if (idx !== -1) {
-            setJoinIndex(idx)
-          }
+          // idx will be 0, 1, 2 for the first three users, or -1 for everyone else
+          setJoinIndex(idx !== -1 ? idx : null)
         }
       } catch (err) {
         console.error('Failed to load join order:', err)
@@ -411,12 +428,14 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
   }
 
   const handleRevokeApiKey = async (id: string) => {
-    if (!supabaseClient) return
+    if (!supabaseClient || !user) return
     try {
+      // Scope revocation to the current user's keys to prevent IDOR attacks
       const { error } = await supabaseClient
         .from('api_keys')
         .update({ is_active: false })
         .eq('id', id)
+        .eq('user_id', user.id)
       
       if (error) throw error
       setApiKeys(apiKeys.filter(k => k.id !== id))
@@ -438,46 +457,52 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
 
     setSaving(true)
 
+    // Validate website URL protocol before saving
+    const trimmedWebsite = editWebsite.trim()
+    if (trimmedWebsite && safeHref(trimmedWebsite) === '#') {
+      addToast('Website URL must use http:// or https://', 'error')
+      setSaving(false)
+      return
+    }
+
     try {
-      // Check if username is already taken by someone else
-      const { data: existingUser } = await supabaseClient
-        .from('profiles')
-        .select('id')
-        .eq('username', editUsername.trim())
-        .maybeSingle()
-
-      if (existingUser && existingUser.id !== user.id) {
-        addToast('This username alias is already taken by another user', 'error')
-        setSaving(false)
-        return
-      }
-
+      // Rely on the DB UNIQUE constraint on username to prevent duplicates.
+      // This eliminates the TOCTOU race condition of a separate check-then-insert.
       const { error } = await supabaseClient
         .from('profiles')
         .upsert({
           id: user.id,
           username: editUsername.trim(),
           bio: editBio.trim() || null,
-          website: editWebsite.trim() || null,
+          website: trimmedWebsite || null,
           full_name: authProfile?.full_name || user.user_metadata?.full_name || null,
           avatar_url: authProfile?.avatar_url || user.user_metadata?.avatar_url || null,
           updated_at: new Date().toISOString()
         })
 
-      if (error) throw error
+      if (error) {
+        // Handle unique constraint violation (username already taken)
+        if (error.code === '23505') {
+          addToast('This username alias is already taken by another user', 'error')
+          setSaving(false)
+          return
+        }
+        throw error
+      }
 
-      // Update past reports to reflect new alias
+      // SECURITY: The alias migration for reported_ips (renaming old reports to
+      // the new username) MUST be handled by a server-side RPC function that
+      // validates ownership via auth.uid(). We no longer do this client-side
+      // because the anon key + permissive RLS could allow report hijacking.
       const oldUsername = authProfile?.username || user.email?.split('@')[0] || '';
       const newUsername = editUsername.trim();
-      
       if (oldUsername && oldUsername !== newUsername) {
-        const { error: updateError } = await supabaseClient
-          .from('reported_ips')
-          .update({ reporter_alias: newUsername })
-          .eq('reporter_alias', oldUsername);
-          
-        if (updateError) {
-          console.error("Failed to update past reports with new username:", updateError);
+        const { error: migrateError } = await supabaseClient.rpc('migrate_reporter_alias', {
+          p_old_alias: oldUsername,
+          p_new_alias: newUsername,
+        })
+        if (migrateError) {
+          console.error('Failed to migrate report alias (server-side):', migrateError)
         }
       }
 
@@ -503,15 +528,9 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
     if (deleteInput !== 'delete my account' || !supabaseClient || !user) return
     setDeleting(true)
     try {
-      // Preserve reports by assigning them to 'deletedaccount' before wiping the profile
-      const oldUsername = authProfile?.username || user?.email?.split('@')[0]
-      if (oldUsername) {
-        await supabaseClient
-          .from('reported_ips')
-          .update({ reporter_alias: 'deletedaccount' })
-          .eq('reporter_alias', oldUsername)
-      }
-
+      // SECURITY: The delete_user RPC should handle reassigning reports to
+      // 'deletedaccount' internally. We no longer do this client-side because
+      // a malicious client could reassign any user's reports via the anon key.
       const { error } = await supabaseClient.rpc('delete_user')
       if (error) throw error
 
@@ -631,9 +650,9 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
 
                 <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-6 gap-y-2 pt-2 text-[11px] font-medium text-slate-500">
                   {isOwnProfile && <span className="flex items-center gap-1.5">{activeProfile?.email}</span>}
-                  {(activeProfile?.website || editWebsite) && (
+                  {(activeProfile?.website || editWebsite) && safeHref(activeProfile?.website || editWebsite) !== '#' && (
                     <a 
-                      href={activeProfile?.website || editWebsite} 
+                      href={safeHref(activeProfile?.website || editWebsite)} 
                       target="_blank" 
                       rel="noopener noreferrer" 
                       className="flex items-center gap-1.5 text-slate-300 hover:text-white transition-colors"

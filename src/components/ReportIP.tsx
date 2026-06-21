@@ -286,21 +286,26 @@ export default function ReportIP({ addToast }: any) {
 
   const handleSaveEdit = async (id: number) => {
     if (!supabaseClient) return addToast('Supabase connection unavailable', 'error')
+    if (!alias) return addToast('Cannot edit without a reporter alias', 'error')
     if (!editComment.trim()) return addToast('Comment cannot be empty', 'error')
     if (editComment.trim().length > 1000) return addToast('Comment is too long (max 1000 characters)', 'error')
 
     setIsSavingEdit(true)
     try {
       const safeComment = DOMPurify.sanitize(editComment.trim())
+      // SECURITY: Scope the update to both the row ID AND the current user's
+      // reporter_alias. This prevents editing another user's report by
+      // sending a crafted row ID directly to Supabase.
       const { data, error } = await supabaseClient
         .from('reported_ips')
         .update({ comment: safeComment })
         .eq('id', id)
+        .eq('reporter_alias', alias)
         .select()
         
       if (error) throw error
       if (!data || data.length === 0) {
-        throw new Error('Update affected 0 rows. Check Supabase RLS policies.')
+        throw new Error('Update failed — you can only edit your own reports.')
       }
       
       addToast('Comment updated successfully!', 'success')

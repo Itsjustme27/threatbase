@@ -10,19 +10,36 @@ import { isValidPublicIp, isValidCategory, MAX_COMMENT_LENGTH } from '../../src/
 // Because verification and the privileged write happen in the same request,
 // none of the client-side bypasses apply.
 
-const CORS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+// Allowed origins for CORS. In production only the main domain should be
+// permitted; locally we fall back to '*' for dev convenience.
+const ALLOWED_ORIGIN = 'https://threatbase.qzz.io'
+
+function corsHeaders(request: Request) {
+  const origin = request.headers.get('Origin') || ''
+  const isAllowed = origin === ALLOWED_ORIGIN ||
+    origin.startsWith('http://localhost') ||
+    origin.startsWith('http://127.0.0.1')
+  return {
+    'Access-Control-Allow-Origin': isAllowed ? origin : ALLOWED_ORIGIN,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  }
 }
 
-const json = (obj: any, status = 200) =>
+/** Minimal server-side HTML sanitiser — strips all HTML tags. */
+function stripHtml(str: string): string {
+  return str.replace(/<[^>]*>/g, '')
+}
+
+const json = (obj: any, status = 200, request?: Request) =>
   new Response(JSON.stringify(obj), {
     status,
-    headers: { 'Content-Type': 'application/json', ...CORS },
+    headers: { 'Content-Type': 'application/json', ...(request ? corsHeaders(request) : { 'Access-Control-Allow-Origin': ALLOWED_ORIGIN }) },
   })
 
-export const onRequestOptions = async () => new Response(null, { status: 204, headers: CORS })
+export const onRequestOptions = async (context: any) => {
+  return new Response(null, { status: 204, headers: corsHeaders(context.request) })
+}
 
 /** Verify a Turnstile token against Cloudflare's siteverify endpoint. */
 async function verifyTurnstile(token: string, ip: string, secret: string): Promise<boolean> {
@@ -47,13 +64,13 @@ const WEB_REPORT_DAILY_LIMIT = 50
 export const onRequestPost = async (context: any) => {
   const { request, env } = context
 
-  if (!supabaseClient) return json({ error: 'Service temporarily unavailable.' }, 503)
+  if (!supabaseClient) return json({ error: 'Service temporarily unavailable.' }, 503, request)
 
   // Fail closed: the entire purpose of this endpoint is server-side verification.
   const secret = env.TURNSTILE_SECRET
   if (!secret) {
     console.error('TURNSTILE_SECRET is not configured — rejecting report.')
-    return json({ error: 'Verification is not configured on the server.' }, 500)
+    return json({ error: 'Verification is not configured on the server.' }, 500, request)
   }
 
   const clientIp = request.headers.get('CF-Connecting-IP') || ''
@@ -62,30 +79,30 @@ export const onRequestPost = async (context: any) => {
   try {
     body = await request.json()
   } catch {
-    return json({ error: 'Invalid JSON body.' }, 400)
+    return json({ error: 'Invalid JSON body.' }, 400, request)
   }
 
   const { ip, category, comment, turnstileToken } = body ?? {}
 
   // 1. Human verification (server-side). A forged/empty/replayed token fails here.
   if (typeof turnstileToken !== 'string' || !turnstileToken) {
-    return json({ error: 'Missing human-verification token.' }, 400)
+    return json({ error: 'Missing human-verification token.' }, 400, request)
   }
   const isHuman = await verifyTurnstile(turnstileToken, clientIp, secret)
   if (!isHuman) {
-    return json({ error: 'Human verification failed. Please complete the check again.' }, 403)
+    return json({ error: 'Human verification failed. Please complete the check again.' }, 403, request)
   }
 
   // 2. Authenticate the reporter via their Supabase access token.
   const authHeader = request.headers.get('Authorization') || ''
   const accessToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : ''
   if (!accessToken) {
-    return json({ error: 'You must be signed in to report.' }, 401)
+    return json({ error: 'You must be signed in to report.' }, 401, request)
   }
   const { data: userData, error: userErr } = await supabaseClient.auth.getUser(accessToken)
   const user = userData?.user
   if (userErr || !user) {
-    return json({ error: 'Your session has expired. Please sign in again.' }, 401)
+    return json({ error: 'Your session has expired. Please sign in again.' }, 401, request)
   }
 
   // 3. Per-IP daily rate limiting (independent of the per-API-key limit).
@@ -96,7 +113,7 @@ export const onRequestPost = async (context: any) => {
     const current = await kv.get(rlKey)
     const count = current ? parseInt(current, 10) : 0
     if (count >= WEB_REPORT_DAILY_LIMIT) {
-      return json({ error: 'Daily report limit reached for your network. Try again tomorrow.' }, 429)
+      return json({ error: 'Daily report limit reached for your network. Try again tomorrow.' }, 429, request)
     }
     await kv.put(rlKey, (count + 1).toString(), { expirationTtl: 86400 })
   }
@@ -107,16 +124,16 @@ export const onRequestPost = async (context: any) => {
   const cleanComment = String(comment ?? '').trim()
 
   if (!cleanIp || !cleanCategory || !cleanComment) {
-    return json({ error: 'Missing required fields: ip, category, comment.' }, 400)
+    return json({ error: 'Missing required fields: ip, category, comment.' }, 400, request)
   }
   if (!isValidPublicIp(cleanIp)) {
-    return json({ error: 'Invalid IP address. Provide a public IPv4 or IPv6 address.' }, 400)
+    return json({ error: 'Invalid IP address. Provide a public IPv4 or IPv6 address.' }, 400, request)
   }
   if (!isValidCategory(cleanCategory)) {
-    return json({ error: 'Invalid category.' }, 400)
+    return json({ error: 'Invalid category.' }, 400, request)
   }
   if (cleanComment.length > MAX_COMMENT_LENGTH) {
-    return json({ error: `Comment is too long (max ${MAX_COMMENT_LENGTH} characters).` }, 400)
+    return json({ error: `Comment is too long (max ${MAX_COMMENT_LENGTH} characters).` }, 400, request)
   }
 
   // 5. Resolve the alias from the authenticated user's profile (can't be spoofed
@@ -137,20 +154,20 @@ export const onRequestPost = async (context: any) => {
     .eq('reporter_alias', reporterAlias)
     .maybeSingle()
   if (existing) {
-    return json({ error: 'You have already reported this IP. Edit your existing report instead.' }, 409)
+    return json({ error: 'You have already reported this IP. Edit your existing report instead.' }, 409, request)
   }
 
   // 7. Insert via SECURITY DEFINER RPC (bypasses RLS for the anon server client).
   const { error: insertError } = await supabaseClient.rpc('api_insert_report', {
     p_ip: cleanIp,
     p_category: cleanCategory,
-    p_comment: cleanComment,
+    p_comment: stripHtml(cleanComment),
     p_reporter_alias: reporterAlias,
   })
   if (insertError) {
     console.error('community-report insert failed:', insertError?.message || insertError)
-    return json({ error: 'Failed to save report. Please try again.' }, 500)
+    return json({ error: 'Failed to save report. Please try again.' }, 500, request)
   }
 
-  return json({ success: true, reporter_alias: reporterAlias })
+  return json({ success: true, reporter_alias: reporterAlias }, 200, request)
 }
