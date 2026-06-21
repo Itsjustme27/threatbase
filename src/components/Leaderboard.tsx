@@ -10,32 +10,32 @@ const getRankInfo = (count: number) => {
   if (count >= 500) {
     return {
       name: 'Legend',
-      accent: 'amber',
-      badge: 'bg-amber-500/10 border-amber-500/30 text-amber-400 group-hover:bg-amber-500/[0.16] group-hover:border-amber-400/50',
+      accent: 'gold',
+      badge: 'bg-amber-400/10 border-amber-300/30 text-amber-200 group-hover:bg-amber-400/[0.16] group-hover:border-amber-300/50',
       icon: <Trophy size={11} strokeWidth={2.5} />,
     }
   }
   if (count >= 300) {
     return {
       name: 'Elite',
-      accent: 'fuchsia',
-      badge: 'bg-fuchsia-500/10 border-fuchsia-500/30 text-fuchsia-400 group-hover:bg-fuchsia-500/[0.16] group-hover:border-fuchsia-400/50',
+      accent: 'platinum',
+      badge: 'bg-platinum-300/10 border-platinum-300/30 text-platinum-200 group-hover:bg-platinum-300/[0.16] group-hover:border-platinum-200/50',
       icon: <Diamond size={11} strokeWidth={2.5} />,
     }
   }
   if (count >= 100) {
     return {
       name: 'Pro',
-      accent: 'cyan',
-      badge: 'bg-cyan-500/10 border-cyan-500/30 text-cyan-300 group-hover:bg-cyan-500/[0.16] group-hover:border-cyan-400/50',
+      accent: 'steel',
+      badge: 'bg-slate-400/10 border-slate-400/25 text-slate-200 group-hover:bg-slate-400/[0.16] group-hover:border-slate-300/45',
       icon: <Star size={11} strokeWidth={2.5} />,
     }
   }
   if (count >= 50) {
     return {
       name: 'Defender',
-      accent: 'emerald',
-      badge: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300 group-hover:bg-emerald-500/[0.16] group-hover:border-emerald-400/50',
+      accent: 'slate',
+      badge: 'bg-slate-500/10 border-slate-500/25 text-slate-300 group-hover:bg-slate-500/[0.16] group-hover:border-slate-400/40',
       icon: <Shield size={11} strokeWidth={2.5} />,
     }
   }

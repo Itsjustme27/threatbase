@@ -15,10 +15,13 @@ export default function ContributorsPage() {
     <main className="bg-app min-h-screen">
       <div className="pt-28 pb-24 relative overflow-hidden font-sans">
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] mix-blend-overlay pointer-events-none z-10"></div>
-        <div className="absolute inset-0 z-0 opacity-80 mix-blend-screen">
+        {/* Cool aurora kept faint so it reads as ambient depth, not a blue wash */}
+        <div className="absolute inset-0 z-0 opacity-40">
           <AnoAI />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0B0F19]/20 via-[#0B0F19]/60 to-[#0B0F19] z-0 pointer-events-none"></div>
+        {/* Ruby top-glow + platinum halo tie the backdrop to the house accent */}
+        <div className="absolute inset-0 z-0 pointer-events-none" style={{ background: 'radial-gradient(120% 60% at 50% -10%, rgba(207,23,51,0.16), transparent 58%), radial-gradient(80% 50% at 50% 0%, rgba(174,182,196,0.05), transparent 64%)' }}></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#080b12]/50 via-[#080b12]/85 to-[#080b12] z-0 pointer-events-none"></div>
 
         <div className="mx-auto max-w-4xl px-4 lg:px-8 relative z-10 space-y-10">
           <motion.div
@@ -42,15 +45,15 @@ export default function ContributorsPage() {
             className="relative"
           >
             {/* Ambient card glow */}
-            <div className="pointer-events-none absolute -inset-px rounded-[1.4rem] bg-gradient-to-b from-blue-500/20 via-transparent to-transparent opacity-60 blur-xl" />
+            <div className="pointer-events-none absolute -inset-px rounded-[1.4rem] bg-gradient-to-b from-red-500/20 via-transparent to-transparent opacity-60 blur-xl" />
 
-            <Card className="relative z-10 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] shadow-2xl backdrop-blur-xl">
+            <Card className="glass-card relative z-10 overflow-hidden">
               {/* top sheen */}
               <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
               <CardHeader className="relative border-b border-white/[0.06] bg-gradient-to-r from-white/[0.03] to-transparent px-6 pb-6 pt-6">
                 <div className="flex items-center gap-4">
-                  <div className="rounded-2xl border border-blue-500/20 bg-blue-500/10 p-3 text-blue-400 drop-shadow-[0_0_12px_rgba(59,130,246,0.5)]">
+                  <div className="rounded-2xl border border-red-500/20 bg-red-500/10 p-3 text-red-400 drop-shadow-[0_0_12px_rgba(207,23,51,0.45)]">
                     <img src={`${import.meta.env.BASE_URL}img/community.png`} alt="Community Icon" className="h-10 w-10 object-contain drop-shadow-md" />
                   </div>
                   <div>

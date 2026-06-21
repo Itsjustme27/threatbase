@@ -25,7 +25,8 @@ export default function AnimatedShaderBackground({ className = '' }: { className
     })
 
     const initial = sizeOf()
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    // Limit pixel ratio to 1. For a soft ambient background, higher densities just waste GPU.
+    renderer.setPixelRatio(1)
     renderer.setSize(initial.w, initial.h)
     container.appendChild(renderer.domElement)
 
@@ -44,7 +45,7 @@ export default function AnimatedShaderBackground({ className = '' }: { className
         uniform float iTime;
         uniform vec2 iResolution;
 
-        #define NUM_OCTAVES 3
+        #define NUM_OCTAVES 2
 
         float rand(vec2 n) {
           return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
@@ -82,18 +83,20 @@ export default function AnimatedShaderBackground({ className = '' }: { className
 
           float f = 2.0 + fbm(p + vec2(iTime * 5.0, 0.0)) * 0.5;
 
-          for (float i = 0.0; i < 35.0; i++) {
+          // Reduced loop iterations from 35.0 to 12.0 for drastically better performance
+          for (float i = 0.0; i < 12.0; i++) {
             v = p + cos(i * i + (iTime + p.x * 0.08) * 0.025 + i * vec2(13.0, 11.0)) * 3.5 + vec2(sin(iTime * 3.0 + i) * 0.003, cos(iTime * 3.5 - i) * 0.003);
-            float tailNoise = fbm(v + vec2(iTime * 0.5, i)) * 0.3 * (1.0 - (i / 35.0));
+            float tailNoise = fbm(v + vec2(iTime * 0.5, i)) * 0.3 * (1.0 - (i / 12.0));
             vec4 auroraColors = vec4(
               0.1 + 0.3 * sin(i * 0.2 + iTime * 0.4),
               0.3 + 0.5 * cos(i * 0.3 + iTime * 0.5),
               0.7 + 0.3 * sin(i * 0.4 + iTime * 0.3),
               1.0
             );
+            // Increased base contribution multiplier to compensate for fewer iterations
             vec4 currentContribution = auroraColors * exp(sin(i * i + iTime * 0.8)) / length(max(v, vec2(v.x * f * 0.015, v.y * 1.5)));
-            float thinnessFactor = smoothstep(0.0, 1.0, i / 35.0) * 0.6;
-            o += currentContribution * (1.0 + tailNoise * 0.8) * thinnessFactor;
+            float thinnessFactor = smoothstep(0.0, 1.0, i / 12.0) * 0.6;
+            o += currentContribution * (1.0 + tailNoise * 0.8) * thinnessFactor * 2.5;
           }
 
           o = tanh(pow(o / 100.0, vec4(1.6)));
