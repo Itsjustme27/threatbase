@@ -316,7 +316,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                     </div>
                     <div className="min-w-0">
                       <h3 className={`text-xl md:text-[1.65rem] font-bold tracking-tight leading-snug ${type === 'danger' ? 'text-red-400' : type === 'safe' ? 'text-primary' : 'text-orange-400'}`}>
-                        {type === 'danger' ? 'Threat found in our database' : type === 'safe' ? 'No threat found in our database' : 'This indicator is currently disputed'}
+                        {type === 'danger' ? 'Threat found in our database' : type === 'safe' ? 'No threat found in our database' : type === 'disputed' ? 'This indicator is currently disputed' : 'Invalid indicator format'}
                       </h3>
                       <button
                         type="button"
@@ -369,6 +369,16 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                           This {scanResult.isDomain ? 'domain' : 'address'} was not found in any of our threat-intelligence feeds and has{reports.length === 0 ? ' no' : ` ${reports.length}`} community {reports.length === 1 ? 'report' : 'reports'}. A clean result is not a guarantee of safety — always combine multiple signals before trusting an indicator.
                         </p>
                       </div>
+                    </div>
+                  )}
+
+                  {/* Invalid indicator message */}
+                  {type === 'warn' && (
+                    <div className="mt-4 flex items-start gap-3 p-4 rounded-xl bg-orange-500/5 border border-orange-500/20">
+                      <AlertTriangle size={18} className="text-orange-400 shrink-0 mt-0.5" />
+                      <p className="text-sm text-slate-300 leading-relaxed">
+                        The indicator you entered does not match a valid IPv4, IPv6, Domain, URL, or Hash format. Please check for typos and try again.
+                      </p>
                     </div>
                   )}
 
@@ -472,7 +482,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                 )}
 
                 {/* Footer Section */}
-                {((scanResult && (scanResult.isIP || scanResult.isIPv6 || scanResult.isDomain)) || (!scanResult?.isHash || showAbuse)) && (
+                {type !== 'warn' && ((scanResult && (scanResult.isIP || scanResult.isIPv6 || scanResult.isDomain)) || (!scanResult?.isHash || showAbuse)) && (
                   <div className="relative p-6 md:p-8 bg-slate-950/30 border-t border-white/[0.06]">
                     {scanResult && (scanResult.isIP || scanResult.isIPv6) && (
                       <p className="mb-5 text-xs font-medium tracking-wide text-platinum-500">
