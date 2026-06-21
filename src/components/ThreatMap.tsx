@@ -305,8 +305,9 @@ export default function ThreatMap() {
 
         // Globe projection — orthographic for 3D sphere effect
         const globeRadius = Math.min(width, height) * 0.42
-        // Horizontal placement of the globe centre (0.5 = dead centre). < 0.5 shifts it left.
-        const globeCenterFactor = 0.38
+        // Horizontal placement of the globe centre (0.5 = dead centre, aligned with the
+        // atmosphere/ocean/rim which are drawn at width/2). < 0.5 shifts it left.
+        const globeCenterFactor = 0.5
         const projection = d3.geoOrthographic()
           .scale(globeRadius)
           .translate([width * globeCenterFactor, height / 2])

@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Bug, ShieldCheck, AlertTriangle, AlertOctagon, ChevronRight, Search, Check, ShieldAlert, Copy } from 'lucide-react'
 import DOMPurify from 'dompurify'
 import supabaseClient from '../supabaseClient'
 import { timeAgo, getCategoryIconPath, normalizeTags } from '../utils'
 import { useAuth } from '../AuthContext'
-import Loader from './ui/loader'
+import RadarScan from './ui/RadarScan'
 import { getMalwareDescription } from '../malwareDictionary'
 
 // Derive a credible 0–100 confidence-of-abuse score from real signals
@@ -98,6 +98,7 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
   const [copied, setCopied] = useState(false)
 
   const { user } = useAuth()
+  const reduce = useReducedMotion()
 
   const ip = scanResult?.ip || scanInput?.trim() || ''
   const isMalicious = scanResult?.isMalicious
@@ -241,21 +242,51 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
               transition={{ duration: 0.3 }}
             >
               {/* Subtle radial gradient background */}
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent opacity-50 pointer-events-none"></div>
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-red-500/[0.06] via-transparent to-transparent pointer-events-none"></div>
 
-              {/* Gooey Loader Animation */}
-              <div className="mb-6 mt-4 flex justify-center items-center">
-                <div className="scale-50 transform origin-center">
-                  <Loader />
-                </div>
+              {/* Precision radar scanner */}
+              <div className="mb-9 flex justify-center items-center">
+                <RadarScan />
               </div>
 
-              <div className="z-10 flex flex-col items-center mt-2">
-                <div className="flex items-center gap-2 mb-3">
-                  <motion.div animate={{ opacity: [1, 0, 1] }} transition={{ duration: 1, repeat: Infinity }} className="h-2 w-2 rounded-full bg-primary shadow-[0_0_8px_var(--tw-colors-primary)]" />
-                  <span className="text-xs font-bold text-slate-300 tracking-[0.25em] uppercase drop-shadow-md">Scanning Target</span>
+              <div className="z-10 flex flex-col items-center">
+                {/* Status row */}
+                <div className="flex items-center gap-2.5 mb-4">
+                  <motion.span
+                    className="h-1.5 w-1.5 rounded-full bg-red-500"
+                    style={{ boxShadow: '0 0 10px 1px rgba(207,23,51,0.7)' }}
+                    animate={reduce ? undefined : { opacity: [1, 0.25, 1] }}
+                    transition={reduce ? undefined : { duration: 1.6, ease: 'easeInOut', repeat: Infinity }}
+                  />
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.34em] text-platinum-300">Scanning target</span>
                 </div>
-                <div className="text-3xl md:text-4xl font-mono font-bold tracking-tight text-white mb-6 drop-shadow-lg break-all text-center px-4 max-w-full">{ip}</div>
+
+                {/* Target indicator with a light-sweep sheen */}
+                <div className="relative overflow-hidden px-4">
+                  <div className="text-3xl md:text-[2.6rem] font-mono font-semibold tracking-tight text-white tabular-nums break-all text-center leading-none">{ip}</div>
+                  {!reduce && (
+                    <motion.div
+                      className="pointer-events-none absolute inset-y-0 w-1/3"
+                      style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent)' }}
+                      initial={{ x: '-130%' }}
+                      animate={{ x: '430%' }}
+                      transition={{ duration: 2.2, ease: 'easeInOut', repeat: Infinity, repeatDelay: 0.6 }}
+                    />
+                  )}
+                </div>
+
+                {/* Indeterminate progress hairline */}
+                <div className="relative mt-8 h-px w-44 max-w-[70%] overflow-hidden rounded-full bg-platinum-400/15">
+                  {!reduce && (
+                    <motion.div
+                      className="absolute inset-y-0 w-1/2 rounded-full"
+                      style={{ background: 'linear-gradient(90deg, transparent, #cf1733, transparent)' }}
+                      initial={{ x: '-100%' }}
+                      animate={{ x: '200%' }}
+                      transition={{ duration: 1.8, ease: 'easeInOut', repeat: Infinity }}
+                    />
+                  )}
+                </div>
               </div>
             </motion.div>
           ) : scanResult ? (
@@ -268,51 +299,60 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
               className="w-full space-y-12"
             >
               {/* Scan Result Card */}
-              <div className="w-full max-w-4xl bg-slate-900/60 backdrop-blur-xl border border-slate-800 shadow-2xl rounded-2xl mx-auto overflow-hidden font-sans relative">
-                {/* Glow effect */}
-                <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+              <div className="relative w-full max-w-4xl mx-auto overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-slate-900/70 to-slate-950/80 backdrop-blur-2xl font-sans shadow-glass-lux">
+                {/* Status accent rail */}
+                <div className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent ${type === 'danger' ? 'via-red-500/80' : type === 'safe' ? 'via-primary/70' : 'via-orange-500/70'} to-transparent`}></div>
+                {/* Ambient verdict glow */}
+                <div className={`pointer-events-none absolute -top-24 left-1/2 h-48 w-2/3 -translate-x-1/2 rounded-full opacity-30 blur-3xl ${type === 'danger' ? 'bg-red-600/30' : type === 'safe' ? 'bg-primary/20' : 'bg-orange-500/20'}`}></div>
 
                 {/* Header Section */}
-                <div className="p-5 md:p-6 border-b border-slate-800 bg-slate-900/40">
-                  <div className="flex items-start gap-4 mb-4">
-                    <img src={`${import.meta.env.BASE_URL}img/logo.png`} className="w-10 h-10 rounded-full shadow-sm border border-white/5 shrink-0" alt="Threatbase Logo" />
-                    <div>
-                      <h3 className={`text-xl md:text-2xl font-bold tracking-tight mb-3 ${type === 'danger' ? 'text-rose-400' : type === 'safe' ? 'text-primary' : 'text-orange-400'}`}>
+                <div className="relative p-6 md:p-8 border-b border-white/[0.06]">
+                  <div className="flex items-start gap-4 mb-5">
+                    <div className="relative shrink-0">
+                      <img src={`${import.meta.env.BASE_URL}img/logo.png`} className="w-11 h-11 rounded-full border border-platinum-400/20 shadow-glass" alt="Threatbase Logo" />
+                      <span className={`absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full ring-2 ring-slate-950 ${type === 'danger' ? 'bg-red-500' : type === 'safe' ? 'bg-primary' : 'bg-orange-500'}`}>
+                        <StatusIcon size={11} className="text-white" strokeWidth={2.5} />
+                      </span>
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className={`text-xl md:text-[1.65rem] font-bold tracking-tight leading-snug ${type === 'danger' ? 'text-red-400' : type === 'safe' ? 'text-primary' : 'text-orange-400'}`}>
                         {type === 'danger' ? 'Threat found in our database' : type === 'safe' ? 'No threat found in our database' : 'This indicator is currently disputed'}
                       </h3>
                       <button
                         type="button"
                         onClick={handleCopy}
                         title="Copy to clipboard"
-                        className="group inline-flex items-center gap-2.5 bg-slate-950/80 hover:bg-slate-950 border border-white/5 hover:border-white/15 rounded-xl px-4 py-2.5 font-mono text-sm md:text-base text-slate-300 break-all shadow-inner relative overflow-hidden transition-colors text-left"
+                        className="group mt-3 inline-flex items-center gap-2.5 rounded-xl border border-white/[0.08] bg-slate-950/60 px-4 py-2.5 font-mono text-sm md:text-[0.95rem] tracking-tight text-platinum-200 break-all shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-colors hover:border-white/15 hover:bg-slate-950 text-left"
                       >
                         <span className="break-all">{ip}</span>
                         {copied
                           ? <Check size={15} className="text-primary shrink-0" strokeWidth={2.5} />
-                          : <Copy size={15} className="text-slate-500 group-hover:text-slate-300 shrink-0 transition-colors" />}
+                          : <Copy size={15} className="text-slate-500 group-hover:text-platinum-200 shrink-0 transition-colors" />}
                       </button>
                     </div>
                   </div>
 
                   {scanResult && (scanResult.isIP || scanResult.isIPv6 || scanResult.isDomain) && (
                     <>
-                      <div className="flex items-center justify-between mt-2">
-                        <div className="flex items-center gap-2 text-sm font-semibold text-slate-400">
+                      <div className="mt-6 flex items-end justify-between gap-4">
+                        <div className="flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.18em] text-platinum-400">
                           <span>Confidence of Abuse</span>
-                          <span className="cursor-help font-bold text-slate-500 hover:text-slate-300 transition-colors bg-slate-800/50 rounded-full w-5 h-5 flex items-center justify-center text-xs" title="Weighted score derived from severity, number of threat feeds, subnet matches, and community reports.">?</span>
+                          <span className="cursor-help font-bold text-platinum-500 hover:text-platinum-200 transition-colors bg-white/[0.04] border border-white/10 rounded-full w-5 h-5 flex items-center justify-center text-xs" title="Weighted score derived from severity, number of threat feeds, subnet matches, and community reports.">?</span>
                         </div>
-                        <div className="flex items-baseline gap-2">
-                          <span className={`text-[10px] font-bold uppercase tracking-wider ${tier.text}`}>{tier.label}</span>
-                          <span className={`font-mono text-lg font-black tabular-nums ${tier.text}`}>{confidence}<span className="text-xs font-bold text-slate-500">%</span></span>
+                        <div className="flex items-baseline gap-2.5">
+                          <span className={`text-[10px] font-bold uppercase tracking-[0.2em] ${tier.text}`}>{tier.label}</span>
+                          <span className={`font-display text-3xl md:text-4xl font-bold tabular-nums leading-none ${tier.text}`}>{confidence}<span className="ml-0.5 text-base font-semibold text-platinum-500">%</span></span>
                         </div>
                       </div>
-                      <div className={`w-full bg-slate-950/60 h-2.5 mt-3 rounded-full overflow-hidden border border-slate-800 shadow-inner ${tier.track}`}>
-                        <div
-                          className={`h-full ${tier.bar} rounded-full transition-all duration-1000 ease-out relative`}
-                          style={{ width: `${Math.max(confidence, 3)}%` }}
+                      <div className="relative mt-4 h-2 w-full overflow-hidden rounded-full bg-white/[0.06]">
+                        <motion.div
+                          className={`relative h-full rounded-full ${tier.bar} shadow-lg ${tier.track}`}
+                          initial={reduce ? false : { width: 0 }}
+                          animate={{ width: `${Math.max(confidence, 3)}%` }}
+                          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
                         >
-                          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/25 to-white/0 pointer-events-none"></div>
-                        </div>
+                          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 pointer-events-none"></div>
+                        </motion.div>
                       </div>
                     </>
                   )}
@@ -346,25 +386,25 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
 
                   {/* Threat Tags and Severity */}
                   {type === 'danger' && (scanResult?.tags?.length > 0 || scanResult?.riskScore) && (
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-4 pt-4 border-t border-slate-800/50">
+                    <div className="mt-5 flex flex-col gap-4 border-t border-white/[0.06] pt-5 sm:flex-row sm:items-center">
                       {scanResult?.riskScore && scanResult.riskScore !== 'Low' && (
-                        <div className="flex items-center gap-2">
-                          <span className="text-slate-500 font-bold uppercase text-[10px] tracking-wider">Severity:</span>
-                          <span className={`px-2.5 py-0.5 rounded text-xs font-bold shadow-sm ${
-                            scanResult.riskScore.toLowerCase() === 'high' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' :
-                            scanResult.riskScore.toLowerCase() === 'medium' ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30' :
-                            'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                        <div className="flex items-center gap-2.5">
+                          <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-platinum-500">Severity</span>
+                          <span className={`rounded-md px-2.5 py-0.5 text-xs font-bold ${
+                            scanResult.riskScore.toLowerCase() === 'high' ? 'bg-rose-500/15 text-rose-300 border border-rose-500/30' :
+                            scanResult.riskScore.toLowerCase() === 'medium' ? 'bg-orange-500/15 text-orange-300 border border-orange-500/30' :
+                            'bg-yellow-500/15 text-yellow-300 border border-yellow-500/30'
                           }`}>
                             {scanResult.riskScore}
                           </span>
                         </div>
                       )}
-                      
+
                       {scanResult?.tags && scanResult.tags.length > 0 && (
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="text-slate-500 font-bold uppercase text-[10px] tracking-wider">Known Threats:</span>
+                          <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-platinum-500">Known Threats</span>
                           {scanResult.tags.map((tag: string) => (
-                            <span key={tag} className="bg-slate-800 border border-slate-700 text-slate-300 px-2 py-0.5 rounded text-xs font-bold shadow-sm flex items-center gap-1.5">
+                            <span key={tag} className="flex items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-0.5 text-xs font-semibold text-platinum-200 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
                               <img src={getCategoryIconPath(tag)} className="w-3.5 h-3.5 object-contain opacity-90" alt="Threat Icon" />
                               {tag}
                             </span>
@@ -389,81 +429,77 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
                   )}
                 </div>
 
-                {/* Body / Table Section */}
+                {/* Body / Metadata Section */}
                 {scanResult && (scanResult.isIP || scanResult.isIPv6 || scanResult.isDomain) && (
-                  <div className="bg-transparent">
-                    <table className="w-full text-sm text-left border-collapse">
-                      <tbody className="divide-y divide-slate-800/50">
-                        {scanResult.isDomain ? (
-                          <tr className="hover:bg-slate-800/20 transition-colors">
-                            <td className="py-3.5 px-5 md:px-6 font-bold text-slate-400 w-[35%] bg-slate-900/20 border-r border-slate-800/50">Domain Name</td>
-                            <td className="py-3.5 px-5 md:px-6 text-slate-200 font-medium break-all">{ip}</td>
-                          </tr>
-                        ) : (
-                          <>
-                            {(loadingIpInfo || ipInfo?.isp) && (
-                              <tr className="hover:bg-slate-800/20 transition-colors">
-                                <td className="py-3.5 px-5 md:px-6 font-bold text-slate-400 w-[35%] bg-slate-900/20 border-r border-slate-800/50">ISP</td>
-                                <td className="py-3.5 px-5 md:px-6 text-slate-200 font-medium">{loadingIpInfo ? 'Loading...' : ipInfo.isp}</td>
-                              </tr>
-                            )}
-                            {(loadingIpInfo || ipInfo?.asn) && (
-                              <tr className="hover:bg-slate-800/20 transition-colors">
-                                <td className="py-3.5 px-5 md:px-6 font-bold text-slate-400 w-[35%] bg-slate-900/20 border-r border-slate-800/50">ASN</td>
-                                <td className="py-3.5 px-5 md:px-6 text-slate-200 font-mono text-xs">{loadingIpInfo ? 'Loading...' : ipInfo.asn}</td>
-                              </tr>
-                            )}
-                            {(loadingIpInfo || ipInfo?.country) && (
-                              <tr className="hover:bg-slate-800/20 transition-colors">
-                                <td className="py-3.5 px-5 md:px-6 font-bold text-slate-400 w-[35%] bg-slate-900/20 border-r border-slate-800/50">Country</td>
-                                <td className="py-3.5 px-5 md:px-6 text-slate-200 font-medium flex items-center gap-2.5">
-                                  {ipInfo?.country_flag && <img src={ipInfo.country_flag} className="w-5 shadow-sm rounded-sm object-cover border border-white/10" alt="Flag" />}
-                                  {loadingIpInfo ? 'Loading...' : ipInfo.country}
-                                </td>
-                              </tr>
-                            )}
-                            {(loadingIpInfo || ipInfo?.city) && (
-                              <tr className="hover:bg-slate-800/20 transition-colors">
-                                <td className="py-3.5 px-5 md:px-6 font-bold text-slate-400 w-[35%] bg-slate-900/20 border-r border-slate-800/50">City</td>
-                                <td className="py-3.5 px-5 md:px-6 text-slate-200 font-medium">{loadingIpInfo ? 'Loading...' : ipInfo.city}</td>
-                              </tr>
-                            )}
-                          </>
+                  <div className="grid grid-cols-1 gap-px bg-white/[0.06] sm:grid-cols-2">
+                    {scanResult.isDomain ? (
+                      <div className="bg-slate-950/30 px-6 py-5 md:px-8 sm:col-span-2">
+                        <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-platinum-500">Domain Name</div>
+                        <div className="break-all text-sm font-medium text-slate-100">{ip}</div>
+                      </div>
+                    ) : (
+                      <>
+                        {(loadingIpInfo || ipInfo?.isp) && (
+                          <div className="bg-slate-950/30 px-6 py-5 md:px-8">
+                            <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-platinum-500">ISP</div>
+                            <div className="text-sm font-medium text-slate-100">{loadingIpInfo ? 'Loading…' : ipInfo.isp}</div>
+                          </div>
                         )}
-                      </tbody>
-                    </table>
+                        {(loadingIpInfo || ipInfo?.asn) && (
+                          <div className="bg-slate-950/30 px-6 py-5 md:px-8">
+                            <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-platinum-500">ASN</div>
+                            <div className="font-mono text-xs text-platinum-200">{loadingIpInfo ? 'Loading…' : ipInfo.asn}</div>
+                          </div>
+                        )}
+                        {(loadingIpInfo || ipInfo?.country) && (
+                          <div className="bg-slate-950/30 px-6 py-5 md:px-8">
+                            <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-platinum-500">Country</div>
+                            <div className="flex items-center gap-2.5 text-sm font-medium text-slate-100">
+                              {ipInfo?.country_flag && <img src={ipInfo.country_flag} className="w-5 rounded-sm border border-white/10 object-cover shadow-sm" alt="Flag" />}
+                              {loadingIpInfo ? 'Loading…' : ipInfo.country}
+                            </div>
+                          </div>
+                        )}
+                        {(loadingIpInfo || ipInfo?.city) && (
+                          <div className="bg-slate-950/30 px-6 py-5 md:px-8">
+                            <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-platinum-500">City</div>
+                            <div className="text-sm font-medium text-slate-100">{loadingIpInfo ? 'Loading…' : ipInfo.city}</div>
+                          </div>
+                        )}
+                      </>
+                    )}
                   </div>
                 )}
 
                 {/* Footer Section */}
                 {((scanResult && (scanResult.isIP || scanResult.isIPv6 || scanResult.isDomain)) || (!scanResult?.isHash || showAbuse)) && (
-                  <div className="p-5 md:p-6 bg-slate-900/60 border-t border-slate-800">
+                  <div className="relative p-6 md:p-8 bg-slate-950/30 border-t border-white/[0.06]">
                     {scanResult && (scanResult.isIP || scanResult.isIPv6) && (
-                      <p className="text-xs text-slate-500 italic mb-5 font-medium tracking-wide">
+                      <p className="mb-5 text-xs font-medium tracking-wide text-platinum-500">
                         IP info including ISP, Usage Type, and Location provided by Threatbase. Updated weekly.
                       </p>
                     )}
                     {scanResult && scanResult.isDomain && (
-                      <p className="text-xs text-slate-500 italic mb-5 font-medium tracking-wide">
+                      <p className="mb-5 text-xs font-medium tracking-wide text-platinum-500">
                         Domain information provided by Threatbase.
                       </p>
                     )}
 
                     <div className="flex flex-col sm:flex-row gap-3">
                       {!scanResult?.isHash && (
-                        <button 
+                        <button
                           onClick={() => setShowDisputeForm(true)}
-                          className="flex-1 bg-slate-800/50 hover:bg-slate-800 text-slate-300 hover:text-white font-bold text-sm py-3 px-4 rounded-xl transition-all shadow-sm uppercase tracking-wider border border-slate-700/50 hover:border-slate-600"
+                          className="flex-1 rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3.5 text-[13px] font-semibold uppercase tracking-[0.14em] text-platinum-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-all hover:border-white/15 hover:bg-white/[0.06] hover:text-white active:translate-y-px"
                         >
-                          REPORT FALSE POSITIVE
+                          Report false positive
                         </button>
                       )}
                       {showAbuse && (
-                        <a 
-                          href={abuseHref} 
-                          target="_blank" 
-                          rel="noopener" 
-                          className="flex-1 bg-white/10 hover:bg-white/15 text-white font-bold text-sm py-3 px-4 rounded-xl transition-all shadow-sm uppercase tracking-wider text-center border border-white/5 hover:border-white/10"
+                        <a
+                          href={abuseHref}
+                          target="_blank"
+                          rel="noopener"
+                          className="flex-1 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3.5 text-center text-[13px] font-semibold uppercase tracking-[0.14em] text-red-300 transition-all hover:border-red-500/40 hover:bg-red-500/15 hover:text-red-200 active:translate-y-px"
                         >
                           WHOIS {ip}
                         </a>
