@@ -13,7 +13,7 @@ import ThanksPage from './components/ThanksPage'
 import Footer from './components/Footer'
 import ToastContainer from './components/ToastContainer'
 import Navbar from './components/Navbar'
-import NotFound1 from './components/ui/8bit-not-found1'
+import NotFound from './components/ui/not-found'
 import Profile from './components/Profile'
 import TermsPage from './components/TermsPage'
 import PrivacyPage from './components/PrivacyPage'
@@ -224,8 +224,10 @@ export default function App() {
         <Route path="/contributors" element={<ContributorsPage />} />
         <Route path="/api" element={<ApiDocsPage />} />
         <Route path="/profile/:username?" element={<Profile addToast={addToast} />} />
+        {/* Canonical public-profile path (matches Profile's SEO + cross-app links). */}
+        <Route path="/u/:username" element={<Profile addToast={addToast} />} />
         <Route path="/thanks" element={<ThanksPage />} />
-        <Route path="*" element={<NotFound1 />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       <ToastContainer toasts={toasts} />
