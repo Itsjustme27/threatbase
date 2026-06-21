@@ -85,6 +85,20 @@ export default function App() {
       return
     }
 
+    // Validate format before starting scan
+    const isURL = /^https?:\/\/.+/.test(raw)
+    const isHash = /^[a-fA-F0-9]{32}(?:[a-fA-F0-9]{8})?(?:[a-fA-F0-9]{24})?$/.test(raw)
+    const ip = isURL && !isHash ? raw : raw.toLowerCase()
+    const isIP = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip)
+    const isIPv6 = ip.includes(':') && /^[0-9a-fA-F:]+$/.test(ip) && !ip.includes('/')
+    const isCIDR = ip.includes('/') && /^[a-fA-F0-9:.]+\/\d{1,3}$/.test(ip)
+    const isDomain = !isIP && !isIPv6 && !isCIDR && !isURL && !isHash && /^(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.(?!-)[A-Za-z0-9-]{1,63}(?<!-))*\.[A-Za-z]{2,}$/.test(ip)
+
+    if (!isIP && !isIPv6 && !isCIDR && !isDomain && !isHash && !isURL) {
+      addToast('Invalid indicator format. Please enter a valid IPv4, IPv6, Domain, URL, or Hash.', 'error')
+      return
+    }
+
     lastScanTime.current = now
 
     // Perform scan directly without Turnstile
