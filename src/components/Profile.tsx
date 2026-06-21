@@ -252,6 +252,7 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
   const [loadingApiKeys, setLoadingApiKeys] = useState(false)
   const [newlyGeneratedKey, setNewlyGeneratedKey] = useState<string | null>(null)
   const [generatingKey, setGeneratingKey] = useState(false)
+  const [hasMfaEnrolled, setHasMfaEnrolled] = useState(false)
 
   // Block anonymous access if trying to view own profile
   useEffect(() => {
@@ -391,6 +392,21 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
     loadApiKeys()
   }, [isOwnProfile, user, supabaseClient])
 
+  // Check MFA enrollment status
+  useEffect(() => {
+    async function checkMfaStatus() {
+      if (!isOwnProfile || !user || !supabaseClient) return
+      try {
+        const { data } = await supabaseClient.auth.mfa.listFactors()
+        const verifiedFactor = data?.totp?.find((f) => f.status === 'verified')
+        setHasMfaEnrolled(!!verifiedFactor)
+      } catch (err) {
+        console.error('Failed to check MFA status:', err)
+      }
+    }
+    checkMfaStatus()
+  }, [isOwnProfile, user, supabaseClient])
+
   const handleGenerateApiKey = async () => {
     if (!supabaseClient || !user) return
     setGeneratingKey(true)
@@ -415,13 +431,18 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
         .select()
         .single()
 
-      if (error) throw error
+      if (error) {
+        if (error.message?.includes('row-level security policy') || error.message?.includes('Enforce MFA')) {
+          throw new Error('You must enable Two-Factor Authentication before generating API keys.')
+        }
+        throw error
+      }
 
       setApiKeys([newKeyData, ...apiKeys])
       setNewlyGeneratedKey(plainKey)
       addToast('API Key generated successfully!', 'success')
     } catch (err: any) {
-      addToast('Failed to generate API Key: ' + err.message, 'error')
+      addToast(err.message || 'Failed to generate API Key', 'error')
     } finally {
       setGeneratingKey(false)
     }
@@ -876,12 +897,20 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
                 </div>
                 <Button
                   onClick={handleGenerateApiKey}
-                  disabled={generatingKey || apiKeys.length >= 3}
+                  disabled={generatingKey || apiKeys.length >= 3 || !hasMfaEnrolled}
+                  title={!hasMfaEnrolled ? "Enable Two-Factor Authentication to generate API keys" : ""}
                   className="bg-red-600 hover:bg-red-500 text-white text-xs font-semibold rounded-lg shrink-0 h-9 shadow-glow-ruby disabled:shadow-none disabled:opacity-50"
                 >
                   {generatingKey ? 'Generating...' : 'Generate API Key'}
                 </Button>
               </div>
+
+              {!hasMfaEnrolled && (
+                <div className="mb-6 p-4 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-500/90 text-xs font-medium flex items-center gap-2">
+                  <AlertTriangle size={14} />
+                  You must enable Two-Factor Authentication above before you can generate API keys.
+                </div>
+              )}
 
               {newlyGeneratedKey && (
                 <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 mb-6 relative group overflow-hidden">

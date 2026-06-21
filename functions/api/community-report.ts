@@ -1,4 +1,8 @@
 import supabaseClient from '../../src/supabaseClient'
+import { createClient } from '@supabase/supabase-js'
+
+const SUPABASE_URL = 'https://fybwjibrvwqwnspgswtp.supabase.co'
+const SUPABASE_KEY = 'sb_publishable_OjwJ22ODAsYQjH-IJ-rXGg_OWRXor1m'
 import { isValidPublicIp, isValidCategory, MAX_COMMENT_LENGTH } from '../../src/lib/apiValidation'
 
 // Web (browser) report endpoint. Unlike /api/v1/report (programmatic, API-key
@@ -157,8 +161,12 @@ export const onRequestPost = async (context: any) => {
     return json({ error: 'You have already reported this IP. Edit your existing report instead.' }, 409, request)
   }
 
-  // 7. Insert via SECURITY DEFINER RPC (bypasses RLS for the anon server client).
-  const { error: insertError } = await supabaseClient.rpc('api_insert_report', {
+  // 7. Insert via SECURITY DEFINER RPC (now as the authenticated user).
+  const authClient = createClient(env.SUPABASE_URL || SUPABASE_URL, env.SUPABASE_ANON_KEY || SUPABASE_KEY, {
+    global: { headers: { Authorization: `Bearer ${accessToken}` } }
+  })
+  
+  const { error: insertError } = await authClient.rpc('api_insert_report', {
     p_ip: cleanIp,
     p_category: cleanCategory,
     p_comment: stripHtml(cleanComment),

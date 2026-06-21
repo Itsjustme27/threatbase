@@ -28,7 +28,7 @@ export const onRequest = async (context: any) => {
 
   // Handle CORS Preflight
   if (request.method === 'OPTIONS') {
-    return onRequestOptions();
+    return onRequestOptions(context);
   }
 
   // Extract API key
