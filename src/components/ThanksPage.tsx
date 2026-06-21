@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { Heart, ExternalLink, Trophy } from 'lucide-react'
+import { motion, useReducedMotion } from 'framer-motion'
+import { ExternalLink, Trophy } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useSEO } from '@/useSEO'
 import supabaseClient from '@/supabaseClient'
@@ -30,13 +30,9 @@ const SOURCES: Source[] = [
   { name: 'DataPlane.org', desc: 'SSH, SIP & VNC abuse telemetry', url: 'https://dataplane.org/' },
 ]
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const } },
-}
-
 export default function ThanksPage() {
   const [topReporter, setTopReporter] = useState<string | null>(null)
+  const prefersReducedMotion = useReducedMotion()
 
   useEffect(() => {
     async function fetchTopReporter() {
@@ -63,77 +59,69 @@ export default function ThanksPage() {
   })
 
   return (
-    <main className="min-h-screen pt-28 pb-24 relative bg-app overflow-hidden font-sans">
+    <main className="min-h-[100dvh] pt-32 pb-32 relative bg-[#050505] overflow-hidden font-sans selection:bg-red-500/30">
       {/* Animated aurora shader background */}
-      <AnimatedShaderBackground className="opacity-60" />
+      <AnimatedShaderBackground className="opacity-40" />
       {/* Readability overlay + texture on top of the shader */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0B0F19]/40 via-[#0B0F19]/70 to-[#0B0F19] pointer-events-none" />
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] mix-blend-overlay pointer-events-none" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/60 via-[#050505]/90 to-[#050505] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-px bg-gradient-to-r from-transparent via-red-500/20 to-transparent" />
 
-      <div className="mx-auto max-w-6xl px-6 lg:px-12 relative z-10">
+      <div className="mx-auto max-w-5xl px-6 lg:px-12 relative z-10">
 
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="text-center flex flex-col items-center"
         >
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-[11px] font-bold uppercase tracking-[0.2em] text-amber-400 mb-7">
-            <Heart className="h-3.5 w-3.5 fill-amber-400/30" />
-            With Gratitude
-          </span>
-
-          <h1 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-slate-500 tracking-tight pb-2">
-            Intel Sources
+          <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black tracking-tighter text-white leading-[0.9]">
+            Intel<br />Sources.
           </h1>
 
-          <p className="mt-5 text-slate-400 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-            Threatbase stands on the shoulders of the global security community. Our coverage is
-            made possible by the maintainers who tirelessly collect, verify, and share open threat
-            intelligence — making the internet measurably safer for everyone.
+          <p className="mt-8 text-slate-400 text-lg md:text-xl max-w-xl mx-auto leading-relaxed">
+            Threatbase is powered by the security community. We credit the maintainers who share open intelligence.
           </p>
         </motion.div>
 
-        {/* Scrolling feed-name marquee */}
+        {/* Film-credit style marquee */}
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={prefersReducedMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative mt-14"
+          transition={{ duration: 1, delay: 0.3 }}
+          className="relative mt-20"
         >
-          <div className="relative h-[88px] w-full">
-            <InfiniteSlider className="flex h-full w-full items-center" duration={40} gap={56}>
+          <div className="relative h-[80px] w-full">
+            <InfiniteSlider className="flex h-full w-full items-center" duration={60} gap={64}>
               {SOURCES.map((s) => (
                 <span
                   key={s.name}
-                  className="whitespace-nowrap text-lg md:text-xl font-bold tracking-tight text-slate-400/70 transition-colors hover:text-amber-300"
+                  className="whitespace-nowrap font-mono text-sm md:text-base font-medium tracking-[0.1em] text-slate-500 uppercase transition-colors hover:text-white"
                 >
                   {s.name}
                 </span>
               ))}
             </InfiniteSlider>
             <ProgressiveBlur
-              className="pointer-events-none absolute top-0 left-0 h-full w-[180px]"
+              className="pointer-events-none absolute top-0 left-0 h-full w-[120px] md:w-[200px]"
               direction="left"
               blurIntensity={1}
             />
             <ProgressiveBlur
-              className="pointer-events-none absolute top-0 right-0 h-full w-[180px]"
+              className="pointer-events-none absolute top-0 right-0 h-full w-[120px] md:w-[200px]"
               direction="right"
               blurIntensity={1}
             />
           </div>
 
-          <div className="relative -mt-6 h-28 w-full overflow-hidden [mask-image:radial-gradient(ellipse_at_center,white,transparent)]">
-            <div className="absolute inset-0 before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_bottom_center,var(--gradient-color),transparent_70%)] before:opacity-30" />
-            <div className="absolute -left-1/2 top-1/2 z-10 aspect-[1/0.7] w-[200%] rounded-[100%] border-t border-white/10 bg-app" />
+          <div className="relative -mt-4 h-24 w-full overflow-hidden [mask-image:radial-gradient(ellipse_at_center,white,transparent)]">
+            <div className="absolute inset-0 before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_bottom_center,var(--gradient-color),transparent_60%)] before:opacity-20" />
+            <div className="absolute -left-1/2 top-1/2 z-10 aspect-[1/0.5] w-[200%] rounded-[100%] border-t border-red-500/10 bg-[#050505]" />
             <Sparkles
-              density={500}
-              size={1.2}
-              className="absolute inset-x-0 bottom-0 h-full w-full [mask-image:radial-gradient(ellipse_at_center,white,transparent_85%)]"
-              color="#ffffff"
+              density={300}
+              size={1.5}
+              className="absolute inset-x-0 bottom-0 h-full w-full [mask-image:radial-gradient(ellipse_at_center,white,transparent_80%)]"
+              color="#cf1733"
             />
           </div>
         </motion.div>
@@ -141,46 +129,68 @@ export default function ThanksPage() {
         {/* Top contributor highlight */}
         {topReporter && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.15, ease: 'easeOut' }}
-            className="mt-12 max-w-xl mx-auto"
+            transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
+            className="mt-16 max-w-xl mx-auto"
           >
-            <div className="relative overflow-hidden rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-500/[0.08] to-transparent backdrop-blur-xl px-6 py-5 flex items-center gap-4">
-              <div className="shrink-0 h-12 w-12 rounded-2xl border border-amber-500/30 bg-amber-500/10 flex items-center justify-center">
-                <Trophy className="h-6 w-6 text-amber-400" />
+            <div className="flex flex-col items-center justify-center p-6 text-center">
+              <div className="mb-4 shrink-0 rounded-full border border-red-500/20 bg-red-500/5 p-3">
+                <Trophy className="h-5 w-5 text-red-400" />
               </div>
-              <div className="text-left">
-                <div className="text-[11px] font-bold uppercase tracking-widest text-amber-400/80">#1 Top Contributor</div>
-                <div className="text-lg font-black text-white tracking-tight mt-0.5">
-                  @{topReporter}
-                </div>
-              </div>
-              <div className="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-amber-500/10 blur-2xl pointer-events-none" />
+              <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">Top Contributor</div>
+              <div className="mt-2 font-mono text-xl text-white">@{topReporter}</div>
             </div>
           </motion.div>
         )}
 
-
+        {/* Editorial Source List */}
+        <motion.div
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-20 max-w-4xl mx-auto"
+        >
+          <div className="flex flex-col divide-y divide-white/5 border-y border-white/5">
+            {SOURCES.map((s, idx) => (
+              <a
+                key={s.name}
+                href={s.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col md:flex-row md:items-center justify-between py-8 px-4 transition-colors hover:bg-white/[0.015]"
+              >
+                <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-8 lg:gap-16">
+                  <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white transition-colors group-hover:text-red-400 md:w-56 shrink-0">
+                    {s.name}
+                  </h3>
+                  <p className="text-sm md:text-base text-slate-400">
+                    {s.desc}
+                  </p>
+                </div>
+                <div className="hidden md:flex shrink-0 ml-4 items-center justify-center w-10 h-10 rounded-full border border-white/5 opacity-0 -translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 group-hover:bg-red-500/10 group-hover:border-red-500/20 group-hover:text-red-400">
+                  <ExternalLink className="h-4 w-4" />
+                </div>
+              </a>
+            ))}
+          </div>
+        </motion.div>
 
         {/* Footer note + CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mt-16 text-center"
+          className="mt-32 text-center"
         >
-          <p className="text-sm text-slate-500 max-w-2xl mx-auto leading-relaxed">
-            …and many other community-driven projects whose dedication to open intelligence powers
-            defenders worldwide. Want to be part of it?
-          </p>
           <Link
             to="/report"
-            className="group mt-6 inline-flex items-center gap-2 px-7 py-3 rounded-2xl bg-white text-black font-semibold text-sm transition-all hover:bg-slate-200"
+            className="group inline-flex items-center gap-3 border-b border-red-500/30 pb-1 text-sm font-bold uppercase tracking-[0.15em] text-red-400 transition-colors hover:border-red-400 hover:text-red-300"
           >
-            <Heart className="h-4 w-4" />
             Contribute an Indicator
+            <span className="transition-transform group-hover:translate-x-1">→</span>
           </Link>
         </motion.div>
 

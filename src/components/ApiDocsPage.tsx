@@ -1,5 +1,5 @@
 import React from 'react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import IsoPageShell from './layout/IsoPageShell'
 import { KeyRound, Gauge, Terminal, Copy, Check, ArrowRight, ShieldCheck, Globe } from 'lucide-react'
@@ -40,30 +40,23 @@ function tokenizeLine(line: string, lang: string): Token[] {
 
   const push = (text: string, cls: string) => text && tokens.push({ text, cls })
 
-  // Whole-line comments
   if (lang === 'python' && /^\s*#/.test(line)) return [{ text: line, cls: C.comment }]
   if (lang === 'bash' && /^\s*#/.test(line)) return [{ text: line, cls: C.comment }]
 
   while (i < line.length) {
     const rest = line.slice(i)
-
-    // Strings (single, double, or f-strings)
     const strMatch = rest.match(/^([frb]?)(["'])(?:\\.|(?!\2).)*\2/)
     if (strMatch) {
       push(strMatch[0], C.string)
       i += strMatch[0].length
       continue
     }
-
-    // Numbers
     const numMatch = rest.match(/^\b\d+(\.\d+)?\b/)
     if (numMatch) {
       push(numMatch[0], C.number)
       i += numMatch[0].length
       continue
     }
-
-    // HTTP verbs (for the request-line block)
     if (lang === 'http') {
       const verb = rest.match(/^\b[A-Z]+\b/)
       if (verb && HTTP_METHODS.has(verb[0])) {
@@ -72,8 +65,6 @@ function tokenizeLine(line: string, lang: string): Token[] {
         continue
       }
     }
-
-    // Identifiers / keywords
     const word = rest.match(/^[A-Za-z_][A-Za-z0-9_]*/)
     if (word) {
       const w = word[0]
@@ -85,21 +76,16 @@ function tokenizeLine(line: string, lang: string): Token[] {
       i += w.length
       continue
     }
-
-    // JSON property keys: "key":
-    // Punctuation & whitespace
     const ch = rest[0]
     if (/[{}[\]():,.;=<>+\-*/&|]/.test(ch)) push(ch, C.punct)
     else push(ch, C.plain)
     i += 1
   }
-
   return tokens
 }
 
 function highlightJson(line: string): Token[] {
   const tokens: Token[] = []
-  // property key
   const keyMatch = line.match(/^(\s*)("(?:\\.|[^"])*")(\s*:)/)
   let rest = line
   let indent = ''
@@ -110,7 +96,6 @@ function highlightJson(line: string): Token[] {
     tokens.push({ text: keyMatch[3], cls: C.punct })
     rest = line.slice(keyMatch[0].length)
   }
-  // value
   const strVal = rest.match(/^(\s*)("(?:\\.|[^"])*")/)
   if (strVal) {
     tokens.push({ text: strVal[1], cls: C.plain })
@@ -142,15 +127,13 @@ function CodeBlock({ code, language = 'text', filename }: CodeBlockProps) {
       await navigator.clipboard.writeText(code)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
-    } catch {
-      /* clipboard unavailable */
-    }
+    } catch { }
   }
 
   const lines = code.replace(/\n$/, '').split('\n')
 
   return (
-    <div className="group/code relative overflow-hidden rounded-2xl border border-white/10 bg-[#0A0E18]/90 backdrop-blur-md shadow-2xl">
+    <div className="group/code relative overflow-hidden glass-card shadow-glass-lux">
       {/* Title bar */}
       <div className="flex items-center justify-between border-b border-white/[0.06] bg-white/[0.02] px-4 py-2.5">
         <div className="flex items-center gap-2">
@@ -163,7 +146,7 @@ function CodeBlock({ code, language = 'text', filename }: CodeBlockProps) {
         </div>
         <button
           onClick={handleCopy}
-          className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] font-bold text-slate-400 transition-all hover:border-white/20 hover:bg-white/10 hover:text-white active:scale-95"
+          className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] font-bold text-slate-400 transition-all hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400 active:scale-95"
         >
           {copied ? (
             <>
@@ -235,7 +218,7 @@ interface ParamRow {
 
 function ParamTable({ rows, title }: { rows: ParamRow[]; title: string }) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/[0.06] bg-slate-900/40 backdrop-blur-md">
+    <div className="overflow-hidden glass-card">
       <div className="border-b border-white/[0.06] bg-white/[0.02] px-5 py-3 text-xs font-bold uppercase tracking-widest text-slate-400">
         {title}
       </div>
@@ -248,7 +231,7 @@ function ParamTable({ rows, title }: { rows: ParamRow[]; title: string }) {
                 {r.type}
               </span>
               {r.required ? (
-                <span className="rounded bg-rose-500/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-rose-300">
+                <span className="rounded bg-red-500/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-red-300">
                   required
                 </span>
               ) : (
@@ -267,30 +250,26 @@ function ParamTable({ rows, title }: { rows: ParamRow[]; title: string }) {
 
 function SectionHeading({
   icon: Icon,
-  eyebrow,
   title,
   children,
 }: {
   icon: React.ElementType
-  eyebrow: string
   title: string
   children?: React.ReactNode
 }) {
+  const prefersReducedMotion = useReducedMotion()
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.5 }}
       className="mb-8"
     >
       <div className="mb-3 flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-slate-950/60 text-blue-400">
+        <div className="icon-chip w-10 h-10">
           <Icon className="h-5 w-5" />
         </div>
-        <span className="text-xs font-bold uppercase tracking-widest text-destructive">
-          {eyebrow}
-        </span>
       </div>
       <h2 className="text-3xl font-extrabold tracking-tight text-white md:text-4xl">{title}</h2>
       {children && <p className="mt-3 max-w-2xl text-base leading-relaxed text-slate-400">{children}</p>}
@@ -372,6 +351,7 @@ const AUTH_HEADER_EXAMPLE = `x-api-key: tb_api_xxxxxxxxxxxxxxxx`
 /* ------------------------------------------------------------------ */
 
 export default function ApiDocsPage() {
+  const prefersReducedMotion = useReducedMotion()
   useSEO({
     title: 'API Documentation — Threatbase | Threat Intelligence API',
     description:
@@ -407,22 +387,22 @@ export default function ApiDocsPage() {
   ]
 
   return (
-    <IsoPageShell color="37, 99, 235">
+    <IsoPageShell color="207, 23, 51">
       {/* Hero */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         className="mx-auto max-w-4xl text-center"
       >
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-slate-900/80 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-400 shadow-2xl backdrop-blur-xl">
+        <div className="eyebrow mb-6">
           <Terminal className="h-3.5 w-3.5" />
           Developer API · v1
         </div>
 
         <h1 className="mb-6 text-5xl font-extrabold tracking-tighter text-white drop-shadow-2xl md:text-7xl">
           The Threatbase <br />
-          <span className="bg-gradient-to-r from-blue-500 to-red-500 bg-clip-text text-transparent">
+          <span className="text-liquid-red text-metal">
             Threat Intelligence API.
           </span>
         </h1>
@@ -433,11 +413,11 @@ export default function ApiDocsPage() {
           authenticated HTTP request.
         </p>
 
-        <div className="mb-16 inline-block rounded-2xl bg-gradient-to-r from-blue-500/40 to-red-500/40 p-[1px] shadow-2xl">
+        <div className="mb-16 inline-block rounded-2xl bg-gradient-to-r from-red-500/40 to-red-800/40 p-[1px] shadow-glow-ruby">
           <div className="rounded-2xl bg-slate-950/80 px-6 py-4 backdrop-blur-xl">
-            <span className="font-mono text-sm text-slate-200 tracking-wide md:text-base">
-              <span className="text-blue-400">$</span> base url{' '}
-              <span className="text-emerald-300">{BASE_URL}/api/v1</span>
+            <span className="font-mono text-sm text-metal tracking-wide md:text-base">
+              <span className="text-destructive">$</span> base url{' '}
+              <span className="text-slate-200">{BASE_URL}/api/v1</span>
             </span>
           </div>
         </div>
@@ -445,10 +425,10 @@ export default function ApiDocsPage() {
 
       {/* Quick highlights */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15, duration: 0.5 }}
-        className="mx-auto mb-28 grid w-full max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3"
+        className="mx-auto mb-28 flex flex-col sm:flex-row w-full max-w-4xl divide-y sm:divide-y-0 sm:divide-x divide-white/[0.08] glass-card"
       >
         {[
           { icon: Globe, title: 'REST + JSON', desc: 'Predictable HTTPS endpoints returning clean JSON.' },
@@ -457,9 +437,11 @@ export default function ApiDocsPage() {
         ].map((f) => (
           <div
             key={f.title}
-            className="rounded-2xl border border-white/[0.06] bg-slate-900/40 p-6 text-left backdrop-blur-md"
+            className="flex-1 p-6 text-left"
           >
-            <f.icon className="mb-4 h-6 w-6 text-blue-400" />
+            <div className="icon-chip w-10 h-10 mb-4">
+              <f.icon className="h-5 w-5" />
+            </div>
             <h3 className="mb-1 text-base font-bold text-white">{f.title}</h3>
             <p className="text-sm leading-relaxed text-slate-400">{f.desc}</p>
           </div>
@@ -468,30 +450,30 @@ export default function ApiDocsPage() {
 
       {/* Authentication */}
       <section className="mx-auto mb-28 w-full max-w-4xl">
-        <SectionHeading icon={KeyRound} eyebrow="Getting Started" title="Authentication">
+        <div className="eyebrow mb-6">Getting Started</div>
+        <SectionHeading icon={KeyRound} title="Authentication">
           Every request must be authenticated with an API key. Generate one for free from your{' '}
-          <Link to="/profile" className="font-semibold text-blue-400 underline-offset-4 hover:underline">
+          <Link to="/profile" className="font-semibold text-red-400 underline-offset-4 hover:underline">
             Profile page
           </Link>{' '}
           under the <span className="font-semibold text-slate-300">API Keys</span> section, then pass
-          it in the <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-sm text-indigo-300">x-api-key</code>{' '}
+          it in the <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-sm text-platinum-300 border border-white/10">x-api-key</code>{' '}
           header on every call.
         </SectionHeading>
 
-        <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="mb-6 flex flex-col md:flex-row gap-8 relative items-start">
+          <div className="absolute top-8 left-0 right-0 h-px bg-white/5 hidden md:block" />
           {[
-            { step: '01', title: 'Sign in', desc: 'Log into Threatbase with Google or GitHub.' },
-            { step: '02', title: 'Generate a key', desc: 'Open your Profile and create a new API key.' },
-            { step: '03', title: 'Send the header', desc: 'Attach x-api-key to every request.' },
-          ].map((s) => (
+            { step: 'Sign in', desc: 'Log into Threatbase with Google or GitHub.' },
+            { step: 'Generate a key', desc: 'Open your Profile and create a new API key.' },
+            { step: 'Send the header', desc: 'Attach x-api-key to every request.' },
+          ].map((s, i) => (
             <div
               key={s.step}
-              className="relative rounded-2xl border border-white/[0.06] bg-slate-900/40 p-6 backdrop-blur-md"
+              className="flex-1 relative"
             >
-              <span className="absolute right-5 top-4 select-none font-mono text-4xl font-black text-white/5">
-                {s.step}
-              </span>
-              <h3 className="mb-2 text-base font-bold text-white">{s.title}</h3>
+              <div className="w-4 h-4 rounded-full bg-red-500 shadow-glow-ruby mb-4 relative z-10" />
+              <h3 className="mb-2 text-base font-bold text-white">{s.step}</h3>
               <p className="text-sm leading-relaxed text-slate-400">{s.desc}</p>
             </div>
           ))}
@@ -499,22 +481,22 @@ export default function ApiDocsPage() {
 
         <CodeBlock code={AUTH_HEADER_EXAMPLE} language="http" filename="Request header" />
 
-        <div className="mt-4 flex items-start gap-3 rounded-2xl border border-amber-500/20 bg-amber-950/20 px-5 py-4">
-          <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" />
-          <p className="text-sm leading-relaxed text-amber-100/80">
+        <div className="mt-8 flex items-start gap-3 glass-card bg-red-950/20 border-red-500/20 px-5 py-4 shadow-none">
+          <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-red-400" />
+          <p className="text-sm leading-relaxed text-red-100/80">
             Your key is shown only once at creation time and is stored hashed on our servers. Treat it
             like a password — never embed it in client-side code or commit it to source control. Keys
-            begin with the prefix <code className="font-mono text-amber-200">tb_api_</code>.
+            begin with the prefix <code className="font-mono text-red-300">tb_api_</code>.
           </p>
         </div>
       </section>
 
       {/* Rate limiting */}
       <section className="mx-auto mb-28 w-full max-w-4xl">
-        <SectionHeading icon={Gauge} eyebrow="Limits" title="Rate Limiting">
+        <SectionHeading icon={Gauge} title="Rate Limiting">
           Each API key is limited to <span className="font-semibold text-white">1,000 requests per day</span>.
           The window resets at 00:00 UTC. Requests beyond the limit receive an HTTP{' '}
-          <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-sm text-rose-300">429</code>{' '}
+          <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-sm text-red-400 border border-white/10">429</code>{' '}
           response.
         </SectionHeading>
 
@@ -527,12 +509,13 @@ export default function ApiDocsPage() {
 
       {/* Endpoints */}
       <section className="mx-auto mb-12 w-full max-w-4xl">
-        <SectionHeading icon={Terminal} eyebrow="Reference" title="Endpoints" />
+        <div className="eyebrow mb-6">Reference</div>
+        <SectionHeading icon={Terminal} title="Endpoints" />
       </section>
 
       {/* GET /scan */}
       <section className="mx-auto mb-28 w-full max-w-4xl">
-        <div className="mb-6 flex flex-wrap items-center gap-3 rounded-2xl border border-white/[0.06] bg-slate-900/40 px-5 py-4 backdrop-blur-md">
+        <div className="mb-6 flex flex-wrap items-center gap-3 glass-card px-5 py-4 shadow-none border-white/[0.04]">
           <MethodBadge method="GET" />
           <code className="font-mono text-sm font-semibold text-white sm:text-base">/api/v1/scan</code>
           <span className="text-sm text-slate-400">Scan an indicator against the live feeds.</span>
@@ -555,7 +538,7 @@ export default function ApiDocsPage() {
 
       {/* POST /report */}
       <section className="mx-auto mb-28 w-full max-w-4xl">
-        <div className="mb-6 flex flex-wrap items-center gap-3 rounded-2xl border border-white/[0.06] bg-slate-900/40 px-5 py-4 backdrop-blur-md">
+        <div className="mb-6 flex flex-wrap items-center gap-3 glass-card px-5 py-4 shadow-none border-white/[0.04]">
           <MethodBadge method="POST" />
           <code className="font-mono text-sm font-semibold text-white sm:text-base">/api/v1/report</code>
           <span className="text-sm text-slate-400">Submit a malicious IP to the community feed.</span>
@@ -578,9 +561,10 @@ export default function ApiDocsPage() {
 
       {/* Python quickstart */}
       <section className="mx-auto mb-28 w-full max-w-4xl">
-        <SectionHeading icon={Terminal} eyebrow="Quickstart" title="Python Example">
+        <div className="eyebrow mb-6">Quickstart</div>
+        <SectionHeading icon={Terminal} title="Python Example">
           A complete, copy-paste script that scans an indicator and reports a malicious IP using the{' '}
-          <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-sm text-indigo-300">requests</code>{' '}
+          <code className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-sm text-platinum-300 border border-white/10">requests</code>{' '}
           library.
         </SectionHeading>
 
@@ -589,14 +573,14 @@ export default function ApiDocsPage() {
 
       {/* CTA */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
-        className="relative mx-auto w-full max-w-4xl overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/60 p-10 text-center shadow-2xl backdrop-blur-xl md:p-14"
+        className="relative mx-auto w-full max-w-4xl overflow-hidden rounded-[2rem] glass-card p-10 text-center shadow-glass-lux md:p-14"
       >
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-red-500/10" />
-        <div className="relative">
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-red-500/10 via-transparent to-red-900/10" />
+        <div className="relative z-10">
           <h2 className="mb-4 text-3xl font-extrabold tracking-tight text-white md:text-4xl">
             Ready to build?
           </h2>
@@ -607,7 +591,7 @@ export default function ApiDocsPage() {
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               to="/profile"
-              className="group inline-flex items-center gap-2 rounded-2xl bg-white px-7 py-3 text-sm font-semibold text-black transition-all hover:bg-slate-200"
+              className="group inline-flex items-center gap-2 rounded-2xl bg-red-600 px-7 py-3 text-sm font-semibold text-white transition-all hover:bg-red-500 shadow-glow-ruby"
             >
               <KeyRound className="h-4 w-4" />
               Get your API key
@@ -615,7 +599,7 @@ export default function ApiDocsPage() {
             </Link>
             <Link
               to="/about"
-              className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-slate-950/40 px-7 py-3 text-sm font-semibold text-white transition-all hover:border-white/20 hover:bg-slate-950/60"
+              className="inline-flex items-center gap-2 px-7 py-3 rounded-2xl border border-platinum-400/20 bg-white/[0.03] backdrop-blur-md text-platinum-300 font-semibold text-sm transition-all hover:border-platinum-400/40 hover:bg-white/[0.06] hover:text-white"
             >
               Learn more
             </Link>
