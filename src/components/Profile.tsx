@@ -9,6 +9,20 @@ import { fmt, timeAgo } from '../utils'
 import { useSEO } from '../useSEO'
 import MfaSetup from './MfaSetup'
 
+/**
+ * Royal medal hierarchy. One coherent metal ramp (gold → platinum → bronze →
+ * steel) plus the single house accent (ruby). No candy colors — every tier
+ * reads as a struck medal, keeping the page's accent lock intact.
+ */
+const TIER = {
+  gold: 'from-amber-200/[0.18] to-amber-500/[0.06] text-amber-200 border-amber-300/25 shadow-[0_0_22px_-6px_rgba(245,200,90,0.4)]',
+  platinum: 'from-platinum-200/[0.18] to-platinum-400/[0.06] text-platinum-200 border-platinum-300/25 shadow-[0_0_22px_-8px_rgba(205,211,222,0.35)]',
+  bronze: 'from-orange-600/[0.16] to-amber-900/[0.08] text-orange-300 border-orange-600/25 shadow-[0_0_20px_-8px_rgba(234,140,70,0.3)]',
+  ruby: 'from-red-500/[0.16] to-red-800/[0.1] text-red-300 border-red-500/30 shadow-[0_0_22px_-7px_rgba(207,23,51,0.45)]',
+  steel: 'from-slate-300/[0.1] to-slate-500/[0.05] text-slate-200 border-slate-400/20 shadow-[0_0_18px_-9px_rgba(199,204,214,0.25)]',
+  slate: 'from-slate-700/25 to-slate-800/20 text-slate-400 border-slate-600/25',
+} as const
+
 const getUserBadges = (profile: any, reportsCount: number, joinIndex: number | null) => {
   const badges = [];
 
@@ -18,7 +32,7 @@ const getUserBadges = (profile: any, reportsCount: number, joinIndex: number | n
       id: 'first-blood',
       name: 'First Blood',
       desc: 'First user to join ThreatBase',
-      style: 'from-rose-500/20 to-red-600/30 text-rose-400 border-rose-500/30 shadow-[0_0_15px_rgba(244,63,94,0.15)]',
+      style: TIER.gold,
       icon: (
         <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="currentColor" fillOpacity="0.2" />
@@ -32,7 +46,7 @@ const getUserBadges = (profile: any, reportsCount: number, joinIndex: number | n
       id: 'second-blood',
       name: 'Second Blood',
       desc: 'Second user to join ThreatBase',
-      style: 'from-orange-500/20 to-amber-600/30 text-orange-400 border-orange-500/30 shadow-[0_0_15px_rgba(249,115,22,0.15)]',
+      style: TIER.platinum,
       icon: (
         <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z" fill="currentColor" fillOpacity="0.2" />
@@ -46,7 +60,7 @@ const getUserBadges = (profile: any, reportsCount: number, joinIndex: number | n
       id: 'third-blood',
       name: 'Third Blood',
       desc: 'Third user to join ThreatBase',
-      style: 'from-amber-500/20 to-yellow-600/30 text-amber-400 border-amber-500/30 shadow-[0_0_15px_rgba(245,158,11,0.15)]',
+      style: TIER.bronze,
       icon: (
         <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="currentColor" fillOpacity="0.2" />
@@ -62,7 +76,7 @@ const getUserBadges = (profile: any, reportsCount: number, joinIndex: number | n
       id: 'legend',
       name: 'Legend',
       desc: 'Submitted 500+ threat reports',
-      style: 'from-yellow-300/20 via-amber-400/20 to-yellow-600/30 text-yellow-400 border-yellow-500/30 shadow-[0_0_20px_rgba(234,179,8,0.25)]',
+      style: TIER.gold,
       icon: (
         <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor" fillOpacity="0.2" />
@@ -75,7 +89,7 @@ const getUserBadges = (profile: any, reportsCount: number, joinIndex: number | n
       id: 'elite',
       name: 'Elite',
       desc: 'Submitted 300+ threat reports',
-      style: 'from-purple-500/20 to-fuchsia-600/30 text-purple-400 border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.25)]',
+      style: TIER.platinum,
       icon: (
         <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 2L2 12l10 10 10-10L12 2z" fill="currentColor" fillOpacity="0.2" />
@@ -88,7 +102,7 @@ const getUserBadges = (profile: any, reportsCount: number, joinIndex: number | n
       id: 'pro',
       name: 'Pro',
       desc: 'Submitted 100+ threat reports',
-      style: 'from-cyan-500/20 to-blue-600/30 text-primary border-primary/30 shadow-[0_0_15px_rgba(34,211,238,0.25)]',
+      style: TIER.steel,
       icon: (
         <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="currentColor" fillOpacity="0.2" />
@@ -101,7 +115,7 @@ const getUserBadges = (profile: any, reportsCount: number, joinIndex: number | n
       id: 'defender',
       name: 'Defender',
       desc: 'Submitted 50+ threat reports',
-      style: 'from-emerald-500/20 to-teal-600/30 text-primary border-primary/30 shadow-[0_0_15px_rgba(16,185,129,0.25)]',
+      style: TIER.steel,
       icon: (
         <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="currentColor" fillOpacity="0.2" />
@@ -115,7 +129,7 @@ const getUserBadges = (profile: any, reportsCount: number, joinIndex: number | n
       id: 'initiate',
       name: 'Initiate',
       desc: 'Starting threat intelligence contributor',
-      style: 'from-slate-800/40 to-slate-900/40 text-slate-400 border-slate-700/40 shadow-[0_0_10px_rgba(148,163,184,0.05)]',
+      style: TIER.slate,
       icon: (
         <svg className="h-3.5 w-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="1.5" />
@@ -138,7 +152,7 @@ const getUserBadges = (profile: any, reportsCount: number, joinIndex: number | n
       id: 'helper',
       name: 'Community Helper',
       desc: 'Recognized community helper',
-      style: 'from-pink-500/20 to-rose-600/30 text-pink-400 border-pink-500/30 shadow-[0_0_15px_rgba(244,63,94,0.25)]',
+      style: TIER.ruby,
       icon: (
         <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor" fillOpacity="0.2" />
@@ -166,19 +180,23 @@ function ProfileAvatar({ src, name }: { src?: string; name: string }) {
   const showImage = src && !errored
 
   return (
-    <div className="w-24 h-24 rounded-full border border-white/10 overflow-hidden flex items-center justify-center bg-gradient-to-br from-slate-700 to-slate-900 shrink-0">
-      {showImage ? (
-        <img
-          src={src}
-          alt={`${name}'s avatar`}
-          onError={() => setErrored(true)}
-          className="w-full h-full object-cover"
-        />
-      ) : (
-        <span className="text-2xl font-semibold text-slate-300 select-none tracking-tight">
-          {getInitials(name)}
-        </span>
-      )}
+    <div className="relative shrink-0">
+      {/* Cool platinum halo behind the medallion */}
+      <div className="pointer-events-none absolute -inset-1 rounded-full bg-gradient-to-b from-platinum-300/20 to-transparent blur-md" />
+      <div className="relative w-24 h-24 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-br from-slate-700 to-slate-950 ring-1 ring-white/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_12px_30px_-12px_rgba(0,0,0,0.8)]">
+        {showImage ? (
+          <img
+            src={src}
+            alt={`${name}'s avatar`}
+            onError={() => setErrored(true)}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <span className="text-2xl font-semibold text-platinum-200 select-none tracking-tight">
+            {getInitials(name)}
+          </span>
+        )}
+      </div>
     </div>
   )
 }
@@ -523,18 +541,18 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
   if (authLoading || loadingProfile) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-app text-slate-400">
-        <Loader2 className="animate-spin text-slate-600 mb-4" size={24} />
-        <p className="text-xs font-semibold tracking-widest uppercase text-slate-500">Loading Profile...</p>
+        <Loader2 className="animate-spin text-red-400/70 mb-4" size={24} />
+        <p className="text-[11px] font-semibold tracking-[0.24em] uppercase text-platinum-400">Loading Profile</p>
       </div>
     )
   }
 
   if (profileNotFound) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-app text-slate-400">
-        <h2 className="text-2xl font-bold text-white mb-2">Profile Not Found</h2>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-app text-slate-400 px-6 text-center">
+        <h2 className="text-3xl font-extralight text-metal tracking-tight mb-2">Profile Not Found</h2>
         <p className="text-sm text-slate-500">The user you are looking for does not exist.</p>
-        <Button onClick={() => navigate(-1)} className="mt-6 border border-white/10 bg-white/5 hover:bg-white/10 text-white" variant="outline">
+        <Button onClick={() => navigate(-1)} className="mt-6 rounded-lg border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/20 text-platinum-200 hover:text-white" variant="outline">
           Go Back
         </Button>
       </div>
@@ -553,24 +571,30 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
   }
 
   return (
-    <main className="min-h-screen pt-28 pb-24 relative bg-app font-sans selection:bg-slate-800">
-      <div className="mx-auto max-w-5xl px-6 relative z-10 space-y-6">
-        
+    <main className="min-h-screen pt-28 pb-24 relative bg-app font-sans">
+      <div className="mx-auto max-w-5xl px-6 relative z-10 space-y-6 md:space-y-8">
+
         {/* Navigation back */}
-        <button 
+        <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-slate-500 hover:text-white transition-colors"
+          className="group inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500 hover:text-platinum-200 transition-colors"
         >
-          <ArrowLeft size={14} /> Back
+          <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-0.5" /> Back
         </button>
 
         {/* Profile Card Summary */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-xl border border-white/[0.05] bg-black/40 backdrop-blur-md p-6 md:p-10 relative overflow-hidden"
+          className="glass-card p-6 md:p-10 overflow-hidden"
         >
-          <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
+          {/* Top platinum sheen + ruby ambient corner — flagship depth */}
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+          <div
+            className="pointer-events-none absolute inset-0 opacity-70"
+            style={{ background: 'radial-gradient(120% 90% at 100% 0%, rgba(207, 23, 51, 0.08), transparent 55%)' }}
+          />
+          <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-left">
               {/* Profile Avatar */}
               <ProfileAvatar
@@ -589,7 +613,7 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
                     <div
                       key={badge.id}
                       title={badge.desc}
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider border bg-gradient-to-r ${badge.style} cursor-help transition-all duration-300 hover:scale-[1.03] select-none`}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-extrabold uppercase tracking-[0.12em] border bg-gradient-to-b backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] ${badge.style} cursor-help transition-transform duration-300 hover:scale-[1.04] select-none`}
                     >
                       {badge.icon}
                       <span>
@@ -599,7 +623,7 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
                   ))}
                 </div>
                 
-                <p className="text-sm font-semibold text-slate-500 font-mono">@{usernameDisplay}</p>
+                <p className="text-sm font-semibold text-platinum-400 font-mono tracking-tight">@{usernameDisplay}</p>
                 
                 {(activeProfile?.bio || editBio) && (
                   <p className="text-sm text-slate-400 max-w-lg leading-relaxed">{activeProfile?.bio || editBio}</p>
@@ -627,17 +651,17 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
             </div>
 
             <div className="text-center md:text-right flex-shrink-0">
-              <div className="text-5xl font-light text-white tracking-tighter">
+              <div className="text-5xl md:text-6xl font-extralight text-metal tracking-tighter tabular-nums leading-none">
                 {fmt(reportsCount)}
               </div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 mt-2">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-platinum-400 mt-3">
                 Intel Reports
               </p>
-              
+
               {isOwnProfile && !isEditing && (
-                <Button 
+                <Button
                   onClick={() => setIsEditing(true)}
-                  className="mt-6 w-full border border-white/10 bg-white/5 hover:bg-white/10 text-white rounded text-[10px] font-bold uppercase tracking-wider transition-colors"
+                  className="mt-6 w-full border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/20 text-platinum-200 hover:text-white rounded-lg text-[10px] font-bold uppercase tracking-[0.18em] transition-colors"
                   variant="ghost"
                   size="sm"
                 >
@@ -657,9 +681,9 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
               exit={{ opacity: 0, height: 0 }}
               className="overflow-hidden"
             >
-              <div className="rounded-xl border border-white/[0.05] bg-black/40 p-6">
+              <div className="glass-card p-6 md:p-8">
                 <form onSubmit={handleSaveProfile} className="space-y-5 max-w-2xl">
-                  <h3 className="text-sm font-semibold text-white">
+                  <h3 className="text-sm font-semibold text-white tracking-tight">
                     Profile Settings
                   </h3>
                   
@@ -673,7 +697,7 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
                         id="prof-username"
                         value={editUsername}
                         onChange={(e) => setEditUsername(e.target.value.replace(/[^a-zA-Z0-9_-]/g, ''))}
-                        className="w-full h-10 rounded-md border border-white/10 bg-transparent px-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-slate-400 transition-colors"
+                        className="w-full h-10 rounded-md border border-white/10 bg-transparent px-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-red-500/60 focus:ring-2 focus:ring-red-500/15 transition-all"
                         required
                       />
                     </div>
@@ -688,7 +712,7 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
                         value={editWebsite}
                         onChange={(e) => setEditWebsite(e.target.value)}
                         placeholder="https://"
-                        className="w-full h-10 rounded-md border border-white/10 bg-transparent px-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-slate-400 transition-colors"
+                        className="w-full h-10 rounded-md border border-white/10 bg-transparent px-3 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-red-500/60 focus:ring-2 focus:ring-red-500/15 transition-all"
                       />
                     </div>
                   </div>
@@ -704,7 +728,7 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
                       id="prof-bio"
                       value={editBio}
                       onChange={(e) => setEditBio(e.target.value.substring(0, 160))}
-                      className="w-full h-20 rounded-md border border-white/10 bg-transparent px-3 py-2 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-slate-400 transition-colors resize-none"
+                      className="w-full h-20 rounded-md border border-white/10 bg-transparent px-3 py-2 text-sm text-white placeholder:text-slate-600 focus:outline-none focus:border-red-500/60 focus:ring-2 focus:ring-red-500/15 transition-all resize-none"
                     />
                   </div>
 
@@ -735,19 +759,24 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="rounded-xl border border-white/[0.05] bg-black/40 flex flex-col overflow-hidden"
+          className="glass-card flex flex-col overflow-hidden"
         >
-          <div className="p-5 border-b border-white/[0.05] flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-white">
+          <div className="relative px-6 py-5 border-b border-white/[0.06] bg-gradient-to-r from-white/[0.03] to-transparent flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-white tracking-tight">
               Submissions Log
             </h3>
+            {!loadingReports && reports.length > 0 && (
+              <span className="font-mono text-[11px] text-platinum-300 tabular-nums rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1">
+                {fmt(reportsCount)}
+              </span>
+            )}
           </div>
 
           <div className="overflow-x-auto min-h-[200px]">
             {loadingReports ? (
               <div className="py-24 flex flex-col items-center justify-center text-slate-500">
-                <Loader2 className="animate-spin mb-3" size={20} />
-                <p className="text-xs">Loading records...</p>
+                <Loader2 className="animate-spin text-red-400/70 mb-3" size={20} />
+                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-platinum-400">Loading Records</p>
               </div>
             ) : reports.length === 0 ? (
               <div className="py-24 text-center text-slate-500 flex flex-col items-center">
@@ -782,9 +811,9 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-1.5">
                           {(row.category || 'Other').split(', ').map((cat: string) => (
-                            <span key={cat} className={`text-[11px] ${getCategoryColor(cat)}`}>
+                            <span key={cat} className={`inline-flex items-center rounded-md border border-white/[0.06] bg-white/[0.02] px-2 py-0.5 text-[11px] font-medium ${getCategoryColor(cat)}`}>
                               {cat}
                             </span>
                           ))}
@@ -816,11 +845,11 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
             <MfaSetup addToast={addToast} />
 
             {/* API Keys Setup */}
-            <div className="rounded-xl border border-white/[0.05] bg-black/40 p-6 md:p-8">
+            <div className="glass-card p-6 md:p-8">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
                 <div>
-                  <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-                    <Key size={16} className="text-primary" /> API Access Keys
+                  <h3 className="text-sm font-semibold text-white flex items-center gap-2 tracking-tight">
+                    <span className="icon-chip h-7 w-7"><Key size={14} /></span> API Access Keys
                   </h3>
                   <p className="text-xs text-slate-400 mt-1 max-w-lg">
                     Generate an API key to securely interact with the Threatbase API. Your key will only be shown once.
@@ -829,7 +858,7 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
                 <Button
                   onClick={handleGenerateApiKey}
                   disabled={generatingKey || apiKeys.length >= 3}
-                  className="bg-primary hover:bg-primary/90 text-black text-xs font-semibold rounded shrink-0 h-9"
+                  className="bg-red-600 hover:bg-red-500 text-white text-xs font-semibold rounded-lg shrink-0 h-9 shadow-glow-ruby disabled:shadow-none disabled:opacity-50"
                 >
                   {generatingKey ? 'Generating...' : 'Generate API Key'}
                 </Button>
@@ -848,7 +877,7 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
                       className="p-2 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 rounded transition-colors"
                       title="Copy API Key"
                     >
-                      {copiedIp === newlyGeneratedKey ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+                      {copiedIp === newlyGeneratedKey ? <Check size={14} className="text-platinum-200" /> : <Copy size={14} />}
                     </button>
                   </div>
                 </div>
@@ -897,9 +926,10 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="rounded-xl border border-destructive/10 bg-destructive/5 p-6 md:p-8"
+            className="relative overflow-hidden rounded-2xl border border-destructive/15 bg-destructive/[0.04] backdrop-blur-xl p-6 md:p-8"
           >
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div className="pointer-events-none absolute inset-0 opacity-60" style={{ background: 'radial-gradient(100% 80% at 0% 0%, rgba(207,23,51,0.06), transparent 60%)' }} />
+            <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div className="space-y-1">
                 <h3 className="text-sm font-semibold text-destructive">
                   Delete Account
@@ -938,8 +968,9 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="relative w-full max-w-md rounded-xl border border-white/10 bg-app p-6 md:p-8 shadow-2xl"
+              className="relative w-full max-w-md rounded-2xl border border-white/10 bg-[#0b0f17] p-6 md:p-8 shadow-glass-lux"
             >
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-destructive/40 to-transparent" />
               <div className="space-y-6">
                 <div>
                   <h4 className="text-lg font-semibold text-white">Delete Account</h4>
