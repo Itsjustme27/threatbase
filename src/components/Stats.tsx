@@ -20,7 +20,7 @@ const METRICS: MetricDef[] = [
   {
     key: 'ip', label: 'Malicious IPs', statKey: 'total_unique_ips',
     img: 'ipv4icon.png', invert: true, sub: 'Active IPv4 addresses',
-    rgb: '239,68,68', iconWrap: 'bg-red-950/40 border-destructive/20 group-hover:border-destructive/50',
+    rgb: '207,23,51', iconWrap: 'bg-red-950/40 border-destructive/20 group-hover:border-destructive/50',
   },
   {
     key: 'domain', label: 'Domains', statKey: 'total_unique_domains',
@@ -92,10 +92,14 @@ export default function Stats({ statsData }: any) {
     return METRICS.reduce((sum, m) => sum + (statsData[m.statKey] || 0), 0)
   }, [statsData])
 
+  // Split metrics into featured (top 2) and compact (remaining 4)
+  const featured = METRICS.slice(0, 2)
+  const compact = METRICS.slice(2)
+
   return (
     <Section id="stats" className="overflow-hidden" containerClassName="relative z-10">
 
-        {/* Section header */}
+        {/* Section header — NO eyebrow (tasteskill budget) */}
         <motion.div
           className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-5"
           initial={{ opacity: 0, y: 16 }}
@@ -104,15 +108,11 @@ export default function Stats({ statsData }: any) {
           transition={{ duration: 0.5, ease: 'easeOut' }}
         >
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-400/20 text-[11px] font-bold uppercase tracking-widest text-red-400 mb-4">
-              <span className="inline-flex h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />
-              Live Intelligence
-            </div>
-            <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight">
-              Threat Database at a Glance
+            <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
+              Threat database at a glance
             </h2>
             <p className="mt-3 text-slate-400 text-base md:text-lg font-medium max-w-2xl leading-relaxed">
-              Aggregated, de-duplicated indicators of compromise — refreshed continuously and ready for ingestion.
+              Aggregated, de-duplicated indicators of compromise, refreshed continuously and ready for ingestion.
             </p>
           </div>
           {lastUpdated && (
@@ -127,21 +127,35 @@ export default function Stats({ statsData }: any) {
         {/* Summary strip */}
         <SummaryStrip total={totalTracked} feeds={statsData?.active_feeds ?? null} />
 
-        {/* Metric grid */}
+        {/* BENTO LAYOUT — Featured 2 large + 4 compact (tasteskill §4.7 layout diversification) */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6"
+          className="space-y-5"
           variants={gridVariants}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: '-60px' }}
         >
-          {METRICS.map((m) => (
-            <StatCard
-              key={m.key}
-              metric={m}
-              target={statsData ? (statsData[m.statKey] ?? 0) : null}
-            />
-          ))}
+          {/* Featured row: 2 large tiles */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {featured.map((m) => (
+              <FeaturedStatCard
+                key={m.key}
+                metric={m}
+                target={statsData ? (statsData[m.statKey] ?? 0) : null}
+              />
+            ))}
+          </div>
+
+          {/* Compact row: 4 tiles */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+            {compact.map((m) => (
+              <CompactStatCard
+                key={m.key}
+                metric={m}
+                target={statsData ? (statsData[m.statKey] ?? 0) : null}
+              />
+            ))}
+          </div>
         </motion.div>
     </Section>
   )
@@ -162,8 +176,8 @@ function SummaryStrip({ total, feeds }: { total: number | null; feeds: number | 
           <Database size={22} />
         </div>
         <div>
-          <div className="text-[11px] font-bold uppercase tracking-widest text-slate-500">Total Indicators Tracked</div>
-          <div className="text-2xl md:text-3xl font-black text-white tabular-nums tracking-tight mt-0.5">
+          <div className="text-[11px] font-bold uppercase tracking-widest text-slate-500">Total indicators tracked</div>
+          <div className="font-mono text-2xl md:text-3xl font-bold text-white tabular-nums tracking-tight mt-0.5">
             {total != null ? fmt(totalVal) : '—'}
           </div>
         </div>
@@ -175,8 +189,8 @@ function SummaryStrip({ total, feeds }: { total: number | null; feeds: number | 
           <Radio size={22} />
         </div>
         <div>
-          <div className="text-[11px] font-bold uppercase tracking-widest text-slate-500">Active Intelligence Feeds</div>
-          <div className="text-2xl md:text-3xl font-black text-white tabular-nums tracking-tight mt-0.5">
+          <div className="text-[11px] font-bold uppercase tracking-widest text-slate-500">Active intelligence feeds</div>
+          <div className="font-mono text-2xl md:text-3xl font-bold text-white tabular-nums tracking-tight mt-0.5">
             {feeds != null ? fmt(feeds) : '—'}
           </div>
         </div>
@@ -186,31 +200,27 @@ function SummaryStrip({ total, feeds }: { total: number | null; feeds: number | 
   )
 }
 
-function StatCard({ metric, target }: { metric: MetricDef; target: number | null }) {
+/** Featured stat card — larger, with accent glow and more visual weight */
+function FeaturedStatCard({ metric, target }: { metric: MetricDef; target: number | null }) {
   const value = useCountUp(target)
   const ready = target != null
 
   return (
     <motion.div
       variants={cardVariants}
-      whileHover={{ y: -6 }}
+      whileHover={{ y: -4 }}
       transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-      className="group glass-card glass-hover relative flex flex-col overflow-hidden p-6"
+      className="group glass-card glass-hover relative flex flex-col overflow-hidden p-7 md:p-8 cursor-pointer"
     >
-      {/* Red color wash on hover */}
+      {/* Accent glow on hover */}
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-        style={{ background: 'radial-gradient(130% 90% at 100% 0%, rgba(239,68,68,0.12), transparent 55%)' }}
+        style={{ background: `radial-gradient(130% 90% at 100% 0%, rgba(${metric.rgb},0.12), transparent 55%)` }}
       />
       {/* Top accent line on hover */}
       <div
         className="absolute top-0 inset-x-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{ backgroundImage: 'linear-gradient(90deg, transparent, rgba(239,68,68,0.7), transparent)' }}
-      />
-      {/* Corner glow */}
-      <div
-        className="absolute -top-20 -right-20 w-44 h-44 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-        style={{ background: 'rgba(239,68,68,0.10)' }}
+        style={{ backgroundImage: `linear-gradient(90deg, transparent, rgba(${metric.rgb},0.7), transparent)` }}
       />
 
       {/* Header row */}
@@ -228,9 +238,9 @@ function StatCard({ metric, target }: { metric: MetricDef; target: number | null
         </div>
       </div>
 
-      {/* Value */}
+      {/* Value — larger for featured */}
       <div className="mt-8 relative z-10">
-        <span className="block text-4xl lg:text-5xl font-black tracking-tighter text-white tabular-nums drop-shadow-md leading-none">
+        <span className="block font-mono text-5xl lg:text-6xl font-bold tracking-tight text-white tabular-nums leading-none">
           {ready ? fmt(value) : <span className="text-slate-600">—</span>}
         </span>
       </div>
@@ -238,6 +248,56 @@ function StatCard({ metric, target }: { metric: MetricDef; target: number | null
       {/* Footer */}
       <div className="mt-6 pt-4 border-t border-white/[0.05] relative z-10">
         <span className="text-[11px] text-slate-500 font-medium uppercase tracking-wider group-hover:text-slate-400 transition-colors">
+          {metric.sub}
+        </span>
+      </div>
+    </motion.div>
+  )
+}
+
+/** Compact stat card — smaller, denser layout for the secondary row */
+function CompactStatCard({ metric, target }: { metric: MetricDef; target: number | null }) {
+  const value = useCountUp(target)
+  const ready = target != null
+
+  return (
+    <motion.div
+      variants={cardVariants}
+      whileHover={{ y: -3 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+      className="group glass-card glass-hover relative flex flex-col overflow-hidden p-5 cursor-pointer"
+    >
+      {/* Top accent line on hover */}
+      <div
+        className="absolute top-0 inset-x-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        style={{ backgroundImage: `linear-gradient(90deg, transparent, rgba(${metric.rgb},0.6), transparent)` }}
+      />
+
+      {/* Icon + label */}
+      <div className="flex items-center gap-3 relative z-10">
+        <div className="p-2 icon-chip shrink-0">
+          <img
+            src={`${import.meta.env.BASE_URL}img/${metric.img}`}
+            alt=""
+            aria-hidden="true"
+            className={`w-5 h-5 object-contain ${metric.invert ? 'invert opacity-80' : 'drop-shadow-sm'}`}
+          />
+        </div>
+        <span className="text-[11px] font-bold text-slate-400 tracking-widest uppercase">
+          {metric.label}
+        </span>
+      </div>
+
+      {/* Value */}
+      <div className="mt-4 relative z-10">
+        <span className="block font-mono text-3xl font-bold tracking-tight text-white tabular-nums leading-none">
+          {ready ? fmt(value) : <span className="text-slate-600">—</span>}
+        </span>
+      </div>
+
+      {/* Sub */}
+      <div className="mt-3 pt-3 border-t border-white/[0.05] relative z-10">
+        <span className="text-[10px] text-slate-500 font-medium uppercase tracking-wider group-hover:text-slate-400 transition-colors">
           {metric.sub}
         </span>
       </div>

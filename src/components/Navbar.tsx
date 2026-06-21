@@ -59,7 +59,7 @@ export default function Navbar() {
                 className={cn(
                     "group fixed z-50 transition-all duration-300 w-full",
                     scrolled
-                        ? "bg-[#0B0F19]/70 backdrop-blur-xl border-b border-white/[0.06] shadow-lg shadow-black/30 py-2"
+                        ? "bg-[#080b12]/80 backdrop-blur-xl border-b border-white/[0.06] shadow-lg shadow-black/40 py-2"
                         : "bg-transparent border-b border-transparent py-3.5"
                 )}
             >
@@ -69,12 +69,15 @@ export default function Navbar() {
                             <Link
                                 to="/"
                                 aria-label="home"
-                                className="flex items-center group relative z-10">
-                                <img 
-                                    src="/img/logo.png" 
-                                    alt="Threatbase" 
-                                    className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.12] group-hover:rotate-6"
+                                className="flex items-center gap-2.5 group relative z-10">
+                                <img
+                                    src="/img/logo.png"
+                                    alt="Threatbase"
+                                    className="w-11 h-11 md:w-12 md:h-12 rounded-full object-cover ring-1 ring-white/10 transition-transform duration-500 ease-out group-hover:scale-[1.08] group-hover:rotate-6"
                                 />
+                                <span className="font-display text-[1.35rem] font-bold tracking-tight text-white">
+                                    <span className="text-metal">Threat</span><span className="text-red-500">base</span>
+                                </span>
                             </Link>
 
                             <button
@@ -86,7 +89,7 @@ export default function Navbar() {
                             </button>
 
                             <div className="hidden lg:block">
-                                <ul className="flex items-center gap-8 text-sm font-medium">
+                                <ul className="flex items-center gap-1 text-sm font-medium">
                                     {menuItems.map((item, index) => {
                                         const isActive = item.name === 'Report IP' && isReportActive
                                         return (
@@ -94,10 +97,10 @@ export default function Navbar() {
                                                 <Link
                                                     to={item.href}
                                                     className={cn(
-                                                        "transition-all duration-300 tracking-wide font-bold text-sm px-4 py-2 rounded-full",
+                                                        "transition-colors duration-200 tracking-tight font-semibold text-[0.9rem] px-3.5 py-2 rounded-full",
                                                         isActive
-                                                            ? "bg-white/10 text-white"
-                                                            : "text-slate-400 hover:text-white hover:bg-white/5"
+                                                            ? "bg-red-500/10 text-white ring-1 ring-red-500/20"
+                                                            : "text-slate-400 hover:text-white hover:bg-white/[0.06]"
                                                     )}>
                                                     {item.name}
                                                 </Link>

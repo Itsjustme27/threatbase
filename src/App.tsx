@@ -6,6 +6,7 @@ import ReportScanner from './components/ReportScanner'
 import AboutPage from './components/AboutPage'
 import Stats from './components/Stats'
 import Feeds from './components/Feeds'
+import HowItWorks from './components/HowItWorks'
 import Analytics from './components/Analytics'
 import ReportIP from './components/ReportIP'
 import ThanksPage from './components/ThanksPage'
@@ -198,6 +199,10 @@ export default function App() {
                 addToast={addToast}
               />
             </motion.div>
+
+            {/* Section order: Hero → HowItWorks → Stats → Feeds → Analytics.
+                Source credits live on the dedicated /thanks Intel Sources page. */}
+            <HowItWorks />
 
             <motion.div 
               className="flex flex-col"

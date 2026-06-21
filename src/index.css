@@ -1,71 +1,71 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Righteous&family=Space+Grotesk:wght@400;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 210 40% 98%; /* slate-50 */
-    --foreground: 222.2 84% 4.9%; /* black text */
-    --card: 0 0% 100%; /* pure white cards */
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 0 84.2% 60.2%; /* Red primary */
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 0 84.2% 60.2%; /* Red ring focus */
-    --radius: 0.75rem; /* Smoother border radii */
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    /* App is dark-locked; light tokens kept only so shadcn primitives don't break. */
+    --background: 222 47% 5%;
+    --foreground: 213 27% 91%;
+    --card: 222 47% 6%;
+    --card-foreground: 213 27% 91%;
+    --popover: 222 47% 6%;
+    --popover-foreground: 213 27% 91%;
+    --primary: 351 80% 45%; /* Ruby crimson — the single locked accent */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 217 33% 14%;
+    --secondary-foreground: 213 27% 91%;
+    --muted: 217 33% 14%;
+    --muted-foreground: 217 14% 58%;
+    --accent: 217 33% 16%;
+    --accent-foreground: 213 27% 91%;
+    --destructive: 351 78% 43%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 215 28% 17%;
+    --input: 215 28% 17%;
+    --ring: 351 80% 45%;
+    --radius: 0.875rem;
+    --chart-1: 351 80% 45%;
+    --chart-2: 12 82% 61%;
+    --chart-3: 28 90% 58%;
+    --chart-4: 215 16% 47%;
+    --chart-5: 215 20% 65%;
 
     /* Single source of truth for the app's dark surface */
-    --app-bg: #0B0F19;
+    --app-bg: #080b12;
 
-    --gradient-color: #8350e8;
-    --sparkles-color: #8350e8;
+    --gradient-color: #cf1733;
+    --sparkles-color: #cf1733;
   }
 
+  /* The html element already carries `class="dark"`; mirror the dark surface. */
   .dark {
-    --background: 222.2 84% 4.9%; /* Very dark slate */
-    --foreground: 210 40% 98%; /* White text */
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 0 84.2% 60.2%; /* Red primary */
-    --primary-foreground: 210 40% 98%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 0 84.2% 60.2%; /* Red ring focus */
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --background: 222 47% 5%;
+    --foreground: 213 27% 91%;
+    --card: 222 47% 6%;
+    --card-foreground: 213 27% 91%;
+    --popover: 222 47% 6%;
+    --popover-foreground: 213 27% 91%;
+    --primary: 351 80% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 217 33% 14%;
+    --secondary-foreground: 213 27% 91%;
+    --muted: 217 33% 14%;
+    --muted-foreground: 217 14% 58%;
+    --accent: 217 33% 16%;
+    --accent-foreground: 213 27% 91%;
+    --destructive: 351 74% 40%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 215 28% 17%;
+    --input: 215 28% 17%;
+    --ring: 351 80% 45%;
+    --chart-1: 351 80% 45%;
+    --chart-2: 12 82% 61%;
+    --chart-3: 28 90% 58%;
+    --chart-4: 215 16% 47%;
+    --chart-5: 215 20% 65%;
 
-    --gradient-color: #8350e8;
+    --gradient-color: #cf1733;
     --sparkles-color: #ffffff;
   }
 }
@@ -74,14 +74,93 @@
   * {
     @apply border-border;
   }
-  body {
-    @apply text-foreground min-h-screen;
-    background-color: var(--app-bg);
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scrollbar-gutter: stable;
   }
 
+  body {
+    @apply text-foreground min-h-screen antialiased;
+    font-family: theme('fontFamily.sans');
+    background-color: var(--app-bg);
+    font-feature-settings: 'ss01', 'calt' 1;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Display family for headings, with cold-luxury optical tightening. */
+  h1, h2, h3, h4, h5 {
+    font-family: theme('fontFamily.display');
+    letter-spacing: -0.025em;
+    font-feature-settings: 'ss01';
+  }
+
+  /* Layered ambient background: a ruby top-glow behind a cool platinum halo,
+     closing on a deep ground vignette for expensive depth. */
   body::before {
     content: '';
-    @apply fixed inset-0 bg-transparent pointer-events-none -z-10;
+    @apply fixed inset-0 pointer-events-none -z-10;
+    background:
+      radial-gradient(120% 72% at 50% -14%, rgba(207, 23, 51, 0.12), transparent 56%),
+      radial-gradient(78% 48% at 50% -8%, rgba(174, 182, 196, 0.05), transparent 60%),
+      radial-gradient(90% 60% at 50% 112%, rgba(2, 5, 10, 0.82), transparent 62%);
+  }
+
+  /* Faint engineering grid, masked toward the top so it never competes with content. */
+  body::after {
+    content: '';
+    @apply fixed inset-0 pointer-events-none -z-10;
+    background-image:
+      linear-gradient(rgba(148, 163, 184, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148, 163, 184, 0.04) 1px, transparent 1px);
+    background-size: 58px 58px;
+    -webkit-mask-image: radial-gradient(120% 80% at 50% 0%, #000 0%, transparent 72%);
+    mask-image: radial-gradient(120% 80% at 50% 0%, #000 0%, transparent 72%);
+  }
+
+  ::selection {
+    background: rgba(207, 23, 51, 0.34);
+    color: #fff;
+  }
+
+  /* Premium dark scrollbar with a restrained red thumb on hover. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(148, 163, 184, 0.18) transparent;
+  }
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.16);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: rgba(207, 23, 51, 0.5);
+    background-clip: padding-box;
+  }
+}
+
+@layer components {
+  /* Unified premium glass surface — single source of truth for all cards.
+     Hairline border + inset top highlight + tinted elevation. */
+  .glass-card {
+    @apply relative rounded-2xl border border-white/[0.06] bg-white/[0.025] backdrop-blur-xl;
+    box-shadow: theme('boxShadow.glass-lux');
+  }
+  /* Brighten + lift the hairline on hover (pairs with .glass-card). */
+  .glass-hover {
+    @apply transition-[border-color,background-color,box-shadow] duration-300 hover:border-white/[0.12] hover:bg-white/[0.04];
+  }
+  /* Unified accent chip for section icons (red = the locked accent). */
+  .icon-chip {
+    @apply flex items-center justify-center rounded-xl border border-red-500/15 bg-red-500/10 text-red-400;
+  }
+  /* Small uppercase section label — cold platinum glass, not candy. Use sparingly. */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-platinum-400/15 bg-white/[0.02] px-3 py-1 text-[10.5px] font-semibold uppercase tracking-[0.24em] text-platinum-300;
   }
 }
 
@@ -93,27 +172,42 @@
 
   /* Display / mono helpers still referenced by components */
   .retro {
-    font-family: 'JetBrains Mono', monospace !important;
+    font-family: theme('fontFamily.mono') !important;
   }
   .pixelated {
     image-rendering: pixelated;
   }
   .font-elegant {
-    font-family: 'Outfit', sans-serif !important;
+    font-family: theme('fontFamily.sans') !important;
   }
   .font-righteous {
-    font-family: 'Righteous', cursive !important;
+    font-family: 'Righteous', theme('fontFamily.display') !important;
   }
   .font-space {
-    font-family: 'Space Grotesk', sans-serif !important;
+    font-family: theme('fontFamily.display') !important;
   }
 
   .text-liquid-red {
-    background: linear-gradient(270deg, #ff0000, #ff4d4d, #990000, #ff0000);
+    background: linear-gradient(270deg, #e2566c, #cf1733, #8f1023, #cf1733);
     background-size: 400% 400%;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: liquidGradient 6s ease infinite;
+  }
+
+  /* Brushed-platinum sheen for wordmark / hero accent words. Cold-luxury detailing. */
+  .text-metal {
+    background: linear-gradient(180deg, #f2f4f8 0%, #cdd3de 46%, #8f98a8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Thin metallic hairline rule — a centred platinum fade. */
+  .divider-metal {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(199, 204, 214, 0.28), transparent);
   }
 
   /* Loader dots */
@@ -125,21 +219,6 @@
   }
   .dot-3 {
     animation: dot-3-move 2s ease-in-out infinite;
-  }
-}
-
-@layer components {
-  /* Unified borderless glass surface — single source of truth for all cards. */
-  .glass-card {
-    @apply rounded-2xl bg-gradient-to-b from-white/[0.06] to-white/[0.02] backdrop-blur-xl shadow-[0_16px_50px_-24px_rgba(0,0,0,0.75)];
-  }
-  /* Subtle brighten on hover (pairs with .glass-card). */
-  .glass-hover {
-    @apply transition duration-300 hover:from-white/[0.10];
-  }
-  /* Unified accent chip for section icons (red = data accent). */
-  .icon-chip {
-    @apply flex items-center justify-center rounded-xl bg-red-500/10 text-red-400;
   }
 }
 
@@ -188,8 +267,51 @@
   animation: tickerIn 0.35s ease-out;
 }
 
+/* Hero search input scan-line effect */
+@keyframes scanLine {
+  0% { top: 0; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+.scan-line {
+  animation: scanLine 2s ease-in-out infinite;
+}
+
+/* Marquee scroll animation for trusted-sources */
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marqueeScroll 30s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* ── Comprehensive prefers-reduced-motion (tasteskill §6.B) ── */
 @media (prefers-reduced-motion: reduce) {
-  .ticker-in {
-    animation: none;
+  .ticker-in,
+  .text-liquid-red,
+  .scan-line,
+  .animate-marquee,
+  .dot-1, .dot-2, .dot-3 {
+    animation: none !important;
+  }
+
+  /* Collapse all Tailwind keyframe utilities */
+  .animate-pulse,
+  .animate-ping,
+  .animate-spin,
+  .animate-bounce,
+  .animate-shimmer,
+  .animate-pulse-ring {
+    animation: none !important;
+  }
+
+  /* Disable CSS transitions above 100ms (allow snappy hover) */
+  *:not(.transition-colors):not(.transition-opacity) {
+    transition-duration: 0.01ms !important;
   }
 }

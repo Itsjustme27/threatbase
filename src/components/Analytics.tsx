@@ -23,11 +23,11 @@ export default function Analytics({ statsData, feedVersion }: any) {
   return (
     <Section id="analytics" className="overflow-hidden" containerClassName="relative z-10">
         <div className="mb-14 text-center md:text-left flex flex-col items-center md:items-start">
-          <h2 className="text-4xl md:text-5xl font-extrabold flex items-center justify-center md:justify-start gap-4 text-white drop-shadow-sm tracking-tight">
-            Threat Landscape
+          <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
+            Threat landscape
           </h2>
-          <p className="mt-5 text-slate-400 text-lg max-w-2xl font-medium leading-relaxed">
-            90-day volume trend of tracked malicious indicators across our global sensor network, aggregated in real-time.
+          <p className="mt-4 text-slate-400 text-lg max-w-2xl font-medium leading-relaxed">
+            90-day volume trend of tracked malicious indicators across the community sensor network, aggregated in real time.
           </p>
         </div>
 
@@ -38,11 +38,10 @@ export default function Analytics({ statsData, feedVersion }: any) {
 
           {/* Donut Chart Card */}
           <div className="glass-card p-6 relative overflow-hidden group">
-            <div className="absolute top-0 inset-x-0 h-[2px] w-full bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none"></div>
-            
+            <div className="absolute top-0 inset-x-0 h-px w-full bg-gradient-to-r from-transparent via-red-500/40 to-transparent"></div>
+
             <div className="relative z-10 h-full flex flex-col">
-              <h3 className="text-xl font-extrabold mb-8 text-white tracking-tight">Specialized Categories</h3>
+              <h3 className="text-xl font-bold mb-8 text-white tracking-tight">Specialized categories</h3>
               <div className="flex-1 w-full relative flex items-center justify-center min-h-[300px]">
                 {statsData?.category_counts && (
                   <CategoryChart categories={statsData.category_counts} />
@@ -60,7 +59,7 @@ function CategoryChart({ categories }: any) {
   const textColor = '#cbd5e1'
   // Unified cyan → red ramp (matches the site's two-accent system):
   // highest-volume categories run red, tapering to cyan.
-  const bgColors = ['#ef4444', '#f87171', '#fb7185', '#fca5a5', '#67e8f9', '#22d3ee', '#38bdf8', '#0ea5e9', '#0891b2']
+  const bgColors = ['#cf1733', '#e2566c', '#f0768c', '#fca5a5', '#67e8f9', '#22d3ee', '#38bdf8', '#0ea5e9', '#0891b2']
 
   const sorted = Object.entries(categories)
     .filter(([k]) => k !== 'Mixed' && k !== 'Unknown')

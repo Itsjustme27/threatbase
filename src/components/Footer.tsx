@@ -5,8 +5,10 @@ const BASE = import.meta.env.BASE_URL
 
 export default function Footer() {
   return (
-    <footer className="relative border-t border-white/10 overflow-hidden">
-      <div className="relative z-10 bg-white/30 dark:bg-slate-900/40 backdrop-blur-md">
+    <footer className="relative border-t border-white/[0.06] overflow-hidden">
+      {/* Premium gradient separator */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-red-500/30 to-transparent" />
+      <div className="relative z-10 bg-slate-900/40 backdrop-blur-md">
         <Footer7 
         logo={{
           url: "/",

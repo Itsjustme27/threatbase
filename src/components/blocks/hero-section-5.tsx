@@ -1,69 +1,89 @@
 'use client'
-import React, { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { InfiniteSlider } from '@/components/ui/infinite-slider'
-import { ProgressiveBlur } from '@/components/ui/progressive-blur'
-import { cn } from '@/lib/utils'
+import { motion } from 'framer-motion'
 import ThreatMap from '../ThreatMap'
-import { Menu, X, ChevronRight, Shield, Server, Database, Lock, Network, Cloud, Activity, Globe, Search, Flame, MailX, GlobeLock, Bug, ShieldAlert, ShieldBan, Zap, Key, Crosshair, ShieldCheck, Binary, Snowflake, Github } from 'lucide-react'
-import { useScroll, motion, useMotionValueEvent } from 'framer-motion'
+import { ChevronRight, Search, Shield } from 'lucide-react'
 
-import GradientBarsBackground from '@/components/ui/gradient-bars-background'
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+}
 
-export function HeroSection({ scanInput, setScanInput, handleScan, statsData }: any) {
+const fadeUp = {
+  hidden: { opacity: 0, y: 28, filter: 'blur(6px)' },
+  show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
+}
+
+export function HeroSection({ scanInput, setScanInput, handleScan }: any) {
     return (
         <>
-            <div
-                className="relative overflow-hidden w-full min-h-[90vh] bg-app"
-            >
+            <div className="relative overflow-hidden w-full min-h-[100dvh] bg-app flex items-center">
                 <ThreatMap />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0B0F19]/50 to-[#0B0F19] pointer-events-none z-0" />
-                <section className="relative z-10 pt-16 md:pt-20">
-                    <div className="py-12 md:pb-24 lg:pb-32 lg:pt-16 relative">
-                        <div className="relative z-10 mx-auto flex max-w-7xl flex-col px-6 lg:block lg:px-12">
-                            <div className="mx-auto max-w-2xl text-center lg:-ml-8 xl:-ml-12 lg:max-w-full lg:text-left relative">
-                                <div className="relative z-10">
-                                    <h1 className="mt-8 max-w-3xl text-balance text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white lg:mt-12 xl:text-7xl drop-shadow-lg">
-                                        Built for Defenders <span className="block text-red-500 mt-2 pb-2">Powered by Open Intelligence</span>
-                                    </h1>
-                                    <p className="mt-5 max-w-2xl text-sm sm:text-base leading-relaxed text-slate-300 drop-shadow">
-                                        Access real-time threat data and indicators to proactively identify, investigate, and respond to cyber threats.
-                                    </p>
+                <div className="absolute inset-0 bg-gradient-to-b from-[#080b12]/10 via-[#080b12]/30 to-[#080b12] pointer-events-none z-0" />
 
-                                    <div className="mt-8 sm:mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start w-full">
-                                        <div className="relative w-full max-w-md flex items-center">
-                                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                                            <input
-                                                type="text"
-                                                placeholder="Scan IP, Domain, Hash..."
-                                                className="h-14 w-full rounded-full border border-white/10 bg-slate-900/60 backdrop-blur-xl pl-12 pr-28 text-sm text-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-red-500/50 focus-visible:ring-1 focus-visible:ring-red-500/50 transition-all shadow-[0_0_20px_rgba(0,0,0,0.5)] focus:shadow-[0_0_20px_rgba(239,68,68,0.2)]"
-                                                value={scanInput}
-                                                onChange={(e) => setScanInput(e.target.value)}
-                                                onKeyDown={(e) => e.key === 'Enter' && handleScan()}
-                                            />
-                                            <Button
-                                                size="sm"
-                                                className="absolute right-1.5 top-1.5 bottom-1.5 h-11 rounded-full px-5 sm:px-7 bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-400 hover:to-rose-500 text-white font-semibold shadow-[0_0_15px_rgba(239,68,68,0.4)] hover:shadow-[0_0_25px_rgba(239,68,68,0.6)] transition-all border border-white/10"
-                                                onClick={handleScan}
-                                            >
-                                                Scan
-                                            </Button>
-                                        </div>
-                                        <Button
-                                            variant="outline"
-                                            size="lg"
-                                            className="h-14 rounded-full px-8 text-base border-white/10 bg-black/50 backdrop-blur-md text-slate-200 hover:bg-white/10 hover:text-white hover:border-red-500/30 hover:shadow-[0_0_20px_rgba(239,68,68,0.2)] transition-all duration-300"
-                                            asChild
-                                        >
-                                            <a href="#feeds">Browse Feeds</a>
-                                        </Button>
+                <section className="relative z-10 w-full pt-24 pb-20 lg:pb-28">
+                    <motion.div
+                      className="relative flex max-w-7xl flex-col px-6 lg:px-8"
+                      variants={stagger}
+                      initial="hidden"
+                      animate="show"
+                    >
+                        {/* Fully left-aligned — DESIGN_VARIANCE=8 means no centering */}
+                        <div className="max-w-2xl lg:max-w-3xl text-left">
+
+                            <motion.h1
+                              variants={fadeUp}
+                              className="text-balance font-display text-[2.6rem] leading-[1.04] sm:text-5xl md:text-6xl xl:text-7xl font-bold tracking-tight text-white"
+                            >
+                                Built for defenders.
+                                <span className="block text-red-500">Powered by open intelligence.</span>
+                            </motion.h1>
+
+                            <motion.p
+                              variants={fadeUp}
+                              className="mt-5 max-w-xl text-base sm:text-lg leading-relaxed text-slate-300/90"
+                            >
+                                Scan IPs, domains, and hashes against millions of live IOCs. Deploy blocklists instantly.
+                            </motion.p>
+
+                            <motion.div
+                              variants={fadeUp}
+                              className="mt-9 flex flex-col items-start gap-3.5 sm:flex-row w-full"
+                            >
+                                <div className="relative w-full max-w-md flex items-center group/search">
+                                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none z-10" size={18} />
+                                    <input
+                                        type="text"
+                                        aria-label="Scan an IP, domain, URL, or hash"
+                                        placeholder="Scan IP, domain, URL, or hash…"
+                                        className="hero-scan-input h-14 w-full rounded-full border border-white/10 bg-slate-950/70 backdrop-blur-xl pl-12 pr-[6.5rem] text-sm text-white placeholder:text-slate-500 focus-visible:outline-none focus-visible:border-red-500/50 focus-visible:ring-2 focus-visible:ring-red-500/30 transition-all shadow-[0_8px_30px_-12px_rgba(0,0,0,0.8)]"
+                                        value={scanInput}
+                                        onChange={(e) => setScanInput(e.target.value)}
+                                        onKeyDown={(e) => e.key === 'Enter' && handleScan()}
+                                    />
+                                    {/* Scan-line effect */}
+                                    <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none opacity-0 group-focus-within/search:opacity-100 transition-opacity">
+                                        <div className="scan-line absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-red-500/60 to-transparent motion-reduce:hidden" />
                                     </div>
+                                    <button
+                                        id="scan-btn"
+                                        type="button"
+                                        className="absolute right-1.5 top-1.5 bottom-1.5 inline-flex items-center justify-center rounded-full px-6 sm:px-7 bg-red-500 hover:bg-red-400 text-white text-sm font-semibold shadow-glow-red transition-all duration-200 active:scale-[0.97] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/50"
+                                        onClick={handleScan}
+                                    >
+                                        Scan
+                                    </button>
                                 </div>
-                            </div>
+                                <a
+                                    href="#feeds"
+                                    className="inline-flex h-14 items-center justify-center rounded-full px-7 text-sm font-semibold border border-white/10 bg-white/[0.04] backdrop-blur-md text-slate-200 hover:bg-white/[0.08] hover:text-white hover:border-white/20 transition-all duration-200 active:scale-[0.98] cursor-pointer"
+                                >
+                                    Browse feeds
+                                    <ChevronRight size={16} className="ml-0.5" />
+                                </a>
+                            </motion.div>
                         </div>
-                    </div>
+                    </motion.div>
                 </section>
-
             </div>
         </>
     )

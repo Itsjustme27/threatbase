@@ -5,9 +5,9 @@ const Loader: React.FC = () => {
     <div className="relative flex items-center justify-center w-[200px] h-[200px] overflow-visible">
       {/* rotation happens here, not on the positioning wrapper */}
       <div className="w-[200px] h-[200px] m-auto filter animate-[rotate-move_2s_ease-in-out_infinite]" style={{ filter: "url('#goo')" }}>
-        <div className="dot dot-1 absolute w-[70px] h-[70px] rounded-full bg-[#f87171] top-0 bottom-0 left-0 right-0 m-auto" />
-        <div className="dot dot-2 absolute w-[70px] h-[70px] rounded-full bg-[#ef4444] top-0 bottom-0 left-0 right-0 m-auto" />
-        <div className="dot dot-3 absolute w-[70px] h-[70px] rounded-full bg-[#dc2626] top-0 bottom-0 left-0 right-0 m-auto" />
+        <div className="dot dot-1 absolute w-[70px] h-[70px] rounded-full bg-[#e2566c] top-0 bottom-0 left-0 right-0 m-auto" />
+        <div className="dot dot-2 absolute w-[70px] h-[70px] rounded-full bg-[#cf1733] top-0 bottom-0 left-0 right-0 m-auto" />
+        <div className="dot dot-3 absolute w-[70px] h-[70px] rounded-full bg-[#b3122b] top-0 bottom-0 left-0 right-0 m-auto" />
 
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" className="hidden">
           <defs>

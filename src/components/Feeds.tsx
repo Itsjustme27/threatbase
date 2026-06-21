@@ -1,60 +1,67 @@
-import { Server, Download } from 'lucide-react'
+import { Download } from 'lucide-react'
 import { motion } from 'framer-motion'
 import Section from './layout/Section'
 import Container from './layout/Container'
 
 const BASE = import.meta.env.BASE_URL
 
+// Accent stripe colors per feed type — visual differentiation
+const FEED_ACCENT: Record<string, string> = {
+  'threatbase-ip.txt': '#cf1733',
+  'threatbase-domain.txt': '#6366f1',
+  'threatbase-hash.txt': '#3b82f6',
+  'threatbase-url.txt': '#f43e5e',
+  'threatbase-ipv6.txt': '#0ea5e9',
+  'threatbase-cidr.txt': '#f97316',
+}
+
 const feeds = [
   {
     name: 'IPv4 Blocklist',
-    desc: 'High-confidence malicious IPv4 addresses actively involved in cyber attacks, ready for firewall ingestion.',
+    desc: 'High-confidence malicious IPv4 addresses, ready for firewall ingestion.',
     file: 'threatbase-ip.txt',
-    icon: <img src={`${BASE}img/ipv4icon.png`} alt="IPv4" className="w-8 h-8 object-contain invert opacity-80" />,
-    color: 'text-destructive bg-destructive/10 border-destructive/20',
-    glow: 'group-hover:shadow-[0_0_30px_rgba(239,68,68,0.15)]',
+    icon: <img src={`${BASE}img/ipv4icon.png`} alt="IPv4" className="w-7 h-7 object-contain invert opacity-80" />,
   },
   {
     name: 'Domain Blocklist',
-    desc: 'Malicious, phishing, and C2 domains ready for immediate DNS sinkholing and blocking.',
+    desc: 'Phishing and C2 domains ready for DNS sinkholing and blocking.',
     file: 'threatbase-domain.txt',
-    icon: <img src={`${BASE}img/domain.png`} alt="Domain" className="w-8 h-8 object-contain drop-shadow-sm" />,
-    color: 'text-indigo-500 bg-indigo-500/10 border-indigo-500/20',
-    glow: 'group-hover:shadow-[0_0_30px_rgba(99,102,241,0.15)]',
+    icon: <img src={`${BASE}img/domain.png`} alt="Domain" className="w-7 h-7 object-contain drop-shadow-sm" />,
   },
   {
     name: 'Hash Blocklist',
-    desc: 'SHA-256 malware file signatures tailored for endpoint detection and AV scanners.',
+    desc: 'SHA-256 malware signatures tuned for endpoint detection and AV.',
     file: 'threatbase-hash.txt',
-    icon: <img src={`${BASE}img/file.png`} alt="File" className="w-8 h-8 object-contain drop-shadow-sm" />,
-    color: 'text-blue-500 bg-blue-500/10 border-blue-500/20',
-    glow: 'group-hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]',
+    icon: <img src={`${BASE}img/file.png`} alt="File" className="w-7 h-7 object-contain drop-shadow-sm" />,
   },
   {
     name: 'URL Blocklist',
-    desc: 'Verified malicious URLs optimized for web proxies, gateways, and content filtering.',
+    desc: 'Verified malicious URLs for web proxies, gateways, and filtering.',
     file: 'threatbase-url.txt',
-    icon: <img src={`${BASE}img/url.png`} alt="URL" className="w-8 h-8 object-contain drop-shadow-sm" />,
-    color: 'text-rose-500 bg-rose-500/10 border-rose-500/20',
-    glow: 'group-hover:shadow-[0_0_30px_rgba(244,63,94,0.15)]',
+    icon: <img src={`${BASE}img/url.png`} alt="URL" className="w-7 h-7 object-contain drop-shadow-sm" />,
   },
   {
     name: 'IPv6 Blocklist',
-    desc: 'High-confidence malicious IPv6 addresses for comprehensive, modern network defense.',
+    desc: 'High-confidence malicious IPv6 addresses for modern network defense.',
     file: 'threatbase-ipv6.txt',
-    icon: <img src={`${BASE}img/ipv6.png`} alt="IPv6" className="w-8 h-8 object-contain invert opacity-80" />,
-    color: 'text-sky-500 bg-sky-500/10 border-sky-500/20',
-    glow: 'group-hover:shadow-[0_0_30px_rgba(14,165,233,0.15)]',
+    icon: <img src={`${BASE}img/ipv6.png`} alt="IPv6" className="w-7 h-7 object-contain invert opacity-80" />,
   },
   {
     name: 'CIDR Blocklist',
-    desc: 'Aggregated malicious IPv4 and IPv6 subnets (CIDR notation) for broad-spectrum blocking.',
+    desc: 'Aggregated malicious IPv4 and IPv6 subnets for broad-spectrum blocking.',
     file: 'threatbase-cidr.txt',
-    icon: <img src={`${BASE}img/cidrs.png`} alt="CIDR" className="w-8 h-8 object-contain drop-shadow-sm" />,
-    color: 'text-orange-500 bg-orange-500/10 border-orange-500/20',
-    glow: 'group-hover:shadow-[0_0_30px_rgba(249,115,22,0.15)]',
+    icon: <img src={`${BASE}img/cidrs.png`} alt="CIDR" className="w-7 h-7 object-contain drop-shadow-sm" />,
   },
 ]
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 18 },
+  show: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.06, duration: 0.45, ease: 'easeOut' },
+  }),
+}
 
 export default function Feeds({ statsData }: { statsData?: any }) {
   const getChunks = (filename: string) => {
@@ -66,91 +73,126 @@ export default function Feeds({ statsData }: { statsData?: any }) {
 
   return (
     <Section id="feeds" container={false} className="overflow-hidden">
-      {/* Background decorations */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
-
       <Container width="wide" className="relative z-10">
-        <div className="mb-16 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="max-w-2xl">
-            <h2 className="text-3xl md:text-5xl font-black flex items-center justify-center md:justify-start gap-4 text-white tracking-tight">
-              Threat Intelligence Feeds
-            </h2>
-            <p className="mt-5 text-slate-400 text-lg font-medium leading-relaxed">
-              Integrate these plain text indicators directly into your Firewalls, IDS/IPS, and SIEMs. Feeds are updated continuously as the community reports new threats.
+        <div className="mb-12 max-w-2xl">
+          <h2 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
+            Threat intelligence feeds
+          </h2>
+          <p className="mt-4 text-slate-400 text-lg font-medium leading-relaxed">
+            Plain-text indicators that drop straight into your firewalls, IDS/IPS, and SIEMs. Updated continuously as the community reports new threats.
+          </p>
+        </div>
+
+        {/* Asymmetric 3-column grid on desktop, horizontal scroll-snap on mobile
+            Different layout family from Stats bento (tasteskill §4.7) */}
+        <div className="relative">
+          {/* Mobile: horizontal scroll-snap strip with fade masks */}
+          <div className="lg:hidden relative">
+            <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-6 px-6 scrollbar-hide" style={{ scrollbarWidth: 'none' }}>
+              {feeds.map((f, i) => {
+                const chunks = getChunks(f.file)
+                const isSplit = chunks.length > 1
+                const accent = FEED_ACCENT[f.file] || '#cf1733'
+                return (
+                  <motion.div
+                    key={f.file}
+                    custom={i}
+                    className="group snap-start shrink-0 w-[85vw] max-w-[340px]"
+                    variants={cardVariants}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, margin: '-30px' }}
+                  >
+                    <FeedCard f={f} isSplit={isSplit} chunks={chunks} accent={accent} />
+                  </motion.div>
+                )
+              })}
+            </div>
+            {/* Fade masks */}
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-[#080b12] to-transparent z-10" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-[#080b12] to-transparent z-10" />
+          </div>
+
+          {/* Desktop: 3-column asymmetric grid */}
+          <div className="hidden lg:grid grid-cols-3 gap-5">
+            {feeds.map((f, i) => {
+              const chunks = getChunks(f.file)
+              const isSplit = chunks.length > 1
+              const accent = FEED_ACCENT[f.file] || '#cf1733'
+              return (
+                <motion.div
+                  key={f.file}
+                  custom={i}
+                  variants={cardVariants}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true, margin: '-50px' }}
+                >
+                  <FeedCard f={f} isSplit={isSplit} chunks={chunks} accent={accent} />
+                </motion.div>
+              )
+            })}
+          </div>
+        </div>
+      </Container>
+    </Section>
+  )
+}
+
+function FeedCard({ f, isSplit, chunks, accent }: { f: typeof feeds[0]; isSplit: boolean; chunks: string[]; accent: string }) {
+  return (
+    <div className="group glass-card glass-hover relative flex flex-col h-full overflow-hidden">
+      {/* Category-color accent stripe at top */}
+      <div
+        className="h-[2px] w-full"
+        style={{ background: `linear-gradient(90deg, transparent, ${accent}, transparent)` }}
+      />
+
+      <div className="flex flex-col flex-1 p-5 sm:p-6">
+        <div className="flex items-start gap-4">
+          <div className="icon-chip p-3 shrink-0 transition-transform duration-500 group-hover:scale-105">
+            {f.icon}
+          </div>
+
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2.5">
+              <h3 className="text-lg font-bold text-white tracking-tight truncate">{f.name}</h3>
+              {isSplit && (
+                <span className="shrink-0 rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 font-mono text-[10px] font-medium text-slate-400">
+                  {chunks.length} parts
+                </span>
+              )}
+            </div>
+            <p className="mt-1.5 text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">
+              {f.desc}
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {feeds.map((f, i) => {
-            const chunks = getChunks(f.file)
-            return (
-              <motion.div
-                className="group glass-card flex flex-col justify-between overflow-hidden p-6 transition-all duration-300 hover:-translate-y-1.5 hover:from-white/[0.10] hover:shadow-[0_24px_50px_-20px_rgba(34,211,238,0.18)]"
-                key={f.file}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: i * 0.1, duration: 0.5, ease: "easeOut" }}
-              >
-                <div>
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="p-3.5 icon-chip transition-transform duration-500 group-hover:scale-110">
-                      {f.icon}
-                    </div>
-                    <h3 className="text-xl font-bold text-white tracking-tight">{f.name}</h3>
-                  </div>
-                  <p className="text-slate-400 text-sm mb-8 leading-relaxed font-medium group-hover:text-slate-300 transition-colors">
-                    {f.desc}
-                  </p>
-                </div>
-                {chunks.length > 1 ? (
-                  <div className="flex flex-col gap-2.5 w-full">
-                    <span className="text-[11px] text-slate-400 text-center font-bold tracking-wider uppercase mb-1">
-                      Split Feed ({chunks.length} Parts)
-                    </span>
-                    <div className="grid grid-cols-2 gap-2 w-full">
-                      {chunks.slice(0, 3).map((chunk, idx) => (
-                        <a
-                          key={chunk}
-                          href={`https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/${chunk}`}
-                          className="inline-flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold transition-all duration-300 rounded-xl bg-white/5 text-slate-200 hover:bg-cyan-500/10 hover:text-cyan-100 focus:outline-none focus:ring-2 focus:ring-cyan-400/40 overflow-hidden relative group/chunk"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <Download size={12} className="transition-transform group-hover/chunk:-translate-y-0.5" />
-                          <span>Part {idx + 1}</span>
-                        </a>
-                      ))}
-                      {chunks.length > 3 && (
-                        <a
-                          href="https://github.com/kalidada18/threatbase/tree/main/ioc"
-                          className="inline-flex items-center justify-center gap-1.5 py-2.5 text-xs font-bold transition-all duration-300 rounded-xl bg-white/5 text-slate-200 hover:bg-cyan-500/10 hover:text-cyan-100 focus:outline-none focus:ring-2 focus:ring-cyan-400/40 overflow-hidden relative group/chunk"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <span>+{chunks.length - 3} More</span>
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  <a
-                    href={`https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/${f.file}`}
-                    className="inline-flex items-center justify-center gap-2 w-full px-5 py-3.5 text-sm font-bold transition-all duration-300 rounded-2xl bg-gradient-to-r from-red-500 to-rose-600 text-white hover:from-red-400 hover:to-rose-500 focus:outline-none focus:ring-2 focus:ring-red-400/50 shadow-[0_0_20px_-4px_rgba(239,68,68,0.45)] overflow-hidden relative"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-                    <Download size={16} className="transition-transform group-hover:-translate-y-0.5" /> 
-                    <span>Download Feed</span>
-                  </a>
-                )}
-              </motion.div>
-            )
-          })}
+        <div className="mt-auto pt-5">
+          {isSplit ? (
+            <a
+              href="https://github.com/kalidada18/threatbase/tree/main/ioc"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.05] px-4 h-11 text-sm font-semibold text-slate-200 hover:bg-white/[0.1] hover:text-white transition-all duration-200 active:scale-[0.97] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400/40"
+            >
+              <Download size={16} className="transition-transform group-hover:-translate-y-0.5" />
+              View Parts
+            </a>
+          ) : (
+            <a
+              href={`https://raw.githubusercontent.com/kalidada18/threatbase/main/ioc/${f.file}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-red-500 px-4 sm:px-5 h-11 text-sm font-semibold text-white shadow-glow-red hover:bg-red-400 transition-all duration-200 active:scale-[0.97] cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400/50"
+            >
+              <Download size={16} className="transition-transform group-hover:-translate-y-0.5" />
+              Download
+            </a>
+          )}
         </div>
-      </Container>
-    </Section>
+      </div>
+    </div>
   )
 }

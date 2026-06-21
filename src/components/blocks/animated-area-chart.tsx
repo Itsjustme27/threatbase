@@ -19,7 +19,7 @@ import { getBaseUrl, fmt } from "../../utils";
 type SeriesKey = "ipv4" | "ipv6" | "cidrs" | "domains" | "hashes" | "urls";
 
 const chartConfig = {
-  ipv4: { label: "IPv4", color: "#ef4444" },
+  ipv4: { label: "IPv4", color: "#cf1733" },
   domains: { label: "Domains", color: "#3b82f6" },
   hashes: { label: "Hashes", color: "#a855f7" },
   urls: { label: "URLs", color: "#f97316" },
@@ -145,12 +145,6 @@ export default function AnimatedHighlightedAreaChart({ feedVersion }: { feedVers
         {/* Header */}
         <div className="px-6 pt-6 pb-4 flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-white/[0.06]">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-500/10 border border-red-500/20 text-[10px] font-bold uppercase tracking-widest text-red-400">
-                <span className="inline-flex h-1.5 w-1.5 rounded-full bg-red-400" />
-                Trends
-              </span>
-            </div>
             <h3 className="text-xl font-extrabold text-white tracking-tight">Threat Landscape Trends</h3>
             <p className="text-slate-400 font-medium text-sm mt-1">
               Tracked malicious indicators across 6 categories{rangeLabel ? ` · ${rangeLabel}` : ''}

@@ -81,7 +81,7 @@ export const Footer7 = ({
   legalLinks = defaultLegalLinks,
 }: Footer7Props) => {
   return (
-    <section className="py-32">
+    <section className="py-16 md:py-20">
       <div className="container mx-auto px-6">
         <div className="flex w-full flex-col justify-between gap-10 lg:flex-row lg:items-start lg:text-left">
           <div className="flex w-full flex-col justify-between gap-6 lg:items-start">
@@ -95,7 +95,7 @@ export const Footer7 = ({
                   className="h-8"
                 />
               </a>
-              <h2 className="text-xl font-semibold text-white">{logo.title}</h2>
+              <h2 className="font-display text-xl font-bold tracking-tight text-metal">{logo.title}</h2>
             </div>
             <p className="max-w-[70%] text-sm text-slate-400">
               {description}

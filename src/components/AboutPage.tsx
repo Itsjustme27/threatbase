@@ -77,7 +77,7 @@ export default function AboutPage() {
 
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-white mb-6 drop-shadow-2xl">
             Community-Driven <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-blue-500">
+            <span className="text-red-500">
               Threat Intelligence.
             </span>
           </h1>
@@ -86,7 +86,7 @@ export default function AboutPage() {
             ThreatBase is a community-driven threat intelligence platform designed for researchers, analysts, and cybersecurity enthusiasts. Discover IOCs, track emerging threats, explore vulnerabilities, and transform raw security data into actionable intelligence.
           </p>
 
-          <div className="inline-block p-[1px] rounded-2xl bg-gradient-to-r from-red-500/40 to-blue-500/40 mb-16 shadow-2xl">
+          <div className="inline-block p-[1px] rounded-2xl bg-gradient-to-r from-red-500/40 to-red-800/40 mb-16 shadow-2xl">
             <div className="px-8 py-4 rounded-2xl bg-slate-950/80 backdrop-blur-xl">
               <span className="font-mono text-lg text-slate-200 tracking-wide">
                 <span className="text-destructive">&gt;</span> Curiosity fuels discovery.
@@ -107,7 +107,7 @@ export default function AboutPage() {
               key={s.label}
               className="rounded-2xl border border-white/5 bg-slate-900/40 backdrop-blur-md px-4 py-6 text-center"
             >
-              <div className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-blue-400 tracking-tight">
+              <div className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-500 tracking-tight">
                 {s.value}
               </div>
               <div className="mt-1 text-xs uppercase tracking-widest text-slate-500 font-semibold">
@@ -195,7 +195,7 @@ export default function AboutPage() {
           transition={{ duration: 0.5 }}
           className="relative max-w-4xl mx-auto w-full overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/60 backdrop-blur-xl p-10 md:p-14 text-center shadow-2xl"
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 via-transparent to-blue-500/10 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 via-transparent to-red-900/10 pointer-events-none" />
           <div className="relative">
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-white mb-4">
               Join the defense.
