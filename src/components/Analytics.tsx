@@ -1,23 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
-import { TrendingUp, Activity } from 'lucide-react'
+
 import {
   Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
   ArcElement,
-  Filler,
   Tooltip,
   Legend,
-  SubTitle,
 } from 'chart.js'
-import { Line, Doughnut } from 'react-chartjs-2'
+import { Doughnut } from 'react-chartjs-2'
 import { getBaseUrl, fmt } from '../utils'
 import AnimatedHighlightedAreaChart from './blocks/animated-area-chart'
 import Section from './layout/Section'
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, ArcElement, Filler, Tooltip, Legend, SubTitle)
+ChartJS.register(ArcElement, Tooltip, Legend)
 
 export default function Analytics({ statsData, feedVersion }: any) {
   return (

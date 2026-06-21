@@ -52,3 +52,12 @@ ip2asn-v4.tsv.gz
 .dev.vars*
 !.dev.vars.example
 !.env.example
+
+# IDEs and Agents
+.agents/
+.claude/
+.cline/
+.continue/
+.windsurf/
+.cursor/
+skills-lock.json

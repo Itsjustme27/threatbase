@@ -1,17 +1,7 @@
 /** Number formatter */
 export const fmt = (n) => new Intl.NumberFormat('en-US').format(n)
 
-/** Animate a numeric value in an element from 0 to `end` */
-export function animateValue(el, end, dur = 1600) {
-  if (!el) return
-  const t0 = performance.now()
-  ;(function frame(now) {
-    const p = Math.min((now - t0) / dur, 1)
-    const ease = 1 - Math.pow(1 - p, 3)
-    el.textContent = fmt(Math.round(end * ease))
-    if (p < 1) requestAnimationFrame(frame)
-  })(t0)
-}
+
 
 /** Get the base URL for IOC data files */
 export function getBaseUrl() {

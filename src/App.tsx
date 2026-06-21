@@ -21,10 +21,9 @@ import PolicyPage from './components/PolicyPage'
 import ContributorsPage from './components/ContributorsPage'
 import ApiDocsPage from './components/ApiDocsPage'
 import { AuthProvider } from './AuthContext'
-import { getBaseUrl, formatSyncTime, animateValue } from './utils'
+import { getBaseUrl, formatSyncTime } from './utils'
 import { scanIndicatorLogic } from './scanner'
 import { useSEO } from './useSEO'
-import TurnstileModal from './components/TurnstileModal'
 import InitialVerification from './components/InitialVerification'
 
 /** Homepage-only SEO. Scoped to the index route so it never overrides subpage meta. */
