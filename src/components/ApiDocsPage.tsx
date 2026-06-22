@@ -88,9 +88,8 @@ function highlightJson(line: string): Token[] {
   const tokens: Token[] = []
   const keyMatch = line.match(/^(\s*)("(?:\\.|[^"])*")(\s*:)/)
   let rest = line
-  let indent = ''
   if (keyMatch) {
-    indent = keyMatch[1]
+    const indent = keyMatch[1]
     tokens.push({ text: indent, cls: C.plain })
     tokens.push({ text: keyMatch[2], cls: C.property })
     tokens.push({ text: keyMatch[3], cls: C.punct })

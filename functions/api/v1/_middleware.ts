@@ -2,11 +2,18 @@ import supabaseClient from '../../../src/supabaseClient'
 
 const ALLOWED_ORIGIN = 'https://threatbase.qzz.io'
 
+/**
+ * Strict dev-origin check: exact host + optional port only. A prefix match
+ * (the old `startsWith('http://localhost')`) also accepted suffix tricks like
+ * `http://localhost.attacker.com`, which this regex rejects.
+ */
+function isDevOrigin(origin: string): boolean {
+  return /^http:\/\/(localhost|127\.0\.0\.1)(:\d{1,5})?$/.test(origin)
+}
+
 function getAllowedOrigin(request: Request): string {
   const origin = request.headers.get('Origin') || ''
-  if (origin === ALLOWED_ORIGIN ||
-      origin.startsWith('http://localhost') ||
-      origin.startsWith('http://127.0.0.1')) {
+  if (origin === ALLOWED_ORIGIN || isDevOrigin(origin)) {
     return origin
   }
   return ALLOWED_ORIGIN

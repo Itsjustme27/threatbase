@@ -1,4 +1,6 @@
 import supabaseClient from '../../../src/supabaseClient'
+import { createClient } from '@supabase/supabase-js'
+import { SUPABASE_URL } from '../../../src/lib/supabaseConfig'
 import { isValidPublicIp, isValidCategory, MAX_COMMENT_LENGTH } from '../../../src/lib/apiValidation'
 
 /** Minimal server-side HTML sanitiser — strips all HTML tags. */
@@ -7,7 +9,7 @@ function stripHtml(str: string): string {
 }
 
 export const onRequestPost = async (context: any) => {
-  const { request, data } = context;
+  const { request, data, env } = context;
   const userId = data.userId; // Provided by middleware
 
   try {
@@ -84,8 +86,21 @@ export const onRequestPost = async (context: any) => {
       });
     }
 
-    // 3. Insert report securely via RPC to bypass RLS for anon requests
-    const { error: insertError } = await supabaseClient.rpc('api_insert_report', {
+    // 3. Insert via the SECURITY DEFINER RPC using the server-only service_role
+    //    key. The API key was already validated by the middleware, so the
+    //    privileged write happens server-side and the RPC can be REVOKEd from
+    //    anon/public (see db/lock_down_api_insert_report.sql) to close the
+    //    direct-PostgREST bypass. Fail closed if the key is absent.
+    const serviceKey = env?.SUPABASE_SERVICE_ROLE_KEY
+    if (!serviceKey) {
+      console.error('SUPABASE_SERVICE_ROLE_KEY is not configured — cannot insert report.')
+      return new Response(JSON.stringify({ error: "Reporting is temporarily unavailable." }), {
+        status: 503, headers: { 'Content-Type': 'application/json' }
+      })
+    }
+    const adminClient = createClient(env.SUPABASE_URL || SUPABASE_URL, serviceKey)
+
+    const { error: insertError } = await adminClient.rpc('api_insert_report', {
       p_ip: cleanIp,
       p_category: cleanCategory,
       p_comment: cleanComment,

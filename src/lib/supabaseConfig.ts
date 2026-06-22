@@ -1,0 +1,24 @@
+// Centralized Supabase connection constants.
+//
+// These are the PUBLIC publishable (anon) values — safe to ship in the browser
+// bundle. They live in one place so the browser client (src/supabaseClient.js)
+// and the Cloudflare Functions can't drift out of sync. Build-time Vite env
+// vars take precedence when present; otherwise we fall back to the literals.
+//
+// NOTE: the privileged service_role key must NEVER appear here — it is read
+// server-side only, from env, inside the Cloudflare Functions.
+
+/** Read a Vite build-time env var, tolerating runtimes where it is undefined. */
+function viteEnv(key: string): string | undefined {
+  try {
+    return (import.meta as any).env?.[key]
+  } catch {
+    return undefined
+  }
+}
+
+export const SUPABASE_URL =
+  viteEnv('VITE_SUPABASE_URL') || 'https://fybwjibrvwqwnspgswtp.supabase.co'
+
+export const SUPABASE_ANON_KEY =
+  viteEnv('VITE_SUPABASE_ANON_KEY') || 'sb_publishable_OjwJ22ODAsYQjH-IJ-rXGg_OWRXor1m'

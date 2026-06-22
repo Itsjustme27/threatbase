@@ -1,8 +1,6 @@
 import supabaseClient from '../../src/supabaseClient'
 import { createClient } from '@supabase/supabase-js'
-
-const SUPABASE_URL = 'https://fybwjibrvwqwnspgswtp.supabase.co'
-const SUPABASE_KEY = 'sb_publishable_OjwJ22ODAsYQjH-IJ-rXGg_OWRXor1m'
+import { SUPABASE_URL } from '../../src/lib/supabaseConfig'
 import { isValidPublicIp, isValidCategory, MAX_COMMENT_LENGTH } from '../../src/lib/apiValidation'
 
 // Web (browser) report endpoint. Unlike /api/v1/report (programmatic, API-key
@@ -18,11 +16,17 @@ import { isValidPublicIp, isValidCategory, MAX_COMMENT_LENGTH } from '../../src/
 // permitted; locally we fall back to '*' for dev convenience.
 const ALLOWED_ORIGIN = 'https://threatbase.qzz.io'
 
+/**
+ * Strict dev-origin check: exact host + optional port only, so a suffix trick
+ * like http://localhost.attacker.com can't satisfy a prefix match.
+ */
+function isDevOrigin(origin: string): boolean {
+  return /^http:\/\/(localhost|127\.0\.0\.1)(:\d{1,5})?$/.test(origin)
+}
+
 function corsHeaders(request: Request) {
   const origin = request.headers.get('Origin') || ''
-  const isAllowed = origin === ALLOWED_ORIGIN ||
-    origin.startsWith('http://localhost') ||
-    origin.startsWith('http://127.0.0.1')
+  const isAllowed = origin === ALLOWED_ORIGIN || isDevOrigin(origin)
   return {
     'Access-Control-Allow-Origin': isAllowed ? origin : ALLOWED_ORIGIN,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -161,12 +165,19 @@ export const onRequestPost = async (context: any) => {
     return json({ error: 'You have already reported this IP. Edit your existing report instead.' }, 409, request)
   }
 
-  // 7. Insert via SECURITY DEFINER RPC (now as the authenticated user).
-  const authClient = createClient(env.SUPABASE_URL || SUPABASE_URL, env.SUPABASE_ANON_KEY || SUPABASE_KEY, {
-    global: { headers: { Authorization: `Bearer ${accessToken}` } }
-  })
-  
-  const { error: insertError } = await authClient.rpc('api_insert_report', {
+  // 7. Insert via SECURITY DEFINER RPC using the server-only service_role key.
+  //    All checks (Turnstile, auth, rate limit, validation) have already passed
+  //    above, so the privileged write happens server-side and the RPC can be
+  //    REVOKEd from anon/authenticated (see db/lock_down_api_insert_report.sql)
+  //    to close the direct-PostgREST bypass. Fail closed if the key is absent.
+  const serviceKey = env.SUPABASE_SERVICE_ROLE_KEY
+  if (!serviceKey) {
+    console.error('SUPABASE_SERVICE_ROLE_KEY is not configured — rejecting report.')
+    return json({ error: 'Reporting is temporarily unavailable.' }, 503, request)
+  }
+  const adminClient = createClient(env.SUPABASE_URL || SUPABASE_URL, serviceKey)
+
+  const { error: insertError } = await adminClient.rpc('api_insert_report', {
     p_ip: cleanIp,
     p_category: cleanCategory,
     p_comment: stripHtml(cleanComment),

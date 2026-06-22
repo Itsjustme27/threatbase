@@ -61,3 +61,19 @@ ip2asn-v4.tsv.gz
 .windsurf/
 .cursor/
 skills-lock.json
+
+# Database
+db/
+
+# MCPs
+.mcp.json
+*.mcp.json
+mcps/
+
+# Skills
+skills/
+*.skill
+
+# Envs
+.env*
+!.env.example

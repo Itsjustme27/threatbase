@@ -1,25 +1,15 @@
 import { getBaseUrl } from './utils'
 import supabaseClient from './supabaseClient'
 
-const feedCache = {}
-const statsCache = {}
+type CompareFn = (query: string, line: string) => number
 
-async function getStats(rawBaseUrl) {
-  if (statsCache[rawBaseUrl]) return statsCache[rawBaseUrl]
-  try {
-    const r = await fetch(rawBaseUrl + 'stats.json?_=' + Date.now())
-    if (r.ok) {
-      const data = await r.json()
-      statsCache[rawBaseUrl] = data
-      return data
-    }
-  } catch (e) {
-    console.error('Failed to fetch stats:', rawBaseUrl, e)
-  }
-  return null
-}
+const feedCache: Record<string, string> = {}
 
-async function fetchAndCacheFeedText(baseUrl, filename, feedVersion) {
+async function fetchAndCacheFeedText(
+  baseUrl: string,
+  filename: string,
+  feedVersion: string | number,
+): Promise<string> {
   const cacheKey = `${filename}?v=${feedVersion}`
   if (feedCache[cacheKey]) return feedCache[cacheKey]
 
@@ -42,7 +32,7 @@ async function fetchAndCacheFeedText(baseUrl, filename, feedVersion) {
 }
 
 /** Convert a dotted IPv4 string to an unsigned 32-bit integer. */
-function ipv4ToLong(ip) {
+export function ipv4ToLong(ip: string): number | null {
   const parts = ip.split('.')
   if (parts.length !== 4) return null
   let acc = 0
@@ -60,7 +50,7 @@ function ipv4ToLong(ip) {
  * so an IP malicious only by virtue of its subnet has no exact row in the IP feed.
  * Returns the matching CIDR string, or null.
  */
-function findMatchingCidr(cidrText, ipLong) {
+export function findMatchingCidr(cidrText: string, ipLong: number | null): string | null {
   if (!cidrText || ipLong === null) return null
   const lines = cidrText.split('\n')
   for (let i = 0; i < lines.length; i++) {
@@ -80,7 +70,7 @@ function findMatchingCidr(cidrText, ipLong) {
   return null
 }
 
-function ipCsvCompare(query, line) {
+export function ipCsvCompare(query: string, line: string): number {
   if (line.startsWith('#') || line.startsWith('ip,')) return 1;
   const ipPart = line.split(',')[0]
   const pA = query.split('.').map(Number)
@@ -92,7 +82,7 @@ function ipCsvCompare(query, line) {
   return 0
 }
 
-function stringCompare(query, line) {
+export function stringCompare(query: string, line: string): number {
   if (line.startsWith('#') || line.startsWith('ip,')) return 1;
   const key = line.split(',')[0];
   if (query < key) return -1
@@ -100,33 +90,33 @@ function stringCompare(query, line) {
   return 0
 }
 
-function binarySearchString(text, query, compareFn) {
+export function binarySearchString(text: string, query: string, compareFn: CompareFn): string | null {
   if (!text) return null;
   let low = 0;
   let high = text.length - 1;
-  
+
   while (low <= high) {
-    let mid = Math.floor((low + high) / 2);
-    
+    const mid = Math.floor((low + high) / 2);
+
     let start = mid;
     while (start > 0 && text[start - 1] !== '\n') start--;
-    
+
     let end = mid;
     while (end < text.length && text[end] !== '\n' && text[end] !== '\r') end++;
-    
-    let line = text.slice(start, end).trim();
+
+    const line = text.slice(start, end).trim();
     if (line.length === 0) {
       // Empty line, safely move past it
       low = end + 1;
       continue;
     }
-    
+
     const comp = compareFn(query, line);
     if (comp === 0) {
       if (line.startsWith('#') || line.startsWith('ip,')) return null;
       return line;
     }
-    
+
     if (comp < 0) {
       high = start - 1;
     } else {
@@ -137,12 +127,16 @@ function binarySearchString(text, query, compareFn) {
 }
 
 /**
- * Classify the indicator type and search against cached feed files.
- * Returns { type, isMalicious, riskScore, feedCount }
+ * Classify a raw indicator string into its type. Pure (no network I/O) and
+ * exported so the classification rules can be unit-tested in isolation.
+ *
+ * Hash detection is restricted to the three standard hex lengths — MD5 (32),
+ * SHA-1 (40) and SHA-256 (64) — so odd-length hex (e.g. 56 chars) is no longer
+ * misrouted to the hash feed.
  */
-export async function scanIndicatorLogic(rawInput, feedVersion) {
+export function classifyIndicator(rawInput: string) {
   const isURL = /^https?:\/\/.+/.test(rawInput)
-  const isHash = /^[a-fA-F0-9]{32}(?:[a-fA-F0-9]{8})?(?:[a-fA-F0-9]{24})?$/.test(rawInput)
+  const isHash = /^(?:[a-fA-F0-9]{32}|[a-fA-F0-9]{40}|[a-fA-F0-9]{64})$/.test(rawInput)
   const ip = isURL && !isHash ? rawInput : rawInput.toLowerCase()
 
   const isIP =
@@ -157,30 +151,42 @@ export async function scanIndicatorLogic(rawInput, feedVersion) {
     !isHash &&
     /^(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.(?!-)[A-Za-z0-9-]{1,63}(?<!-))*\.[A-Za-z]{2,}$/.test(ip)
 
-  if (!isIP && !isIPv6 && !isCIDR && !isDomain && !isHash && !isURL) {
+  let type = 'invalid'
+  if (isIP) type = 'IP Address'
+  else if (isIPv6) type = 'IPv6 Address'
+  else if (isCIDR) type = 'CIDR Block'
+  else if (isHash) type = 'File Hash'
+  else if (isURL) type = 'URL'
+  else if (isDomain) type = 'Domain'
+
+  return { ip, type, isIP, isIPv6, isCIDR, isHash, isURL, isDomain }
+}
+
+/**
+ * Classify the indicator type and search against cached feed files.
+ * Returns { type, isMalicious, riskScore, feedCount }
+ */
+export async function scanIndicatorLogic(rawInput: string, feedVersion: string | number) {
+  const { ip, type, isIP, isIPv6, isCIDR, isHash, isURL, isDomain } = classifyIndicator(rawInput)
+
+  if (type === 'invalid') {
     return { type: 'invalid', ip, isIP, isDomain, isHash, isURL, isIPv6, isCIDR, isMalicious: false, riskScore: 'Low', feedCount: 1 }
   }
 
-  let scanType = 'Indicator'
-  if (isIP) scanType = 'IP Address'
-  else if (isIPv6) scanType = 'IPv6 Address'
-  else if (isCIDR) scanType = 'CIDR Block'
-  else if (isHash) scanType = 'File Hash'
-  else if (isURL) scanType = 'URL'
-  else if (isDomain) scanType = 'Domain'
+  const scanType = type
 
   const RAW = getBaseUrl()
   let isMalicious = false
   let riskScore = 'Low'
-  let feedCount = 1
+  let feedCount: number | string = 1
   let isDisputed = false
   let disputeCount = 0
-  let tags = []
-  let matchedCidr = null
+  let tags: string[] = []
+  let matchedCidr: string | null = null
 
   try {
     let textData = ''
-    let compareFn = stringCompare
+    let compareFn: CompareFn = stringCompare
 
     if (isIP) {
       textData = await fetchAndCacheFeedText(RAW, 'threatbase-ip.txt', feedVersion)
@@ -197,7 +203,7 @@ export async function scanIndicatorLogic(rawInput, feedVersion) {
       textData = await fetchAndCacheFeedText(RAW, 'threatbase-url.txt', feedVersion)
     }
 
-    let result = binarySearchString(textData, ip, compareFn)
+    const result = binarySearchString(textData, ip, compareFn)
 
     // CIDR fallback: an IPv4 with no exact row may still be malicious because
     // it falls inside a listed malicious subnet (Spamhaus/FireHOL/etc).
@@ -215,7 +221,7 @@ export async function scanIndicatorLogic(rawInput, feedVersion) {
           riskScore = parts[2]
         }
         if (parts.length >= 4) {
-          tags = parts[3].split('|').filter(t => t.trim() !== '' && t !== 'Mixed')
+          tags = parts[3].split('|').filter((t) => t.trim() !== '' && t !== 'Mixed')
         }
       } else if (matchedCidr) {
         // Range-based detection: high confidence, surface the matched subnet.

@@ -122,7 +122,8 @@ export default function AnimatedHighlightedAreaChart({ feedVersion }: { feedVers
   const toggle = (k: SeriesKey) => {
     setHidden((prev) => {
       const next = new Set(prev)
-      next.has(k) ? next.delete(k) : next.add(k)
+      if (next.has(k)) next.delete(k)
+      else next.add(k)
       // Never allow hiding every series.
       if (next.size === SERIES_ORDER.length) next.delete(k)
       return next
