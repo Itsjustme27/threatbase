@@ -31,6 +31,8 @@ export default {
         fifth: "moveInCircle 20s ease infinite",
         shimmer: "shimmer 2s linear infinite",
         "pulse-ring": "pulseRing 2.4s cubic-bezier(0.4,0,0.6,1) infinite",
+        "loader-fill": "loaderFill 4s ease-out infinite",
+        "blink": "blink 1.5s infinite",
       },
       keyframes: {
         pulseRing: {
@@ -77,6 +79,15 @@ export default {
           to: {
             transform: "translateX(100%)",
           },
+        },
+        loaderFill: {
+          "0%": { width: "0" },
+          "80%": { width: "100%" },
+          "100%": { width: "100%" },
+        },
+        blink: {
+          "0%, 100%": { opacity: "0" },
+          "50%": { opacity: "1" },
         },
       },
       colors: {

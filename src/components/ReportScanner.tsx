@@ -5,7 +5,7 @@ import DOMPurify from 'dompurify'
 import supabaseClient from '../supabaseClient'
 import { timeAgo, getCategoryIconPath, normalizeTags } from '../utils'
 import { useAuth } from '../AuthContext'
-import RadarScan from './ui/RadarScan'
+import LoaderProgressiveBar from './ui/loader-progressive-bar'
 import { getMalwareDescription } from '../malwareDictionary'
 
 // Derive a credible 0–100 confidence-of-abuse score from real signals
@@ -235,59 +235,19 @@ export default function ReportScanner({ scanResult, isScanning, showReport, scan
           {isScanning ? (
             <motion.div 
               key="scanning"
-              className="w-full min-h-[420px] flex flex-col items-center justify-center p-8 relative overflow-visible"
+              className="w-full min-h-[320px] flex flex-col items-center justify-center p-8 relative"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.98 }}
               transition={{ duration: 0.3 }}
             >
-              {/* Subtle radial gradient background */}
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-red-500/[0.06] via-transparent to-transparent pointer-events-none"></div>
-
-              {/* Precision radar scanner */}
-              <div className="mb-9 flex justify-center items-center">
-                <RadarScan />
+              {/* Loading bar */}
+              <div className="mb-8">
+                <LoaderProgressiveBar />
               </div>
 
-              <div className="z-10 flex flex-col items-center">
-                {/* Status row */}
-                <div className="flex items-center gap-2.5 mb-4">
-                  <motion.span
-                    className="h-1.5 w-1.5 rounded-full bg-red-500"
-                    style={{ boxShadow: '0 0 10px 1px rgba(207,23,51,0.7)' }}
-                    animate={reduce ? undefined : { opacity: [1, 0.25, 1] }}
-                    transition={reduce ? undefined : { duration: 1.6, ease: 'easeInOut', repeat: Infinity }}
-                  />
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.34em] text-platinum-300">Scanning target</span>
-                </div>
-
-                {/* Target indicator with a light-sweep sheen */}
-                <div className="relative overflow-hidden px-4">
-                  <div className="text-3xl md:text-[2.6rem] font-mono font-semibold tracking-tight text-white tabular-nums break-all text-center leading-none">{ip}</div>
-                  {!reduce && (
-                    <motion.div
-                      className="pointer-events-none absolute inset-y-0 w-1/3"
-                      style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent)' }}
-                      initial={{ x: '-130%' }}
-                      animate={{ x: '430%' }}
-                      transition={{ duration: 2.2, ease: 'easeInOut', repeat: Infinity, repeatDelay: 0.6 }}
-                    />
-                  )}
-                </div>
-
-                {/* Indeterminate progress hairline */}
-                <div className="relative mt-8 h-px w-44 max-w-[70%] overflow-hidden rounded-full bg-platinum-400/15">
-                  {!reduce && (
-                    <motion.div
-                      className="absolute inset-y-0 w-1/2 rounded-full"
-                      style={{ background: 'linear-gradient(90deg, transparent, #cf1733, transparent)' }}
-                      initial={{ x: '-100%' }}
-                      animate={{ x: '200%' }}
-                      transition={{ duration: 1.8, ease: 'easeInOut', repeat: Infinity }}
-                    />
-                  )}
-                </div>
-              </div>
+              {/* IP address */}
+              <div className="text-3xl md:text-[2.6rem] font-mono font-semibold tracking-tight text-white tabular-nums break-all text-center leading-none">{ip}</div>
             </motion.div>
           ) : scanResult ? (
             <motion.div

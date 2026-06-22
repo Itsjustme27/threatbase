@@ -135,6 +135,7 @@ export default function ThreatMap() {
   const catRef = useRef<Weighted<string> | null>(null)
   const [ticker, setTicker] = useState<TickerEntry[]>([])
   const [totalSeen, setTotalSeen] = useState(0)
+  const [topAttackers, setTopAttackers] = useState<{cc: string, name: string, count: number, pct: number}[]>([])
   // Ticking clock so relative timestamps ("now", "5s") stay fresh.
   const [now, setNow] = useState(() => Date.now())
   // Real CTI stats for the "Last 24h" analytics strip.
@@ -169,14 +170,27 @@ export default function ThreatMap() {
         const items: { coords: [number, number]; cc: string }[] = []
         const cumulative: number[] = []
         let total = 0
+        const attackersList: {cc: string, count: number}[] = []
+        
         for (const [cc, count] of Object.entries(geo.countries) as [string, number][]) {
           const place = COUNTRY_COORDS[cc]
           if (!place || count <= 0) continue
           total += count
           items.push({ coords: place.coords, cc })
           cumulative.push(total)
+          attackersList.push({ cc, count })
         }
         if (items.length > 0) geoRef.current = { items, cumulative, total }
+        
+        if (total > 0) {
+          attackersList.sort((a, b) => b.count - a.count)
+          setTopAttackers(attackersList.slice(0, 5).map(a => ({
+            cc: a.cc,
+            name: COUNTRY_COORDS[a.cc]?.name || a.cc,
+            count: a.count,
+            pct: (a.count / total) * 100
+          })))
+        }
       })
       .catch(() => { /* keep CITIES fallback */ })
 
@@ -303,16 +317,12 @@ export default function ThreatMap() {
         const borders = topojson.mesh(world, world.objects.countries)
         const graticule = d3.geoGraticule().step([15, 15])()
 
-        // Globe projection — orthographic for 3D sphere effect
-        const globeRadius = Math.min(width, height) * 0.42
-        // Horizontal placement of the globe centre (0.5 = dead centre, aligned with the
-        // atmosphere/ocean/rim which are drawn at width/2). < 0.5 shifts it left.
-        const globeCenterFactor = 0.5
-        const projection = d3.geoOrthographic()
-          .scale(globeRadius)
-          .translate([width * globeCenterFactor, height / 2])
-          .clipAngle(90) // Only show the front hemisphere
-          .precision(0.5)
+        // Map projection — Equirectangular for flat 2D map effect
+        const mapScale = (width / (2 * Math.PI)) * 1.05
+        const projection = d3.geoEquirectangular()
+          .scale(mapScale)
+          .translate([width / 2, height / 1.7])
+          .precision(0.1)
 
         const path = d3.geoPath().projection(projection)
 
@@ -368,79 +378,49 @@ export default function ThreatMap() {
         for (let i = 0; i < 5; i++) spawnAttack()
 
         const render = () => {
-          // Auto-rotate slowly when not dragging
-          if (autoRotateRef.current && !isDraggingRef.current) {
-            rotationRef.current[0] += 0.08
+          // Optional flat rotation if user pans
+          const cx = width / 2, cy = height / 2
+          
+          if (isDraggingRef.current) {
+            // Apply horizontal panning from dragging
+            projection.rotate([rotationRef.current[0], 0])
+          } else if (autoRotateRef.current) {
+            // Very slow horizontal pan
+            rotationRef.current[0] += 0.02
+            projection.rotate([rotationRef.current[0], 0])
           }
-
-          // Update projection rotation
-          projection.rotate([rotationRef.current[0], rotationRef.current[1]])
 
           ctx.clearRect(0, 0, width, height)
 
-          // ── Globe atmosphere glow ──
-          const cx = width / 2, cy = height / 2
-          const atmosGrad = ctx.createRadialGradient(cx, cy, globeRadius * 0.92, cx, cy, globeRadius * 1.15)
-          atmosGrad.addColorStop(0, 'rgba(207, 23, 51, 0)')
-          atmosGrad.addColorStop(0.5, 'rgba(207, 23, 51, 0.05)')
-          atmosGrad.addColorStop(1, 'rgba(207, 23, 51, 0)')
-          ctx.fillStyle = atmosGrad
-          ctx.fillRect(0, 0, width, height)
-
-          // ── Globe body ──
-          // Ocean sphere
-          ctx.beginPath()
-          ctx.arc(cx, cy, globeRadius, 0, Math.PI * 2)
-          const oceanGrad = ctx.createRadialGradient(cx - globeRadius * 0.3, cy - globeRadius * 0.3, 0, cx, cy, globeRadius)
-          oceanGrad.addColorStop(0, '#0f1929')
-          oceanGrad.addColorStop(0.6, '#0b1120')
-          oceanGrad.addColorStop(1, '#070c17')
-          ctx.fillStyle = oceanGrad
-          ctx.fill()
-
-          // Graticule grid on the globe
+          // ── Map Background & Grid ──
+          // Graticule grid
           ctx.beginPath()
           path.context(ctx)(graticule as any)
-          ctx.lineWidth = 0.4
-          ctx.strokeStyle = 'rgba(148, 163, 184, 0.08)'
+          ctx.lineWidth = 0.6
+          ctx.strokeStyle = 'rgba(45, 212, 191, 0.1)' // Teal grid
           ctx.stroke()
 
           // Filled landmasses
           ctx.beginPath()
           path.context(ctx)(land)
-          ctx.fillStyle = 'rgba(71, 85, 105, 0.55)'
+          ctx.fillStyle = '#201f4a' // Dark purple/blue landmasses
           ctx.fill()
 
           // Country borders
           ctx.beginPath()
           path.context(ctx)(borders as any)
           ctx.lineWidth = 0.5
-          ctx.strokeStyle = 'rgba(148, 163, 184, 0.25)'
-          ctx.stroke()
-
-          // ── Globe rim highlight (subtle 3D edge light) ──
-          ctx.beginPath()
-          ctx.arc(cx, cy, globeRadius, 0, Math.PI * 2)
-          ctx.lineWidth = 1.5
-          const rimGrad = ctx.createLinearGradient(cx - globeRadius, cy - globeRadius, cx + globeRadius, cy + globeRadius)
-          rimGrad.addColorStop(0, 'rgba(148, 163, 184, 0.12)')
-          rimGrad.addColorStop(0.5, 'rgba(148, 163, 184, 0.04)')
-          rimGrad.addColorStop(1, 'rgba(148, 163, 184, 0.08)')
-          ctx.strokeStyle = rimGrad
+          ctx.strokeStyle = 'rgba(45, 212, 191, 0.2)'
           ctx.stroke()
 
           // ── Hover highlight: find + accent the country under the cursor ──
           let hovered: any = null
           if (!isDraggingRef.current && mouseRef.current) {
             const mx = mouseRef.current.x, my = mouseRef.current.y
-            const offX = mx - cx, offY = my - cy
-            // Only hit-test inside the projected disc of the globe.
-            if (offX * offX + offY * offY <= globeRadius * globeRadius) {
-              const inv = projection.invert ? projection.invert([mx, my]) : null
-              if (inv) {
-                for (const f of countryFeatures) {
-                  if (d3.geoContains(f, inv as [number, number])) { hovered = f; break }
-                }
+            const inv = projection.invert ? projection.invert([mx, my]) : null
+            if (inv) {
+              for (const f of countryFeatures) {
+                if (d3.geoContains(f, inv as [number, number])) { hovered = f; break }
               }
             }
           }
@@ -449,25 +429,38 @@ export default function ThreatMap() {
           if (hovered) {
             ctx.beginPath()
             path.context(ctx)(hovered)
-            ctx.fillStyle = 'rgba(207, 23, 51, 0.32)'
+            ctx.fillStyle = 'rgba(45, 212, 191, 0.15)'
             ctx.fill()
             ctx.lineWidth = 1.2
-            ctx.strokeStyle = 'rgba(226, 86, 108, 0.95)'
+            ctx.strokeStyle = 'rgba(45, 212, 191, 0.8)'
             ctx.shadowBlur = 8
-            ctx.shadowColor = 'rgba(207, 23, 51, 0.6)'
+            ctx.shadowColor = 'rgba(45, 212, 191, 0.4)'
             ctx.stroke()
             ctx.shadowBlur = 0
 
-            const tip = tooltipRef.current
-            if (tip && mouseRef.current) {
+            if (mouseRef.current) {
               const name = (hovered.properties && hovered.properties.name) || 'Unknown'
-              if (tip.textContent !== name) tip.textContent = name
-              tip.style.transform = `translate(${mouseRef.current.x + 14}px, ${mouseRef.current.y + 14}px)`
-              tip.style.opacity = '1'
+              const mx = mouseRef.current.x
+              const my = mouseRef.current.y
+              
+              ctx.font = '600 11px monospace'
+              const textWidth = ctx.measureText(name).width
+              
+              // Tooltip background
+              ctx.fillStyle = 'rgba(10, 14, 23, 0.9)'
+              ctx.beginPath()
+              ctx.roundRect(mx + 14, my + 14, textWidth + 16, 24, 4)
+              ctx.fill()
+              
+              // Tooltip border
+              ctx.strokeStyle = 'rgba(45, 212, 191, 0.3)'
+              ctx.lineWidth = 1
+              ctx.stroke()
+              
+              // Tooltip text
+              ctx.fillStyle = '#f1f5f9'
+              ctx.fillText(name, mx + 22, my + 30)
             }
-          } else {
-            const tip = tooltipRef.current
-            if (tip) tip.style.opacity = '0'
           }
 
           // ── Country impact flashes: the whole hit country lights up, then fades ──
@@ -529,15 +522,15 @@ export default function ThreatMap() {
               // Get point along great-circle arc
               const arcPoint = interpolateGreatArc(a.sourceLonLat, a.targetLonLat, pointT)
 
-              // Check if this point is on the visible side of the globe
-              const dist = d3.geoDistance(arcPoint, [-rotationRef.current[0], -rotationRef.current[1]])
-              if (dist > Math.PI / 2) continue // behind the globe
+              // Flat map: all points are visible
 
               const projected = projection(arcPoint)
               if (!projected) continue
 
               // Lift arcs off the surface for 3D effect
-              const arcHeight = Math.sin(pointT * Math.PI) * 20
+              const distLonLat = d3.geoDistance(a.sourceLonLat, a.targetLonLat)
+              const maxArcHeight = Math.max(25, distLonLat * 180)
+              const arcHeight = Math.sin(pointT * Math.PI) * maxArcHeight
               const py = projected[1] - arcHeight
 
               const opacity = 1 - (j / segments)
@@ -569,9 +562,7 @@ export default function ThreatMap() {
               continue
             }
 
-            // Check visibility
-            const dist = d3.geoDistance(e.lonLat, [-rotationRef.current[0], -rotationRef.current[1]])
-            if (dist > Math.PI / 2) continue
+            // Flat map: all explosions are visible
 
             const projected = projection(e.lonLat)
             if (!projected) continue
@@ -745,54 +736,35 @@ export default function ThreatMap() {
             </div>
           )}
 
-          {/* Live feed sub-header */}
+          {/* Top Attackers sub-header */}
           <div className="flex items-center justify-between px-4 pb-1.5 pt-3">
-            <span className="text-[8.5px] font-semibold uppercase tracking-[0.22em] text-platinum-400">Live Feed</span>
+            <span className="text-[8.5px] font-semibold uppercase tracking-[0.22em] text-platinum-400">Top Attackers</span>
             {stats?.updated && (
               <span className="font-mono text-[9px] tabular-nums text-slate-600">{timeAgo(stats.updated)}</span>
             )}
           </div>
 
-          {/* Feed: fixed height, older rows fade out at the bottom */}
-          <div className="relative flex-1 overflow-hidden">
-            <div className="flex flex-col px-1.5">
-              {ticker.length === 0 && (
-                <div className="px-2 py-2 text-[11px] text-slate-600">Listening for live threats…</div>
+          {/* Top Attackers List */}
+          <div className="relative flex-1 overflow-hidden pb-5">
+            <div className="flex flex-col px-4 space-y-3.5 pt-2">
+              {topAttackers.length === 0 && (
+                <div className="py-2 text-[11px] text-slate-600">Loading top attackers…</div>
               )}
-              {ticker.map((t) => {
-                const c = CATEGORY_COLOR[t.cat] ?? '#94a3b8'
-                const s = sevFor(t.cat)
-                return (
-                  <div key={t.id} className="ticker-in flex items-center gap-2 rounded-lg px-2 py-[5px]">
-                    <span className="h-3.5 w-0.5 shrink-0 rounded-full" style={{ backgroundColor: s.color, boxShadow: `0 0 6px ${s.color}cc` }} />
-                    <Flag cc={t.src} />
-                    <span className="w-5 font-mono text-[12px] font-medium tabular-nums text-slate-100">{t.src}</span>
-                    <svg viewBox="0 0 16 8" className="h-2 w-3.5 shrink-0 stroke-slate-600" fill="none" strokeWidth="1.4" aria-hidden="true">
-                      <path d="M1 4h12M10 1.5 13.5 4 10 6.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    <Flag cc={t.tgt} />
-                    <span className="w-5 font-mono text-[12px] font-medium tabular-nums text-slate-400">{t.tgt}</span>
-                    <span className="ml-auto flex items-center gap-2">
-                      <span
-                        className="rounded-[5px] px-1.5 py-0.5 text-[8.5px] font-bold uppercase tracking-[0.06em]"
-                        style={{ color: c, backgroundColor: `${c}1a`, boxShadow: `inset 0 0 0 1px ${c}33` }}
-                      >
-                        {t.cat}
-                      </span>
-                      <span className="flex w-9 items-center gap-1">
-                        <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: s.color }} />
-                        <span className="text-[8.5px] font-semibold tracking-wide" style={{ color: s.color }}>{s.label}</span>
-                      </span>
-                      <span className="w-6 text-right font-mono text-[10px] tabular-nums text-slate-600">
-                        {relTime(t.ts, now)}
-                      </span>
-                    </span>
+              {topAttackers.map((a) => (
+                <div key={a.cc} className="flex flex-col gap-1.5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Flag cc={a.cc} />
+                      <span className="text-[11px] font-medium text-slate-200">{a.name}</span>
+                    </div>
+                    <span className="font-mono text-[11px] font-semibold text-slate-400">{Math.round(a.pct)} %</span>
                   </div>
-                )
-              })}
+                  <div className="h-1 w-full overflow-hidden rounded-full bg-white/5 ring-1 ring-inset ring-white/[0.05]">
+                    <div className="h-full bg-red-500 rounded-full shadow-[0_0_8px_rgba(239,68,68,0.6)] transition-all duration-1000" style={{ width: `${Math.max(2, a.pct)}%` }} />
+                  </div>
+                </div>
+              ))}
             </div>
-            {/* Bottom fade mask */}
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#0a0e17]/85 via-[#0a0e17]/30 to-transparent" />
           </div>
         </div>
       )}
