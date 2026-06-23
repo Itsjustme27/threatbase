@@ -340,8 +340,9 @@ export default function ReportIP({ addToast }: any) {
   }
 
   return (
-    <main className="min-h-[100dvh] bg-[#050505] font-sans text-slate-300 selection:bg-red-500/30 pt-16">
-      <div className="mx-auto flex max-w-[1600px] flex-col lg:flex-row">
+    <main className="relative min-h-[100dvh] bg-[#050505] font-sans text-slate-300 selection:bg-red-500/30 pt-16">
+      <div className="pointer-events-none fixed inset-0 z-0 bg-[radial-gradient(circle_at_0%_30%,_rgba(153,27,27,0.08),_transparent_50%)]" />
+      <div className="relative z-10 mx-auto flex max-w-[1600px] flex-col lg:flex-row">
         {/* LEFT COLUMN - STICKY */}
         <div className="relative flex flex-col justify-center p-8 pt-16 lg:sticky lg:top-16 lg:h-[calc(100dvh-4rem)] lg:w-[45%] lg:p-16">
           <motion.div
@@ -363,8 +364,6 @@ export default function ReportIP({ addToast }: any) {
             </p>
           </motion.div>
           
-          {/* Subtle atmospheric glow */}
-          <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_left,_var(--tw-gradient-stops))] from-red-900/10 via-[#050505]/0 to-transparent" />
         </div>
 
         {/* RIGHT COLUMN - SCROLLABLE */}
