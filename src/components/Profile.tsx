@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { fmt, timeAgo } from '../utils'
 import { useSEO } from '../useSEO'
 import MfaSetup from './MfaSetup'
+import NotFound from './ui/not-found'
 
 /**
  * Sanitise a user-supplied URL so it can never trigger script execution.
@@ -223,8 +224,30 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
   // Profile Data
   const [viewedProfile, setViewedProfile] = useState<any>(null)
   const [loadingProfile, setLoadingProfile] = useState(true)
-  const [profileNotFound, setProfileNotFound] = useState(false)
-  const isOwnProfile = !paramUsername || (authProfile?.username === paramUsername)
+
+  // Resolve the signed-in user's own handle from their profile row, falling
+  // back to OAuth metadata / email — the same precedence used elsewhere in this
+  // component. Used to decide whether a visited /u/:username belongs to them.
+  const ownUsername =
+    authProfile?.username ||
+    user?.user_metadata?.user_name ||
+    user?.user_metadata?.preferred_username ||
+    user?.email?.split('@')[0] ||
+    null
+  // Case-insensitive match: the DB stores usernames in the [A-Za-z0-9_-] charset,
+  // so only case can legitimately differ between the stored handle and the URL —
+  // lowercasing both sides avoids 403-ing an owner who reaches /u/<Name> vs the
+  // stored <name>. This can only ever match your OWN handle, and the own view
+  // renders authProfile (not a by-username fetch), so it can never leak data.
+  const isOwnProfile =
+    !paramUsername ||
+    (!!ownUsername && ownUsername.toLowerCase() === paramUsername.toLowerCase())
+
+  // Profiles are private to their owner. A /u/:username (or /profile/:username)
+  // view that is NOT the current user's own profile is forbidden → render a 403
+  // and never fetch that user's data. We can only decide this once auth has
+  // finished resolving, so the owner never flashes a 403 on their own page.
+  const isForbidden = !!paramUsername && !authLoading && !isOwnProfile
 
   // Profile Edit fields
   const [editUsername, setEditUsername] = useState('')
@@ -262,41 +285,31 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
     }
   }, [user, authLoading, paramUsername, navigate, addToast])
 
-  // Fetch Public or Private Profile
+  // Load the current user's OWN profile. Other users' profiles are private:
+  // they are gated to a 403 above and are never fetched here.
   useEffect(() => {
     async function loadProfile() {
       if (authLoading) return
-      
-      if (!paramUsername) {
-        if (user) {
-          setViewedProfile(authProfile)
-          setLoadingProfile(false)
-        }
+
+      // Forbidden views (someone else's profile) render a 403 and must never
+      // fetch that user's data over the network.
+      if (isForbidden) {
+        setViewedProfile(null)
+        setLoadingProfile(false)
         return
       }
 
-      setLoadingProfile(true)
-      setProfileNotFound(false)
-      try {
-        // Only fetch columns needed for the public profile view — never SELECT *
-        // which could leak sensitive or future internal columns.
-        const { data, error } = await supabaseClient
-          .from('profiles')
-          .select('id, username, full_name, avatar_url, bio, website, created_at, is_helper, role')
-          .eq('username', paramUsername)
-          .single()
-
-        if (error) throw error
-        setViewedProfile(data)
-      } catch (err) {
-        console.error('Failed to load profile:', err)
-        setProfileNotFound(true)
-      } finally {
+      // Every non-forbidden view is the user's OWN profile — with or without a
+      // :username param. Render the in-memory authProfile (loaded by auth.uid()
+      // in AuthContext) instead of querying by the URL handle: this avoids any
+      // attacker-controlled lookup and preserves owner-only fields like email.
+      if (user) {
+        setViewedProfile(authProfile)
         setLoadingProfile(false)
       }
     }
     loadProfile()
-  }, [paramUsername, authLoading, authProfile, user])
+  }, [authLoading, authProfile, user, isForbidden])
 
   // Sync state values on profile load for editing
   useEffect(() => {
@@ -315,7 +328,11 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
   // Fetch reports submitted by this user
   useEffect(() => {
     async function loadReports() {
-      const targetUsername = paramUsername || authProfile?.username || user?.user_metadata?.user_name || user?.user_metadata?.preferred_username || user?.email?.split('@')[0]
+      // Don't load (or expose) another user's submission log on a forbidden view.
+      if (isForbidden) { setLoadingReports(false); return }
+      // Non-forbidden ⇒ own profile; use the canonical own alias (not the URL
+      // param, which may differ only by case).
+      const targetUsername = authProfile?.username || user?.user_metadata?.user_name || user?.user_metadata?.preferred_username || user?.email?.split('@')[0]
       if (!supabaseClient || !targetUsername || loadingProfile) {
         if (!loadingProfile) setLoadingReports(false)
         return
@@ -341,7 +358,7 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
     }
 
     loadReports()
-  }, [paramUsername, authProfile, user, loadingProfile])
+  }, [authProfile, user, loadingProfile, isForbidden])
 
   // Fetch join order to identify First/Second/Third Blood.
   // Only fetch the first 3 accounts ever created — avoids leaking every user ID.
@@ -572,13 +589,17 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
   const usernameDisplay = activeProfile?.username || editUsername || activeProfile?.email?.split('@')[0] || 'User'
 
   useSEO({
-    title: `${usernameDisplay}'s Profile — Threatbase`,
-    description: `View ${usernameDisplay}'s threat intelligence contributions, badges, and activity on Threatbase.`,
+    title: isForbidden ? 'Access Denied — Threatbase' : `${usernameDisplay}'s Profile — Threatbase`,
+    description: isForbidden
+      ? 'This profile is private to its owner.'
+      : `View ${usernameDisplay}'s threat intelligence contributions, badges, and activity on Threatbase.`,
     path: `/u/${paramUsername || usernameDisplay}`,
     noindex: true,
   })
 
-  if (authLoading || loadingProfile) {
+  // Wait for the session to resolve before deciding anything — prevents the
+  // owner from flashing a 403 on their own profile during auth load.
+  if (authLoading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-app text-slate-400">
         <Loader2 className="animate-spin text-red-400/70 mb-4" size={24} />
@@ -587,14 +608,24 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
     )
   }
 
-  if (profileNotFound) {
+  // 403 — you may only view your own profile.
+  if (isForbidden) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-app text-slate-400 px-6 text-center">
-        <h2 className="text-3xl font-extralight text-metal tracking-tight mb-2">Profile Not Found</h2>
-        <p className="text-sm text-slate-500">The user you are looking for does not exist.</p>
-        <Button onClick={() => navigate(-1)} className="mt-6 rounded-lg border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/20 text-platinum-200 hover:text-white" variant="outline">
-          Go Back
-        </Button>
+      <NotFound
+        code="403"
+        title="Access denied."
+        description="This profile is private. You can only view your own Threatbase profile."
+        cta="Return home"
+        href="/"
+      />
+    )
+  }
+
+  if (loadingProfile) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-app text-slate-400">
+        <Loader2 className="animate-spin text-red-400/70 mb-4" size={24} />
+        <p className="text-[11px] font-semibold tracking-[0.24em] uppercase text-platinum-400">Loading Profile</p>
       </div>
     )
   }

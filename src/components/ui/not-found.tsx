@@ -9,18 +9,22 @@ interface NotFoundProps {
   description?: string
   href?: string
   title?: string
+  /** Large brushed-metal status numeral. Defaults to "404"; pass "403" etc. */
+  code?: string
 }
 
 /**
- * Flagship 404 in the house cold-luxury language: brushed-metal numerals, a
- * ruby radar medallion ("scanning, found nothing"), and glass CTAs. Replaces
- * the off-brand 8-bit pixel ogre. Motion collapses under reduced-motion.
+ * Flagship status screen in the house cold-luxury language: brushed-metal
+ * numerals, a ruby radar medallion, and glass CTAs. Defaults to a 404 but the
+ * `code`/`title`/`description` props let it render any status (e.g. a 403
+ * access-denied page). Motion collapses under reduced-motion.
  */
 export default function NotFound({
   title = "No trace on record.",
   description = "This page isn't in our index. The trail may have moved, expired, or never existed.",
   cta = "Return home",
   href = "/",
+  code = "404",
   className,
 }: NotFoundProps) {
   const prefersReducedMotion = useReducedMotion()
@@ -63,7 +67,7 @@ export default function NotFound({
 
         {/* Brushed-metal status code */}
         <div className="text-7xl md:text-8xl font-extralight tracking-tighter text-metal leading-none tabular-nums">
-          404
+          {code}
         </div>
 
         <h1 className="mt-6 text-2xl md:text-3xl font-bold tracking-tight text-white">
