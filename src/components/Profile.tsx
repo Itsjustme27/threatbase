@@ -366,11 +366,11 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
     async function loadJoinOrder() {
       if (!supabaseClient || !viewedProfile?.id) return
       try {
+        // Join-order badge needs only the first 3 account ids. profiles is
+        // owner-only readable, so go through a security-definer RPC that returns
+        // just those ids (no PII, no full-table read).
         const { data, error } = await supabaseClient
-          .from('profiles')
-          .select('id')
-          .order('created_at', { ascending: true })
-          .limit(3)
+          .rpc('first_user_ids')
         if (error) throw error
         if (data) {
           const idx = data.findIndex((p: any) => p.id === viewedProfile.id)
@@ -559,6 +559,16 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
     navigator.clipboard.writeText(ip)
     setCopiedIp(ip)
     addToast(`Copied ${ip} to clipboard!`, 'success')
+    setTimeout(() => setCopiedIp(null), 1500)
+  }
+
+  // Copy a secret (e.g. a freshly generated API key) WITHOUT echoing its value
+  // into a toast. Toasts can be screenshotted, screen-recorded, or captured by
+  // logging, so the plaintext key must never appear in user-facing chrome.
+  const handleCopySecret = (secret: string) => {
+    navigator.clipboard.writeText(secret)
+    setCopiedIp(secret)
+    addToast('API key copied to clipboard!', 'success')
     setTimeout(() => setCopiedIp(null), 1500)
   }
 
@@ -952,7 +962,7 @@ export default function Profile({ addToast }: { addToast: (msg: string, type?: s
                   <div className="flex items-center gap-2 bg-black/50 border border-primary/20 p-2 rounded">
                     <code className="text-sm text-slate-200 font-mono flex-1 select-all tracking-wide">{newlyGeneratedKey}</code>
                     <button
-                      onClick={() => handleCopyIp(newlyGeneratedKey)}
+                      onClick={() => handleCopySecret(newlyGeneratedKey)}
                       className="p-2 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 rounded transition-colors"
                       title="Copy API Key"
                     >

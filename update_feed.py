@@ -662,6 +662,50 @@ async def fetch_threatfox_async(session: aiohttp.ClientSession, name: str, url: 
         log.error(f"  ✗ ThreatFox {name} failed: {e}")
         return result
 
+async def fetch_honeydb_victims(session: aiohttp.ClientSession, geo_index: Optional[tuple]) -> Optional[dict]:
+    """Fetch HoneyDB honeypot nodes and aggregate them by country to represent victim targeted countries."""
+    api_id = os.environ.get("HONEYDB_API_ID")
+    api_key = os.environ.get("HONEYDB_API_KEY")
+    if not api_id or not api_key or not geo_index:
+        return None
+        
+    url = "https://honeydb.io/api/nodes"
+    headers = {
+        "X-HoneyDb-ApiId": api_id,
+        "X-HoneyDb-ApiKey": api_key,
+        "User-Agent": USER_AGENT
+    }
+    
+    log.info("Fetching HoneyDB nodes for victim country data...")
+    try:
+        async with session.get(url, headers=headers, timeout=aiohttp.ClientTimeout(total=45)) as r:
+            if r.status != 200:
+                log.error(f"  ✗ HoneyDB API failed: HTTP {r.status}")
+                return None
+                
+            data = await r.json()
+            nodes = data if isinstance(data, list) else data.get("nodes", data.get("data", []))
+            
+            starts, ranges = geo_index
+            counts: Counter = Counter()
+            
+            for node in nodes:
+                ip_str = node.get("ip_address") or node.get("remote_host") or node.get("ip")
+                if ip_str:
+                    ip_int = is_valid_ipv4_fast(ip_str)
+                    if ip_int:
+                        cc = country_for_ip(ip_int, starts, ranges)
+                        if cc:
+                            counts[cc] += 1
+            
+            if counts:
+                log.info(f"  ✓ HoneyDB Victims: {len(nodes)} nodes geolocated to {len(counts)} countries")
+                return dict(counts.most_common())
+            return None
+    except Exception as e:
+        log.error(f"  ✗ HoneyDB API failed: {e}")
+        return None
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Trust Tier & Tag Processing
@@ -1037,6 +1081,10 @@ async def run_async_collector():
     geo_index = load_geo_index()
     geo_data = compute_geo(sorted_ips, geo_index)
     if geo_data:
+        victims_data = await fetch_honeydb_victims(session, geo_index)
+        if victims_data:
+            geo_data["victims"] = victims_data
+            
         with open("ioc/geo.json", "w", encoding="utf-8") as f:
             json.dump(geo_data, f, indent=2)
         log.info("  Wrote ioc/geo.json")

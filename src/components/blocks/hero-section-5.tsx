@@ -20,7 +20,9 @@ export function HeroSection({ scanInput, setScanInput, handleScan }: any) {
                 <ThreatMap />
                 <div className="absolute inset-0 bg-gradient-to-b from-[#080b12]/10 via-[#080b12]/30 to-[#080b12] pointer-events-none z-0" />
 
-                <section className="relative z-10 w-full pt-24 pb-20 lg:pb-28">
+                {/* pointer-events-none lets drag/hover pass through to the map
+                    canvas behind it; interactive controls below re-enable events. */}
+                <section className="relative z-10 w-full pt-24 pb-20 lg:pb-28 pointer-events-none">
                     <motion.div
                       className="relative flex max-w-7xl flex-col px-6 lg:px-8"
                       variants={stagger}
@@ -49,7 +51,7 @@ export function HeroSection({ scanInput, setScanInput, handleScan }: any) {
                               variants={fadeUp}
                               className="mt-9 flex flex-col items-start gap-3.5 sm:flex-row w-full"
                             >
-                                <div className="relative w-full max-w-md flex items-center group/search">
+                                <div className="relative w-full max-w-md flex items-center group/search pointer-events-auto">
                                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none z-10" size={18} />
                                     <input
                                         type="text"
@@ -75,7 +77,7 @@ export function HeroSection({ scanInput, setScanInput, handleScan }: any) {
                                 </div>
                                 <a
                                     href="#feeds"
-                                    className="inline-flex h-14 items-center justify-center rounded-full px-7 text-sm font-semibold border border-white/10 bg-white/[0.04] backdrop-blur-md text-slate-200 hover:bg-white/[0.08] hover:text-white hover:border-white/20 transition-all duration-200 active:scale-[0.98] cursor-pointer"
+                                    className="pointer-events-auto inline-flex h-14 items-center justify-center rounded-full px-7 text-sm font-semibold border border-white/10 bg-white/[0.04] backdrop-blur-md text-slate-200 hover:bg-white/[0.08] hover:text-white hover:border-white/20 transition-all duration-200 active:scale-[0.98] cursor-pointer"
                                 >
                                     Browse feeds
                                     <ChevronRight size={16} className="ml-0.5" />

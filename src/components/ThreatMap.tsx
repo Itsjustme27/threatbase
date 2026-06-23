@@ -136,6 +136,7 @@ export default function ThreatMap() {
   const [ticker, setTicker] = useState<TickerEntry[]>([])
   const [totalSeen, setTotalSeen] = useState(0)
   const [topAttackers, setTopAttackers] = useState<{cc: string, name: string, count: number, pct: number}[]>([])
+  const [topVictims, setTopVictims] = useState<{cc: string, name: string, count: number, pct: number}[]>([])
   // Ticking clock so relative timestamps ("now", "5s") stay fresh.
   const [now, setNow] = useState(() => Date.now())
   // Real CTI stats for the "Last 24h" analytics strip.
@@ -144,7 +145,6 @@ export default function ThreatMap() {
 
   // Globe rotation state — stored in refs for non-React render loop access
   const rotationRef = useRef<[number, number]>([30, -20]) // [lambda, phi] starting view
-  const autoRotateRef = useRef(true)
   const isDraggingRef = useRef(false)
   const dragStartRef = useRef<[number, number]>([0, 0])
   const rotStartRef = useRef<[number, number]>([0, 0])
@@ -165,7 +165,7 @@ export default function ThreatMap() {
 
     fetch(getBaseUrl() + 'geo.json?_=' + Date.now())
       .then(r => r.json())
-      .then((geo: { countries?: Record<string, number> }) => {
+      .then((geo: { countries?: Record<string, number>, victims?: Record<string, number> }) => {
         if (cancelled || !geo?.countries) return
         const items: { coords: [number, number]; cc: string }[] = []
         const cumulative: number[] = []
@@ -190,6 +190,24 @@ export default function ThreatMap() {
             count: a.count,
             pct: (a.count / total) * 100
           })))
+        }
+
+        if (geo.victims) {
+          let totalVictims = 0
+          const victimsList: {cc: string, count: number}[] = []
+          for (const [cc, count] of Object.entries(geo.victims) as [string, number][]) {
+            totalVictims += count
+            victimsList.push({ cc, count })
+          }
+          if (totalVictims > 0) {
+            victimsList.sort((a, b) => b.count - a.count)
+            setTopVictims(victimsList.slice(0, 5).map(a => ({
+              cc: a.cc,
+              name: COUNTRY_COORDS[a.cc]?.name || a.cc,
+              count: a.count,
+              pct: (a.count / totalVictims) * 100
+            })))
+          }
         }
       })
       .catch(() => { /* keep CITIES fallback */ })
@@ -238,10 +256,11 @@ export default function ThreatMap() {
   // ─── Drag-to-rotate handlers (pointer events on the canvas) ───
   const onPointerDown = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
     isDraggingRef.current = true
-    autoRotateRef.current = false
     dragStartRef.current = [e.clientX, e.clientY]
     rotStartRef.current = [...rotationRef.current]
-      ; (e.target as HTMLElement).setPointerCapture(e.pointerId)
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId)
+    } catch (err) {}
   }, [])
 
   const onPointerMove = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
@@ -250,33 +269,40 @@ export default function ThreatMap() {
     const canvas = canvasRef.current
     if (canvas) {
       const rect = canvas.getBoundingClientRect()
-      mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top }
+      // The canvas is CSS-transformed (rotateX + scale + translateY under a
+      // perspective parent), so getBoundingClientRect() is the *transformed*
+      // box while the projection hit-test expects the canvas's internal pixel
+      // space. Normalize the pointer by the on-screen rect, then rescale to the
+      // untransformed layout size so screen px → canvas px. This removes the
+      // scale(1.15)/translate offset that made the highlight miss the cursor.
+      const W = canvas.clientWidth || rect.width
+      const H = canvas.clientHeight || rect.height
+      mouseRef.current = {
+        x: ((e.clientX - rect.left) / rect.width) * W,
+        y: ((e.clientY - rect.top) / rect.height) * H,
+      }
     }
     if (!isDraggingRef.current) return
     const dx = e.clientX - dragStartRef.current[0]
     const dy = e.clientY - dragStartRef.current[1]
-    const sensitivity = 0.3
+    const sensitivity = 0.4
     rotationRef.current = [
       rotStartRef.current[0] + dx * sensitivity,
-      Math.max(-60, Math.min(60, rotStartRef.current[1] - dy * sensitivity)),
+      Math.max(-80, Math.min(80, rotStartRef.current[1] + dy * sensitivity)),
     ]
   }, [])
 
-  const onPointerUp = useCallback(() => {
+  const onPointerUp = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
     isDraggingRef.current = false
-    // Resume auto-rotate after 3 seconds of no interaction
-    setTimeout(() => {
-      if (!isDraggingRef.current) autoRotateRef.current = true
-    }, 3000)
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId)
+    } catch (err) {}
   }, [])
 
   const onPointerLeave = useCallback(() => {
     // Clear hover so the highlight + tooltip disappear when the cursor leaves.
     mouseRef.current = null
     isDraggingRef.current = false
-    setTimeout(() => {
-      if (!isDraggingRef.current) autoRotateRef.current = true
-    }, 3000)
   }, [])
 
   useEffect(() => {
@@ -378,17 +404,9 @@ export default function ThreatMap() {
         for (let i = 0; i < 5; i++) spawnAttack()
 
         const render = () => {
-          // Optional flat rotation if user pans
-          const cx = width / 2, cy = height / 2
-          
-          if (isDraggingRef.current) {
-            // Apply horizontal panning from dragging
-            projection.rotate([rotationRef.current[0], 0])
-          } else if (autoRotateRef.current) {
-            // Very slow horizontal pan
-            rotationRef.current[0] += 0.02
-            projection.rotate([rotationRef.current[0], 0])
-          }
+          // Apply horizontal wrap-around and vertical panning from dragging
+          projection.rotate([rotationRef.current[0], 0])
+          projection.translate([width / 2, height / 1.7 + rotationRef.current[1] * 3])
 
           ctx.clearRect(0, 0, width, height)
 
@@ -627,15 +645,21 @@ export default function ThreatMap() {
 
   return (
     <>
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 z-0 w-full h-full bg-transparent cursor-grab active:cursor-grabbing"
-        style={{ touchAction: 'none' }}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onPointerLeave={onPointerLeave}
-      />
+      <div className="absolute inset-0 z-0 overflow-hidden" style={{ perspective: '1200px' }}>
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full bg-transparent cursor-grab active:cursor-grabbing"
+          style={{ 
+            touchAction: 'none',
+            transform: 'rotateX(20deg) scale(1.15) translateY(-5%)',
+            transformOrigin: 'center center'
+          }}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerLeave={onPointerLeave}
+        />
+      </div>
 
       {/* Hover tooltip — country name under the cursor (positioned imperatively) */}
       <div
@@ -745,7 +769,7 @@ export default function ThreatMap() {
           </div>
 
           {/* Top Attackers List */}
-          <div className="relative flex-1 overflow-hidden pb-5">
+          <div className="relative flex-1 overflow-hidden pb-3 border-b border-white/[0.05]">
             <div className="flex flex-col px-4 space-y-3.5 pt-2">
               {topAttackers.length === 0 && (
                 <div className="py-2 text-[11px] text-slate-600">Loading top attackers…</div>
@@ -766,6 +790,33 @@ export default function ThreatMap() {
               ))}
             </div>
           </div>
+
+          {/* Top Victims sub-header */}
+          {topVictims.length > 0 && (
+            <>
+              <div className="flex items-center justify-between px-4 pb-1.5 pt-4">
+                <span className="text-[8.5px] font-semibold uppercase tracking-[0.22em] text-cyan-400">Top Targeted</span>
+              </div>
+              <div className="relative flex-1 overflow-hidden pb-5">
+                <div className="flex flex-col px-4 space-y-3.5 pt-2">
+                  {topVictims.map((v) => (
+                    <div key={v.cc} className="flex flex-col gap-1.5">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Flag cc={v.cc} />
+                          <span className="text-[11px] font-medium text-slate-200">{v.name}</span>
+                        </div>
+                        <span className="font-mono text-[11px] font-semibold text-slate-400">{Math.round(v.pct)} %</span>
+                      </div>
+                      <div className="h-1 w-full overflow-hidden rounded-full bg-white/5 ring-1 ring-inset ring-white/[0.05]">
+                        <div className="h-full bg-cyan-500 rounded-full shadow-[0_0_8px_rgba(6,182,212,0.6)] transition-all duration-1000" style={{ width: `${Math.max(2, v.pct)}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       )}
 

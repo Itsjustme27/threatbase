@@ -460,7 +460,7 @@ export default function ReportIP({ addToast }: any) {
                     className="h-14 cursor-not-allowed rounded-xl border-transparent bg-white/[0.01] font-mono text-slate-500 focus-visible:ring-0"
                   />
                   <p className="text-[11px] text-slate-500">
-                    Locked to your profile. Change it in <Link to={profile?.username ? `/u/${profile.username}` : "/profile"} className="text-red-400 hover:text-red-300 hover:underline">Settings</Link>.
+                    Locked to your profile. Change it in <Link to="/profile" className="text-red-400 hover:text-red-300 hover:underline">Settings</Link>.
                   </p>
                 </div>
 

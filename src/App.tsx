@@ -237,9 +237,11 @@ export default function App() {
         <Route path="/report" element={<ReportIP addToast={addToast} />} />
         <Route path="/contributors" element={<ContributorsPage />} />
         <Route path="/api" element={<ApiDocsPage />} />
-        <Route path="/profile/:username?" element={<Profile addToast={addToast} />} />
-        {/* Canonical public-profile path (matches Profile's SEO + cross-app links). */}
-        <Route path="/u/:username" element={<Profile addToast={addToast} />} />
+        {/* Profiles are private to their owner — there is no public/by-username
+            view. Only the owner's own profile is reachable, at /profile. Any
+            username-bearing URL (/u/:username, /profile/:username) is gone so the
+            GUI never advertises a browsable profile path. */}
+        <Route path="/profile" element={<Profile addToast={addToast} />} />
         <Route path="/thanks" element={<ThanksPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
