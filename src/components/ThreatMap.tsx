@@ -136,7 +136,6 @@ export default function ThreatMap() {
   const [ticker, setTicker] = useState<TickerEntry[]>([])
   const [totalSeen, setTotalSeen] = useState(0)
   const [topAttackers, setTopAttackers] = useState<{cc: string, name: string, count: number, pct: number}[]>([])
-  const [topVictims, setTopVictims] = useState<{cc: string, name: string, count: number, pct: number}[]>([])
   // Ticking clock so relative timestamps ("now", "5s") stay fresh.
   const [now, setNow] = useState(() => Date.now())
   // Real CTI stats for the "Last 24h" analytics strip.
@@ -165,7 +164,7 @@ export default function ThreatMap() {
 
     fetch(getBaseUrl() + 'geo.json?_=' + Date.now())
       .then(r => r.json())
-      .then((geo: { countries?: Record<string, number>, victims?: Record<string, number> }) => {
+      .then((geo: { countries?: Record<string, number> }) => {
         if (cancelled || !geo?.countries) return
         const items: { coords: [number, number]; cc: string }[] = []
         const cumulative: number[] = []
@@ -190,24 +189,6 @@ export default function ThreatMap() {
             count: a.count,
             pct: (a.count / total) * 100
           })))
-        }
-
-        if (geo.victims) {
-          let totalVictims = 0
-          const victimsList: {cc: string, count: number}[] = []
-          for (const [cc, count] of Object.entries(geo.victims) as [string, number][]) {
-            totalVictims += count
-            victimsList.push({ cc, count })
-          }
-          if (totalVictims > 0) {
-            victimsList.sort((a, b) => b.count - a.count)
-            setTopVictims(victimsList.slice(0, 5).map(a => ({
-              cc: a.cc,
-              name: COUNTRY_COORDS[a.cc]?.name || a.cc,
-              count: a.count,
-              pct: (a.count / totalVictims) * 100
-            })))
-          }
         }
       })
       .catch(() => { /* keep CITIES fallback */ })
@@ -769,7 +750,7 @@ export default function ThreatMap() {
           </div>
 
           {/* Top Attackers List */}
-          <div className="relative flex-1 overflow-hidden pb-3 border-b border-white/[0.05]">
+          <div className="relative flex-1 overflow-hidden pb-5">
             <div className="flex flex-col px-4 space-y-3.5 pt-2">
               {topAttackers.length === 0 && (
                 <div className="py-2 text-[11px] text-slate-600">Loading top attackers…</div>
@@ -790,33 +771,6 @@ export default function ThreatMap() {
               ))}
             </div>
           </div>
-
-          {/* Top Victims sub-header */}
-          {topVictims.length > 0 && (
-            <>
-              <div className="flex items-center justify-between px-4 pb-1.5 pt-4">
-                <span className="text-[8.5px] font-semibold uppercase tracking-[0.22em] text-cyan-400">Top Targeted</span>
-              </div>
-              <div className="relative flex-1 overflow-hidden pb-5">
-                <div className="flex flex-col px-4 space-y-3.5 pt-2">
-                  {topVictims.map((v) => (
-                    <div key={v.cc} className="flex flex-col gap-1.5">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <Flag cc={v.cc} />
-                          <span className="text-[11px] font-medium text-slate-200">{v.name}</span>
-                        </div>
-                        <span className="font-mono text-[11px] font-semibold text-slate-400">{Math.round(v.pct)} %</span>
-                      </div>
-                      <div className="h-1 w-full overflow-hidden rounded-full bg-white/5 ring-1 ring-inset ring-white/[0.05]">
-                        <div className="h-full bg-cyan-500 rounded-full shadow-[0_0_8px_rgba(6,182,212,0.6)] transition-all duration-1000" style={{ width: `${Math.max(2, v.pct)}%` }} />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </>
-          )}
         </div>
       )}
 

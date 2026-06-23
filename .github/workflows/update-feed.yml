@@ -62,8 +62,6 @@ jobs:
           URLHAUS_AUTH_KEY: ${{ secrets.URLHAUS_AUTH_KEY }}
           ABUSEIPDB_API_KEY: ${{ secrets.ABUSEIPDB_API_KEY }}
           OTX_API_KEY: ${{ secrets.OTX_API_KEY }}
-          HONEYDB_API_ID: ${{ secrets.HONEYDB_API_ID }}
-          HONEYDB_API_KEY: ${{ secrets.HONEYDB_API_KEY }}
           PYTHONUNBUFFERED: '1'
         run: python update_feed.py
 
