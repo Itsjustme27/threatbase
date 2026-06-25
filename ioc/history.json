@@ -628,5 +628,34 @@
       "romainmarcoux_outgoing_40k": 40000,
       "threatfox_full": 23985
     }
+  },
+  {
+    "date": "2026-06-25",
+    "total_unique_ips": 401371,
+    "total_unique_ipv6": 4042,
+    "total_unique_cidrs": 10690,
+    "total_unique_domains": 1718616,
+    "total_unique_hashes": 1101349,
+    "total_unique_urls": 55989,
+    "active_feeds": 55,
+    "category_counts": {
+      "Mixed": 184456,
+      "Malicious": 182773,
+      "Compromised": 15600,
+      "C2": 7607,
+      "Tor": 7456,
+      "Malware": 2728,
+      "Brute-Force": 26700,
+      "Botnet": 2794,
+      "Spam": 13992,
+      "Exploit": 8936
+    },
+    "top_sources": {
+      "romainmarcoux_outgoing_aa": 131072,
+      "ipsum": 110396,
+      "romainmarcoux_outgoing_ab": 47402,
+      "romainmarcoux_outgoing_40k": 40000,
+      "threatfox_full": 23920
+    }
   }
 ]
