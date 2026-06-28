@@ -152,7 +152,13 @@ export const onRequestPost = async (context: any) => {
     .select('username')
     .eq('id', user.id)
     .single()
-  if (profile?.username) reporterAlias = profile.username
+  if (profile?.username) {
+    reporterAlias = profile.username
+  } else if (user) {
+    const fallback = user.user_metadata?.custom_claims?.global_name || user.email?.split('@')[0] || ''
+    const fallbackAlias = fallback.replace(/[^a-zA-Z0-9_-]/g, '')
+    if (fallbackAlias) reporterAlias = fallbackAlias
+  }
 
   // 6. Reject duplicates from the same reporter.
   const { data: existing } = await supabaseClient
