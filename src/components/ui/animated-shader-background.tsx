@@ -13,28 +13,40 @@ export default function AnimatedShaderBackground({ className = '' }: { className
     const container = containerRef.current
     if (!container) return
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+    // Antialias off: this is a soft, blurred, opacity-40 ambient wash sitting
+    // behind dark gradients — MSAA is invisible here and just burns GPU.
+    const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true })
     if (!renderer.getContext()) return // WebGL unavailable — bail gracefully
 
     const scene = new THREE.Scene()
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1)
 
+    // Fragment-shader cost scales with pixel count. The shader is a full-screen
+    // per-pixel fbm loop, so rendering the drawing buffer at 60% of CSS size and
+    // letting the GPU upscale cuts fragment work to ~36% with no visible change
+    // on a blurred background.
+    const RES_SCALE = 0.6
     const sizeOf = () => ({
       w: container.clientWidth || window.innerWidth,
       h: container.clientHeight || window.innerHeight,
     })
 
     const initial = sizeOf()
-    // Limit pixel ratio to 1. For a soft ambient background, higher densities just waste GPU.
     renderer.setPixelRatio(1)
-    renderer.setSize(initial.w, initial.h)
+    // updateStyle=false: keep the canvas stretched to 100% via CSS while the
+    // drawing buffer stays at the reduced internal resolution.
+    renderer.setSize(initial.w * RES_SCALE, initial.h * RES_SCALE, false)
+    renderer.domElement.style.width = '100%'
+    renderer.domElement.style.height = '100%'
     container.appendChild(renderer.domElement)
 
     const material = new THREE.ShaderMaterial({
       transparent: true,
       uniforms: {
         iTime: { value: 0 },
-        iResolution: { value: new THREE.Vector2(initial.w, initial.h) },
+        // iResolution must match the drawing-buffer size (gl_FragCoord is in
+        // buffer pixels), so use the reduced internal resolution.
+        iResolution: { value: new THREE.Vector2(initial.w * RES_SCALE, initial.h * RES_SCALE) },
       },
       vertexShader: `
         void main() {
@@ -109,23 +121,68 @@ export default function AnimatedShaderBackground({ className = '' }: { className
     const mesh = new THREE.Mesh(geometry, material)
     scene.add(mesh)
 
+    // Cap to ~30fps. rAF fires at the display refresh (60/120/144Hz), so an
+    // uncapped loop renders this expensive shader far more often than a soft
+    // ambient wash needs. We accumulate real elapsed time into iTime so the
+    // animation runs at the same visual speed regardless of the cap.
+    const FRAME_MS = 1000 / 30
     let frameId = 0
-    const animate = () => {
-      material.uniforms.iTime.value += 0.016
+    let lastTime = 0
+    let running = false
+    let isOnScreen = true
+
+    const animate = (now: number) => {
+      frameId = requestAnimationFrame(animate)
+      if (!lastTime) lastTime = now
+      const elapsed = now - lastTime
+      if (elapsed < FRAME_MS) return
+      lastTime = now - (elapsed % FRAME_MS)
+      material.uniforms.iTime.value += elapsed / 1000
       renderer.render(scene, camera)
+    }
+
+    const start = () => {
+      if (running) return
+      running = true
+      lastTime = 0
       frameId = requestAnimationFrame(animate)
     }
-    animate()
+    const stop = () => {
+      running = false
+      cancelAnimationFrame(frameId)
+    }
+
+    // Pause when the tab is backgrounded — no point rendering an unseen canvas.
+    const onVisibility = () => {
+      if (document.visibilityState === 'hidden') stop()
+      else if (isOnScreen) start()
+    }
+    document.addEventListener('visibilitychange', onVisibility)
+
+    // Pause when scrolled out of view (the credits list below is long).
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isOnScreen = entry.isIntersecting
+        if (isOnScreen && document.visibilityState === 'visible') start()
+        else stop()
+      },
+      { threshold: 0 },
+    )
+    observer.observe(container)
+
+    start()
 
     const handleResize = () => {
       const { w, h } = sizeOf()
-      renderer.setSize(w, h)
-      material.uniforms.iResolution.value.set(w, h)
+      renderer.setSize(w * RES_SCALE, h * RES_SCALE, false)
+      material.uniforms.iResolution.value.set(w * RES_SCALE, h * RES_SCALE)
     }
     window.addEventListener('resize', handleResize)
 
     return () => {
-      cancelAnimationFrame(frameId)
+      stop()
+      observer.disconnect()
+      document.removeEventListener('visibilitychange', onVisibility)
       window.removeEventListener('resize', handleResize)
       if (renderer.domElement.parentNode === container) {
         container.removeChild(renderer.domElement)

@@ -136,7 +136,7 @@ export default function ThanksPage() {
             <div className="absolute -left-1/2 top-1/2 z-10 aspect-[1/0.5] w-[200%] rounded-[100%] border-t border-red-500/10 bg-[#080b12]" />
             {showHeavyFx && (
               <Sparkles
-                density={300}
+                density={120}
                 size={1.5}
                 className="absolute inset-x-0 bottom-0 h-full w-full [mask-image:radial-gradient(ellipse_at_center,white,transparent_80%)]"
                 color="#cf1733"

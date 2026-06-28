@@ -8,6 +8,7 @@ type SparklesProps = {
   size?: number
   minSize?: number | null
   density?: number
+  fpsLimit?: number
   speed?: number
   minSpeed?: number | null
   opacity?: number
@@ -23,6 +24,9 @@ export function Sparkles({
   size = 1,
   minSize = null,
   density = 800,
+  // 30fps is plenty for ambient twinkle and roughly quarters the per-frame
+  // particle work vs the old hardcoded 120.
+  fpsLimit = 30,
   speed = 1,
   minSpeed = null,
   opacity = 1,
@@ -52,7 +56,7 @@ export function Sparkles({
       enable: false,
       zIndex: 1,
     },
-    fpsLimit: 120,
+    fpsLimit,
     particles: {
       color: {
         value: color,

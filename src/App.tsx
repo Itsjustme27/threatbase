@@ -1,25 +1,29 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { HeroSection } from './components/blocks/hero-section-5'
 import ReportScanner from './components/ReportScanner'
-import AboutPage from './components/AboutPage'
 import Stats from './components/Stats'
 import Feeds from './components/Feeds'
 import HowItWorks from './components/HowItWorks'
 import Analytics from './components/Analytics'
-import ReportIP from './components/ReportIP'
-import ThanksPage from './components/ThanksPage'
 import Footer from './components/Footer'
 import ToastContainer from './components/ToastContainer'
 import Navbar from './components/Navbar'
-import NotFound from './components/ui/not-found'
-import Profile from './components/Profile'
-import TermsPage from './components/TermsPage'
-import PrivacyPage from './components/PrivacyPage'
-import PolicyPage from './components/PolicyPage'
-import ContributorsPage from './components/ContributorsPage'
-import ApiDocsPage from './components/ApiDocsPage'
+
+// Route-level code splitting: each non-home page (and its heavy deps — e.g.
+// three.js + tsparticles on /thanks) loads in its own chunk on demand instead
+// of bloating the initial bundle every visitor downloads.
+const AboutPage = lazy(() => import('./components/AboutPage'))
+const ReportIP = lazy(() => import('./components/ReportIP'))
+const ThanksPage = lazy(() => import('./components/ThanksPage'))
+const NotFound = lazy(() => import('./components/ui/not-found'))
+const Profile = lazy(() => import('./components/Profile'))
+const TermsPage = lazy(() => import('./components/TermsPage'))
+const PrivacyPage = lazy(() => import('./components/PrivacyPage'))
+const PolicyPage = lazy(() => import('./components/PolicyPage'))
+const ContributorsPage = lazy(() => import('./components/ContributorsPage'))
+const ApiDocsPage = lazy(() => import('./components/ApiDocsPage'))
 import { AuthProvider } from './AuthContext'
 import { getBaseUrl, formatSyncTime } from './utils'
 import { scanIndicatorLogic } from './scanner'
@@ -197,6 +201,7 @@ export default function App() {
     <AuthProvider>
       <Navbar />
 
+      <Suspense fallback={<div className="min-h-[100dvh]" aria-hidden />}>
       <Routes>
         <Route path="/" element={
           <main id="main-content">
@@ -245,6 +250,7 @@ export default function App() {
         <Route path="/thanks" element={<ThanksPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </Suspense>
 
       <ToastContainer toasts={toasts} />
       <Footer />
