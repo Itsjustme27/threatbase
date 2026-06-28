@@ -1,15 +1,16 @@
 import { getBaseUrl } from './utils'
 import supabaseClient from './supabaseClient'
+import { BloomFilter } from './bloomFilter'
 
 type CompareFn = (query: string, line: string) => number
 
-const feedCache: Record<string, string> = {}
+const feedCache: Record<string, { text: string; filter: BloomFilter | null }> = {}
 
 async function fetchAndCacheFeedText(
   baseUrl: string,
   filename: string,
   feedVersion: string | number,
-): Promise<string> {
+): Promise<{ text: string; filter: BloomFilter | null }> {
   const cacheKey = `${filename}?v=${feedVersion}`
   if (feedCache[cacheKey]) return feedCache[cacheKey]
 
@@ -27,8 +28,20 @@ async function fetchAndCacheFeedText(
     console.error(`GitHub Raw fetch failed for ${filename}:`, e)
   }
 
-  feedCache[cacheKey] = text
-  return text
+  let filter: BloomFilter | null = null
+  if (text) {
+    const lines = text.split('\n')
+    filter = new BloomFilter(lines.length || 1, 0.01)
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim()
+      if (!line || line.startsWith('#') || line.startsWith('ip,')) continue;
+      const key = line.split(',')[0]
+      filter.add(key)
+    }
+  }
+
+  feedCache[cacheKey] = { text, filter }
+  return feedCache[cacheKey]
 }
 
 /** Convert a dotted IPv4 string to an unsigned 32-bit integer. */
@@ -186,29 +199,33 @@ export async function scanIndicatorLogic(rawInput: string, feedVersion: string |
 
   try {
     let textData = ''
+    let filter: BloomFilter | null = null
     let compareFn: CompareFn = stringCompare
 
     if (isIP) {
-      textData = await fetchAndCacheFeedText(RAW, 'threatbase-ip.txt', feedVersion)
+      ;({ text: textData, filter } = await fetchAndCacheFeedText(RAW, 'threatbase-ip.txt', feedVersion))
       compareFn = ipCsvCompare
     } else if (isIPv6) {
-      textData = await fetchAndCacheFeedText(RAW, 'threatbase-ipv6.txt', feedVersion)
+      ;({ text: textData, filter } = await fetchAndCacheFeedText(RAW, 'threatbase-ipv6.txt', feedVersion))
     } else if (isCIDR) {
-      textData = await fetchAndCacheFeedText(RAW, 'threatbase-cidr.txt', feedVersion)
+      ;({ text: textData, filter } = await fetchAndCacheFeedText(RAW, 'threatbase-cidr.txt', feedVersion))
     } else if (isDomain) {
-      textData = await fetchAndCacheFeedText(RAW, 'threatbase-domain.txt', feedVersion)
+      ;({ text: textData, filter } = await fetchAndCacheFeedText(RAW, 'threatbase-domain.txt', feedVersion))
     } else if (isHash) {
-      textData = await fetchAndCacheFeedText(RAW, 'threatbase-hash.txt', feedVersion)
+      ;({ text: textData, filter } = await fetchAndCacheFeedText(RAW, 'threatbase-hash.txt', feedVersion))
     } else if (isURL) {
-      textData = await fetchAndCacheFeedText(RAW, 'threatbase-url.txt', feedVersion)
+      ;({ text: textData, filter } = await fetchAndCacheFeedText(RAW, 'threatbase-url.txt', feedVersion))
     }
 
-    const result = binarySearchString(textData, ip, compareFn)
+    let result: string | null = null
+    if (!filter || filter.has(ip)) {
+      result = binarySearchString(textData, ip, compareFn)
+    }
 
     // CIDR fallback: an IPv4 with no exact row may still be malicious because
     // it falls inside a listed malicious subnet (Spamhaus/FireHOL/etc).
     if (!result && isIP) {
-      const cidrText = await fetchAndCacheFeedText(RAW, 'threatbase-cidr.txt', feedVersion)
+      const { text: cidrText } = await fetchAndCacheFeedText(RAW, 'threatbase-cidr.txt', feedVersion)
       matchedCidr = findMatchingCidr(cidrText, ipv4ToLong(ip))
     }
 
